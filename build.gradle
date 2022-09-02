@@ -13,8 +13,69 @@ repositories {
 }
 
 dependencies {
+
+    def springFramework = '5.7.2'
+    def mysqlVersion = '8.0.26'
+    def hikariVersion = '5.0.0'
+
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    /*
+    Spring
+     */
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework:spring-tx'
+    implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: springFramework
+    implementation group: 'org.springframework.security', name: 'spring-security-config', version: springFramework
+    implementation group: 'org.springframework.security', name: 'spring-security-core', version: springFramework
+    implementation group: 'org.springframework.security', name: 'spring-security-web', version: springFramework
+    implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: springFramework
+
+    /**
+     * Mysql
+     */
+    implementation group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: hikariVersion
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    /**
+     * Open API
+     */
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+
+    /**
+     * Lombok
+     */
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    /**
+     * Logback
+     */
+    implementation 'net.logstash.logback:logstash-logback-encoder:7.2'
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
+
+    /**
+     * Json, Gson
+     */
+    implementation 'org.json:json:20220320'
+    implementation 'com.google.code.gson:gson:2.9.1'
+
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.13.3'
+
+
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+
+
+    /**
+     * JWT
+     */
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
+
 }
 
 tasks.named('test') {

@@ -1,0 +1,73 @@
+server:
+  port: ${SERVER_PORT:8080}
+spring:
+  application:
+    name: Parking
+  profiles:
+    active: ${ENV:dev}
+  datasource:
+    url: ${AC_DATABASE_URL:jdbc:mysql://localhost:3306/your_tours}
+    username: ${AC_DATABASE_USER:root}
+    password: ${AC_DATABASE_PWD:3112001}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: hikari-parking
+      auto-commit: true
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+      minimum-idle: 3
+      maximum-pool-size: 20
+    type: com.zaxxer.hikari.HikariDataSource
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  data:
+    redis:
+      repositories:
+        enabled: false
+  cache:
+    type: redis
+  redis:
+    host: ${REDIS_HOST:10.30.1.143}
+    port: ${REDIS_PORT:30010}
+    password: ${REDIS_PASSWORD:XcwvZ7knqPzn6HaH}
+  http:
+    multipart:
+      enabled: false
+
+common:
+  core:
+    open-api:
+      servers: ${OPEN_API_SERVER:http://localhost:8080}
+    security:
+      path-matcher:
+        permit-all-path-patterns:
+          - /webjars/swagger-ui/**
+          - /v3/api-docs/**
+          - /swagger-resources/**
+          - /webjars/**
+          - /swagger-ui/**
+          - /swagger-ui.html
+          - /null/swagger-resources/**
+          - /api/auth/**
+        permit-all-map:
+          GET:
+            - /api/v1/languages-support/**
+            - /api/v1/translator/**
+            - /api/v1/languages/**
+      cors:
+        allowed-origins:
+          - ${CORS_ORIGINS:http://localhost:8080}
+          - http://localhost:8080
+        allowed-methods: ${CORS_METHODS:*}
+        allowed-headers: ${CORS_HEADERS:*}
+
+
+
