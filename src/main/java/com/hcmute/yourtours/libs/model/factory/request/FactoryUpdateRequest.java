@@ -1,8 +1,8 @@
 package com.hcmute.yourtours.libs.model.factory.request;
 
+import com.hcmute.yourtours.libs.model.BaseData;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import com.hcmute.yourtours.libs.model.BaseData;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

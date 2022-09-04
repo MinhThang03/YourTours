@@ -1,12 +1,12 @@
 package com.hcmute.yourtours.libs.controller;
 
+import com.hcmute.yourtours.libs.model.BaseData;
+import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
+import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.hcmute.yourtours.libs.model.BaseData;
-import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
-import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 
 /**
  * IGetDetailByIdController interface

@@ -22,17 +22,22 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     /*
-    Spring
+     *Spring
      */
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework:spring-tx'
-    implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: springFramework
-    implementation group: 'org.springframework.security', name: 'spring-security-config', version: springFramework
+
+    /*
+     * Security
+     */
     implementation group: 'org.springframework.security', name: 'spring-security-core', version: springFramework
     implementation group: 'org.springframework.security', name: 'spring-security-web', version: springFramework
-    implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: springFramework
+    implementation group: 'org.springframework.security', name: 'spring-security-config', version: springFramework
+    implementation group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.1.1.RELEASE'
+
+
 
     /**
      * Mysql
