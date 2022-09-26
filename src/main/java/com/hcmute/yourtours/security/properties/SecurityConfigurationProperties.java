@@ -26,7 +26,7 @@ public class SecurityConfigurationProperties {
     private com.hcmute.yourtours.security.properties.SecurityConfigurationProperties.PathMatcherConfig pathMatcher;
 
     @JsonProperty("jwt")
-    private com.hcmute.yourtours.security.properties.SecurityConfigurationProperties.Jwt jwt;
+    private com.hcmute.yourtours.security.properties.SecurityConfigurationProperties.Jwt jwt    ;
 
 
     @Data
