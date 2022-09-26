@@ -5,7 +5,23 @@ import com.hcmute.yourtours.libs.exceptions.InvalidException;
 
 public interface RestClient {
     <T, C extends ClientContext> T callAPI(
+            Object params,
+            Object body,
+            Class<T> responseClassType,
+            C context,
+            IRestClientChecker<T> responseDataChecker
+    ) throws InvalidException;
+
+    <T, C extends ClientContext> T callAPI(
             Object request,
+            Class<T> responseClassType,
+            C context,
+            IRestClientChecker<T> responseDataChecker
+    ) throws InvalidException;
+
+    <T, C extends ClientContext> T callAPIBaseResponse(
+            Object params,
+            Object body,
             Class<T> responseClassType,
             C context,
             IRestClientChecker<T> responseDataChecker

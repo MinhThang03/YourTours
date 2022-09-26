@@ -58,4 +58,10 @@ public class GlobalExceptionHandler {
         return iResponseFactory.error(e);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> customExceptionHandler(Exception e) {
+        log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
+        return iResponseFactory.error(new InvalidException(ErrorCode.SERVER_ERROR));
+    }
+
 }

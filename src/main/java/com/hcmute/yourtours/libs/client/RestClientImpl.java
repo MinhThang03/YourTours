@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import com.hcmute.yourtours.libs.exceptions.ErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -19,6 +20,8 @@ import org.apache.http.ssl.TrustStrategy;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,10 +31,11 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
-import java.util.IdentityHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
+@Component
 public class RestClientImpl implements RestClient {
     private final RestTemplate restTemplate;
     private ObjectMapper mapper;
@@ -41,35 +45,44 @@ public class RestClientImpl implements RestClient {
     }
 
     @Override
-    public <T, C extends ClientContext> T callAPI(Object request, Class<T> responseClassType, C context, IRestClientChecker<T> responseChecker) throws InvalidException {
+    public <T, C extends ClientContext> T callAPI(Object body, Class<T> responseClassType, C context, IRestClientChecker<T> responseChecker) throws InvalidException {
+        return callAPI(body, body, responseClassType, context, responseChecker);
+    }
+
+    @Override
+    public <T, C extends ClientContext> T callAPI(Object params, Object body, Class<T> responseClassType, C context, IRestClientChecker<T> responseChecker) throws InvalidException {
         ResponseEntity<T> response = null;
         try {
 
-            HttpEntity<Object> httpEntity = new HttpEntity<>(request, context.getHttpHeaders());
+            HttpEntity<Object> httpEntity = new HttpEntity<>(body, context.getHttpHeaders());
             response = restTemplate.exchange(
                     context.getUrl(),
                     context.getMethod(),
                     httpEntity,
                     responseClassType,
-                    uriVariables(request)
+                    uriVariables(params),
+                    true
             );
 
             if (!context.responseChecker().isSuccess(response)) {
                 throw new InvalidException(ErrorCode.INTERNAL_BAD_REQUEST);
             }
-
             if (responseChecker != null && !responseChecker.isSuccess(response.getBody())) {
                 throw new InvalidException(ErrorCode.INTERNAL_BAD_REQUEST);
             }
             return mapper().convertValue(response.getBody(), responseClassType);
         } catch (RestClientException e) {
+            if (e instanceof HttpClientErrorException.BadRequest) {
+                throw new InvalidException(ErrorCode.INTERNAL_BAD_REQUEST);
+            }
             throw new InvalidException(ErrorCode.SERVER_ERROR);
         } finally {
             try {
                 if (context.isLogging()) {
                     RestClientLog restClientLog = new RestClientLog(
                             context,
-                            request,
+                            params,
+                            body,
                             response
                     );
                     LogContext.push(LogType.CALL_API, restClientLog);
@@ -82,23 +95,30 @@ public class RestClientImpl implements RestClient {
 
 
     @Override
-    public <T, C extends ClientContext> T callAPIBaseResponse(Object request, Class<T> responseClassType, C context, IRestClientChecker<T> responseDataChecker) throws InvalidException {
+    public <T, C extends ClientContext> T callAPIBaseResponse(Object params, Object body, Class<T> responseClassType, C context, IRestClientChecker<T> responseDataChecker) throws InvalidException {
         BaseResponse<T> response = callAPI(
-                request,
+                params,
+                body,
                 BaseResponse.class,
                 context,
                 (responseData) -> responseData != null && responseData.isSuccess()
         );
+        log.error(body.toString());
         if (responseDataChecker != null && responseDataChecker.isSuccess(response.getData())) {
             throw new InvalidException(ErrorCode.INTERNAL_BAD_REQUEST);
         }
-        return response.getData();
+        return mapper().convertValue(response.getData(), responseClassType);
     }
 
-    protected Object uriVariables(Object request) {
-        Map<String, Object> uriVariables = new IdentityHashMap<>();
-        if (request != null) {
-            uriVariables = mapper().convertValue(request, Map.class);
+    @Override
+    public <T, C extends ClientContext> T callAPIBaseResponse(Object request, Class<T> responseClassType, C context, IRestClientChecker<T> responseDataChecker) throws InvalidException {
+        return callAPIBaseResponse(request, request, responseClassType, context, responseDataChecker);
+    }
+
+    protected Map<String, Object> uriVariables(Object params) {
+        Map<String, Object> uriVariables = new HashMap<>();
+        if (params != null && !(params instanceof Map)) {
+            uriVariables = mapper().convertValue(params, HashMap.class);
         }
         return uriVariables;
     }
@@ -129,6 +149,7 @@ public class RestClientImpl implements RestClient {
         }
         this.mapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL)
                 .addHandler(
                         new DeserializationProblemHandler() {

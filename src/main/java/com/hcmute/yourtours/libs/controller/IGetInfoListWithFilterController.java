@@ -28,6 +28,6 @@ public interface IGetInfoListWithFilterController<I, T extends BaseData<I>, F ex
      * @param filter
      * @return
      */
-    @GetMapping("list")
+    @GetMapping("list/filter")
     ResponseEntity<BaseResponse<List<T>>> getInfoListWithFilter(@ParameterObject @Valid F filter);
 }

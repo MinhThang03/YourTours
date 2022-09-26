@@ -14,11 +14,11 @@ public class DefaultClientContext implements ClientContext {
 
     static {
         HttpHeaders multipartHeader = new HttpHeaders();
-        multipartHeader.setConnection(MediaType.MULTIPART_FORM_DATA_VALUE);
+        multipartHeader.setContentType(MediaType.MULTIPART_FORM_DATA);
         MULTIPART = new DefaultClientContext(null, null, multipartHeader);
 
         HttpHeaders jsonHeader = new HttpHeaders();
-        jsonHeader.setConnection(MediaType.APPLICATION_JSON_VALUE);
+        jsonHeader.setContentType(MediaType.APPLICATION_JSON);
         JSON = new DefaultClientContext(null, null, jsonHeader);
     }
 

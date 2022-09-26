@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.libs.configuration.intercepter;
 
-import com.hcmute.yourtours.security.CustomUserDetails;
+import com.hcmute.yourtours.libs.configuration.security.DefaultUserDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,10 +19,11 @@ public class UserInterceptor implements HandlerInterceptor {
     ) throws Exception {
         try {
             Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (user instanceof CustomUserDetails) {
-                CustomUserDetails userPrincipal = (CustomUserDetails) user;
-                MDC.put("userId", userPrincipal.getUser().getId().toString());
-                MDC.put("userName", userPrincipal.getUsername());
+            if (user instanceof DefaultUserDetail) {
+                DefaultUserDetail userPrincipal = (DefaultUserDetail) user;
+                MDC.put("userId", userPrincipal.getSubject());
+                MDC.put("phone", userPrincipal.getPhoneNumber());
+                MDC.put("fullName", userPrincipal.getName());
             }
         } catch (Exception ignored) {
         }

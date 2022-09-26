@@ -1,18 +1,18 @@
 package com.hcmute.yourtours.models.response;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.keycloak.representations.AccessTokenResponse;
 
 @Data
+@AllArgsConstructor
 @Builder
 public class LoginResponse {
-    protected String accessToken;
+    @JsonUnwrapped
+    private AccessTokenResponse token;
 
-    protected Long expiresIn;
-
-    protected String refreshToken;
-
-    protected Long refreshExpiresIn;
-
-    protected String tokenType;
+    private Boolean firstChangePassword;
+    private Boolean isBlocked;
 }

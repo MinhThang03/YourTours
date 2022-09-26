@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-group = 'com.example'
+group = 'vn.com.unicloud'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -15,29 +15,24 @@ repositories {
 dependencies {
 
     def springFramework = '5.7.2'
-    def mysqlVersion = '8.0.26'
+    def mysqlVersion = '8.0.27'
     def hikariVersion = '5.0.0'
 
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     /*
-     *Spring
+    Spring
      */
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework:spring-tx'
-
-    /*
-     * Security
-     */
+    implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: springFramework
+    implementation group: 'org.springframework.security', name: 'spring-security-config', version: springFramework
     implementation group: 'org.springframework.security', name: 'spring-security-core', version: springFramework
     implementation group: 'org.springframework.security', name: 'spring-security-web', version: springFramework
-    implementation group: 'org.springframework.security', name: 'spring-security-config', version: springFramework
-    implementation group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.1.1.RELEASE'
-
-
+    implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: springFramework
 
     /**
      * Mysql
@@ -74,6 +69,19 @@ dependencies {
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
+    /**
+     * Keycloak
+     */
+    implementation group: 'org.keycloak', name: 'keycloak-spring-boot-starter', version: '19.0.1'
+    implementation group: 'org.keycloak', name: 'keycloak-spring-security-adapter', version: '19.0.1'
+    implementation group: 'org.keycloak', name: 'keycloak-admin-client', version: '19.0.1'
+    implementation group: 'org.keycloak.bom', name: 'keycloak-adapter-bom', version: '19.0.1', ext: 'pom'
+
+
+    /**
+     * Minio
+     */
+    implementation group: 'io.minio', name: 'minio', version: '8.1.0'
 
     /**
      * JWT
@@ -81,6 +89,25 @@ dependencies {
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
 
+    /*
+    Envers
+     */
+    implementation group: 'org.springframework.data', name: 'spring-data-envers', version: '2.5.4'
+
+    /*
+     common-io
+     */
+    implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+
+
+    /**
+     * MinIO
+     */
+    implementation 'io.minio:minio:8.4.3'
+    /*
+    Excel
+     */
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.1'
 }
 
 tasks.named('test') {

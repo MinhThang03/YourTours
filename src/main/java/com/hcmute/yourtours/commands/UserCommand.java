@@ -1,9 +1,9 @@
 package com.hcmute.yourtours.commands;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hcmute.yourtours.commands.base.Persistence;
 import com.hcmute.yourtours.enums.GenderEnum;
 import com.hcmute.yourtours.enums.RoleEnum;
+import com.hcmute.yourtours.enums.UserStatusEnum;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -36,10 +36,6 @@ public class UserCommand extends Persistence {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "password")
-    @JsonIgnore
-    private String password;
-
     @Column(name = "email")
     private String email;
 
@@ -68,6 +64,13 @@ public class UserCommand extends Persistence {
 
     @Column(name = "actived")
     private Boolean actived;
+
+    @Column(name = "avatar")
+    private String avatar;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private UserStatusEnum status;
 
     @Override
     protected void preWrite() {

@@ -49,6 +49,7 @@ public abstract class BaseDataFactory<I, IF extends BaseData<I>, DT extends IF> 
     public <F extends BaseFilter> boolean deleteModel(I id, F filter) throws InvalidException {
         preDelete(id, filter);
         cacheEvict(makeKey(id, filter));
+        clearCollection();
         aroundDelete(id, filter);
         postDelete(id, filter);
         return true;
@@ -273,6 +274,11 @@ public abstract class BaseDataFactory<I, IF extends BaseData<I>, DT extends IF> 
 
     protected CacheFactoryConfig<DT> cacheFactoryConfig() {
         return new CacheFactoryConfig<>() {
+            @Override
+            public boolean cache() {
+                return false;
+            }
+
             @Override
             @NonNull
             public Class<DT> objectClass() {

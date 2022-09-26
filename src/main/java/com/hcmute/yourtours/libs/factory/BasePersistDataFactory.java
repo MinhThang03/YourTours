@@ -9,11 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.lang.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 public abstract class BasePersistDataFactory<I, IF extends BaseData<I>, DT extends IF, ID, ET>
@@ -38,8 +38,8 @@ public abstract class BasePersistDataFactory<I, IF extends BaseData<I>, DT exten
         ET entity = repository.save(
                 createConvertToEntity(detail)
         );
-        DT response = convertToDetail(entity);
         postCreate(entity, detail);
+        DT response = convertToDetail(entity);
         return response;
     }
 
@@ -50,8 +50,8 @@ public abstract class BasePersistDataFactory<I, IF extends BaseData<I>, DT exten
         );
         updateConvertToEntity(oldEntity, detail);
         ET entity = repository.save(oldEntity);
-        DT response = convertToDetail(entity);
         postUpdate(entity, detail);
+        DT response = convertToDetail(entity);
         return response;
     }
 
@@ -89,10 +89,14 @@ public abstract class BasePersistDataFactory<I, IF extends BaseData<I>, DT exten
             log.warn("filter not null");
         }
         Page<ET> pageEntity = repository.findAll(PageRequest.of(number, size));
+
+        List<IF> infos = new ArrayList<>();
+        for (ET et : pageEntity) {
+            infos.add(convertToInfo(et));
+        }
+
         return new BasePagingResponse<>(
-                pageEntity.getContent().stream().map(
-                        this::convertToInfo
-                ).collect(Collectors.toList()),
+                infos,
                 pageEntity.getNumber(),
                 pageEntity.getSize(),
                 pageEntity.getTotalElements()
@@ -144,6 +148,17 @@ public abstract class BasePersistDataFactory<I, IF extends BaseData<I>, DT exten
     }
 
     protected void postDetail(ET entity, DT detail) throws InvalidException {
+    }
+
+    @Override
+    protected CacheFactoryConfig<DT> cacheFactoryConfig() {
+        return new CacheFactoryConfig<>() {
+            @Override
+            @NonNull
+            public Class<DT> objectClass() {
+                return getDetailClass();
+            }
+        };
     }
 
 }

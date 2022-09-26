@@ -13,23 +13,39 @@ public class RestClientLog {
     private final String url;
     private final HttpMethod method;
     private final HttpStatus status;
-    private final Object request;
+    private final Object body;
     private final Object response;
 
-    public RestClientLog(String url, HttpMethod method, HttpStatus status, Object request, Object response) {
+    private final Object params;
+
+    public RestClientLog(String url, HttpMethod method, HttpStatus status, Object params, Object body, Object response) {
         this.url = url;
         this.method = method;
         this.status = status;
-        this.request = request;
+        this.body = body;
+        this.params = params;
         this.response = response;
     }
 
-    public RestClientLog(ClientContext context, Object request, ResponseEntity<?> response) {
+    public RestClientLog(ClientContext context, Object body, ResponseEntity<?> response) {
         this(
                 context.getUrl(),
                 context.getMethod(),
                 response != null ? response.getStatusCode() : null,
-                request, response != null ? response.getBody() : null
+                null,
+                body,
+                response != null ? response.getBody() : null
+        );
+    }
+
+    public RestClientLog(ClientContext context, Object params, Object body, ResponseEntity<?> response) {
+        this(
+                context.getUrl(),
+                context.getMethod(),
+                response != null ? response.getStatusCode() : null,
+                params,
+                body,
+                response != null ? response.getBody() : null
         );
     }
 }

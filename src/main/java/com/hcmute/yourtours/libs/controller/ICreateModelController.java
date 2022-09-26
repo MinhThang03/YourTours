@@ -22,6 +22,6 @@ public interface ICreateModelController<I, U extends BaseData<I>> {
      * @param request Wrapper of Detail Model
      * @return {@link ResponseEntity} have detail model
      */
-    @PostMapping("create")
+    @PostMapping(value = "create")
     ResponseEntity<BaseResponse<U>> createModel(@RequestBody @Valid FactoryCreateRequest<I, U> request);
 }

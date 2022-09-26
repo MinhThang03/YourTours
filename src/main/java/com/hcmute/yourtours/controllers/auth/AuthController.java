@@ -1,7 +1,7 @@
 package com.hcmute.yourtours.controllers.auth;
 
 
-import com.hcmute.yourtours.factory.IAuthenticationFactory;
+import com.hcmute.yourtours.factories.auth.IAuthFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.exceptions.RestException;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController implements IAuthController {
 
     protected final IResponseFactory iResponseFactory;
-    private final IAuthenticationFactory iAuthFactory;
+    private final IAuthFactory iAuthFactory;
 
-    public AuthController(IResponseFactory iResponseFactory, IAuthenticationFactory iAuthFactory) {
+    public AuthController(IResponseFactory iResponseFactory, IAuthFactory iAuthFactory) {
         this.iResponseFactory = iResponseFactory;
         this.iAuthFactory = iAuthFactory;
     }
