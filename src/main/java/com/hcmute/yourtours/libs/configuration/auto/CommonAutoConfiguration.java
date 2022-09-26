@@ -1,5 +1,11 @@
 package com.hcmute.yourtours.libs.configuration.auto;
 
+import com.hcmute.yourtours.libs.cache.TimeRedisCacheManager;
+import com.hcmute.yourtours.libs.cache.TimeRedisCacheManagerFactory;
+import com.hcmute.yourtours.libs.configuration.DefaultConfigFactory;
+import com.hcmute.yourtours.libs.configuration.IConfigFactory;
+import com.hcmute.yourtours.libs.configuration.properties.CommonConfigurationProperties;
+import com.hcmute.yourtours.libs.factory.IResponseFactory;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
@@ -10,20 +16,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import com.hcmute.yourtours.libs.cache.TimeRedisCacheManager;
-import com.hcmute.yourtours.libs.cache.TimeRedisCacheManagerFactory;
-import com.hcmute.yourtours.libs.configuration.DefaultConfigFactory;
-import com.hcmute.yourtours.libs.configuration.IConfigFactory;
-import com.hcmute.yourtours.libs.configuration.properties.CommonConfigurationProperties;
-import com.hcmute.yourtours.libs.factory.IResponseFactory;
-
-import java.util.UUID;
 
 @EnableConfigurationProperties({CommonConfigurationProperties.class, CacheProperties.class})
 public class CommonAutoConfiguration {
@@ -57,11 +52,6 @@ public class CommonAutoConfiguration {
         return factory.responseFactory();
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    SecurityFilterChain filterChain(HttpSecurity http, IConfigFactory factory) throws Exception {
-        return factory.filterChain(http);
-    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -69,11 +59,11 @@ public class CommonAutoConfiguration {
         return factory.webMvcConfigurer();
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public AuditorAware<UUID> auditorAware(IConfigFactory factory) {
-        return factory.auditorAware();
-    }
+//    @Bean
+//    @ConditionalOnMissingBean
+//    public AuditorAware<UUID> auditorAware(IConfigFactory factory) {
+//        return factory.auditorAware();
+//    }
 
     @Bean
     @ConditionalOnMissingBean

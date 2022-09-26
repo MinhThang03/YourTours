@@ -1,12 +1,12 @@
 package com.hcmute.yourtours.libs.util.notification.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hcmute.yourtours.libs.util.notification.annotation.CustomRequired;
+import com.hcmute.yourtours.libs.util.notification.interfaces.INotificationService;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
-import com.hcmute.yourtours.libs.util.notification.annotation.CustomRequired;
-import com.hcmute.yourtours.libs.util.notification.interfaces.INotificationService;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

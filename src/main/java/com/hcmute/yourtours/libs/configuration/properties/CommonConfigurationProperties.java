@@ -10,9 +10,6 @@ public class CommonConfigurationProperties {
     @JsonProperty("open-api")
     private OpenApiConfigurationProperties openApi;
 
-    @JsonProperty("security")
-    private SecurityConfigurationProperties security;
-
     @JsonProperty("client")
     private ClientConfigurationProperties client;
 }
