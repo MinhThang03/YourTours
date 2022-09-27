@@ -11,6 +11,12 @@ public class RestException extends RuntimeException implements CustomException {
         this.errorMessage = errorCode.getMessage();
     }
 
+    public RestException(CustomException e) {
+        super(e.getErrorMessage());
+        this.errorCode = e.getErrorCode();
+        this.errorMessage = e.getErrorMessage();
+    }
+
     public RestException(IErrorCode errorCode, String errorMessage) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
@@ -26,4 +32,5 @@ public class RestException extends RuntimeException implements CustomException {
     public String getErrorMessage() {
         return errorMessage;
     }
+
 }

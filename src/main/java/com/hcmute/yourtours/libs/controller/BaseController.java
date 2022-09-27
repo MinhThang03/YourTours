@@ -58,7 +58,7 @@ public abstract class BaseController<I, T extends BaseData<I>, U extends T> {
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {
-            throw new RestException(e.getErrorCode());
+            throw new RestException(e);
         }
     }
 
@@ -75,7 +75,7 @@ public abstract class BaseController<I, T extends BaseData<I>, U extends T> {
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {
-            throw new RestException(e.getErrorCode());
+            throw new RestException(e);
         }
     }
 
@@ -97,7 +97,7 @@ public abstract class BaseController<I, T extends BaseData<I>, U extends T> {
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {
-            throw new RestException(e.getErrorCode());
+            throw new RestException(e);
         }
     }
 
@@ -125,7 +125,7 @@ public abstract class BaseController<I, T extends BaseData<I>, U extends T> {
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {
-            throw new RestException(e.getErrorCode());
+            throw new RestException(e);
         }
     }
 
@@ -141,7 +141,7 @@ public abstract class BaseController<I, T extends BaseData<I>, U extends T> {
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {
-            throw new RestException(e.getErrorCode());
+            throw new RestException(e);
         }
     }
 
@@ -160,7 +160,7 @@ public abstract class BaseController<I, T extends BaseData<I>, U extends T> {
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {
-            throw new RestException(e.getErrorCode());
+            throw new RestException(e);
         }
     }
 
