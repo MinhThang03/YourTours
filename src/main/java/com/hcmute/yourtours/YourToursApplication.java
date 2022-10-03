@@ -38,7 +38,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 )
 @EnableCaching
 @OpenAPIDefinition(
-        info = @Info(title = "Parking API", version = "1.0", description = "Documentation Parking Translate API v1.0"),
+            info = @Info(title = "YourTours API", version = "1.0", description = "Documentation YourTours API v1.0"),
         security = @SecurityRequirement(name = "Authorization"))
 @EnableCommonAutoConfig
 @EnableEnversRepositories
