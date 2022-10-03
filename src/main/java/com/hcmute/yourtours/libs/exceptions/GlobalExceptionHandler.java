@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.libs.exceptions;
 
+import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
 import com.hcmute.yourtours.libs.logging.ExceptionLog;
 import com.hcmute.yourtours.libs.logging.LogContext;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,10 +60,17 @@ public class GlobalExceptionHandler {
         return iResponseFactory.error(e);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> customExceptionHandler(Exception e) {
+    // TODO: 10/2/2022
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ErrorResponse> customExceptionHandler(Exception e) {
+//        log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
+//        return iResponseFactory.error(new InvalidException(ErrorCode.SERVER_ERROR));
+//    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> accessDeniedExceptionHandler(Exception e) {
         log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
-        return iResponseFactory.error(new InvalidException(ErrorCode.SERVER_ERROR));
+        return iResponseFactory.error(new RestException(YourToursErrorCode.FORBIDDEN));
     }
 
 }

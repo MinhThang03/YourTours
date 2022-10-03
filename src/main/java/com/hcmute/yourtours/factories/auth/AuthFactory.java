@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.auth;
 
 
-import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.manage_users.IManageUserFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
@@ -12,7 +11,6 @@ import com.hcmute.yourtours.models.requests.RefreshTokenRequest;
 import com.hcmute.yourtours.models.response.LoginResponse;
 import com.hcmute.yourtours.models.response.LogoutResponse;
 import com.hcmute.yourtours.models.response.RefreshTokenResponse;
-import com.hcmute.yourtours.models.user.UserDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,15 +35,15 @@ public class AuthFactory implements IAuthFactory {
     @Override
     public LoginResponse login(LoginRequest request) throws InvalidException {
         try {
-            UserDetail userDetail = iManageUserFactory.getDetailByUserName(request.getUsername());
+            // TODO: 10/2/2022
+//            UserDetail userDetail = iManageUserFactory.getDetailByUserName(request.getUsername());
             AccessTokenResponse accessTokenResponse = null;
-            if (!userDetail.getStatus().equals(UserStatusEnum.LOCK)) {
-                accessTokenResponse = iKeycloakService.getJwt(request.getUsername(), request.getPassword());
-            }
+//            if (!userDetail.getStatus().equals(UserStatusEnum.LOCK)) {
+            accessTokenResponse = iKeycloakService.getJwt(request.getUsername(), request.getPassword());
+//            }
             return LoginResponse.builder()
                     .token(accessTokenResponse)
-                    .firstChangePassword(userDetail.isFirstChangePassword())
-                    .isBlocked(userDetail.getStatus().equals(UserStatusEnum.LOCK))
+//                    .isBlocked(userDetail.getStatus().equals(UserStatusEnum.LOCK))
                     .build();
         } catch (Exception e) {
             if (e instanceof InvalidException) {

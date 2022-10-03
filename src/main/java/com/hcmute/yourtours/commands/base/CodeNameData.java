@@ -14,9 +14,6 @@ import javax.persistence.MappedSuperclass;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class NameData extends Persistence {
-
-    private String description;
-
-    private String name;
+public class CodeNameData extends NameData {
+    private String codeName;
 }

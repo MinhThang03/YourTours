@@ -12,7 +12,5 @@ import org.keycloak.representations.AccessTokenResponse;
 public class LoginResponse {
     @JsonUnwrapped
     private AccessTokenResponse token;
-
-    private Boolean firstChangePassword;
     private Boolean isBlocked;
 }

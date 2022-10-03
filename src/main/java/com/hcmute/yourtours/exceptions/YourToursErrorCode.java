@@ -23,6 +23,16 @@ public enum YourToursErrorCode implements IErrorCode {
 
     //404
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "4040001", "Không tìm thấy người dùng, xin vui lòng thử lại"),
+    NOT_FOUND_ROOM_CATEGORIES(HttpStatus.NOT_FOUND, "4040002", "Không tìm thấy loại phòng"),
+    NOT_FOUND_BED_CATEGORIES(HttpStatus.NOT_FOUND, "4040003", "Không tìm thấy loại giường"),
+    NOT_FOUND_GUEST_CATEGORIES(HttpStatus.NOT_FOUND, "4040004", "Không tìm thấy loại khách"),
+    NOT_FOUND_SECURITY_CATEGORIES(HttpStatus.NOT_FOUND, "4040005", "Không tìm thấy loại bảo mật"),
+    NOT_FOUND_RULE_CATEGORIES(HttpStatus.NOT_FOUND, "4040006", "Không tìm thấy loại nội quy của nhà"),
+    NOT_FOUND_DISCOUNT_CATEGORIES(HttpStatus.NOT_FOUND, "4040007", "Không tìm thấy loại giảm giá"),
+    NOT_FOUND_SURCHARGE_CATEGORIES(HttpStatus.NOT_FOUND, "4040008", "Không tìm thấy loại phụ phí"),
+    NOT_FOUND_AMENITY_CATEGORIES(HttpStatus.NOT_FOUND, "4040009", "Không tìm thấy loại tiện ích"),
+    NOT_FOUND_AMENITY(HttpStatus.NOT_FOUND, "4040010", "Không tìm thấy tiện ích"),
+    NOT_FOUND_AMENITY_CATEGORIES_AMENITY_FACTORY(HttpStatus.NOT_FOUND, "4040011", "Không tìm thấy loại tiện ích"),
 
     //409
     CONFIRM_PASSWORD_IS_NOT_VALID(HttpStatus.CONFLICT, "40900001", "Xác nhận mật khẩu không trùng khớp"),

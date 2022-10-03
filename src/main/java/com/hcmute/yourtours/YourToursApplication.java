@@ -15,6 +15,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.envers.repository.config.EnableEnversRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @SpringBootApplication
 @SecuritySchemes(
@@ -41,6 +43,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCommonAutoConfig
 @EnableEnversRepositories
 @EnableScheduling
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableJpaRepositories(repositoryFactoryBeanClass = UUIDEnversRepositoryFactoryBean.class, basePackages = {"com.hcmute.yourtours.repositories"})
 public class YourToursApplication {
     public static void main(String[] args) {
