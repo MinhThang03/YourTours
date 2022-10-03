@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface AmenityCategoriesRepository extends JpaRepository<AmenityCategoriesCommand, Long> {
     Optional<AmenityCategoriesCommand> findByAmenityCategoryId(UUID amenityCategoryId);
+
+    Boolean existsByAmenityCategoryId(UUID amenityCategoryId);
 }
