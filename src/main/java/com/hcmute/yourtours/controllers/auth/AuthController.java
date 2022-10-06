@@ -9,12 +9,17 @@ import com.hcmute.yourtours.libs.logging.LogContext;
 import com.hcmute.yourtours.libs.logging.LogType;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.requests.LoginRequest;
+import com.hcmute.yourtours.models.requests.RefreshTokenRequest;
 import com.hcmute.yourtours.models.response.LoginResponse;
+import com.hcmute.yourtours.models.response.LogoutResponse;
+import com.hcmute.yourtours.models.response.RefreshTokenResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/auth/")
@@ -36,6 +41,30 @@ public class AuthController implements IAuthController {
         LogContext.push(LogType.REQUEST, request);
         try {
             LoginResponse response = iAuthFactory.login(request);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e.getErrorCode());
+        }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<LogoutResponse>> logout() {
+        try {
+            LogoutResponse response = iAuthFactory.logout();
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e.getErrorCode());
+        }
+    }
+
+
+    @Override
+    public ResponseEntity<BaseResponse<RefreshTokenResponse>> refreshToken(RefreshTokenRequest request, HttpServletRequest context) {
+        LogContext.push(LogType.REQUEST, request);
+        try {
+            RefreshTokenResponse response = iAuthFactory.refreshToken(request);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {
