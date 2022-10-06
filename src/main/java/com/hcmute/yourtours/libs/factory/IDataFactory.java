@@ -16,6 +16,8 @@ public interface IDataFactory<I, T extends BaseData<I>, U extends T> {
 
     <F extends BaseFilter> boolean deleteModel(I id, F data) throws InvalidException;
 
+    boolean deleteListWithIds(List<I> ids) throws InvalidException;
+
     <F extends BaseFilter> List<T> getInfoList(F filter) throws InvalidException;
 
     List<T> getInfoList() throws InvalidException;

@@ -7,6 +7,7 @@ import com.hcmute.yourtours.libs.factory.IResponseFactory;
 import com.hcmute.yourtours.libs.logging.LogContext;
 import com.hcmute.yourtours.libs.logging.LogType;
 import com.hcmute.yourtours.libs.model.BaseData;
+import com.hcmute.yourtours.libs.model.factory.request.BaseDeleteListRequest;
 import com.hcmute.yourtours.libs.model.factory.request.FactoryCreateRequest;
 import com.hcmute.yourtours.libs.model.factory.request.FactoryUpdateRequest;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
@@ -16,7 +17,9 @@ import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -163,5 +166,24 @@ public abstract class BaseController<I, T extends BaseData<I>, U extends T> {
             throw new RestException(e);
         }
     }
+
+
+    /**
+     *
+     * @param ids
+     * @return
+     */
+    protected ResponseEntity<BaseResponse<FactoryDeleteResponse>> deleteWithList(@Valid @RequestBody BaseDeleteListRequest<I> ids) {
+        LogContext.push(LogType.REQUEST, ids);
+        FactoryDeleteResponse response = new FactoryDeleteResponse();
+        try {
+            response.setSuccess(iDataFactory.deleteListWithIds(ids.getIds()));
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
+    }
+
 
 }
