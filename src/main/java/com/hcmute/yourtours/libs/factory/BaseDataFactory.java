@@ -56,6 +56,15 @@ public abstract class BaseDataFactory<I, IF extends BaseData<I>, DT extends IF> 
     }
 
     @Override
+    public boolean deleteListWithIds(List<I> ids) throws InvalidException {
+        for (I id : ids) {
+            deleteModel(id, null);
+        }
+        return true;
+    }
+
+
+    @Override
     public <F extends BaseFilter> DT getDetailModel(I id, F filter) throws InvalidException {
         DT detail = isCache() && cacheFactoryConfig().getDetail() ? cacheGet(makeKey(id, filter), cacheFactoryConfig().objectClass()) : null;
         if (detail != null) {

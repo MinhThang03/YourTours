@@ -85,18 +85,11 @@ public abstract class BasePersistDataFactory<I, IF extends BaseData<I>, DT exten
 
     @Override
     protected <F extends BaseFilter> BasePagingResponse<IF> aroundGetPage(F filter, Integer number, Integer size) throws InvalidException {
-        if (filter != null) {
-            log.warn("filter not null");
-        }
-        Page<ET> pageEntity = repository.findAll(PageRequest.of(number, size));
 
-        List<IF> infos = new ArrayList<>();
-        for (ET et : pageEntity) {
-            infos.add(convertToInfo(et));
-        }
+        Page<ET> pageEntity = pageQuery(filter, number, size);
 
         return new BasePagingResponse<>(
-                infos,
+                convertList(pageEntity.getContent()),
                 pageEntity.getNumber(),
                 pageEntity.getSize(),
                 pageEntity.getTotalElements()
@@ -105,23 +98,12 @@ public abstract class BasePersistDataFactory<I, IF extends BaseData<I>, DT exten
 
     @Override
     protected <F extends BaseFilter> List<IF> aroundGetList(F filter) throws InvalidException {
-        if (filter != null) {
-            log.warn("filter not null");
-        }
-        List<IF> response = new ArrayList<>();
-        for (ET entity : repository.findAll()) {
-            response.add(convertToInfo(entity));
-        }
-        return response;
+        return convertList(listQuery(filter));
     }
 
     @Override
     protected List<IF> aroundGetList() throws InvalidException {
-        List<IF> response = new ArrayList<>();
-        for (ET entity : repository.findAll()) {
-            response.add(convertToInfo(entity));
-        }
-        return response;
+        return convertList(listQuery());
     }
 
 
@@ -149,6 +131,28 @@ public abstract class BasePersistDataFactory<I, IF extends BaseData<I>, DT exten
 
     protected void postDetail(ET entity, DT detail) throws InvalidException {
     }
+
+    protected <F extends BaseFilter> Page<ET> pageQuery(F filter, Integer number, Integer size) {
+        return repository.findAll(PageRequest.of(number, size));
+    }
+
+    protected List<IF> convertList(Iterable<ET> entities) throws InvalidException {
+        List<IF> response = new ArrayList<>();
+        for (ET entity : entities) {
+            response.add(convertToInfo(entity));
+        }
+        return response;
+    }
+
+    protected <F extends BaseFilter> Iterable<ET> listQuery(F filter) {
+        return repository.findAll();
+    }
+
+    protected <F extends BaseFilter> Iterable<ET> listQuery() {
+        return repository.findAll();
+    }
+
+
 
     @Override
     protected CacheFactoryConfig<DT> cacheFactoryConfig() {

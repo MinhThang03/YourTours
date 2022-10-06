@@ -9,6 +9,7 @@ import com.hcmute.yourtours.libs.exceptions.ErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.utils.GetInfoToken;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UserResource;
@@ -51,7 +52,7 @@ public class KeycloakService implements IKeycloakService {
                 null));
         this.keycloak = keycloak;
         this.realmResource = keycloak.realm(securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getRealmName());
-        this.resourceId = realmResource.clients().findByClientId(securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getClientId()).get(0).getId();
+        this.resourceId = realmResource.clients().findByClientId(securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getClientId()).stream().findFirst().get().getId();
         this.securityProperties = securityProperties;
     }
 
@@ -64,14 +65,7 @@ public class KeycloakService implements IKeycloakService {
         if (keycloakResponse.getStatus() == HttpStatus.CONFLICT.value()) {
             throw new InvalidException(YourToursErrorCode.USERNAME_EXIST);
         } else if (keycloakResponse.getStatus() == HttpStatus.CREATED.value()) {
-            keycloakUser = keycloak.realm(securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getRealmName())
-                    .users()
-                    .search(userName)
-                    .get(0);
-            if (keycloakUser == null) {
-                throw new InvalidException(YourToursErrorCode.CREATE_USER_FAIL);
-            }
-            return keycloakUser.getId();
+            return CreatedResponseUtil.getCreatedId(keycloakResponse);
         }
         throw new InvalidException(YourToursErrorCode.CREATE_USER_FAIL);
     }
