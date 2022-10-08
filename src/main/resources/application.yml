@@ -6,9 +6,9 @@ spring:
   profiles:
     active: ${ENV:dev}
   datasource:
-    url: ${AC_DATABASE_URL:jdbc:mysql://localhost:3306/your_tours}
-    username: ${AC_DATABASE_USER:root}
-    password: ${AC_DATABASE_PWD:3112001}
+    url: ${AC_DATABASE_URL:jdbc:mysql://bcda2c13bd582d:f43eed5d@us-cdbr-east-06.cleardb.net/heroku_57a72dd7e131b3d?reconnect=true}
+    username: ${AC_DATABASE_USER:bcda2c13bd582d}
+    password: ${AC_DATABASE_PWD:f43eed5d}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       pool-name: hikari-parking
