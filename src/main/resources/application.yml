@@ -5,6 +5,7 @@ spring:
     name: Parking
   profiles:
     active: ${ENV:dev}
+    web: java -Dserver.port=$PORT -jar target/demo-0.0.1-SNAPSHOT.jar
   datasource:
     url: ${AC_DATABASE_URL:jdbc:mysql://bcda2c13bd582d:f43eed5d@us-cdbr-east-06.cleardb.net/heroku_57a72dd7e131b3d?reconnect=true}
     username: ${AC_DATABASE_USER:bcda2c13bd582d}
@@ -124,5 +125,6 @@ minio:
   secretKey: ${MINIO_SECRET_KEY:kjeThg7UhKt54yu}
   fileHost: ${MINIO_FILE_HOST:https://api-parking-dev.hcm.unicloud.ai/parking-server}
   expiredDefault: ${EXPIRED:60}
+
 
 
