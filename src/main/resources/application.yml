@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: Parking
+  profiles:
+    active: ${ENV:dev}
   datasource:
     url: ${AC_DATABASE_URL:jdbc:mysql://bcda2c13bd582d:f43eed5d@us-cdbr-east-06.cleardb.net/heroku_57a72dd7e131b3d?reconnect=true}
     username: ${AC_DATABASE_USER:bcda2c13bd582d}
