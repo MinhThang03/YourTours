@@ -4,8 +4,8 @@ import com.hcmute.yourtours.commands.SurchargeHomeCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
-import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoriesDetail;
-import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoriesInfo;
+import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoryDetail;
+import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoryInfo;
 import com.hcmute.yourtours.repositories.SurchargeHomeCategoriesRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class SurchargeHomeCategoriesFactory
-        extends BasePersistDataFactory<UUID, SurchargeHomeCategoriesInfo, SurchargeHomeCategoriesDetail, Long, SurchargeHomeCategoriesCommand>
+        extends BasePersistDataFactory<UUID, SurchargeHomeCategoryInfo, SurchargeHomeCategoryDetail, Long, SurchargeHomeCategoriesCommand>
         implements ISurchargeHomeCategoriesFactory {
 
     private final SurchargeHomeCategoriesRepository surchargeRepository;
@@ -29,12 +29,12 @@ public class SurchargeHomeCategoriesFactory
 
     @Override
     @NonNull
-    protected Class<SurchargeHomeCategoriesDetail> getDetailClass() {
-        return SurchargeHomeCategoriesDetail.class;
+    protected Class<SurchargeHomeCategoryDetail> getDetailClass() {
+        return SurchargeHomeCategoryDetail.class;
     }
 
     @Override
-    public SurchargeHomeCategoriesCommand createConvertToEntity(SurchargeHomeCategoriesDetail detail) throws InvalidException {
+    public SurchargeHomeCategoriesCommand createConvertToEntity(SurchargeHomeCategoryDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
@@ -46,23 +46,23 @@ public class SurchargeHomeCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(SurchargeHomeCategoriesCommand entity, SurchargeHomeCategoriesDetail detail) throws InvalidException {
+    public void updateConvertToEntity(SurchargeHomeCategoriesCommand entity, SurchargeHomeCategoryDetail detail) throws InvalidException {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
     }
 
     @Override
-    public SurchargeHomeCategoriesDetail convertToDetail(SurchargeHomeCategoriesCommand entity) throws InvalidException {
-        return (SurchargeHomeCategoriesDetail) convertToInfo(entity);
+    public SurchargeHomeCategoryDetail convertToDetail(SurchargeHomeCategoriesCommand entity) throws InvalidException {
+        return (SurchargeHomeCategoryDetail) convertToInfo(entity);
     }
 
     @Override
-    public SurchargeHomeCategoriesInfo convertToInfo(SurchargeHomeCategoriesCommand entity) throws InvalidException {
+    public SurchargeHomeCategoryInfo convertToInfo(SurchargeHomeCategoriesCommand entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
-        return SurchargeHomeCategoriesInfo.builder()
+        return SurchargeHomeCategoryInfo.builder()
                 .id(entity.getSurchargeCategoryId())
                 .name(entity.getName())
                 .description(entity.getDescription())

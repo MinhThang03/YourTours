@@ -2,11 +2,11 @@ package com.hcmute.yourtours.controllers.auth;
 
 
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
-import com.hcmute.yourtours.models.requests.LoginRequest;
-import com.hcmute.yourtours.models.requests.RefreshTokenRequest;
-import com.hcmute.yourtours.models.response.LoginResponse;
-import com.hcmute.yourtours.models.response.LogoutResponse;
-import com.hcmute.yourtours.models.response.RefreshTokenResponse;
+import com.hcmute.yourtours.models.authentication.requests.LoginRequest;
+import com.hcmute.yourtours.models.authentication.requests.RefreshTokenRequest;
+import com.hcmute.yourtours.models.authentication.response.LoginResponse;
+import com.hcmute.yourtours.models.authentication.response.LogoutResponse;
+import com.hcmute.yourtours.models.authentication.response.RefreshTokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import org.springframework.http.ResponseEntity;

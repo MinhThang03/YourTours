@@ -31,7 +31,7 @@ public class DiscountHomeCategoriesCommand extends NameData {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "discount_category_id", columnDefinition = "BINARY(16)", unique = true)
+    @Column(name = "discount_category_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
     private UUID discountCategoryId;
 
     @Column(name = "type")

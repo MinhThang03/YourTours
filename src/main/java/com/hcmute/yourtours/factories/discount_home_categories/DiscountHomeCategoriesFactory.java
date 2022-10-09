@@ -4,8 +4,8 @@ import com.hcmute.yourtours.commands.DiscountHomeCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
-import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoriesDetail;
-import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoriesInfo;
+import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoryDetail;
+import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoryInfo;
 import com.hcmute.yourtours.repositories.DiscountHomeCategoriesRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class DiscountHomeCategoriesFactory
-        extends BasePersistDataFactory<UUID, DiscountHomeCategoriesInfo, DiscountHomeCategoriesDetail, Long, DiscountHomeCategoriesCommand>
+        extends BasePersistDataFactory<UUID, DiscountHomeCategoryInfo, DiscountHomeCategoryDetail, Long, DiscountHomeCategoriesCommand>
         implements IDiscountHomeCategoriesFactory {
 
     private final DiscountHomeCategoriesRepository discountHomeCategoriesRepository;
@@ -29,12 +29,12 @@ public class DiscountHomeCategoriesFactory
 
     @Override
     @NonNull
-    protected Class<DiscountHomeCategoriesDetail> getDetailClass() {
-        return DiscountHomeCategoriesDetail.class;
+    protected Class<DiscountHomeCategoryDetail> getDetailClass() {
+        return DiscountHomeCategoryDetail.class;
     }
 
     @Override
-    public DiscountHomeCategoriesCommand createConvertToEntity(DiscountHomeCategoriesDetail detail) throws InvalidException {
+    public DiscountHomeCategoriesCommand createConvertToEntity(DiscountHomeCategoryDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
@@ -48,7 +48,7 @@ public class DiscountHomeCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(DiscountHomeCategoriesCommand entity, DiscountHomeCategoriesDetail detail) throws InvalidException {
+    public void updateConvertToEntity(DiscountHomeCategoriesCommand entity, DiscountHomeCategoryDetail detail) throws InvalidException {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
@@ -57,16 +57,16 @@ public class DiscountHomeCategoriesFactory
     }
 
     @Override
-    public DiscountHomeCategoriesDetail convertToDetail(DiscountHomeCategoriesCommand entity) throws InvalidException {
-        return (DiscountHomeCategoriesDetail) convertToInfo(entity);
+    public DiscountHomeCategoryDetail convertToDetail(DiscountHomeCategoriesCommand entity) throws InvalidException {
+        return (DiscountHomeCategoryDetail) convertToInfo(entity);
     }
 
     @Override
-    public DiscountHomeCategoriesInfo convertToInfo(DiscountHomeCategoriesCommand entity) throws InvalidException {
+    public DiscountHomeCategoryInfo convertToInfo(DiscountHomeCategoriesCommand entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
-        return DiscountHomeCategoriesInfo.builder()
+        return DiscountHomeCategoryInfo.builder()
                 .id(entity.getDiscountCategoryId())
                 .name(entity.getName())
                 .description(entity.getDescription())

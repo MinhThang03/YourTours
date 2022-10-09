@@ -2,11 +2,11 @@ package com.hcmute.yourtours.factories.auth;
 
 
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
-import com.hcmute.yourtours.models.requests.LoginRequest;
-import com.hcmute.yourtours.models.requests.RefreshTokenRequest;
-import com.hcmute.yourtours.models.response.LoginResponse;
-import com.hcmute.yourtours.models.response.LogoutResponse;
-import com.hcmute.yourtours.models.response.RefreshTokenResponse;
+import com.hcmute.yourtours.models.authentication.requests.LoginRequest;
+import com.hcmute.yourtours.models.authentication.requests.RefreshTokenRequest;
+import com.hcmute.yourtours.models.authentication.response.LoginResponse;
+import com.hcmute.yourtours.models.authentication.response.LogoutResponse;
+import com.hcmute.yourtours.models.authentication.response.RefreshTokenResponse;
 
 public interface IAuthFactory {
     LoginResponse login(LoginRequest request) throws InvalidException;

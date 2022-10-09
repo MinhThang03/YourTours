@@ -30,7 +30,7 @@ public class AmenitiesCommand extends NameData {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "amenity_id", columnDefinition = "BINARY(16)", unique = true)
+    @Column(name = "amenity_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
     private UUID amenityId;
 
     @Column(name = "category_id", columnDefinition = "BINARY(16)")

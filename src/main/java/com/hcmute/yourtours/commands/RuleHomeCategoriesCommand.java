@@ -30,7 +30,7 @@ public class RuleHomeCategoriesCommand extends NameData {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "rule_category_id", columnDefinition = "BINARY(16)", unique = true)
+    @Column(name = "rule_category_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
     private UUID ruleCategoryId;
 
     @Column(name = "status")

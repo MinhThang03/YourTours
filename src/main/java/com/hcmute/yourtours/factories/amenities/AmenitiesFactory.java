@@ -5,9 +5,9 @@ import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenity_categories.IAmenityCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
-import com.hcmute.yourtours.models.amenities.AmenitiesDetail;
-import com.hcmute.yourtours.models.amenities.AmenitiesInfo;
-import com.hcmute.yourtours.models.amenity_categories.AmenityCategoriesDetail;
+import com.hcmute.yourtours.models.amenities.AmenityDetail;
+import com.hcmute.yourtours.models.amenities.AmenityInfo;
+import com.hcmute.yourtours.models.amenity_categories.AmenityCategoryDetail;
 import com.hcmute.yourtours.repositories.AmenitiesRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class AmenitiesFactory
-        extends BasePersistDataFactory<UUID, AmenitiesInfo, AmenitiesDetail, Long, AmenitiesCommand>
+        extends BasePersistDataFactory<UUID, AmenityInfo, AmenityDetail, Long, AmenitiesCommand>
         implements IAmenitiesFactory {
 
     private final AmenitiesRepository amenitiesRepository;
@@ -34,19 +34,19 @@ public class AmenitiesFactory
 
     @Override
     @NonNull
-    protected Class<AmenitiesDetail> getDetailClass() {
-        return AmenitiesDetail.class;
+    protected Class<AmenityDetail> getDetailClass() {
+        return AmenityDetail.class;
     }
 
     @Override
-    protected void preCreate(AmenitiesDetail detail) throws InvalidException {
+    protected void preCreate(AmenityDetail detail) throws InvalidException {
         if (!iAmenityCategoriesFactory.existByAmenityCategoryId(detail.getCategoryId())) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_AMENITY_CATEGORIES_AMENITY_FACTORY);
         }
     }
 
     @Override
-    public AmenitiesCommand createConvertToEntity(AmenitiesDetail detail) throws InvalidException {
+    public AmenitiesCommand createConvertToEntity(AmenityDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
@@ -59,14 +59,14 @@ public class AmenitiesFactory
     }
 
     @Override
-    protected void preUpdate(UUID id, AmenitiesDetail detail) throws InvalidException {
+    protected void preUpdate(UUID id, AmenityDetail detail) throws InvalidException {
         if (!iAmenityCategoriesFactory.existByAmenityCategoryId(detail.getCategoryId())) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_AMENITY_CATEGORIES_AMENITY_FACTORY);
         }
     }
 
     @Override
-    public void updateConvertToEntity(AmenitiesCommand entity, AmenitiesDetail detail) throws InvalidException {
+    public void updateConvertToEntity(AmenitiesCommand entity, AmenityDetail detail) throws InvalidException {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
@@ -74,12 +74,12 @@ public class AmenitiesFactory
     }
 
     @Override
-    public AmenitiesDetail convertToDetail(AmenitiesCommand entity) throws InvalidException {
+    public AmenityDetail convertToDetail(AmenitiesCommand entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
-        AmenityCategoriesDetail category = iAmenityCategoriesFactory.getDetailModel(entity.getCategoryId(), null);
-        return AmenitiesDetail.builder()
+        AmenityCategoryDetail category = iAmenityCategoriesFactory.getDetailModel(entity.getCategoryId(), null);
+        return AmenityDetail.builder()
                 .id(entity.getAmenityId())
                 .name(entity.getName())
                 .description(entity.getDescription())
@@ -90,11 +90,11 @@ public class AmenitiesFactory
     }
 
     @Override
-    public AmenitiesInfo convertToInfo(AmenitiesCommand entity) throws InvalidException {
+    public AmenityInfo convertToInfo(AmenitiesCommand entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
-        return AmenitiesInfo.builder()
+        return AmenityInfo.builder()
                 .id(entity.getAmenityId())
                 .name(entity.getName())
                 .description(entity.getDescription())

@@ -31,7 +31,7 @@ public class RoomCategoriesCommand extends NameData {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "room_category_id", columnDefinition = "BINARY(16)", unique = true)
+    @Column(name = "room_category_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
     private UUID roomCategoryId;
 
     @Column(name = "important")

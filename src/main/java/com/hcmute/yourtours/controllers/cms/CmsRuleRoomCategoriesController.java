@@ -11,8 +11,8 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 import com.hcmute.yourtours.libs.model.filter.SimpleFilter;
-import com.hcmute.yourtours.models.rule_home_categories.RuleHomeCategoriesDetail;
-import com.hcmute.yourtours.models.rule_home_categories.RuleHomeCategoriesInfo;
+import com.hcmute.yourtours.models.rule_home_categories.RuleHomeCategoryDetail;
+import com.hcmute.yourtours.models.rule_home_categories.RuleHomeCategoryInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,15 +26,15 @@ import java.util.UUID;
 @Tag(name = "CMS API: RULE HOME CATEGORIES", description = "API admin config các loại nội quy của căn nhà")
 @Transactional
 public class CmsRuleRoomCategoriesController
-        extends BaseController<UUID, RuleHomeCategoriesInfo, RuleHomeCategoriesDetail>
+        extends BaseController<UUID, RuleHomeCategoryInfo, RuleHomeCategoryDetail>
         implements ICmsRuleRoomCategoriesController {
 
-    protected CmsRuleRoomCategoriesController(IDataFactory<UUID, RuleHomeCategoriesInfo, RuleHomeCategoriesDetail> iDataFactory, IResponseFactory iResponseFactory) {
+    protected CmsRuleRoomCategoriesController(IDataFactory<UUID, RuleHomeCategoryInfo, RuleHomeCategoryDetail> iDataFactory, IResponseFactory iResponseFactory) {
         super(iDataFactory, iResponseFactory);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<RuleHomeCategoriesDetail>> createModel(FactoryCreateRequest<UUID, RuleHomeCategoriesDetail> request) {
+    public ResponseEntity<BaseResponse<RuleHomeCategoryDetail>> createModel(FactoryCreateRequest<UUID, RuleHomeCategoryDetail> request) {
         return super.factoryCreateModel(request);
     }
 
@@ -44,17 +44,17 @@ public class CmsRuleRoomCategoriesController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, RuleHomeCategoriesDetail>>> getDetailById(UUID id) {
+    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, RuleHomeCategoryDetail>>> getDetailById(UUID id) {
         return super.factoryGetDetailById(id);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<RuleHomeCategoriesInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<RuleHomeCategoryInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<RuleHomeCategoriesDetail>> updateModel(FactoryUpdateRequest<UUID, RuleHomeCategoriesDetail> request) {
+    public ResponseEntity<BaseResponse<RuleHomeCategoryDetail>> updateModel(FactoryUpdateRequest<UUID, RuleHomeCategoryDetail> request) {
         return super.factoryUpdateModel(request);
     }
 }

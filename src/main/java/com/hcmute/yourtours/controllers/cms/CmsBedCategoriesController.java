@@ -12,8 +12,8 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 import com.hcmute.yourtours.libs.model.filter.SimpleFilter;
-import com.hcmute.yourtours.models.bed_categories.BedCategoriesDetail;
-import com.hcmute.yourtours.models.bed_categories.BedCategoriesInfo;
+import com.hcmute.yourtours.models.bed_categories.BedCategoryDetail;
+import com.hcmute.yourtours.models.bed_categories.BedCategoryInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,15 +27,15 @@ import java.util.UUID;
 @Tag(name = "CMS API: BED CATEGORIES", description = "API admin config các loại giường")
 @Transactional
 public class CmsBedCategoriesController
-        extends BaseController<UUID, BedCategoriesInfo, BedCategoriesDetail>
+        extends BaseController<UUID, BedCategoryInfo, BedCategoryDetail>
         implements ICmsBedCategoriesController {
 
-    protected CmsBedCategoriesController(IDataFactory<UUID, BedCategoriesInfo, BedCategoriesDetail> iDataFactory, IResponseFactory iResponseFactory) {
+    protected CmsBedCategoriesController(IDataFactory<UUID, BedCategoryInfo, BedCategoryDetail> iDataFactory, IResponseFactory iResponseFactory) {
         super(iDataFactory, iResponseFactory);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BedCategoriesDetail>> createModel(FactoryCreateRequest<UUID, BedCategoriesDetail> request) {
+    public ResponseEntity<BaseResponse<BedCategoryDetail>> createModel(FactoryCreateRequest<UUID, BedCategoryDetail> request) {
         return super.factoryCreateModel(request);
     }
 
@@ -45,17 +45,17 @@ public class CmsBedCategoriesController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, BedCategoriesDetail>>> getDetailById(UUID id) {
+    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, BedCategoryDetail>>> getDetailById(UUID id) {
         return super.factoryGetDetailById(id);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<BedCategoriesInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<BedCategoryInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BedCategoriesDetail>> updateModel(FactoryUpdateRequest<UUID, BedCategoriesDetail> request) {
+    public ResponseEntity<BaseResponse<BedCategoryDetail>> updateModel(FactoryUpdateRequest<UUID, BedCategoryDetail> request) {
         return super.factoryUpdateModel(request);
     }
 }

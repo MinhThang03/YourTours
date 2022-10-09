@@ -4,8 +4,8 @@ import com.hcmute.yourtours.commands.SecurityCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
-import com.hcmute.yourtours.models.security_categories.SecurityCategoriesDetail;
-import com.hcmute.yourtours.models.security_categories.SecurityCategoriesInfo;
+import com.hcmute.yourtours.models.security_categories.SecurityCategoryDetail;
+import com.hcmute.yourtours.models.security_categories.SecurityCategoryInfo;
 import com.hcmute.yourtours.repositories.SecurityCategoriesRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class SecurityCategoriesFactory
-        extends BasePersistDataFactory<UUID, SecurityCategoriesInfo, SecurityCategoriesDetail, Long, SecurityCategoriesCommand>
+        extends BasePersistDataFactory<UUID, SecurityCategoryInfo, SecurityCategoryDetail, Long, SecurityCategoriesCommand>
         implements ISecurityCategoriesFactory {
 
     private final SecurityCategoriesRepository securityCategoriesRepository;
@@ -29,12 +29,12 @@ public class SecurityCategoriesFactory
 
     @Override
     @NonNull
-    protected Class<SecurityCategoriesDetail> getDetailClass() {
-        return SecurityCategoriesDetail.class;
+    protected Class<SecurityCategoryDetail> getDetailClass() {
+        return SecurityCategoryDetail.class;
     }
 
     @Override
-    public SecurityCategoriesCommand createConvertToEntity(SecurityCategoriesDetail detail) {
+    public SecurityCategoriesCommand createConvertToEntity(SecurityCategoryDetail detail) {
         if (detail == null) {
             return null;
         }
@@ -46,23 +46,23 @@ public class SecurityCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(SecurityCategoriesCommand entity, SecurityCategoriesDetail detail) {
+    public void updateConvertToEntity(SecurityCategoriesCommand entity, SecurityCategoryDetail detail) {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
     }
 
     @Override
-    public SecurityCategoriesDetail convertToDetail(SecurityCategoriesCommand entity) {
-        return (SecurityCategoriesDetail) convertToInfo(entity);
+    public SecurityCategoryDetail convertToDetail(SecurityCategoriesCommand entity) {
+        return (SecurityCategoryDetail) convertToInfo(entity);
     }
 
     @Override
-    public SecurityCategoriesInfo convertToInfo(SecurityCategoriesCommand entity) {
+    public SecurityCategoryInfo convertToInfo(SecurityCategoriesCommand entity) {
         if (entity == null) {
             return null;
         }
-        return SecurityCategoriesInfo.builder()
+        return SecurityCategoryInfo.builder()
                 .id(entity.getSecurityCategoryId())
                 .name(entity.getName())
                 .description(entity.getDescription())

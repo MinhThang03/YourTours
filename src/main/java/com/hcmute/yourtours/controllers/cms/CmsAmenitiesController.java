@@ -11,8 +11,8 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 import com.hcmute.yourtours.libs.model.filter.SimpleFilter;
-import com.hcmute.yourtours.models.amenities.AmenitiesDetail;
-import com.hcmute.yourtours.models.amenities.AmenitiesInfo;
+import com.hcmute.yourtours.models.amenities.AmenityDetail;
+import com.hcmute.yourtours.models.amenities.AmenityInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,16 +26,16 @@ import java.util.UUID;
 @Tag(name = "CMS API: AMENITIES CATEGORIES", description = "API admin config các tiện ích")
 @Transactional
 public class CmsAmenitiesController
-        extends BaseController<UUID, AmenitiesInfo, AmenitiesDetail>
+        extends BaseController<UUID, AmenityInfo, AmenityDetail>
         implements ICmsAmenitiesController {
 
 
-    protected CmsAmenitiesController(IDataFactory<UUID, AmenitiesInfo, AmenitiesDetail> iDataFactory, IResponseFactory iResponseFactory) {
+    protected CmsAmenitiesController(IDataFactory<UUID, AmenityInfo, AmenityDetail> iDataFactory, IResponseFactory iResponseFactory) {
         super(iDataFactory, iResponseFactory);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<AmenitiesDetail>> createModel(FactoryCreateRequest<UUID, AmenitiesDetail> request) {
+    public ResponseEntity<BaseResponse<AmenityDetail>> createModel(FactoryCreateRequest<UUID, AmenityDetail> request) {
         return super.factoryCreateModel(request);
     }
 
@@ -45,17 +45,17 @@ public class CmsAmenitiesController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, AmenitiesDetail>>> getDetailById(UUID id) {
+    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, AmenityDetail>>> getDetailById(UUID id) {
         return super.factoryGetDetailById(id);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<AmenitiesInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<AmenityInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<AmenitiesDetail>> updateModel(FactoryUpdateRequest<UUID, AmenitiesDetail> request) {
+    public ResponseEntity<BaseResponse<AmenityDetail>> updateModel(FactoryUpdateRequest<UUID, AmenityDetail> request) {
         return super.factoryUpdateModel(request);
     }
 }

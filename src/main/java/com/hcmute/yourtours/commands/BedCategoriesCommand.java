@@ -30,7 +30,7 @@ public class BedCategoriesCommand extends NameData {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "bed_category_id", columnDefinition = "BINARY(16)", unique = true)
+    @Column(name = "bed_category_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
     private UUID bedCategoryId;
 
     @Column(name = "status")

@@ -4,8 +4,8 @@ import com.hcmute.yourtours.commands.BedCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
-import com.hcmute.yourtours.models.bed_categories.BedCategoriesDetail;
-import com.hcmute.yourtours.models.bed_categories.BedCategoriesInfo;
+import com.hcmute.yourtours.models.bed_categories.BedCategoryDetail;
+import com.hcmute.yourtours.models.bed_categories.BedCategoryInfo;
 import com.hcmute.yourtours.repositories.BedCategoriesRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class BedCategoriesFactory
-        extends BasePersistDataFactory<UUID, BedCategoriesInfo, BedCategoriesDetail, Long, BedCategoriesCommand>
+        extends BasePersistDataFactory<UUID, BedCategoryInfo, BedCategoryDetail, Long, BedCategoriesCommand>
         implements IBedCategoriesFactory {
 
     private final BedCategoriesRepository bedCategoriesRepository;
@@ -29,12 +29,12 @@ public class BedCategoriesFactory
 
     @Override
     @NonNull
-    protected Class<BedCategoriesDetail> getDetailClass() {
-        return BedCategoriesDetail.class;
+    protected Class<BedCategoryDetail> getDetailClass() {
+        return BedCategoryDetail.class;
     }
 
     @Override
-    public BedCategoriesCommand createConvertToEntity(BedCategoriesDetail detail) {
+    public BedCategoriesCommand createConvertToEntity(BedCategoryDetail detail) {
         if (detail == null) {
             return null;
         }
@@ -46,23 +46,23 @@ public class BedCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(BedCategoriesCommand entity, BedCategoriesDetail detail) {
+    public void updateConvertToEntity(BedCategoriesCommand entity, BedCategoryDetail detail) {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
     }
 
     @Override
-    public BedCategoriesDetail convertToDetail(BedCategoriesCommand entity) {
-        return (BedCategoriesDetail) convertToInfo(entity);
+    public BedCategoryDetail convertToDetail(BedCategoriesCommand entity) {
+        return (BedCategoryDetail) convertToInfo(entity);
     }
 
     @Override
-    public BedCategoriesInfo convertToInfo(BedCategoriesCommand entity) {
+    public BedCategoryInfo convertToInfo(BedCategoriesCommand entity) {
         if (entity == null) {
             return null;
         }
-        return BedCategoriesInfo.builder()
+        return BedCategoryInfo.builder()
                 .id(entity.getBedCategoryId())
                 .name(entity.getName())
                 .description(entity.getDescription())

@@ -11,8 +11,8 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 import com.hcmute.yourtours.libs.model.filter.SimpleFilter;
-import com.hcmute.yourtours.models.guest_categories.GuestCategoriesDetail;
-import com.hcmute.yourtours.models.guest_categories.GuestCategoriesInfo;
+import com.hcmute.yourtours.models.guest_categories.GuestCategoryDetail;
+import com.hcmute.yourtours.models.guest_categories.GuestCategoryInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,15 +26,15 @@ import java.util.UUID;
 @Tag(name = "CMS API: GUEST CATEGORIES", description = "API admin config các loại khách")
 @Transactional
 public class CmsGuestCategoriesController
-        extends BaseController<UUID, GuestCategoriesInfo, GuestCategoriesDetail>
+        extends BaseController<UUID, GuestCategoryInfo, GuestCategoryDetail>
         implements IGuestCategoriesController {
 
-    protected CmsGuestCategoriesController(IDataFactory<UUID, GuestCategoriesInfo, GuestCategoriesDetail> iDataFactory, IResponseFactory iResponseFactory) {
+    protected CmsGuestCategoriesController(IDataFactory<UUID, GuestCategoryInfo, GuestCategoryDetail> iDataFactory, IResponseFactory iResponseFactory) {
         super(iDataFactory, iResponseFactory);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<GuestCategoriesDetail>> createModel(FactoryCreateRequest<UUID, GuestCategoriesDetail> request) {
+    public ResponseEntity<BaseResponse<GuestCategoryDetail>> createModel(FactoryCreateRequest<UUID, GuestCategoryDetail> request) {
         return super.factoryCreateModel(request);
     }
 
@@ -44,17 +44,17 @@ public class CmsGuestCategoriesController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, GuestCategoriesDetail>>> getDetailById(UUID id) {
+    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, GuestCategoryDetail>>> getDetailById(UUID id) {
         return super.factoryGetDetailById(id);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<GuestCategoriesInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<GuestCategoryInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<GuestCategoriesDetail>> updateModel(FactoryUpdateRequest<UUID, GuestCategoriesDetail> request) {
+    public ResponseEntity<BaseResponse<GuestCategoryDetail>> updateModel(FactoryUpdateRequest<UUID, GuestCategoryDetail> request) {
         return super.factoryUpdateModel(request);
     }
 }

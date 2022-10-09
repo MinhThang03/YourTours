@@ -12,8 +12,8 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 import com.hcmute.yourtours.libs.model.filter.SimpleFilter;
-import com.hcmute.yourtours.models.room_categories.RoomCategoriesDetail;
-import com.hcmute.yourtours.models.room_categories.RoomCategoriesInfo;
+import com.hcmute.yourtours.models.room_categories.RoomCategoryDetail;
+import com.hcmute.yourtours.models.room_categories.RoomCategoryInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,16 +27,16 @@ import java.util.UUID;
 @Tag(name = "CMS API: ROOM CATEGORIES", description = "API admin config các loại phòng")
 @Transactional
 public class CmsRoomCategoriesController
-        extends BaseController<UUID, RoomCategoriesInfo, RoomCategoriesDetail>
+        extends BaseController<UUID, RoomCategoryInfo, RoomCategoryDetail>
         implements ICmsRoomCategoriesController {
 
 
-    protected CmsRoomCategoriesController(IDataFactory<UUID, RoomCategoriesInfo, RoomCategoriesDetail> iDataFactory, IResponseFactory iResponseFactory) {
+    protected CmsRoomCategoriesController(IDataFactory<UUID, RoomCategoryInfo, RoomCategoryDetail> iDataFactory, IResponseFactory iResponseFactory) {
         super(iDataFactory, iResponseFactory);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<RoomCategoriesDetail>> createModel(FactoryCreateRequest<UUID, RoomCategoriesDetail> request) {
+    public ResponseEntity<BaseResponse<RoomCategoryDetail>> createModel(FactoryCreateRequest<UUID, RoomCategoryDetail> request) {
         return super.factoryCreateModel(request);
     }
 
@@ -46,17 +46,17 @@ public class CmsRoomCategoriesController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, RoomCategoriesDetail>>> getDetailById(UUID id) {
+    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, RoomCategoryDetail>>> getDetailById(UUID id) {
         return super.factoryGetDetailById(id);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<RoomCategoriesInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<RoomCategoryInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<RoomCategoriesDetail>> updateModel(FactoryUpdateRequest<UUID, RoomCategoriesDetail> request) {
+    public ResponseEntity<BaseResponse<RoomCategoryDetail>> updateModel(FactoryUpdateRequest<UUID, RoomCategoryDetail> request) {
         return super.factoryUpdateModel(request);
     }
 }

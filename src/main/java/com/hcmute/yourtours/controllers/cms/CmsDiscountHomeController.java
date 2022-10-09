@@ -11,8 +11,8 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 import com.hcmute.yourtours.libs.model.filter.SimpleFilter;
-import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoriesDetail;
-import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoriesInfo;
+import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoryDetail;
+import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoryInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,15 +26,15 @@ import java.util.UUID;
 @Tag(name = "CMS API: DISCOUNT HOME CATEGORIES", description = "API admin config các loại giảm giá của căn nhà")
 @Transactional
 public class CmsDiscountHomeController
-        extends BaseController<UUID, DiscountHomeCategoriesInfo, DiscountHomeCategoriesDetail>
+        extends BaseController<UUID, DiscountHomeCategoryInfo, DiscountHomeCategoryDetail>
         implements ICmsDiscountHomeController {
 
-    protected CmsDiscountHomeController(IDataFactory<UUID, DiscountHomeCategoriesInfo, DiscountHomeCategoriesDetail> iDataFactory, IResponseFactory iResponseFactory) {
+    protected CmsDiscountHomeController(IDataFactory<UUID, DiscountHomeCategoryInfo, DiscountHomeCategoryDetail> iDataFactory, IResponseFactory iResponseFactory) {
         super(iDataFactory, iResponseFactory);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<DiscountHomeCategoriesDetail>> createModel(FactoryCreateRequest<UUID, DiscountHomeCategoriesDetail> request) {
+    public ResponseEntity<BaseResponse<DiscountHomeCategoryDetail>> createModel(FactoryCreateRequest<UUID, DiscountHomeCategoryDetail> request) {
         return super.factoryCreateModel(request);
     }
 
@@ -44,17 +44,17 @@ public class CmsDiscountHomeController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, DiscountHomeCategoriesDetail>>> getDetailById(UUID id) {
+    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, DiscountHomeCategoryDetail>>> getDetailById(UUID id) {
         return super.factoryGetDetailById(id);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<DiscountHomeCategoriesInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<DiscountHomeCategoryInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<DiscountHomeCategoriesDetail>> updateModel(FactoryUpdateRequest<UUID, DiscountHomeCategoriesDetail> request) {
+    public ResponseEntity<BaseResponse<DiscountHomeCategoryDetail>> updateModel(FactoryUpdateRequest<UUID, DiscountHomeCategoryDetail> request) {
         return super.factoryUpdateModel(request);
     }
 }

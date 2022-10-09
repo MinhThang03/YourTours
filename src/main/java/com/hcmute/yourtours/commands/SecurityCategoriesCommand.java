@@ -30,7 +30,7 @@ public class SecurityCategoriesCommand extends NameData {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "security_category_id", columnDefinition = "BINARY(16)", unique = true)
+    @Column(name = "security_category_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
     private UUID securityCategoryId;
 
     @Column(name = "status")

@@ -5,8 +5,8 @@ import com.hcmute.yourtours.commands.AmenityCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
-import com.hcmute.yourtours.models.amenity_categories.AmenityCategoriesDetail;
-import com.hcmute.yourtours.models.amenity_categories.AmenityCategoriesInfo;
+import com.hcmute.yourtours.models.amenity_categories.AmenityCategoryDetail;
+import com.hcmute.yourtours.models.amenity_categories.AmenityCategoryInfo;
 import com.hcmute.yourtours.repositories.AmenityCategoriesRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class AmenityCategoriesFactory
-        extends BasePersistDataFactory<UUID, AmenityCategoriesInfo, AmenityCategoriesDetail, Long, AmenityCategoriesCommand>
+        extends BasePersistDataFactory<UUID, AmenityCategoryInfo, AmenityCategoryDetail, Long, AmenityCategoriesCommand>
         implements IAmenityCategoriesFactory {
 
     private final AmenityCategoriesRepository amenityCategoriesRepository;
@@ -30,12 +30,12 @@ public class AmenityCategoriesFactory
 
     @Override
     @NonNull
-    protected Class<AmenityCategoriesDetail> getDetailClass() {
-        return AmenityCategoriesDetail.class;
+    protected Class<AmenityCategoryDetail> getDetailClass() {
+        return AmenityCategoryDetail.class;
     }
 
     @Override
-    public AmenityCategoriesCommand createConvertToEntity(AmenityCategoriesDetail detail) throws InvalidException {
+    public AmenityCategoriesCommand createConvertToEntity(AmenityCategoryDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
@@ -47,23 +47,23 @@ public class AmenityCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(AmenityCategoriesCommand entity, AmenityCategoriesDetail detail) throws InvalidException {
+    public void updateConvertToEntity(AmenityCategoriesCommand entity, AmenityCategoryDetail detail) throws InvalidException {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
     }
 
     @Override
-    public AmenityCategoriesDetail convertToDetail(AmenityCategoriesCommand entity) throws InvalidException {
-        return (AmenityCategoriesDetail) convertToInfo(entity);
+    public AmenityCategoryDetail convertToDetail(AmenityCategoriesCommand entity) throws InvalidException {
+        return (AmenityCategoryDetail) convertToInfo(entity);
     }
 
     @Override
-    public AmenityCategoriesInfo convertToInfo(AmenityCategoriesCommand entity) throws InvalidException {
+    public AmenityCategoryInfo convertToInfo(AmenityCategoriesCommand entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
-        return AmenityCategoriesInfo.builder()
+        return AmenityCategoryInfo.builder()
                 .id(entity.getAmenityCategoryId())
                 .name(entity.getName())
                 .description(entity.getDescription())

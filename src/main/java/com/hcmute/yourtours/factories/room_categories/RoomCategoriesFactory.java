@@ -4,8 +4,8 @@ import com.hcmute.yourtours.commands.RoomCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
-import com.hcmute.yourtours.models.room_categories.RoomCategoriesDetail;
-import com.hcmute.yourtours.models.room_categories.RoomCategoriesInfo;
+import com.hcmute.yourtours.models.room_categories.RoomCategoryDetail;
+import com.hcmute.yourtours.models.room_categories.RoomCategoryInfo;
 import com.hcmute.yourtours.repositories.RoomCategoriesRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class RoomCategoriesFactory
-        extends BasePersistDataFactory<UUID, RoomCategoriesInfo, RoomCategoriesDetail, Long, RoomCategoriesCommand>
+        extends BasePersistDataFactory<UUID, RoomCategoryInfo, RoomCategoryDetail, Long, RoomCategoriesCommand>
         implements IRoomCategoriesFactory {
 
     private final RoomCategoriesRepository roomCategoriesRepository;
@@ -29,12 +29,12 @@ public class RoomCategoriesFactory
 
     @Override
     @NonNull
-    protected Class<RoomCategoriesDetail> getDetailClass() {
-        return RoomCategoriesDetail.class;
+    protected Class<RoomCategoryDetail> getDetailClass() {
+        return RoomCategoryDetail.class;
     }
 
     @Override
-    public RoomCategoriesCommand createConvertToEntity(RoomCategoriesDetail detail) {
+    public RoomCategoriesCommand createConvertToEntity(RoomCategoryDetail detail) {
         if (detail == null) {
             return null;
         }
@@ -48,7 +48,7 @@ public class RoomCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(RoomCategoriesCommand entity, RoomCategoriesDetail detail) {
+    public void updateConvertToEntity(RoomCategoriesCommand entity, RoomCategoryDetail detail) {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setConfigBed(detail.getConfigBed());
@@ -57,17 +57,17 @@ public class RoomCategoriesFactory
     }
 
     @Override
-    public RoomCategoriesDetail convertToDetail(RoomCategoriesCommand entity) {
-        return (RoomCategoriesDetail) convertToInfo(entity);
+    public RoomCategoryDetail convertToDetail(RoomCategoriesCommand entity) {
+        return (RoomCategoryDetail) convertToInfo(entity);
     }
 
     @Override
-    public RoomCategoriesInfo convertToInfo(RoomCategoriesCommand entity) {
+    public RoomCategoryInfo convertToInfo(RoomCategoriesCommand entity) {
         if (entity == null) {
             return null;
         }
 
-        return RoomCategoriesInfo.builder()
+        return RoomCategoryInfo.builder()
                 .id(entity.getRoomCategoryId())
                 .name(entity.getName())
                 .description(entity.getDescription())

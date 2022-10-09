@@ -11,8 +11,8 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 import com.hcmute.yourtours.libs.model.filter.SimpleFilter;
-import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoriesDetail;
-import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoriesInfo;
+import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoryDetail;
+import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoryInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,15 +26,15 @@ import java.util.UUID;
 @Tag(name = "CMS API: SURCHARGE HOME CATEGORIES", description = "API admin config các loại phụ phí của căn nhà")
 @Transactional
 public class CmsSurchargeHomeController
-        extends BaseController<UUID, SurchargeHomeCategoriesInfo, SurchargeHomeCategoriesDetail>
+        extends BaseController<UUID, SurchargeHomeCategoryInfo, SurchargeHomeCategoryDetail>
         implements ICmsSurchargeHomeController {
 
-    protected CmsSurchargeHomeController(IDataFactory<UUID, SurchargeHomeCategoriesInfo, SurchargeHomeCategoriesDetail> iDataFactory, IResponseFactory iResponseFactory) {
+    protected CmsSurchargeHomeController(IDataFactory<UUID, SurchargeHomeCategoryInfo, SurchargeHomeCategoryDetail> iDataFactory, IResponseFactory iResponseFactory) {
         super(iDataFactory, iResponseFactory);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<SurchargeHomeCategoriesDetail>> createModel(FactoryCreateRequest<UUID, SurchargeHomeCategoriesDetail> request) {
+    public ResponseEntity<BaseResponse<SurchargeHomeCategoryDetail>> createModel(FactoryCreateRequest<UUID, SurchargeHomeCategoryDetail> request) {
         return super.factoryCreateModel(request);
     }
 
@@ -44,17 +44,17 @@ public class CmsSurchargeHomeController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, SurchargeHomeCategoriesDetail>>> getDetailById(UUID id) {
+    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, SurchargeHomeCategoryDetail>>> getDetailById(UUID id) {
         return super.factoryGetDetailById(id);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<SurchargeHomeCategoriesInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<SurchargeHomeCategoryInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<SurchargeHomeCategoriesDetail>> updateModel(FactoryUpdateRequest<UUID, SurchargeHomeCategoriesDetail> request) {
+    public ResponseEntity<BaseResponse<SurchargeHomeCategoryDetail>> updateModel(FactoryUpdateRequest<UUID, SurchargeHomeCategoryDetail> request) {
         return super.factoryUpdateModel(request);
     }
 }

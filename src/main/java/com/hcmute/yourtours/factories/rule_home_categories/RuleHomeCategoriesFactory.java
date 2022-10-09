@@ -4,8 +4,8 @@ import com.hcmute.yourtours.commands.RuleHomeCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
-import com.hcmute.yourtours.models.rule_home_categories.RuleHomeCategoriesDetail;
-import com.hcmute.yourtours.models.rule_home_categories.RuleHomeCategoriesInfo;
+import com.hcmute.yourtours.models.rule_home_categories.RuleHomeCategoryDetail;
+import com.hcmute.yourtours.models.rule_home_categories.RuleHomeCategoryInfo;
 import com.hcmute.yourtours.repositories.RuleHomeCategoriesRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class RuleHomeCategoriesFactory
-        extends BasePersistDataFactory<UUID, RuleHomeCategoriesInfo, RuleHomeCategoriesDetail, Long, RuleHomeCategoriesCommand>
+        extends BasePersistDataFactory<UUID, RuleHomeCategoryInfo, RuleHomeCategoryDetail, Long, RuleHomeCategoriesCommand>
         implements IRuleHomeCategoriesFactory {
 
     private final RuleHomeCategoriesRepository ruleHomeCategoriesRepository;
@@ -29,12 +29,12 @@ public class RuleHomeCategoriesFactory
 
     @Override
     @NonNull
-    protected Class<RuleHomeCategoriesDetail> getDetailClass() {
-        return RuleHomeCategoriesDetail.class;
+    protected Class<RuleHomeCategoryDetail> getDetailClass() {
+        return RuleHomeCategoryDetail.class;
     }
 
     @Override
-    public RuleHomeCategoriesCommand createConvertToEntity(RuleHomeCategoriesDetail detail) {
+    public RuleHomeCategoriesCommand createConvertToEntity(RuleHomeCategoryDetail detail) {
         if (detail == null) {
             return null;
         }
@@ -46,23 +46,23 @@ public class RuleHomeCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(RuleHomeCategoriesCommand entity, RuleHomeCategoriesDetail detail) {
+    public void updateConvertToEntity(RuleHomeCategoriesCommand entity, RuleHomeCategoryDetail detail) {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
     }
 
     @Override
-    public RuleHomeCategoriesDetail convertToDetail(RuleHomeCategoriesCommand entity) {
-        return (RuleHomeCategoriesDetail) convertToInfo(entity);
+    public RuleHomeCategoryDetail convertToDetail(RuleHomeCategoriesCommand entity) {
+        return (RuleHomeCategoryDetail) convertToInfo(entity);
     }
 
     @Override
-    public RuleHomeCategoriesInfo convertToInfo(RuleHomeCategoriesCommand entity) {
+    public RuleHomeCategoryInfo convertToInfo(RuleHomeCategoriesCommand entity) {
         if (entity == null) {
             return null;
         }
-        return RuleHomeCategoriesInfo.builder()
+        return RuleHomeCategoryInfo.builder()
                 .id(entity.getRuleCategoryId())
                 .name(entity.getName())
                 .description(entity.getDescription())

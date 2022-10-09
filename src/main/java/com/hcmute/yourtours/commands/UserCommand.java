@@ -30,7 +30,7 @@ public class UserCommand extends Persistence {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "userid", columnDefinition = "BINARY(16)", unique = true)
+    @Column(name = "userid", columnDefinition = "BINARY(16)", unique = true, nullable = false)
     private UUID userId;
 
     @Column(name = "username")

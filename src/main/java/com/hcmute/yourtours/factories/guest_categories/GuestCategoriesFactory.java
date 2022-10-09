@@ -4,8 +4,8 @@ import com.hcmute.yourtours.commands.GuestCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
-import com.hcmute.yourtours.models.guest_categories.GuestCategoriesDetail;
-import com.hcmute.yourtours.models.guest_categories.GuestCategoriesInfo;
+import com.hcmute.yourtours.models.guest_categories.GuestCategoryDetail;
+import com.hcmute.yourtours.models.guest_categories.GuestCategoryInfo;
 import com.hcmute.yourtours.repositories.GuestCategoriesRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class GuestCategoriesFactory
-        extends BasePersistDataFactory<UUID, GuestCategoriesInfo, GuestCategoriesDetail, Long, GuestCategoriesCommand>
+        extends BasePersistDataFactory<UUID, GuestCategoryInfo, GuestCategoryDetail, Long, GuestCategoriesCommand>
         implements IGuestCategoriesFactory {
 
     private final GuestCategoriesRepository guestCategoriesRepository;
@@ -29,12 +29,12 @@ public class GuestCategoriesFactory
 
     @Override
     @NonNull
-    protected Class<GuestCategoriesDetail> getDetailClass() {
-        return GuestCategoriesDetail.class;
+    protected Class<GuestCategoryDetail> getDetailClass() {
+        return GuestCategoryDetail.class;
     }
 
     @Override
-    public GuestCategoriesCommand createConvertToEntity(GuestCategoriesDetail detail) {
+    public GuestCategoriesCommand createConvertToEntity(GuestCategoryDetail detail) {
         if (detail == null) {
             return null;
         }
@@ -46,23 +46,23 @@ public class GuestCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(GuestCategoriesCommand entity, GuestCategoriesDetail detail) {
+    public void updateConvertToEntity(GuestCategoriesCommand entity, GuestCategoryDetail detail) {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
     }
 
     @Override
-    public GuestCategoriesDetail convertToDetail(GuestCategoriesCommand entity) {
-        return (GuestCategoriesDetail) convertToInfo(entity);
+    public GuestCategoryDetail convertToDetail(GuestCategoriesCommand entity) {
+        return (GuestCategoryDetail) convertToInfo(entity);
     }
 
     @Override
-    public GuestCategoriesInfo convertToInfo(GuestCategoriesCommand entity) {
+    public GuestCategoryInfo convertToInfo(GuestCategoriesCommand entity) {
         if (entity == null) {
             return null;
         }
-        return GuestCategoriesInfo.builder()
+        return GuestCategoryInfo.builder()
                 .id(entity.getGuestCategoryId())
                 .name(entity.getName())
                 .description(entity.getDescription())
