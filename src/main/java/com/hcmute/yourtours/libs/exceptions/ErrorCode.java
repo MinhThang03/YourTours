@@ -3,17 +3,13 @@ package com.hcmute.yourtours.libs.exceptions;
 import org.springframework.http.HttpStatus;
 
 public enum ErrorCode implements IErrorCode {
+
     OK(HttpStatus.OK, "2000000", "OK"),
 
     //500
     SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "5000000", "Server Error"),
     TOKEN_PROVIDER_NOTFOUND(HttpStatus.INTERNAL_SERVER_ERROR, "50000001", "Not found token provider"),
 
-    CUSTOMER_EXIST(HttpStatus.INTERNAL_SERVER_ERROR, "50000002", "Customer is exist"),
-    CUSTOMER_NOT_EXIST(HttpStatus.INTERNAL_SERVER_ERROR, "50000003", "Customer is not exist"),
-    CUSTOMER_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "50000004", "List Customer is not found"),
-
-    CUSTOMER_FACEID_NOT_EXIST(HttpStatus.INTERNAL_SERVER_ERROR, "50000005", "Customer FaceId is not exist"),
 
     //401
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "4010000", "Unauthorized"),

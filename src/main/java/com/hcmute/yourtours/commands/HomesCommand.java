@@ -55,7 +55,7 @@ public class HomesCommand extends NameData {
     private LocalTime timeCheckInEnd;
 
     @Column(name = "time_check_in_out")
-    private LocalTime time_check_out;
+    private LocalTime timeCheckOut;
 
     @Column(name = "guide")
     private String guide;
