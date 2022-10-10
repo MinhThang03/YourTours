@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface BedsOfHomeRepository extends JpaRepository<BedsOfHomeCommand, Long> {
-    Optional<BedsOfHomeCommand> findByBedOfHomeID(UUID bedOfHomeId);
+    Optional<BedsOfHomeCommand> findByBedOfHomeId(UUID bedOfHomeId);
 }

@@ -36,6 +36,13 @@ public enum YourToursErrorCode implements IErrorCode {
     NOT_FOUND_HOME(HttpStatus.NOT_FOUND, "4040012", "Không tìm thấy nhà"),
     NOT_FOUND_IMAGES_OF_HOME(HttpStatus.NOT_FOUND, "4040013", "Không tìm thấy hình ảnh của ngôi nhà"),
     NOT_FOUND_ROOMS_OF_HOME(HttpStatus.NOT_FOUND, "4040014", "Không tìm thấy căn phòng của ngôi nhà"),
+    NOT_FOUND_IMAGE_ROOM_HOME(HttpStatus.NOT_FOUND, "4040015", "Không tìm thấy hình ảnh căn phòng của ngôi nhà"),
+    NOT_FOUND_BEDS_OF_HOME(HttpStatus.NOT_FOUND, "4040016", "Không tìm thấy cấu hình giường ngủ của ngôi nhà"),
+    NOT_FOUND_GUESTS_OF_HOME(HttpStatus.NOT_FOUND, "4040017", "Không tìm thấy cấu hình khách của ngôi nhà"),
+    NOT_FOUND_RULES_OF_HOME(HttpStatus.NOT_FOUND, "4040017", "Không tìm thấy nội quy của ngôi nhà"),
+    NOT_FOUND_AMENITIES_OF_HOME(HttpStatus.NOT_FOUND, "4040018", "Không tìm thấy tiện ích của ngôi nhà"),
+    NOT_FOUND_DISCOUNTS_OF_HOME(HttpStatus.NOT_FOUND, "4040019", "Không tìm thấy giảm giá của ngôi nhà"),
+    NOT_FOUND_SURCHARGES_OF_HOME(HttpStatus.NOT_FOUND, "4040019", "Không tìm thấy phụ phí của ngôi nhà"),
 
     //409
     CONFIRM_PASSWORD_IS_NOT_VALID(HttpStatus.CONFLICT, "40900001", "Xác nhận mật khẩu không trùng khớp"),

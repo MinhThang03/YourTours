@@ -30,7 +30,7 @@ public class BedsOfHomeCommand extends Persistence {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "bed_of_home_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
-    private UUID bedOfHomeID;
+    private UUID bedOfHomeId;
 
 
     @Column(name = "bed_category_id", columnDefinition = "BINARY(16)")
@@ -38,7 +38,7 @@ public class BedsOfHomeCommand extends Persistence {
 
 
     @Column(name = "room_of_home_id", columnDefinition = "BINARY(16)")
-    private UUID roomOfHomeID;
+    private UUID roomOfHomeId;
 
     @Column(name = "amount")
     private Integer amount;
@@ -46,8 +46,8 @@ public class BedsOfHomeCommand extends Persistence {
     @Override
     protected void preWrite() {
         super.preWrite();
-        if (bedOfHomeID == null) {
-            bedOfHomeID = UUID.randomUUID();
+        if (bedOfHomeId == null) {
+            bedOfHomeId = UUID.randomUUID();
         }
     }
 }

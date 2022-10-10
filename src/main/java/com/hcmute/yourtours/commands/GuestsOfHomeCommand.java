@@ -34,12 +34,6 @@ public class GuestsOfHomeCommand extends Persistence {
     @Column(name = "guest_of_home_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
     private UUID guestOfHomeId;
 
-    @Column(name = "path")
-    private String path;
-
-    @Column(name = "room_of_home_id", columnDefinition = "BINARY(16)")
-    private UUID roomOfHomeId;
-
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
 

@@ -11,5 +11,5 @@ import lombok.experimental.SuperBuilder;
 @Accessors(chain = true)
 @NoArgsConstructor
 @SuperBuilder
-public class RoomOfHomeDetail extends RuleOfHomeInfo {
+public class RuleOfHomeDetail extends RuleOfHomeInfo {
 }
