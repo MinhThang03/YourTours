@@ -54,7 +54,15 @@ public class RuleHomeCategoriesFactory
 
     @Override
     public RuleHomeCategoryDetail convertToDetail(RuleHomeCategoriesCommand entity) {
-        return (RuleHomeCategoryDetail) convertToInfo(entity);
+        if (entity == null) {
+            return null;
+        }
+        return RuleHomeCategoryDetail.builder()
+                .id(entity.getRuleCategoryId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .status(entity.getStatus())
+                .build();
     }
 
     @Override

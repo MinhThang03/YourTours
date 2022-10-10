@@ -54,7 +54,15 @@ public class BedCategoriesFactory
 
     @Override
     public BedCategoryDetail convertToDetail(BedCategoriesCommand entity) {
-        return (BedCategoryDetail) convertToInfo(entity);
+        if (entity == null) {
+            return null;
+        }
+        return BedCategoryDetail.builder()
+                .id(entity.getBedCategoryId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .status(entity.getStatus())
+                .build();
     }
 
     @Override

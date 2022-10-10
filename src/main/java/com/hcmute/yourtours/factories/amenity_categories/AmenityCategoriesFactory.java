@@ -55,7 +55,15 @@ public class AmenityCategoriesFactory
 
     @Override
     public AmenityCategoryDetail convertToDetail(AmenityCategoriesCommand entity) throws InvalidException {
-        return (AmenityCategoryDetail) convertToInfo(entity);
+        if (entity == null) {
+            return null;
+        }
+        return AmenityCategoryDetail.builder()
+                .id(entity.getAmenityCategoryId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .status(entity.getStatus())
+                .build();
     }
 
     @Override

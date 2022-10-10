@@ -58,7 +58,18 @@ public class RoomCategoriesFactory
 
     @Override
     public RoomCategoryDetail convertToDetail(RoomCategoriesCommand entity) {
-        return (RoomCategoryDetail) convertToInfo(entity);
+        if (entity == null) {
+            return null;
+        }
+
+        return RoomCategoryDetail.builder()
+                .id(entity.getRoomCategoryId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .important(entity.getImportant())
+                .configBed(entity.getConfigBed())
+                .status(entity.getStatus())
+                .build();
     }
 
     @Override

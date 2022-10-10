@@ -58,7 +58,17 @@ public class DiscountHomeCategoriesFactory
 
     @Override
     public DiscountHomeCategoryDetail convertToDetail(DiscountHomeCategoriesCommand entity) throws InvalidException {
-        return (DiscountHomeCategoryDetail) convertToInfo(entity);
+        if (entity == null) {
+            return null;
+        }
+        return DiscountHomeCategoryDetail.builder()
+                .id(entity.getDiscountCategoryId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .status(entity.getStatus())
+                .type(entity.getType())
+                .numDateDefault(entity.getNumDateDefault())
+                .build();
     }
 
     @Override

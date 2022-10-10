@@ -49,7 +49,14 @@ public class ImageHomeFactory
 
     @Override
     public ImageHomeDetail convertToDetail(ImagesHomeCommand entity) throws InvalidException {
-        return (ImageHomeDetail) convertToInfo(entity);
+        if (entity == null) {
+            return null;
+        }
+        return ImageHomeDetail.builder()
+                .id(entity.getHomeId())
+                .path(entity.getPath())
+                .homeId(entity.getHomeId())
+                .build();
     }
 
     @Override

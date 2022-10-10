@@ -54,7 +54,15 @@ public class SecurityCategoriesFactory
 
     @Override
     public SecurityCategoryDetail convertToDetail(SecurityCategoriesCommand entity) {
-        return (SecurityCategoryDetail) convertToInfo(entity);
+        if (entity == null) {
+            return null;
+        }
+        return SecurityCategoryDetail.builder()
+                .id(entity.getSecurityCategoryId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .status(entity.getStatus())
+                .build();
     }
 
     @Override

@@ -51,7 +51,15 @@ public class RoomsOfHomeFactory
 
     @Override
     public RoomOfHomeDetail convertToDetail(RoomsOfHomeCommand entity) throws InvalidException {
-        return (RoomOfHomeDetail) convertToInfo(entity);
+        if (entity == null) {
+            return null;
+        }
+        return RoomOfHomeDetail.builder()
+                .id(entity.getRoomOfHomeId())
+                .description(entity.getDescription())
+                .homeId(entity.getHomeId())
+                .categoryId(entity.getCategoryId())
+                .build();
     }
 
     @Override

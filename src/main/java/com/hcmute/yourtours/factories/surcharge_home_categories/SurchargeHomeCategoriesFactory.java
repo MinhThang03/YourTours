@@ -54,7 +54,15 @@ public class SurchargeHomeCategoriesFactory
 
     @Override
     public SurchargeHomeCategoryDetail convertToDetail(SurchargeHomeCategoriesCommand entity) throws InvalidException {
-        return (SurchargeHomeCategoryDetail) convertToInfo(entity);
+        if (entity == null) {
+            return null;
+        }
+        return SurchargeHomeCategoryDetail.builder()
+                .id(entity.getSurchargeCategoryId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .status(entity.getStatus())
+                .build();
     }
 
     @Override

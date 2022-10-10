@@ -69,7 +69,24 @@ public class HomesFactory
 
     @Override
     public HomeDetail convertToDetail(HomesCommand entity) throws InvalidException {
-        return (HomeDetail) convertToInfo(entity);
+        if (entity == null) {
+            return null;
+        }
+        return HomeDetail.builder()
+                .id(entity.getHomeId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .wifi(entity.getWifi())
+                .passWifi(entity.getPassWifi())
+                .ruleOthers(entity.getRuleOthers())
+                .timeCheckInStart(entity.getTimeCheckInStart())
+                .timeCheckInEnd(entity.getTimeCheckInEnd())
+                .timeCheckOut(entity.getTimeCheckOut())
+                .guide(entity.getGuide())
+                .costPerNightDefault(entity.getCostPerNightDefault())
+                .refundPolicy(entity.getRefundPolicy())
+                .status(entity.getStatus())
+                .build();
     }
 
     @Override

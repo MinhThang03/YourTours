@@ -54,7 +54,15 @@ public class GuestCategoriesFactory
 
     @Override
     public GuestCategoryDetail convertToDetail(GuestCategoriesCommand entity) {
-        return (GuestCategoryDetail) convertToInfo(entity);
+        if (entity == null) {
+            return null;
+        }
+        return GuestCategoryDetail.builder()
+                .id(entity.getGuestCategoryId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .status(entity.getStatus())
+                .build();
     }
 
     @Override
