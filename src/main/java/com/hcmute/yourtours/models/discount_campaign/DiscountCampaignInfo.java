@@ -30,4 +30,6 @@ public class DiscountCampaignInfo extends NameDataModel<UUID> {
     private LocalDate dateEnd;
 
     private UUID homeId;
+
+    private String codeName;
 }
