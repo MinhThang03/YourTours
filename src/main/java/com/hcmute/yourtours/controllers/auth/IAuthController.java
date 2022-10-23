@@ -4,9 +4,11 @@ package com.hcmute.yourtours.controllers.auth;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.authentication.requests.LoginRequest;
 import com.hcmute.yourtours.models.authentication.requests.RefreshTokenRequest;
+import com.hcmute.yourtours.models.authentication.requests.RegisterRequest;
 import com.hcmute.yourtours.models.authentication.response.LoginResponse;
 import com.hcmute.yourtours.models.authentication.response.LogoutResponse;
 import com.hcmute.yourtours.models.authentication.response.RefreshTokenResponse;
+import com.hcmute.yourtours.models.authentication.response.RegisterResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +33,8 @@ public interface IAuthController {
     @Operation(summary = "Refresh token")
     ResponseEntity<BaseResponse<RefreshTokenResponse>> refreshToken(@Valid @RequestBody RefreshTokenRequest request, HttpServletRequest context);
 
+    @PostMapping("/register")
+    @Operation(summary = "Đăng ký tài khoản")
+    ResponseEntity<BaseResponse<RegisterResponse>> registerAccount(@Valid @RequestBody RegisterRequest request);
 
 }

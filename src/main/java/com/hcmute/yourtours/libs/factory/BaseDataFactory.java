@@ -27,10 +27,10 @@ public abstract class BaseDataFactory<I, IF extends BaseData<I>, DT extends IF> 
     public DT createModel(DT detail) throws InvalidException {
         preCreate(detail);
         detail = aroundCreate(detail);
-        if (isCache() && cacheFactoryConfig().create() && detail != null) {
-            cachePut(detail.getId(), detail);
-        }
-        clearCollection();
+//        if (isCache() && cacheFactoryConfig().create() && detail != null) {
+//            cachePut(detail.getId(), detail);
+//        }
+//        clearCollection();
         return detail;
     }
 
@@ -38,18 +38,18 @@ public abstract class BaseDataFactory<I, IF extends BaseData<I>, DT extends IF> 
     public DT updateModel(I id, DT detail) throws InvalidException {
         preUpdate(id, detail);
         detail = aroundUpdate(id, detail);
-        if (isCache() && cacheFactoryConfig().update() && detail != null) {
-            cachePut(detail.getId(), detail);
-        }
-        clearCollection();
+//        if (isCache() && cacheFactoryConfig().update() && detail != null) {
+//            cachePut(detail.getId(), detail);
+//        }
+//        clearCollection();
         return detail;
     }
 
     @Override
     public <F extends BaseFilter> boolean deleteModel(I id, F filter) throws InvalidException {
         preDelete(id, filter);
-        cacheEvict(makeKey(id, filter));
-        clearCollection();
+//        cacheEvict(makeKey(id, filter));
+//        clearCollection();
         aroundDelete(id, filter);
         postDelete(id, filter);
         return true;
@@ -66,46 +66,46 @@ public abstract class BaseDataFactory<I, IF extends BaseData<I>, DT extends IF> 
 
     @Override
     public <F extends BaseFilter> DT getDetailModel(I id, F filter) throws InvalidException {
-        DT detail = isCache() && cacheFactoryConfig().getDetail() ? cacheGet(makeKey(id, filter), cacheFactoryConfig().objectClass()) : null;
-        if (detail != null) {
-            return detail;
-        }
+//        DT detail = isCache() && cacheFactoryConfig().getDetail() ? cacheGet(makeKey(id, filter), cacheFactoryConfig().objectClass()) : null;
+//        if (detail != null) {
+//            return detail;
+//        }
         preGetDetail(id, filter);
-        detail = aroundGetDetail(id, filter);
+        DT detail = aroundGetDetail(id, filter);
         if (detail == null) {
             throw new InvalidException(ErrorCode.NOT_FOUND);
         }
-        if (isCache() && cacheFactoryConfig().getDetail()) {
-            cachePut(makeKey(id, filter), detail);
-        }
+//        if (isCache() && cacheFactoryConfig().getDetail()) {
+//            cachePut(makeKey(id, filter), detail);
+//        }
         return detail;
     }
 
     @Override
     public <F extends BaseFilter> List<IF> getInfoList(F filter) throws InvalidException {
-        List<IF> infos = isCache() && cacheFactoryConfig().getListFilter() ? (List<IF>) cacheListGet(makeKey(null, filter), List.class) : null;
-        if (infos != null) {
-            return infos;
-        }
+//        List<IF> infos = isCache() && cacheFactoryConfig().getListFilter() ? (List<IF>) cacheListGet(makeKey(null, filter), List.class) : null;
+//        if (infos != null) {
+//            return infos;
+//        }
         preGetList(filter);
-        infos = aroundGetList(filter);
-        if (isCache() && cacheFactoryConfig().getListFilter()) {
-            cacheListPut(makeKey(null, filter), infos);
-        }
+        List<IF> infos = aroundGetList(filter);
+//        if (isCache() && cacheFactoryConfig().getListFilter()) {
+//            cacheListPut(makeKey(null, filter), infos);
+//        }
         return infos;
     }
 
     @Override
     public List<IF> getInfoList() throws InvalidException {
-        List<IF> infos = isCache() && cacheFactoryConfig().getList() ? (List<IF>) cacheListGet(makeKey(null, null), List.class) : null;
-        if (infos != null) {
-            return infos;
-        }
+//        List<IF> infos = isCache() && cacheFactoryConfig().getList() ? (List<IF>) cacheListGet(makeKey(null, null), List.class) : null;
+//        if (infos != null) {
+//            return infos;
+//        }
         preGetList();
-        infos = aroundGetList();
-        if (isCache() && cacheFactoryConfig().getList()) {
-            cacheListPut(makeKey(null, null), infos);
-        }
+        List<IF> infos = aroundGetList();
+//        if (isCache() && cacheFactoryConfig().getList()) {
+//            cacheListPut(makeKey(null, null), infos);
+//        }
         return infos;
     }
 
@@ -113,18 +113,18 @@ public abstract class BaseDataFactory<I, IF extends BaseData<I>, DT extends IF> 
     @Override
     public <F extends BaseFilter> BasePagingResponse<IF> getInfoPage(F filter, Integer number, Integer size) throws InvalidException {
         BasePagingResponse<IF> response = null;
-        try {
-            response = isCache() && cacheFactoryConfig().getPaging() ? (BasePagingResponse<IF>) cacheListGet(makeKey(null, filter, number, size), BasePagingResponse.class) : null;
-            if (response != null) {
-                return response;
-            }
-        } catch (Exception ignore) {
-        }
+//        try {
+//            response = isCache() && cacheFactoryConfig().getPaging() ? (BasePagingResponse<IF>) cacheListGet(makeKey(null, filter, number, size), BasePagingResponse.class) : null;
+//            if (response != null) {
+//                return response;
+//            }
+//        } catch (Exception ignore) {
+//        }
         preGetPage(filter, number, size);
         response = aroundGetPage(filter, number, size);
-        if (isCache() && cacheFactoryConfig().getPaging()) {
-            cacheListPut(makeKey(null, filter, number, size), response);
-        }
+//        if (isCache() && cacheFactoryConfig().getPaging()) {
+//            cacheListPut(makeKey(null, filter, number, size), response);
+//        }
         return response;
     }
 

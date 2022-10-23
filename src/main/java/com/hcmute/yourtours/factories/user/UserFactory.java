@@ -54,11 +54,9 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
         }
         return UserCommand.builder()
                 .userId(detail.getId())
-                .username(detail.getUsername())
                 .email(detail.getEmail())
                 .phoneNumber(detail.getPhoneNumber())
-                .firstName(detail.getFirstName())
-                .lastName(detail.getLastName())
+                .fullName(detail.getFullName())
                 .dateOfBirth(detail.getDateOfBirth())
                 .gender(detail.getGender())
                 .address(detail.getAddress())
@@ -70,8 +68,7 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
     @Override
     public void updateConvertToEntity(UserCommand entity, UserDetail detail) {
         entity.setPhoneNumber(detail.getPhoneNumber());
-        entity.setFirstName(detail.getFirstName());
-        entity.setLastName(detail.getLastName());
+        entity.setFullName(detail.getFullName());
         entity.setDateOfBirth(detail.getDateOfBirth());
         entity.setGender(detail.getGender());
         entity.setAddress(detail.getAddress());
@@ -86,11 +83,9 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
         }
         return UserDetail.builder()
                 .id(entity.getUserId())
-                .username(entity.getUsername())
                 .email(entity.getEmail())
                 .phoneNumber(entity.getPhoneNumber())
-                .firstName(entity.getFirstName())
-                .lastName(entity.getLastName())
+                .fullName(entity.getFullName())
                 .dateOfBirth(entity.getDateOfBirth())
                 .gender(entity.getGender())
                 .address(entity.getAddress())
@@ -106,11 +101,9 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
         }
         return UserInfo.builder()
                 .id(entity.getUserId())
-                .username(entity.getUsername())
                 .email(entity.getEmail())
                 .phoneNumber(entity.getPhoneNumber())
-                .firstName(entity.getFirstName())
-                .lastName(entity.getLastName())
+                .fullName(entity.getFullName())
                 .dateOfBirth(entity.getDateOfBirth())
                 .gender(entity.getGender())
                 .address(entity.getAddress())
@@ -119,19 +112,14 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
                 .build();
     }
 
-    @Override
-    protected <F extends BaseFilter> Optional<UserCommand> getEntity(UUID id, F filter) throws InvalidException {
-        return super.getEntity(id, filter);
-    }
-
 
     @Override
     protected void preCreate(UserDetail detail) throws InvalidException {
-        if (checkUserNameExist(detail.getUsername())) {
+        if (checkEmailExist(detail.getEmail())) {
             throw new InvalidException(YourToursErrorCode.USERNAME_EXIST);
         }
 
-        if (((UserRepository) repository).existsByEmail(detail.getEmail())) {
+        if (Boolean.TRUE.equals(userRepository.existsByEmail(detail.getEmail()))) {
             throw new InvalidException(YourToursErrorCode.EMAIL_EXIST);
         }
 
@@ -171,9 +159,9 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
 
     private String createUser(UserDetail detail) throws InvalidException {
         return iKeycloakService.createUser(
-                detail.getUsername(),
-                detail.getFirstName(),
-                detail.getLastName(),
+                detail.getEmail(),
+                null,
+                detail.getFullName(),
                 detail.getEmail(),
                 detail.getPassword()
         );
@@ -182,13 +170,6 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
     private void addRoleToUser(String userId, String role) throws InvalidException {
         iKeycloakService.addUserClientRoles(userId, List.of(role));
         iKeycloakService.addUserRealmRoles(userId, List.of(role));
-    }
-
-    private Boolean checkUserNameExist(String username) {
-        if (username == null) {
-            return false;
-        }
-        return userRepository.existsByUsername(username);
     }
 
 
@@ -208,13 +189,19 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
                 return new ChangePasswordResponse(true);
             }
             return new ChangePasswordResponse(false);
+        } catch (InvalidException e) {
+            throw e;
         } catch (Exception e) {
-            if (e instanceof InvalidException) {
-                throw e;
-            } else {
-                throw new InvalidException(YourToursErrorCode.CHANGE_PASSWORD_FAIL);
-            }
+            throw new InvalidException(YourToursErrorCode.CHANGE_PASSWORD_FAIL);
+
         }
+    }
+
+    private boolean checkEmailExist(String username) {
+        if (username == null) {
+            return false;
+        }
+        return userRepository.existsByEmail(username);
     }
 
 

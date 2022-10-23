@@ -33,20 +33,14 @@ public class UserCommand extends Persistence {
     @Column(name = "userid", columnDefinition = "BINARY(16)", unique = true, nullable = false)
     private UUID userId;
 
-    @Column(name = "username")
-    private String username;
-
     @Column(name = "email")
     private String email;
 
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
+    @Column(name = "full_name")
+    private String fullName;
 
     @Column(name = "birthday")
     private LocalDate dateOfBirth;

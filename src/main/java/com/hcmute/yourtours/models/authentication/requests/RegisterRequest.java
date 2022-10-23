@@ -1,29 +1,16 @@
-package com.hcmute.yourtours.models.user;
+package com.hcmute.yourtours.models.authentication.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hcmute.yourtours.enums.GenderEnum;
-import com.hcmute.yourtours.enums.UserStatusEnum;
-import com.hcmute.yourtours.libs.model.BaseData;
 import com.hcmute.yourtours.libs.util.constant.RegexUtils;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
-import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
-import java.util.UUID;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-@SuperBuilder
-@NoArgsConstructor
-public class UserInfo extends BaseData<UUID> {
+public class RegisterRequest {
 
     @NotNull
     @NotBlank
@@ -45,16 +32,4 @@ public class UserInfo extends BaseData<UUID> {
     @Pattern(regexp = RegexUtils.PHONE_REGEX, message = "Nhập không đúng định dạng email")
     private String phoneNumber;
 
-    private LocalDate dateOfBirth;
-
-    private GenderEnum gender;
-
-    private String address;
-
-    private String avatar;
-
-    private UserStatusEnum status;
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String role;
 }
