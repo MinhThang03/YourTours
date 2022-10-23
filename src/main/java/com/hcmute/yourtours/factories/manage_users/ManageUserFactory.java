@@ -26,7 +26,7 @@ public class ManageUserFactory extends UserFactory implements IManageUserFactory
 
     @Override
     public UserDetail getDetailByUserName(String userName) throws InvalidException {
-        UserCommand entity = userRepository.findByUsername(userName).orElse(null);
+        UserCommand entity = userRepository.findByEmail(userName).orElse(null);
         if (entity == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
         }

@@ -2,15 +2,17 @@ package com.hcmute.yourtours.factories.auth;
 
 
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
-import com.hcmute.yourtours.factories.manage_users.IManageUserFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.keycloak.IKeycloakService;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.models.authentication.requests.LoginRequest;
 import com.hcmute.yourtours.models.authentication.requests.RefreshTokenRequest;
+import com.hcmute.yourtours.models.authentication.requests.RegisterRequest;
 import com.hcmute.yourtours.models.authentication.response.LoginResponse;
 import com.hcmute.yourtours.models.authentication.response.LogoutResponse;
 import com.hcmute.yourtours.models.authentication.response.RefreshTokenResponse;
+import com.hcmute.yourtours.models.authentication.response.RegisterResponse;
+import com.hcmute.yourtours.models.user.UserDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,14 +23,11 @@ import org.springframework.stereotype.Component;
 public class AuthFactory implements IAuthFactory {
 
     private final IKeycloakService iKeycloakService;
-    private final IManageUserFactory iManageUserFactory;
     private final IUserFactory iUserFactory;
 
     public AuthFactory(IKeycloakService iKeycloakService,
-                       IManageUserFactory iManageUserFactory,
                        @Qualifier("userFactory") IUserFactory iUserFactory) {
         this.iKeycloakService = iKeycloakService;
-        this.iManageUserFactory = iManageUserFactory;
         this.iUserFactory = iUserFactory;
     }
 
@@ -45,12 +44,14 @@ public class AuthFactory implements IAuthFactory {
                     .token(accessTokenResponse)
 //                    .isBlocked(userDetail.getStatus().equals(UserStatusEnum.LOCK))
                     .build();
-        } catch (Exception e) {
-            if (e instanceof InvalidException) {
-                throw e;
-            }
+        }
+//        catch (InvalidException e) {
+//            throw e;
+//        }
+        catch (Exception e) {
             throw new InvalidException(YourToursErrorCode.LOGIN_FAIL);
         }
+
     }
 
     @Override
@@ -71,5 +72,20 @@ public class AuthFactory implements IAuthFactory {
         } catch (Exception e) {
             throw new InvalidException(YourToursErrorCode.REFRESH_TOKEN_FAIL);
         }
+    }
+
+    @Override
+    public RegisterResponse registerAccount(RegisterRequest request) throws InvalidException {
+        UserDetail userDetail = UserDetail.builder()
+                .email(request.getEmail())
+                .fullName(request.getFullName())
+                .password(request.getPassword())
+                .phoneNumber(request.getPhoneNumber())
+                .build();
+
+        iUserFactory.createModel(userDetail);
+        return RegisterResponse.builder()
+                .success(true)
+                .build();
     }
 }
