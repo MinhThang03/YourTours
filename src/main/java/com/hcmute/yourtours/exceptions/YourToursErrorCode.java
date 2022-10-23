@@ -17,6 +17,7 @@ public enum YourToursErrorCode implements IErrorCode {
     CHANGE_PASSWORD_FAIL(HttpStatus.BAD_REQUEST, "400000010", "Thay đổi mật khẩu thất bại"),
     EMAIL_EXIST(HttpStatus.BAD_REQUEST, "400000011", "Email đã tồn tại"),
     REFRESH_TOKEN_NOT_VALID(HttpStatus.BAD_REQUEST, "400000012", "Refresh token không hợp lệ"),
+    UPLOAD_FILE_ERROR(HttpStatus.BAD_REQUEST, "400000013", "Upload file không thành công"),
 
     //403
     FORBIDDEN(HttpStatus.FORBIDDEN, "4030000", "Bạn không đủ quyền truy cập"),

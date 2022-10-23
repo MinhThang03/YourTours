@@ -118,12 +118,10 @@ keycloak:
   use-resource-role-mappings: true
 
 
-minio:
-  endpoint: ${MINIO_ENDPOINT:http://10.30.1.143:30112}
-  accessKey: ${MINIO_ACCESS_KEY:minio}
-  secretKey: ${MINIO_SECRET_KEY:kjeThg7UhKt54yu}
-  fileHost: ${MINIO_FILE_HOST:https://api-parking-dev.hcm.unicloud.ai/parking-server}
-  expiredDefault: ${EXPIRED:60}
-
-
-
+aws-s3:
+  endpoint: ${AWS_ENDPOINT:https://s3.ap-northeast-1.amazonaws.com}
+  accessKey: ${AWS_ACCESS_KEY:AKIAQZYOAOMN7FRKELWJ}
+  secretKey: ${AWS_SECRET_KEY:8ytoSzMuTn2WCcRuUEZ/52iCcsGh9b2PN7a5BZBQ}
+  bucketName: ${AWS_S3_BUCKET:your-tours}
+  region: ${AWS_S3_REGION:ap-northeast-1}
+  endpoint-s3: ${AWS-S3-ENDPOINT:https://${AWS_S3_BUCKET:your-tours}.s3.${AWS_S3_REGION:ap-northeast-1}.amazonaws.com}

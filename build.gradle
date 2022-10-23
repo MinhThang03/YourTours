@@ -100,14 +100,11 @@ dependencies {
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
 
-    /**
-     * MinIO
-     */
-    implementation 'io.minio:minio:8.4.3'
     /*
-    Excel
+     * AWS
      */
-    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.1'
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.12.326'
+
 }
 
 tasks.named('test') {
