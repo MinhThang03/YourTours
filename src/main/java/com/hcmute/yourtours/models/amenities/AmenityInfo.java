@@ -2,7 +2,9 @@ package com.hcmute.yourtours.models.amenities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
+import com.hcmute.yourtours.models.amenity_categories.AmenityCategoryDetail;
 import com.hcmute.yourtours.models.common.NameDataModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,9 +22,9 @@ public class AmenityInfo extends NameDataModel<UUID> {
 
     private CommonStatusEnum status;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UUID categoryId;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String categoryName;
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    private AmenityCategoryDetail category;
 }

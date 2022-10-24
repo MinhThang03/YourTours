@@ -18,7 +18,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "amenity_categories")
+@Table(name = "amenities")
 public class AmenitiesCommand extends NameData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

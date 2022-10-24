@@ -1,4 +1,4 @@
-package com.hcmute.yourtours;
+package com.hcmute.yourtours.commands;
 
 import com.hcmute.yourtours.commands.base.Persistence;
 import lombok.AllArgsConstructor;

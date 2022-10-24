@@ -85,7 +85,6 @@ public class AmenitiesFactory
                 .description(entity.getDescription())
                 .status(entity.getStatus())
                 .category(category)
-                .categoryName(category.getName())
                 .build();
     }
 
@@ -94,12 +93,13 @@ public class AmenitiesFactory
         if (entity == null) {
             return null;
         }
+        AmenityCategoryDetail category = iAmenityCategoriesFactory.getDetailModel(entity.getCategoryId(), null);
         return AmenityInfo.builder()
                 .id(entity.getAmenityId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
-                .categoryName(iAmenityCategoriesFactory.getDetailModel(entity.getCategoryId(), null).getName())
+                .category(category)
                 .build();
     }
 

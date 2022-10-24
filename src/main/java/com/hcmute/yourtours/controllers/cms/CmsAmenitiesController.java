@@ -23,7 +23,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/cms/amenitíes")
-@Tag(name = "CMS API: AMENITIES CATEGORIES", description = "API admin config các tiện ích")
+@Tag(name = "CMS API: AMENITIES ", description = "API admin config các tiện ích")
 @Transactional
 public class CmsAmenitiesController
         extends BaseController<UUID, AmenityInfo, AmenityDetail>
