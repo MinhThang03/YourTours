@@ -44,6 +44,17 @@ spring:
     scheduling:
       pool:
         size: 5
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: yourtour.666@gmail.com
+    password: gjzkurhytytuczll
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 common:
   core:
     open-api:
@@ -72,7 +83,7 @@ common:
             prefixes:
             keys:
               - value: ${AI_X_API_KEY:7d9ed96e-2a7d-11ed-a261-0242ac120002}
-                enable: ${AI_X_API_KEY_ENABLE:true}
+              - enable: ${AI_X_API_KEY_ENABLE:true}
       cors:
         allowed-origins:
           - ${CORS_ORIGINS:http://localhost:8080}

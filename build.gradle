@@ -79,11 +79,6 @@ dependencies {
 
 
     /**
-     * Minio
-     */
-    implementation group: 'io.minio', name: 'minio', version: '8.1.0'
-
-    /**
      * JWT
      */
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
@@ -103,7 +98,14 @@ dependencies {
     /*
      * AWS
      */
-    implementation group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.12.326'
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.326'
+
+
+    /*
+     * EMAIL
+     */
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.7.3'
+
 
 }
 

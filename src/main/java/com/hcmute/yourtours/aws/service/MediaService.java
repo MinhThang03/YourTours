@@ -38,6 +38,9 @@ public class MediaService implements IMediaService {
     public UploadMediaResponse uploadFile(MultipartFile multipartFile) throws InvalidException {
         String fileUrl = "";
         try {
+            if (multipartFile == null) {
+                throw new InvalidException(YourToursErrorCode.FILE_ERROR_IS_NULL);
+            }
             File file = convertMultiPartToFile(multipartFile);
             String fileName = generateFileName(multipartFile);
             fileUrl = awsS3Properties.getEndpointS3() + "/" + fileName;
@@ -47,6 +50,8 @@ public class MediaService implements IMediaService {
                     .createDate(LocalDateTime.now())
                     .previewUrl(fileUrl)
                     .build();
+        } catch (InvalidException e) {
+            throw e;
         } catch (Exception e) {
             e.printStackTrace();
             throw new InvalidException(YourToursErrorCode.UPLOAD_FILE_ERROR);
@@ -73,6 +78,9 @@ public class MediaService implements IMediaService {
 
 
     private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        if (file == null) {
+            return null;
+        }
         File convFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
         try (FileOutputStream fos = new FileOutputStream(convFile)) {
             fos.write(file.getBytes());
