@@ -9,10 +9,12 @@ import com.hcmute.yourtours.models.surcharges_of_home.SurchargeOfHomeInfo;
 import com.hcmute.yourtours.repositories.SurchargesOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@Transactional
 public class SurchargesOfHomeFactory
         extends BasePersistDataFactory<UUID, SurchargeOfHomeInfo, SurchargeOfHomeDetail, Long, SurchargesOfHomeCommand>
         implements ISurchargeOfHomeFactory {

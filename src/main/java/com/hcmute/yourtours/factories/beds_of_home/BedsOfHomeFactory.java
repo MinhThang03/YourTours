@@ -9,10 +9,12 @@ import com.hcmute.yourtours.models.beds_of_home.BedOfHomeInfo;
 import com.hcmute.yourtours.repositories.BedsOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@Transactional
 public class BedsOfHomeFactory
         extends BasePersistDataFactory<UUID, BedOfHomeInfo, BedOfHomeDetail, Long, BedsOfHomeCommand>
         implements IBedsOfHomeFactory {

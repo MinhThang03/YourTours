@@ -9,10 +9,12 @@ import com.hcmute.yourtours.models.discount_of_home.DiscountOfHomeInfo;
 import com.hcmute.yourtours.repositories.DiscountOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@Transactional
 public class DiscountOfHomeFactory
         extends BasePersistDataFactory<UUID, DiscountOfHomeInfo, DiscountOfHomeDetail, Long, DiscountOfHomeCommand>
         implements IDiscountOfHomeFactory {

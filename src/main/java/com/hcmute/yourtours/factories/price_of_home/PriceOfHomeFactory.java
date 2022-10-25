@@ -9,10 +9,12 @@ import com.hcmute.yourtours.models.price_of_home.PriceOfHomeInfo;
 import com.hcmute.yourtours.repositories.PriceOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@Transactional
 public class PriceOfHomeFactory
         extends BasePersistDataFactory<UUID, PriceOfHomeInfo, PriceOfHomeDetail, Long, PriceOfHomeCommand>
         implements IPriceOfHomeFactory {

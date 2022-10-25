@@ -9,10 +9,12 @@ import com.hcmute.yourtours.models.images_home.ImageHomeInfo;
 import com.hcmute.yourtours.repositories.ImagesHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@Transactional
 public class ImageHomeFactory
         extends BasePersistDataFactory<UUID, ImageHomeInfo, ImageHomeDetail, Long, ImagesHomeCommand>
         implements IImagesHomeFactory {

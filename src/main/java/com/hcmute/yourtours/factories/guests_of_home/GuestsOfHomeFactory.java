@@ -9,10 +9,12 @@ import com.hcmute.yourtours.models.guests_of_home.GuestOfHomeInfo;
 import com.hcmute.yourtours.repositories.GuestsOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@Transactional
 public class GuestsOfHomeFactory
         extends BasePersistDataFactory<UUID, GuestOfHomeInfo, GuestOfHomeDetail, Long, GuestsOfHomeCommand>
         implements IGuestsOfHomeFactory {

@@ -9,10 +9,12 @@ import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.repositories.HomesRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@Transactional
 public class HomesFactory
         extends BasePersistDataFactory<UUID, HomeInfo, HomeDetail, Long, HomesCommand>
         implements IHomesFactory {

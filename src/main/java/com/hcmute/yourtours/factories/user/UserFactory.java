@@ -3,7 +3,10 @@ package com.hcmute.yourtours.factories.user;
 
 import com.hcmute.yourtours.commands.UserCommand;
 import com.hcmute.yourtours.constant.RoleConstant;
+import com.hcmute.yourtours.constant.SubjectEmailConstant;
+import com.hcmute.yourtours.email.IEmailFactory;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.factories.verification_token.IVerificationTokenFactory;
 import com.hcmute.yourtours.keycloak.IKeycloakService;
 import com.hcmute.yourtours.libs.configuration.IConfigFactory;
 import com.hcmute.yourtours.libs.exceptions.ErrorCode;
@@ -14,10 +17,12 @@ import com.hcmute.yourtours.models.authentication.requests.UserChangePasswordReq
 import com.hcmute.yourtours.models.authentication.response.ChangePasswordResponse;
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.models.user.UserInfo;
+import com.hcmute.yourtours.models.verification_token.VerificationTokenDetail;
 import com.hcmute.yourtours.repositories.UserRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,20 +30,27 @@ import java.util.UUID;
 
 @Service
 @Slf4j
+@Transactional
 public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDetail, Long, UserCommand> implements IUserFactory {
 
     protected final IKeycloakService iKeycloakService;
     private final IConfigFactory configFactory;
     private final UserRepository userRepository;
 
+    private final IEmailFactory iEmailFactory;
+
+    private final IVerificationTokenFactory iVerificationTokenFactory;
+
     protected UserFactory(
             UserRepository repository,
             IKeycloakService iKeycloakService,
-            IConfigFactory configFactory) {
+            IConfigFactory configFactory, IEmailFactory iEmailFactory, IVerificationTokenFactory iVerificationTokenFactory) {
         super(repository);
         this.iKeycloakService = iKeycloakService;
         this.configFactory = configFactory;
         this.userRepository = repository;
+        this.iEmailFactory = iEmailFactory;
+        this.iVerificationTokenFactory = iVerificationTokenFactory;
     }
 
     @Override
@@ -167,11 +179,6 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
         );
     }
 
-    private void addRoleToUser(String userId, String role) throws InvalidException {
-        iKeycloakService.addUserClientRoles(userId, List.of(role));
-        iKeycloakService.addUserRealmRoles(userId, List.of(role));
-    }
-
 
     @Override
     public ChangePasswordResponse userChangePassword(UserChangePasswordRequest request) throws InvalidException {
@@ -197,6 +204,15 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
         }
     }
 
+    @Override
+    public UserDetail getDetailByUserName(String userName) throws InvalidException {
+        UserCommand entity = userRepository.findByEmail(userName).orElse(null);
+        if (entity == null) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
+        }
+        return convertToDetail(entity);
+    }
+
     private boolean checkEmailExist(String username) {
         if (username == null) {
             return false;
@@ -204,6 +220,11 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
         return userRepository.existsByEmail(username);
     }
 
+    @Override
+    protected void postCreate(UserCommand entity, UserDetail detail) throws InvalidException {
+        VerificationTokenDetail tokenDetail = iVerificationTokenFactory.createVerificationTokenForUser(entity.getUserId());
+        iEmailFactory.sendSimpleMessage(entity.getEmail(), SubjectEmailConstant.CREATE_ACCOUNT, tokenDetail.getToken());
+    }
 
     private UUID getCurrentUserId() throws InvalidException {
         Optional<UUID> userId = configFactory.auditorAware().getCurrentAuditor();
@@ -211,5 +232,10 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
             throw new InvalidException(ErrorCode.UNAUTHORIZED);
         }
         return userId.get();
+    }
+
+    private void addRoleToUser(String userId, String role) throws InvalidException {
+        iKeycloakService.addUserClientRoles(userId, List.of(role));
+        iKeycloakService.addUserRealmRoles(userId, List.of(role));
     }
 }

@@ -5,6 +5,9 @@ import org.springframework.http.HttpStatus;
 
 public enum YourToursErrorCode implements IErrorCode {
 
+    //500
+    AUTO_GENERATE_OTP(HttpStatus.INTERNAL_SERVER_ERROR, "50000001", "Lỗi tạo mã otp"),
+
     //400
     USERNAME_EXIST(HttpStatus.BAD_REQUEST, "40000002", "Tên đăng nhập đã tồn tại"),
     CREATE_USER_FAIL(HttpStatus.BAD_REQUEST, "40000003", "Tạo user thất bại"),
@@ -19,6 +22,8 @@ public enum YourToursErrorCode implements IErrorCode {
     REFRESH_TOKEN_NOT_VALID(HttpStatus.BAD_REQUEST, "400000012", "Refresh token không hợp lệ"),
     UPLOAD_FILE_ERROR(HttpStatus.BAD_REQUEST, "400000013", "Upload file không thành công"),
     FILE_ERROR_IS_NULL(HttpStatus.BAD_REQUEST, "400000014", "File không được để trống"),
+    TOKEN_INVALID(HttpStatus.BAD_REQUEST, "400000015", "Token không hợp lệ"),
+    TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "400000016", "Token đã hết hạn"),
 
     //403
     FORBIDDEN(HttpStatus.FORBIDDEN, "4030000", "Bạn không đủ quyền truy cập"),
@@ -48,6 +53,8 @@ public enum YourToursErrorCode implements IErrorCode {
     NOT_FOUND_OWNER_OF_HOME(HttpStatus.NOT_FOUND, "4040020", "Không tìm thấy chủ quản lý của ngôi nhà"),
     NOT_FOUND_PRICE_OF_HOME(HttpStatus.NOT_FOUND, "4040021", "Không tìm thấy giá điều chỉnh của ngôi nhà"),
     NOT_FOUND_DISCOUNT_CAMPAIGN(HttpStatus.NOT_FOUND, "4040022", "Không tìm thấy chiến dịch quảng cáo"),
+    NOT_FOUND_VERIFICATION_TOKEN(HttpStatus.NOT_FOUND, "4040023", "Không tìm thấy token xác thực"),
+    NOT_FOUND_SECURITY_OF_HOME(HttpStatus.NOT_FOUND, "40400024", "Không tìm thấy bảo mật của ngôi nhà"),
 
     //409
     CONFIRM_PASSWORD_IS_NOT_VALID(HttpStatus.CONFLICT, "40900001", "Xác nhận mật khẩu không trùng khớp"),
