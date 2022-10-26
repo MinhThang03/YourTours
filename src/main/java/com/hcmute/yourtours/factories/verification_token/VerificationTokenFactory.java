@@ -7,6 +7,7 @@ import com.hcmute.yourtours.enums.VerificationTokenTypeEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.util.TimeUtil;
 import com.hcmute.yourtours.models.verification_token.VerificationTokenDetail;
 import com.hcmute.yourtours.models.verification_token.VerificationTokenInfo;
 import com.hcmute.yourtours.repositories.VerificationTokenRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
@@ -175,6 +177,10 @@ public class VerificationTokenFactory
 
     private String autoGenerateOtp() throws InvalidException {
         SecureRandom random = new SecureRandom();
+        String timeStrLocalDateTimeNow = TimeUtil.toStringDate(LocalDateTime.now());
+        byte[] byteRandom = ("YourTour" + timeStrLocalDateTimeNow).getBytes();
+        random.setSeed(byteRandom);
+
         String result;
         do {
             Optional<String> optional = random.ints(5, 0, 10)
