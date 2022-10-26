@@ -9,10 +9,12 @@ import com.hcmute.yourtours.models.owner_of_home.OwnerOfHomeInfo;
 import com.hcmute.yourtours.repositories.OwnerOfHomesRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@Transactional
 public class OwnerOfHomeFactory
         extends BasePersistDataFactory<UUID, OwnerOfHomeInfo, OwnerOfHomeDetail, Long, OwnerOfHomeCommand>
         implements IOwnerOfHomeFactory {

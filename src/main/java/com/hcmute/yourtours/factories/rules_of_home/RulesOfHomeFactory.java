@@ -9,10 +9,12 @@ import com.hcmute.yourtours.models.rules_of_home.RuleOfHomeInfo;
 import com.hcmute.yourtours.repositories.RulesOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@Transactional
 public class RulesOfHomeFactory
         extends BasePersistDataFactory<UUID, RuleOfHomeInfo, RuleOfHomeDetail, Long, RulesOfHomeCommand>
         implements IRulesOfHomeFactory {

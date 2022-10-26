@@ -9,10 +9,12 @@ import com.hcmute.yourtours.models.discount_campaign.DiscountCampaignInfo;
 import com.hcmute.yourtours.repositories.DiscountCampaignRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@Transactional
 public class DiscountCampaignFactory
         extends BasePersistDataFactory<UUID, DiscountCampaignInfo, DiscountCampaignDetail, Long, DiscountCampaignCommand>
         implements IDiscountCampaignFactory {

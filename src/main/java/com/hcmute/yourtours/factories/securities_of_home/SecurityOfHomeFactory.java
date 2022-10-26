@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.securities_of_home;
 
 import com.hcmute.yourtours.commands.SecuritiesOfHomeCommand;
+import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.securities_of_home.SecurityOfHomeDetail;
@@ -8,10 +9,13 @@ import com.hcmute.yourtours.models.securities_of_home.SecurityOfHomeInfo;
 import com.hcmute.yourtours.repositories.SecuritiesOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class SecurityOfHomeFactory
         extends BasePersistDataFactory<UUID, SecurityOfHomeInfo, SecurityOfHomeDetail, Long, SecuritiesOfHomeCommand>
         implements ISecuritiesOfHomeFactory {
@@ -70,5 +74,14 @@ public class SecurityOfHomeFactory
                 .categoryId(entity.getCategoryId())
                 .homeId(entity.getHomeId())
                 .build();
+    }
+
+    @Override
+    protected Long convertId(UUID id) throws InvalidException {
+        Optional<SecuritiesOfHomeCommand> optional = securitiesOfHomeRepository.findBySecurityOfHomeId(id);
+        if (optional.isEmpty()) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_SECURITY_OF_HOME);
+        }
+        return optional.get().getId();
     }
 }

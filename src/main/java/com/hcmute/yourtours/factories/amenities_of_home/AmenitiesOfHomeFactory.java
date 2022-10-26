@@ -9,10 +9,12 @@ import com.hcmute.yourtours.models.amenities_of_home.AmenityOfHomeInfo;
 import com.hcmute.yourtours.repositories.AmenitiesOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@Transactional
 public class AmenitiesOfHomeFactory
         extends BasePersistDataFactory<UUID, AmenityOfHomeInfo, AmenityOfHomeDetail, Long, AmenitiesOfHomeCommand>
         implements IAmenitiesOfHomeFactory {
