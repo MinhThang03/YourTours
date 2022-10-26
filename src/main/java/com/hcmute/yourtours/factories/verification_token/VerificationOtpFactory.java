@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.verification_token;
 
-import com.hcmute.yourtours.commands.VerificationTokenCommand;
+import com.hcmute.yourtours.commands.VerificationOtpCommand;
 import com.hcmute.yourtours.constant.CornConstant;
 import com.hcmute.yourtours.constant.TokenExpirationConstant;
 import com.hcmute.yourtours.enums.VerificationTokenTypeEnum;
@@ -8,8 +8,8 @@ import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.util.TimeUtil;
-import com.hcmute.yourtours.models.verification_token.VerificationTokenDetail;
-import com.hcmute.yourtours.models.verification_token.VerificationTokenInfo;
+import com.hcmute.yourtours.models.verification_token.VerificationOtpDetail;
+import com.hcmute.yourtours.models.verification_token.VerificationOtpInfo;
 import com.hcmute.yourtours.repositories.VerificationTokenRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -26,29 +26,29 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-public class VerificationTokenFactory
-        extends BasePersistDataFactory<UUID, VerificationTokenInfo, VerificationTokenDetail, Long, VerificationTokenCommand>
-        implements IVerificationTokenFactory {
+public class VerificationOtpFactory
+        extends BasePersistDataFactory<UUID, VerificationOtpInfo, VerificationOtpDetail, Long, VerificationOtpCommand>
+        implements IVerificationOtpFactory {
 
     private final VerificationTokenRepository verificationTokenRepository;
 
-    protected VerificationTokenFactory(VerificationTokenRepository repository) {
+    protected VerificationOtpFactory(VerificationTokenRepository repository) {
         super(repository);
         this.verificationTokenRepository = repository;
     }
 
     @Override
     @NonNull
-    protected Class<VerificationTokenDetail> getDetailClass() {
-        return VerificationTokenDetail.class;
+    protected Class<VerificationOtpDetail> getDetailClass() {
+        return VerificationOtpDetail.class;
     }
 
     @Override
-    public VerificationTokenCommand createConvertToEntity(VerificationTokenDetail detail) throws InvalidException {
+    public VerificationOtpCommand createConvertToEntity(VerificationOtpDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return VerificationTokenCommand.builder()
+        return VerificationOtpCommand.builder()
                 .token(detail.getToken())
                 .userId(detail.getUserId())
                 .expiryDate(calculateExpiryDate(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER))
@@ -57,7 +57,7 @@ public class VerificationTokenFactory
     }
 
     @Override
-    public void updateConvertToEntity(VerificationTokenCommand entity, VerificationTokenDetail detail) throws InvalidException {
+    public void updateConvertToEntity(VerificationOtpCommand entity, VerificationOtpDetail detail) throws InvalidException {
         entity.setToken(detail.getToken());
         entity.setUserId(detail.getUserId());
         entity.setExpiryDate(detail.getExpiryDate());
@@ -65,11 +65,11 @@ public class VerificationTokenFactory
     }
 
     @Override
-    public VerificationTokenDetail convertToDetail(VerificationTokenCommand entity) throws InvalidException {
+    public VerificationOtpDetail convertToDetail(VerificationOtpCommand entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
-        return VerificationTokenDetail.builder()
+        return VerificationOtpDetail.builder()
                 .token(entity.getToken())
                 .userId(entity.getUserId())
                 .expiryDate(entity.getExpiryDate())
@@ -79,11 +79,11 @@ public class VerificationTokenFactory
     }
 
     @Override
-    public VerificationTokenInfo convertToInfo(VerificationTokenCommand entity) throws InvalidException {
+    public VerificationOtpInfo convertToInfo(VerificationOtpCommand entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
-        return VerificationTokenInfo.builder()
+        return VerificationOtpInfo.builder()
                 .token(entity.getToken())
                 .userId(entity.getUserId())
                 .expiryDate(entity.getExpiryDate())
@@ -99,8 +99,8 @@ public class VerificationTokenFactory
 
 
     @Override
-    public VerificationTokenDetail getVerificationToken(String verificationToken) throws InvalidException {
-        Optional<VerificationTokenCommand> optional = verificationTokenRepository.findByToken(verificationToken);
+    public VerificationOtpDetail getVerificationToken(String verificationToken) throws InvalidException {
+        Optional<VerificationOtpCommand> optional = verificationTokenRepository.findByToken(verificationToken);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_VERIFICATION_TOKEN);
         }
@@ -108,8 +108,8 @@ public class VerificationTokenFactory
     }
 
     @Override
-    public VerificationTokenDetail generateNewVerificationToken(String token) throws InvalidException {
-        VerificationTokenDetail vToken = getVerificationToken(token);
+    public VerificationOtpDetail generateNewVerificationToken(String token) throws InvalidException {
+        VerificationOtpDetail vToken = getVerificationToken(token);
         vToken.setExpiryDate(calculateExpiryDate(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER));
         vToken.setToken(autoGenerateOtp());
         vToken = updateModel(vToken.getId(), vToken);
@@ -122,8 +122,8 @@ public class VerificationTokenFactory
     }
 
     @Override
-    public VerificationTokenDetail createVerificationTokenForUser(UUID userId) throws InvalidException {
-        VerificationTokenDetail detail = VerificationTokenDetail.builder()
+    public VerificationOtpDetail createVerificationTokenForUser(UUID userId) throws InvalidException {
+        VerificationOtpDetail detail = VerificationOtpDetail.builder()
                 .userId(userId)
                 .token(autoGenerateOtp())
                 .type(VerificationTokenTypeEnum.CREATE_ACCOUNT)
@@ -133,30 +133,17 @@ public class VerificationTokenFactory
     }
 
     @Override
-    public boolean validateVerificationCreateAccountToken(String token) throws InvalidException {
-        final Optional<VerificationTokenCommand> optional = verificationTokenRepository.findByToken(token);
-        if (optional.isEmpty() || !optional.get().getType().equals(VerificationTokenTypeEnum.CREATE_ACCOUNT)) {
-            throw new InvalidException(YourToursErrorCode.TOKEN_INVALID);
-        }
-
-        final Calendar cal = Calendar.getInstance();
-        if ((optional.get().getExpiryDate()
-                .getTime() - cal.getTime()
-                .getTime()) <= 0) {
-            verificationTokenRepository.delete(optional.get());
-            throw new InvalidException(YourToursErrorCode.TOKEN_EXPIRED);
-        }
-
-        return true;
+    public VerificationOtpDetail verifyCreateAccountOtp(String token) throws InvalidException {
+        return validateVerificationOtp(token, VerificationTokenTypeEnum.CREATE_ACCOUNT);
     }
 
     @Override
-    protected void postCreate(VerificationTokenCommand entity, VerificationTokenDetail detail) throws InvalidException {
+    protected void postCreate(VerificationOtpCommand entity, VerificationOtpDetail detail) throws InvalidException {
         deleteAllExpiredSinceNow();
     }
 
     @Override
-    protected void postUpdate(VerificationTokenCommand entity, VerificationTokenDetail detail) throws InvalidException {
+    protected void postUpdate(VerificationOtpCommand entity, VerificationOtpDetail detail) throws InvalidException {
         deleteAllExpiredSinceNow();
     }
 
@@ -167,8 +154,8 @@ public class VerificationTokenFactory
         return new Date(cal.getTime().getTime());
     }
 
-    private VerificationTokenCommand findByVerificationId(UUID verificationId) throws InvalidException {
-        Optional<VerificationTokenCommand> entity = verificationTokenRepository.findByVerificationId(verificationId);
+    private VerificationOtpCommand findByVerificationId(UUID verificationId) throws InvalidException {
+        Optional<VerificationOtpCommand> entity = verificationTokenRepository.findByVerificationId(verificationId);
         if (entity.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_VERIFICATION_TOKEN);
         }
@@ -208,4 +195,22 @@ public class VerificationTokenFactory
         Date date = new Date();
         verificationTokenRepository.deleteAllExpiredSince(date);
     }
+
+    private VerificationOtpDetail validateVerificationOtp(String token, VerificationTokenTypeEnum type) throws InvalidException {
+        final Optional<VerificationOtpCommand> optional = verificationTokenRepository.findByToken(token);
+        if (optional.isEmpty() || !optional.get().getType().equals(type)) {
+            throw new InvalidException(YourToursErrorCode.TOKEN_INVALID);
+        }
+
+        final Calendar cal = Calendar.getInstance();
+        if ((optional.get().getExpiryDate()
+                .getTime() - cal.getTime()
+                .getTime()) <= 0) {
+            verificationTokenRepository.delete(optional.get());
+            throw new InvalidException(YourToursErrorCode.TOKEN_EXPIRED);
+        }
+
+        return convertToDetail(optional.get());
+    }
+
 }

@@ -11,5 +11,5 @@ import lombok.experimental.SuperBuilder;
 @Accessors(chain = true)
 @NoArgsConstructor
 @SuperBuilder
-public class VerificationTokenDetail extends VerificationTokenInfo {
+public class VerificationOtpDetail extends VerificationOtpInfo {
 }

@@ -17,11 +17,11 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "verification_token")
+@Table(name = "verification_otp")
 @AllArgsConstructor
 @SuperBuilder
 @NoArgsConstructor
-public class VerificationTokenCommand extends Audit<String> {
+public class VerificationOtpCommand extends Audit<String> {
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     VerificationTokenTypeEnum type;

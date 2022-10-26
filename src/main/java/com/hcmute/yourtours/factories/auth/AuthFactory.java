@@ -1,21 +1,21 @@
 package com.hcmute.yourtours.factories.auth;
 
 
+import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.user.IUserFactory;
+import com.hcmute.yourtours.factories.verification_token.IVerificationOtpFactory;
 import com.hcmute.yourtours.keycloak.IKeycloakService;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.models.authentication.requests.LoginRequest;
 import com.hcmute.yourtours.models.authentication.requests.RefreshTokenRequest;
 import com.hcmute.yourtours.models.authentication.requests.RegisterRequest;
-import com.hcmute.yourtours.models.authentication.response.LoginResponse;
-import com.hcmute.yourtours.models.authentication.response.LogoutResponse;
-import com.hcmute.yourtours.models.authentication.response.RefreshTokenResponse;
-import com.hcmute.yourtours.models.authentication.response.RegisterResponse;
+import com.hcmute.yourtours.models.authentication.requests.VerifyOtpRequest;
+import com.hcmute.yourtours.models.authentication.response.*;
 import com.hcmute.yourtours.models.user.UserDetail;
+import com.hcmute.yourtours.models.verification_token.VerificationOtpDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.representations.AccessTokenResponse;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,10 +25,14 @@ public class AuthFactory implements IAuthFactory {
     private final IKeycloakService iKeycloakService;
     private final IUserFactory iUserFactory;
 
+    private final IVerificationOtpFactory iVerificationOtpFactory;
+
     public AuthFactory(IKeycloakService iKeycloakService,
-                       @Qualifier("userFactory") IUserFactory iUserFactory) {
+                       IUserFactory iUserFactory,
+                       IVerificationOtpFactory iVerificationOtpFactory) {
         this.iKeycloakService = iKeycloakService;
         this.iUserFactory = iUserFactory;
+        this.iVerificationOtpFactory = iVerificationOtpFactory;
     }
 
     @Override
@@ -85,6 +89,17 @@ public class AuthFactory implements IAuthFactory {
 
         iUserFactory.createModel(userDetail);
         return RegisterResponse.builder()
+                .success(true)
+                .build();
+    }
+
+    @Override
+    public VerifyOtpResponse activeAccount(VerifyOtpRequest request) throws InvalidException {
+        VerificationOtpDetail verifyDetail = iVerificationOtpFactory.verifyCreateAccountOtp(request.getOtp());
+        UserDetail userDetail = iUserFactory.getDetailModel(verifyDetail.getUserId(), null);
+        userDetail.setStatus(UserStatusEnum.ACTIVE);
+        iUserFactory.updateModel(userDetail.getId(), userDetail);
+        return VerifyOtpResponse.builder()
                 .success(true)
                 .build();
     }

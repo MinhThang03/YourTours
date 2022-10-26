@@ -6,7 +6,7 @@ import com.hcmute.yourtours.constant.RoleConstant;
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
 import com.hcmute.yourtours.email.IEmailFactory;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
-import com.hcmute.yourtours.factories.verification_token.IVerificationTokenFactory;
+import com.hcmute.yourtours.factories.verification_token.IVerificationOtpFactory;
 import com.hcmute.yourtours.keycloak.IKeycloakService;
 import com.hcmute.yourtours.libs.configuration.IConfigFactory;
 import com.hcmute.yourtours.libs.exceptions.ErrorCode;
@@ -17,7 +17,7 @@ import com.hcmute.yourtours.models.authentication.requests.UserChangePasswordReq
 import com.hcmute.yourtours.models.authentication.response.ChangePasswordResponse;
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.models.user.UserInfo;
-import com.hcmute.yourtours.models.verification_token.VerificationTokenDetail;
+import com.hcmute.yourtours.models.verification_token.VerificationOtpDetail;
 import com.hcmute.yourtours.repositories.UserRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -36,21 +36,19 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
     protected final IKeycloakService iKeycloakService;
     private final IConfigFactory configFactory;
     private final UserRepository userRepository;
-
     private final IEmailFactory iEmailFactory;
-
-    private final IVerificationTokenFactory iVerificationTokenFactory;
+    private final IVerificationOtpFactory iVerificationOtpFactory;
 
     protected UserFactory(
             UserRepository repository,
             IKeycloakService iKeycloakService,
-            IConfigFactory configFactory, IEmailFactory iEmailFactory, IVerificationTokenFactory iVerificationTokenFactory) {
+            IConfigFactory configFactory, IEmailFactory iEmailFactory, IVerificationOtpFactory iVerificationOtpFactory) {
         super(repository);
         this.iKeycloakService = iKeycloakService;
         this.configFactory = configFactory;
         this.userRepository = repository;
         this.iEmailFactory = iEmailFactory;
-        this.iVerificationTokenFactory = iVerificationTokenFactory;
+        this.iVerificationOtpFactory = iVerificationOtpFactory;
     }
 
     @Override
@@ -213,6 +211,7 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
         return convertToDetail(entity);
     }
 
+
     private boolean checkEmailExist(String username) {
         if (username == null) {
             return false;
@@ -222,7 +221,7 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
 
     @Override
     protected void postCreate(UserCommand entity, UserDetail detail) throws InvalidException {
-        VerificationTokenDetail tokenDetail = iVerificationTokenFactory.createVerificationTokenForUser(entity.getUserId());
+        VerificationOtpDetail tokenDetail = iVerificationOtpFactory.createVerificationTokenForUser(entity.getUserId());
         iEmailFactory.sendSimpleMessage(entity.getEmail(), SubjectEmailConstant.CREATE_ACCOUNT, tokenDetail.getToken());
     }
 

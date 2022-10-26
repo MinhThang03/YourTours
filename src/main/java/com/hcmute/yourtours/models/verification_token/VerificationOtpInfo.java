@@ -16,7 +16,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 @NoArgsConstructor
 @SuperBuilder
-public class VerificationTokenInfo extends BaseData<UUID> {
+public class VerificationOtpInfo extends BaseData<UUID> {
 
     private String token;
 

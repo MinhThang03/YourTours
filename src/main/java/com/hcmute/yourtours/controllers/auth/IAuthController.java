@@ -5,10 +5,8 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.authentication.requests.LoginRequest;
 import com.hcmute.yourtours.models.authentication.requests.RefreshTokenRequest;
 import com.hcmute.yourtours.models.authentication.requests.RegisterRequest;
-import com.hcmute.yourtours.models.authentication.response.LoginResponse;
-import com.hcmute.yourtours.models.authentication.response.LogoutResponse;
-import com.hcmute.yourtours.models.authentication.response.RefreshTokenResponse;
-import com.hcmute.yourtours.models.authentication.response.RegisterResponse;
+import com.hcmute.yourtours.models.authentication.requests.VerifyOtpRequest;
+import com.hcmute.yourtours.models.authentication.response.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +34,9 @@ public interface IAuthController {
     @PostMapping("/register")
     @Operation(summary = "Đăng ký tài khoản")
     ResponseEntity<BaseResponse<RegisterResponse>> registerAccount(@Valid @RequestBody RegisterRequest request);
+
+    @PostMapping("/active-account")
+    @Operation(summary = "Kích hoạt tài khoản")
+    ResponseEntity<BaseResponse<VerifyOtpResponse>> activeAccount(@Valid @RequestBody VerifyOtpRequest request);
 
 }
