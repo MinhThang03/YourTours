@@ -2,6 +2,7 @@ package com.hcmute.yourtours.factories.user;
 
 
 import com.hcmute.yourtours.commands.UserCommand;
+import com.hcmute.yourtours.config.AuditorAwareImpl;
 import com.hcmute.yourtours.constant.RoleConstant;
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
 import com.hcmute.yourtours.email.IEmailFactory;
@@ -31,7 +32,9 @@ import java.util.UUID;
 @Service
 @Slf4j
 @Transactional
-public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDetail, Long, UserCommand> implements IUserFactory {
+public class UserFactory
+        extends BasePersistDataFactory<UUID, UserInfo, UserDetail, Long, UserCommand>
+        implements IUserFactory {
 
     protected final IKeycloakService iKeycloakService;
     private final IConfigFactory configFactory;
@@ -39,16 +42,22 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
     private final IEmailFactory iEmailFactory;
     private final IVerificationOtpFactory iVerificationOtpFactory;
 
+    private final AuditorAwareImpl auditorAware;
+
     protected UserFactory(
             UserRepository repository,
             IKeycloakService iKeycloakService,
-            IConfigFactory configFactory, IEmailFactory iEmailFactory, IVerificationOtpFactory iVerificationOtpFactory) {
+            IConfigFactory configFactory,
+            IEmailFactory iEmailFactory,
+            IVerificationOtpFactory iVerificationOtpFactory,
+            AuditorAwareImpl auditorAware) {
         super(repository);
         this.iKeycloakService = iKeycloakService;
         this.configFactory = configFactory;
         this.userRepository = repository;
         this.iEmailFactory = iEmailFactory;
         this.iVerificationOtpFactory = iVerificationOtpFactory;
+        this.auditorAware = auditorAware;
     }
 
     @Override
@@ -209,6 +218,16 @@ public class UserFactory extends BasePersistDataFactory<UUID, UserInfo, UserDeta
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
         }
         return convertToDetail(entity);
+    }
+
+    @Override
+    public UserDetail getDetailCurrentUser() throws InvalidException {
+        Optional<String> optional = auditorAware.getCurrentAuditor();
+        if (optional.isEmpty()) {
+            throw new InvalidException(ErrorCode.UNAUTHORIZED);
+        } else {
+            return getDetailModel(UUID.fromString(optional.get()), null);
+        }
     }
 
 
