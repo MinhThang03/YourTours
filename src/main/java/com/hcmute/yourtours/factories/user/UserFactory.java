@@ -6,6 +6,7 @@ import com.hcmute.yourtours.config.AuditorAwareImpl;
 import com.hcmute.yourtours.constant.RoleConstant;
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
 import com.hcmute.yourtours.email.IEmailFactory;
+import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.verification_token.IVerificationOtpFactory;
 import com.hcmute.yourtours.keycloak.IKeycloakService;
@@ -16,8 +17,10 @@ import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.authentication.requests.UserChangePasswordRequest;
 import com.hcmute.yourtours.models.authentication.response.ChangePasswordResponse;
+import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.models.user.UserInfo;
+import com.hcmute.yourtours.models.user.request.ForgotPasswordRequest;
 import com.hcmute.yourtours.models.verification_token.VerificationOtpDetail;
 import com.hcmute.yourtours.repositories.UserRepository;
 import lombok.NonNull;
@@ -246,6 +249,23 @@ public class UserFactory
             throw e;
         } catch (Exception e) {
             throw new InvalidException(YourToursErrorCode.CHANGE_PASSWORD_FAIL);
+        }
+    }
+
+    @Override
+    public SuccessResponse requestForgotPassword(ForgotPasswordRequest request) throws InvalidException {
+        Optional<UserCommand> optional = userRepository.findByEmail(request.getEmail());
+        if (optional.isEmpty()) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
+        } else {
+            if (optional.get().getStatus().equals(UserStatusEnum.LOCK)) {
+                throw new InvalidException(YourToursErrorCode.ACCOUNT_IS_LOCKED);
+            } else {
+                iVerificationOtpFactory.createVerificationForgotPasswordOtp(optional.get().getUserId());
+                return SuccessResponse.builder()
+                        .success(true)
+                        .build();
+            }
         }
     }
 
