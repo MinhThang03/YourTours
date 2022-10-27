@@ -7,7 +7,6 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 @Data
 public class RegisterRequest {
@@ -15,7 +14,7 @@ public class RegisterRequest {
     @NotNull
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Size(min = 6, message = "Mật khẩu ít nhất 6 ký tự")
+    @Pattern(regexp = RegexUtils.PASSWORD_REGEX, message = "Nhập không đúng định dạng mật khẩu")
     private String password;
 
     @NotNull

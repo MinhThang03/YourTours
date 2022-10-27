@@ -14,7 +14,6 @@ import lombok.experimental.SuperBuilder;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -25,10 +24,12 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserInfo extends BaseData<UUID> {
 
+    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+
     @NotNull
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Size(min = 6, message = "Mật khẩu ít nhất 6 ký tự")
+    @Pattern(regexp = RegexUtils.EMAIL_REGEX, message = "Nhập không đúng định dạng email")
     private String password;
 
     @NotNull
