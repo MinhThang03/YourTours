@@ -24,8 +24,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserInfo extends BaseData<UUID> {
 
-    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
-
     @NotNull
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

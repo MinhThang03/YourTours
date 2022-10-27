@@ -14,4 +14,5 @@ public interface IUserFactory extends IDataFactory<UUID, UserInfo, UserDetail> {
 
     UserDetail getDetailByUserName(String userName) throws InvalidException;
 
+    UserDetail getDetailCurrentUser() throws InvalidException;
 }
