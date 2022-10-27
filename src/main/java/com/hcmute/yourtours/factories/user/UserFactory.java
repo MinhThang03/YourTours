@@ -234,6 +234,16 @@ public class UserFactory
     }
 
     @Override
+    public UserDetail updateCurrentUser(UserDetail detail) throws InvalidException {
+        String userId = auditorAware.getCurrentAuditor().orElse(null);
+        if (userId == null) {
+            throw new InvalidException(ErrorCode.UNAUTHORIZED);
+        } else {
+            return updateModel(UUID.fromString(userId), detail);
+        }
+    }
+
+    @Override
     public void resetPassword(UUID userId, String newPassword, String confirmPassword) throws InvalidException {
         try {
             if (!confirmPassword.equals(newPassword)) {
