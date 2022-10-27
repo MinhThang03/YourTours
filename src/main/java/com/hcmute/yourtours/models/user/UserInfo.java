@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.models.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.yourtours.enums.GenderEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
@@ -24,9 +25,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserInfo extends BaseData<UUID> {
 
-    @NotNull
-    @NotBlank
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     @Pattern(regexp = RegexUtils.EMAIL_REGEX, message = "Nhập không đúng định dạng email")
     private String password;
 
