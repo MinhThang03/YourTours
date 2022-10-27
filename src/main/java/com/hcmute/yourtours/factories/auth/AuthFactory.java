@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.auth;
 
 
+import com.hcmute.yourtours.enums.RoleEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.user.IUserFactory;
@@ -41,21 +42,20 @@ public class AuthFactory implements IAuthFactory {
     @Override
     public LoginResponse login(LoginRequest request) throws InvalidException {
         try {
-            // TODO: 10/2/2022
-//            UserDetail userDetail = iManageUserFactory.getDetailByUserName(request.getUsername());
+            UserDetail userDetail = iUserFactory.getDetailByEmail(request.getEmail());
             AccessTokenResponse accessTokenResponse = null;
-//            if (!userDetail.getStatus().equals(UserStatusEnum.LOCK)) {
-            accessTokenResponse = iKeycloakService.getJwt(request.getEmail(), request.getPassword());
-//            }
+            if (userDetail.getStatus() != null && userDetail.getStatus().equals(UserStatusEnum.LOCK)) {
+                throw new InvalidException(YourToursErrorCode.ACCOUNT_IS_LOCKED);
+            } else {
+                accessTokenResponse = iKeycloakService.getJwt(request.getEmail(), request.getPassword());
+            }
             return LoginResponse.builder()
                     .token(accessTokenResponse)
-//                    .isBlocked(userDetail.getStatus().equals(UserStatusEnum.LOCK))
+                    .userDetail(accessTokenResponse == null ? null : userDetail)
                     .build();
-        }
-//        catch (InvalidException e) {
-//            throw e;
-//        }
-        catch (Exception e) {
+        } catch (InvalidException e) {
+            throw e;
+        } catch (Exception e) {
             throw new InvalidException(YourToursErrorCode.LOGIN_FAIL);
         }
 
@@ -88,6 +88,7 @@ public class AuthFactory implements IAuthFactory {
                 .fullName(request.getFullName())
                 .password(request.getPassword())
                 .phoneNumber(request.getPhoneNumber())
+                .role(RoleEnum.USER)
                 .build();
 
         iUserFactory.createModel(userDetail);
@@ -109,7 +110,7 @@ public class AuthFactory implements IAuthFactory {
 
     @Override
     public SuccessResponse requestForgotPassword(ForgotPasswordRequest request) throws InvalidException {
-        UserDetail userDetail = iUserFactory.getDetailByUserName(request.getEmail());
+        UserDetail userDetail = iUserFactory.getDetailByEmail(request.getEmail());
 
         if (userDetail.getStatus().equals(UserStatusEnum.LOCK)) {
             throw new InvalidException(YourToursErrorCode.ACCOUNT_IS_LOCKED);

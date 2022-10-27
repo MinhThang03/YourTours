@@ -24,6 +24,7 @@ public enum YourToursErrorCode implements IErrorCode {
     FILE_ERROR_IS_NULL(HttpStatus.BAD_REQUEST, "400000014", "File không được để trống"),
     TOKEN_INVALID(HttpStatus.BAD_REQUEST, "400000015", "Token không hợp lệ"),
     TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "400000016", "Token đã hết hạn"),
+    USER_OR_PASSWORD_NOT_CORRECT(HttpStatus.BAD_REQUEST, "400000017", "email hoặc mật khẩu không chính xác"),
 
     //403
     FORBIDDEN(HttpStatus.FORBIDDEN, "4030000", "Bạn không đủ quyền truy cập"),

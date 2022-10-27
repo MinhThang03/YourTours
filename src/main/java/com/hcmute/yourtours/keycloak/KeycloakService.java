@@ -58,17 +58,24 @@ public class KeycloakService implements IKeycloakService {
 
     @Override
     public String createUser(String userName, String firstName, String lastName, String email, String password) throws InvalidException {
-        UserRepresentation keycloakUser;
-        Response keycloakResponse = keycloak.realm(securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getRealmName())
-                .users()
-                .create(toUserRepresentation(userName, firstName, lastName, email, toCredentialRepresentation(password)));
-        if (keycloakResponse.getStatus() == HttpStatus.CONFLICT.value()) {
-            throw new InvalidException(YourToursErrorCode.USERNAME_EXIST);
-        } else if (keycloakResponse.getStatus() == HttpStatus.CREATED.value()) {
-            return CreatedResponseUtil.getCreatedId(keycloakResponse);
+        try {
+            Response keycloakResponse = keycloak.realm(securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getRealmName())
+                    .users()
+                    .create(toUserRepresentation(userName, firstName, lastName, email, toCredentialRepresentation(password)));
+            if (keycloakResponse.getStatus() == HttpStatus.CONFLICT.value()) {
+                throw new InvalidException(YourToursErrorCode.USERNAME_EXIST);
+            } else if (keycloakResponse.getStatus() == HttpStatus.CREATED.value()) {
+                return CreatedResponseUtil.getCreatedId(keycloakResponse);
+            } else {
+                throw new InvalidException(YourToursErrorCode.CREATE_USER_FAIL);
+            }
+        } catch (InvalidException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InvalidException(YourToursErrorCode.CREATE_USER_FAIL);
         }
-        throw new InvalidException(YourToursErrorCode.CREATE_USER_FAIL);
     }
+
 
     @Override
     public boolean deleteUser(String userId) {
@@ -81,8 +88,12 @@ public class KeycloakService implements IKeycloakService {
     }
 
     @Override
-    public AccessTokenResponse getJwt(String userName, String password) {
-        return authzClient.obtainAccessToken(userName, password);
+    public AccessTokenResponse getJwt(String userName, String password) throws InvalidException {
+        try {
+            return authzClient.obtainAccessToken(userName, password);
+        } catch (Exception e) {
+            throw new InvalidException(YourToursErrorCode.USER_OR_PASSWORD_NOT_CORRECT);
+        }
     }
 
     @Override

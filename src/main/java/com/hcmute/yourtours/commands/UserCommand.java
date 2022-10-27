@@ -56,9 +56,6 @@ public class UserCommand extends Persistence {
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
-    @Column(name = "actived")
-    private Boolean actived;
-
     @Column(name = "avatar")
     private String avatar;
 

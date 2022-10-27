@@ -84,6 +84,7 @@ public class UserFactory
                 .address(detail.getAddress())
                 .avatar(detail.getAvatar())
                 .status(detail.getStatus())
+                .role(detail.getRole())
                 .build();
     }
 
@@ -96,6 +97,7 @@ public class UserFactory
         entity.setAddress(detail.getAddress());
         entity.setAvatar(detail.getAvatar());
         entity.setStatus(detail.getStatus());
+        entity.setRole(detail.getRole());
     }
 
     @Override
@@ -113,6 +115,7 @@ public class UserFactory
                 .address(entity.getAddress())
                 .avatar(entity.getAvatar())
                 .status(entity.getStatus())
+                .role(entity.getRole())
                 .build();
     }
 
@@ -131,6 +134,7 @@ public class UserFactory
                 .address(entity.getAddress())
                 .avatar(entity.getAvatar())
                 .status(entity.getStatus())
+                .role(entity.getRole())
                 .build();
     }
 
@@ -215,8 +219,8 @@ public class UserFactory
     }
 
     @Override
-    public UserDetail getDetailByUserName(String userName) throws InvalidException {
-        UserCommand entity = userRepository.findByEmail(userName).orElse(null);
+    public UserDetail getDetailByEmail(String email) throws InvalidException {
+        UserCommand entity = userRepository.findByEmail(email).orElse(null);
         if (entity == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
         }

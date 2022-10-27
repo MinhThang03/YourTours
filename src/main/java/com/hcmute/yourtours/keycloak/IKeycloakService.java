@@ -11,7 +11,7 @@ public interface IKeycloakService {
 
     boolean deleteUser(String userId);
 
-    AccessTokenResponse getJwt(String userName, String password);
+    AccessTokenResponse getJwt(String userName, String password) throws InvalidException;
 
     AccessTokenResponse getRefreshToken(String refreshToken) throws InvalidException;
 
