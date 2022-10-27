@@ -12,9 +12,11 @@ public interface IVerificationOtpFactory extends IDataFactory<UUID, Verification
 
     VerificationOtpDetail generateNewVerificationToken(String token) throws InvalidException;
 
-    void createPasswordResetTokenForUser(UUID userId, String token);
+    VerificationOtpDetail createVerificationOtpForUser(UUID userId) throws InvalidException;
 
-    VerificationOtpDetail createVerificationTokenForUser(UUID userId) throws InvalidException;
+    VerificationOtpDetail createVerificationForgotPasswordOtp(UUID userId) throws InvalidException;
 
     VerificationOtpDetail verifyCreateAccountOtp(String token) throws InvalidException;
+
+    VerificationOtpDetail verifyForgotPasswordOtp(String token) throws InvalidException;
 }

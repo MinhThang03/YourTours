@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
-public class RequiredForgotPasswordRequest {
+public class ResetPasswordWithOtpRequest {
     @NotNull
     @NotBlank
     private String otp;

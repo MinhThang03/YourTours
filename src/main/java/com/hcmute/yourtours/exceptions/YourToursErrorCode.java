@@ -58,6 +58,7 @@ public enum YourToursErrorCode implements IErrorCode {
 
     //409
     CONFIRM_PASSWORD_IS_NOT_VALID(HttpStatus.CONFLICT, "40900001", "Xác nhận mật khẩu không trùng khớp"),
+    ACCOUNT_IS_LOCKED(HttpStatus.CONFLICT, "40900002", "Tài khoản của bạn đã bị khóa"),
 
     ;
     private final HttpStatus httpStatus;

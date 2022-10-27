@@ -114,12 +114,18 @@ public class VerificationOtpFactory
     }
 
     @Override
-    public void createPasswordResetTokenForUser(UUID userId, String token) {
-
+    public VerificationOtpDetail createVerificationOtpForUser(UUID userId) throws InvalidException {
+        VerificationOtpDetail detail = VerificationOtpDetail.builder()
+                .userId(userId)
+                .token(autoGenerateOtp())
+                .type(VerificationTokenTypeEnum.CREATE_ACCOUNT)
+                .expiryDate(calculateExpiryDate(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER))
+                .build();
+        return createModel(detail);
     }
 
     @Override
-    public VerificationOtpDetail createVerificationTokenForUser(UUID userId) throws InvalidException {
+    public VerificationOtpDetail createVerificationForgotPasswordOtp(UUID userId) throws InvalidException {
         VerificationOtpDetail detail = VerificationOtpDetail.builder()
                 .userId(userId)
                 .token(autoGenerateOtp())
@@ -132,6 +138,11 @@ public class VerificationOtpFactory
     @Override
     public VerificationOtpDetail verifyCreateAccountOtp(String token) throws InvalidException {
         return validateVerificationOtp(token, VerificationTokenTypeEnum.CREATE_ACCOUNT);
+    }
+
+    @Override
+    public VerificationOtpDetail verifyForgotPasswordOtp(String token) throws InvalidException {
+        return validateVerificationOtp(token, VerificationTokenTypeEnum.FORGOT_PASSWORD);
     }
 
 

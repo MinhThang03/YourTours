@@ -13,6 +13,9 @@ import com.hcmute.yourtours.models.authentication.requests.RefreshTokenRequest;
 import com.hcmute.yourtours.models.authentication.requests.RegisterRequest;
 import com.hcmute.yourtours.models.authentication.requests.VerifyOtpRequest;
 import com.hcmute.yourtours.models.authentication.response.*;
+import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.user.request.ForgotPasswordRequest;
+import com.hcmute.yourtours.models.user.request.ResetPasswordWithOtpRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/auth/")
-@Tag(name = "AUTH API: USER")
+@Tag(name = "AUTH API: AUTH")
 @Transactional
 public class AuthController implements IAuthController {
 
@@ -96,5 +99,28 @@ public class AuthController implements IAuthController {
         }
     }
 
+    @Override
+    public ResponseEntity<BaseResponse<SuccessResponse>> forgotPasswordRequest(ForgotPasswordRequest request) {
+        LogContext.push(LogType.REQUEST, request);
+        try {
+            SuccessResponse response = iAuthFactory.requestForgotPassword(request);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e.getErrorCode());
+        }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<SuccessResponse>> resetPasswordWithOtp(ResetPasswordWithOtpRequest request) {
+        LogContext.push(LogType.REQUEST, request);
+        try {
+            SuccessResponse response = iAuthFactory.resetPasswordWithOtp(request);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e.getErrorCode());
+        }
+    }
 
 }
