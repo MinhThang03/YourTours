@@ -17,10 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -137,21 +134,9 @@ public class VerificationOtpFactory
         return validateVerificationOtp(token, VerificationTokenTypeEnum.CREATE_ACCOUNT);
     }
 
-    @Override
-    protected void postCreate(VerificationOtpCommand entity, VerificationOtpDetail detail) throws InvalidException {
-        deleteAllExpiredSinceNow();
-    }
 
-    @Override
-    protected void postUpdate(VerificationOtpCommand entity, VerificationOtpDetail detail) throws InvalidException {
-        deleteAllExpiredSinceNow();
-    }
-
-    private Date calculateExpiryDate(int expiryTimeInMinutes) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Timestamp(cal.getTime().getTime()));
-        cal.add(Calendar.MINUTE, expiryTimeInMinutes);
-        return new Date(cal.getTime().getTime());
+    private LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {
+        return LocalDateTime.now().plusMinutes(expiryTimeInMinutes);
     }
 
     private VerificationOtpCommand findByVerificationId(UUID verificationId) throws InvalidException {
@@ -191,21 +176,27 @@ public class VerificationOtpFactory
         }
     }
 
-    private void deleteAllExpiredSinceNow() {
-        Date date = new Date();
-        verificationTokenRepository.deleteAllExpiredSince(date);
+    @Override
+    protected void preCreate(VerificationOtpDetail detail) throws InvalidException {
+        deleteAllExpiredSinceNow();
     }
 
-    private VerificationOtpDetail validateVerificationOtp(String token, VerificationTokenTypeEnum type) throws InvalidException {
+    @Override
+    protected void preUpdate(UUID id, VerificationOtpDetail detail) throws InvalidException {
+        deleteAllExpiredSinceNow();
+    }
+
+    private void deleteAllExpiredSinceNow() {
+        verificationTokenRepository.deleteAllOtpExpired(LocalDateTime.now());
+    }
+
+    private VerificationOtpDetail validateVerificationOtp(String token, VerificationTokenTypeEnum typeOtp) throws InvalidException {
         final Optional<VerificationOtpCommand> optional = verificationTokenRepository.findByToken(token);
-        if (optional.isEmpty() || !optional.get().getType().equals(type)) {
+        if (optional.isEmpty() || !optional.get().getType().equals(typeOtp)) {
             throw new InvalidException(YourToursErrorCode.TOKEN_INVALID);
         }
 
-        final Calendar cal = Calendar.getInstance();
-        if ((optional.get().getExpiryDate()
-                .getTime() - cal.getTime()
-                .getTime()) <= 0) {
+        if ((optional.get().getExpiryDate().isBefore(LocalDateTime.now()))) {
             verificationTokenRepository.delete(optional.get());
             throw new InvalidException(YourToursErrorCode.TOKEN_EXPIRED);
         }

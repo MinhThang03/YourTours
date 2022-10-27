@@ -2,11 +2,12 @@ package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.commands.VerificationOtpCommand;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -19,12 +20,14 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationO
 
     Optional<VerificationOtpCommand> findByVerificationId(UUID verificationId);
 
-    Stream<VerificationOtpCommand> findAllByExpiryDateLessThan(Date now);
+    Stream<VerificationOtpCommand> findAllByExpiryDateLessThan(LocalDateTime now);
 
-    void deleteByExpiryDateLessThan(Date now);
+    void deleteByExpiryDateLessThan(LocalDateTime now);
 
-    @Query("delete from VerificationOtpCommand t where t.expiryDate < :date")
-    void deleteAllExpiredSince(@Param("date") Date now);
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "delete from verification_otp  where expiry_date < :date")
+    void deleteAllOtpExpired(@Param("date") LocalDateTime date);
 
     boolean existsByToken(String token);
 }

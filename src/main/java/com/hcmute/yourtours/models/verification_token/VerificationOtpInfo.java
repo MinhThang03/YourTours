@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -22,7 +22,7 @@ public class VerificationOtpInfo extends BaseData<UUID> {
 
     private UUID userId;
 
-    private Date expiryDate;
+    private LocalDateTime expiryDate;
 
     private VerificationTokenTypeEnum type;
 }

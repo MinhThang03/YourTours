@@ -42,7 +42,7 @@ public class AuthFactory implements IAuthFactory {
 //            UserDetail userDetail = iManageUserFactory.getDetailByUserName(request.getUsername());
             AccessTokenResponse accessTokenResponse = null;
 //            if (!userDetail.getStatus().equals(UserStatusEnum.LOCK)) {
-            accessTokenResponse = iKeycloakService.getJwt(request.getUsername(), request.getPassword());
+            accessTokenResponse = iKeycloakService.getJwt(request.getEmail(), request.getPassword());
 //            }
             return LoginResponse.builder()
                     .token(accessTokenResponse)

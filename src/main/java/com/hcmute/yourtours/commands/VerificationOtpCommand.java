@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
@@ -41,7 +41,7 @@ public class VerificationOtpCommand extends Audit<String> {
     @Column(name = "user_id", columnDefinition = "BINARY(16)")
     private UUID userId;
     @Column(name = "expiry_date")
-    private Date expiryDate;
+    private LocalDateTime expiryDate;
 
     @Override
     protected void preWrite() {
