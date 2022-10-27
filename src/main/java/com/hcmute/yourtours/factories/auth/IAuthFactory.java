@@ -7,6 +7,9 @@ import com.hcmute.yourtours.models.authentication.requests.RefreshTokenRequest;
 import com.hcmute.yourtours.models.authentication.requests.RegisterRequest;
 import com.hcmute.yourtours.models.authentication.requests.VerifyOtpRequest;
 import com.hcmute.yourtours.models.authentication.response.*;
+import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.user.request.ForgotPasswordRequest;
+import com.hcmute.yourtours.models.user.request.ResetPasswordWithOtpRequest;
 
 public interface IAuthFactory {
     LoginResponse login(LoginRequest request) throws InvalidException;
@@ -19,4 +22,7 @@ public interface IAuthFactory {
 
     VerifyOtpResponse activeAccount(VerifyOtpRequest request) throws InvalidException;
 
+    SuccessResponse requestForgotPassword(ForgotPasswordRequest request) throws InvalidException;
+
+    SuccessResponse resetPasswordWithOtp(ResetPasswordWithOtpRequest request) throws InvalidException;
 }

@@ -12,7 +12,10 @@ import com.hcmute.yourtours.models.authentication.requests.RefreshTokenRequest;
 import com.hcmute.yourtours.models.authentication.requests.RegisterRequest;
 import com.hcmute.yourtours.models.authentication.requests.VerifyOtpRequest;
 import com.hcmute.yourtours.models.authentication.response.*;
+import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.user.UserDetail;
+import com.hcmute.yourtours.models.user.request.ForgotPasswordRequest;
+import com.hcmute.yourtours.models.user.request.ResetPasswordWithOtpRequest;
 import com.hcmute.yourtours.models.verification_token.VerificationOtpDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.representations.AccessTokenResponse;
@@ -103,4 +106,29 @@ public class AuthFactory implements IAuthFactory {
                 .success(true)
                 .build();
     }
+
+    @Override
+    public SuccessResponse requestForgotPassword(ForgotPasswordRequest request) throws InvalidException {
+        UserDetail userDetail = iUserFactory.getDetailByUserName(request.getEmail());
+
+        if (userDetail.getStatus().equals(UserStatusEnum.LOCK)) {
+            throw new InvalidException(YourToursErrorCode.ACCOUNT_IS_LOCKED);
+        } else {
+            iVerificationOtpFactory.createVerificationForgotPasswordOtp(userDetail.getId());
+            return SuccessResponse.builder()
+                    .success(true)
+                    .build();
+        }
+    }
+
+    @Override
+    public SuccessResponse resetPasswordWithOtp(ResetPasswordWithOtpRequest request) throws InvalidException {
+        VerificationOtpDetail verifyDetail = iVerificationOtpFactory.verifyCreateAccountOtp(request.getOtp());
+        iUserFactory.resetPassword(verifyDetail.getUserId(), request.getNewPassword(), request.getConfirmPassword());
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
+    }
+
+
 }

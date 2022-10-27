@@ -230,6 +230,25 @@ public class UserFactory
         }
     }
 
+    @Override
+    public void resetPassword(UUID userId, String newPassword, String confirmPassword) throws InvalidException {
+        try {
+            if (!confirmPassword.equals(newPassword)) {
+                throw new InvalidException(YourToursErrorCode.CONFIRM_PASSWORD_IS_NOT_VALID);
+            }
+
+            UserCommand entity = userRepository.findByUserId(userId).orElse(null);
+
+            if (entity != null) {
+                iKeycloakService.setPassword(userId.toString(), newPassword);
+            }
+        } catch (InvalidException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InvalidException(YourToursErrorCode.CHANGE_PASSWORD_FAIL);
+        }
+    }
+
 
     private boolean checkEmailExist(String username) {
         if (username == null) {
@@ -240,7 +259,7 @@ public class UserFactory
 
     @Override
     protected void postCreate(UserCommand entity, UserDetail detail) throws InvalidException {
-        VerificationOtpDetail tokenDetail = iVerificationOtpFactory.createVerificationTokenForUser(entity.getUserId());
+        VerificationOtpDetail tokenDetail = iVerificationOtpFactory.createVerificationOtpForUser(entity.getUserId());
         iEmailFactory.sendSimpleMessage(entity.getEmail(), SubjectEmailConstant.CREATE_ACCOUNT, tokenDetail.getToken());
     }
 

@@ -7,6 +7,9 @@ import com.hcmute.yourtours.models.authentication.requests.RefreshTokenRequest;
 import com.hcmute.yourtours.models.authentication.requests.RegisterRequest;
 import com.hcmute.yourtours.models.authentication.requests.VerifyOtpRequest;
 import com.hcmute.yourtours.models.authentication.response.*;
+import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.user.request.ForgotPasswordRequest;
+import com.hcmute.yourtours.models.user.request.ResetPasswordWithOtpRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +41,13 @@ public interface IAuthController {
     @PostMapping("/active-account")
     @Operation(summary = "Kích hoạt tài khoản")
     ResponseEntity<BaseResponse<VerifyOtpResponse>> activeAccount(@Valid @RequestBody VerifyOtpRequest request);
+
+    @PostMapping("/forgot-password")
+    @Operation(summary = "Gửi yêu cầu quên mật khẩu")
+    ResponseEntity<BaseResponse<SuccessResponse>> forgotPasswordRequest(@Valid @RequestBody ForgotPasswordRequest request);
+
+    @PostMapping("/otp/reset-password")
+    @Operation(summary = "Đổi mật khẩu với otp")
+    ResponseEntity<BaseResponse<SuccessResponse>> resetPasswordWithOtp(@Valid @RequestBody ResetPasswordWithOtpRequest request);
 
 }

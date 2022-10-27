@@ -15,4 +15,6 @@ public interface IUserFactory extends IDataFactory<UUID, UserInfo, UserDetail> {
     UserDetail getDetailByUserName(String userName) throws InvalidException;
 
     UserDetail getDetailCurrentUser() throws InvalidException;
+
+    void resetPassword(UUID userId, String newPassword, String confirmPassword) throws InvalidException;
 }
