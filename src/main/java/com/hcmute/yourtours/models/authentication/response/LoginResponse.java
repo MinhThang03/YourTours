@@ -1,7 +1,7 @@
 package com.hcmute.yourtours.models.authentication.response;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.hcmute.yourtours.models.user.UserDetail;
+import com.hcmute.yourtours.models.user.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +13,5 @@ import org.keycloak.representations.AccessTokenResponse;
 public class LoginResponse {
     @JsonUnwrapped
     private AccessTokenResponse token;
-    private UserDetail userDetail;
+    private UserInfo userInfo;
 }

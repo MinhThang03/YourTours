@@ -26,9 +26,4 @@ public class RegisterRequest {
     @Pattern(regexp = RegexUtils.EMAIL_REGEX, message = "Nhập không đúng định dạng email")
     private String email;
 
-    @NotNull
-    @NotBlank
-    @Pattern(regexp = RegexUtils.PHONE_REGEX, message = "Nhập không đúng định dạng email")
-    private String phoneNumber;
-
 }

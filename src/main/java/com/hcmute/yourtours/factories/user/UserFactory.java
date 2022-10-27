@@ -144,11 +144,6 @@ public class UserFactory
         if (checkEmailExist(detail.getEmail())) {
             throw new InvalidException(YourToursErrorCode.USERNAME_EXIST);
         }
-
-        if (Boolean.TRUE.equals(userRepository.existsByEmail(detail.getEmail()))) {
-            throw new InvalidException(YourToursErrorCode.EMAIL_EXIST);
-        }
-
     }
 
     @Override
@@ -228,6 +223,15 @@ public class UserFactory
     }
 
     @Override
+    public UserInfo getInfoByEmail(String email) throws InvalidException {
+        UserCommand entity = userRepository.findByEmail(email).orElse(null);
+        if (entity == null) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
+        }
+        return convertToInfo(entity);
+    }
+
+    @Override
     public UserDetail getDetailCurrentUser() throws InvalidException {
         Optional<String> optional = auditorAware.getCurrentAuditor();
         if (optional.isEmpty()) {
@@ -284,13 +288,6 @@ public class UserFactory
     }
 
 
-    private boolean checkEmailExist(String username) {
-        if (username == null) {
-            return false;
-        }
-        return userRepository.existsByEmail(username);
-    }
-
     @Override
     protected void postCreate(UserCommand entity, UserDetail detail) throws InvalidException {
         VerificationOtpDetail tokenDetail = iVerificationOtpFactory.createVerificationOtpForUser(entity.getUserId());
@@ -309,4 +306,12 @@ public class UserFactory
         iKeycloakService.addUserClientRoles(userId, List.of(role));
         iKeycloakService.addUserRealmRoles(userId, List.of(role));
     }
+
+    private boolean checkEmailExist(String username) {
+        if (username == null) {
+            return false;
+        }
+        return userRepository.existsByEmail(username);
+    }
+
 }

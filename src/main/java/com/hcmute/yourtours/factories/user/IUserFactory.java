@@ -16,6 +16,8 @@ public interface IUserFactory extends IDataFactory<UUID, UserInfo, UserDetail> {
 
     UserDetail getDetailByEmail(String email) throws InvalidException;
 
+    UserInfo getInfoByEmail(String email) throws InvalidException;
+
     UserDetail getDetailCurrentUser() throws InvalidException;
 
     UserDetail updateCurrentUser(UserDetail detail) throws InvalidException;

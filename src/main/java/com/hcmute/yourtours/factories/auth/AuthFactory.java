@@ -15,6 +15,7 @@ import com.hcmute.yourtours.models.authentication.requests.VerifyOtpRequest;
 import com.hcmute.yourtours.models.authentication.response.*;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.user.UserDetail;
+import com.hcmute.yourtours.models.user.UserInfo;
 import com.hcmute.yourtours.models.user.request.ForgotPasswordRequest;
 import com.hcmute.yourtours.models.user.request.ResetPasswordWithOtpRequest;
 import com.hcmute.yourtours.models.verification_token.VerificationOtpDetail;
@@ -42,16 +43,16 @@ public class AuthFactory implements IAuthFactory {
     @Override
     public LoginResponse login(LoginRequest request) throws InvalidException {
         try {
-            UserDetail userDetail = iUserFactory.getDetailByEmail(request.getEmail());
+            UserInfo userInfo = iUserFactory.getInfoByEmail(request.getEmail());
             AccessTokenResponse accessTokenResponse = null;
-            if (userDetail.getStatus() != null && userDetail.getStatus().equals(UserStatusEnum.LOCK)) {
+            if (userInfo.getStatus() != null && userInfo.getStatus().equals(UserStatusEnum.LOCK)) {
                 throw new InvalidException(YourToursErrorCode.ACCOUNT_IS_LOCKED);
             } else {
                 accessTokenResponse = iKeycloakService.getJwt(request.getEmail(), request.getPassword());
             }
             return LoginResponse.builder()
                     .token(accessTokenResponse)
-                    .userDetail(accessTokenResponse == null ? null : userDetail)
+                    .userInfo(accessTokenResponse == null ? null : userInfo)
                     .build();
         } catch (InvalidException e) {
             throw e;
@@ -87,7 +88,6 @@ public class AuthFactory implements IAuthFactory {
                 .email(request.getEmail())
                 .fullName(request.getFullName())
                 .password(request.getPassword())
-                .phoneNumber(request.getPhoneNumber())
                 .role(RoleEnum.USER)
                 .build();
 
