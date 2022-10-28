@@ -2,7 +2,7 @@ package com.hcmute.yourtours.commands;
 
 
 import com.hcmute.yourtours.commands.base.Audit;
-import com.hcmute.yourtours.enums.VerificationTokenTypeEnum;
+import com.hcmute.yourtours.enums.OtpTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,7 +24,7 @@ import java.util.UUID;
 public class VerificationOtpCommand extends Audit<String> {
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    VerificationTokenTypeEnum type;
+    OtpTypeEnum type;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)

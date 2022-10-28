@@ -16,6 +16,7 @@ import com.hcmute.yourtours.models.authentication.response.*;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.user.request.ForgotPasswordRequest;
 import com.hcmute.yourtours.models.user.request.ResetPasswordWithOtpRequest;
+import com.hcmute.yourtours.models.verification_token.request.ResendVerifyOtp;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -116,6 +117,18 @@ public class AuthController implements IAuthController {
         LogContext.push(LogType.REQUEST, request);
         try {
             SuccessResponse response = iAuthFactory.resetPasswordWithOtp(request);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e.getErrorCode());
+        }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<SuccessResponse>> resendOtp(ResendVerifyOtp request) {
+        LogContext.push(LogType.REQUEST, request);
+        try {
+            SuccessResponse response = iAuthFactory.resendOtp(request);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {

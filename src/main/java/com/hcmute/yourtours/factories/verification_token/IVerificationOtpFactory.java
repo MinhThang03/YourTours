@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.factories.verification_token;
 
+import com.hcmute.yourtours.enums.OtpTypeEnum;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.IDataFactory;
 import com.hcmute.yourtours.models.verification_token.VerificationOtpDetail;
@@ -17,6 +18,8 @@ public interface IVerificationOtpFactory extends IDataFactory<UUID, Verification
     VerificationOtpDetail createVerificationForgotPasswordOtp(UUID userId) throws InvalidException;
 
     VerificationOtpDetail verifyCreateAccountOtp(String token) throws InvalidException;
+
+    VerificationOtpDetail resendOtp(UUID userId, OtpTypeEnum otpType) throws InvalidException;
 
     VerificationOtpDetail verifyForgotPasswordOtp(String token) throws InvalidException;
 }
