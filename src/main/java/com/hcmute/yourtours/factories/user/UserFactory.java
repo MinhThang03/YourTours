@@ -291,7 +291,7 @@ public class UserFactory
     @Override
     protected void postCreate(UserCommand entity, UserDetail detail) throws InvalidException {
         VerificationOtpDetail tokenDetail = iVerificationOtpFactory.createVerificationOtpForUser(entity.getUserId());
-        iEmailFactory.sendSimpleMessage(entity.getEmail(), SubjectEmailConstant.CREATE_ACCOUNT, tokenDetail.getToken());
+        iEmailFactory.sendSimpleMessage(entity.getEmail(), SubjectEmailConstant.ACTIVE_ACCOUNT, tokenDetail.getToken());
     }
 
     private UUID getCurrentUserId() throws InvalidException {

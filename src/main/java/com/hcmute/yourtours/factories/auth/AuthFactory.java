@@ -1,6 +1,8 @@
 package com.hcmute.yourtours.factories.auth;
 
 
+import com.hcmute.yourtours.constant.SubjectEmailConstant;
+import com.hcmute.yourtours.email.IEmailFactory;
 import com.hcmute.yourtours.enums.RoleEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
@@ -30,14 +32,16 @@ public class AuthFactory implements IAuthFactory {
 
     private final IKeycloakService iKeycloakService;
     private final IUserFactory iUserFactory;
-
+    private final IEmailFactory iEmailFactory;
     private final IVerificationOtpFactory iVerificationOtpFactory;
 
     public AuthFactory(IKeycloakService iKeycloakService,
                        IUserFactory iUserFactory,
+                       IEmailFactory iEmailFactory,
                        IVerificationOtpFactory iVerificationOtpFactory) {
         this.iKeycloakService = iKeycloakService;
         this.iUserFactory = iUserFactory;
+        this.iEmailFactory = iEmailFactory;
         this.iVerificationOtpFactory = iVerificationOtpFactory;
     }
 
@@ -135,7 +139,8 @@ public class AuthFactory implements IAuthFactory {
     @Override
     public SuccessResponse resendOtp(ResendVerifyOtp request) throws InvalidException {
         UserDetail userDetail = iUserFactory.getDetailByEmail(request.getEmail());
-        iVerificationOtpFactory.resendOtp(userDetail.getId(), request.getOtpType());
+        VerificationOtpDetail otpDetail = iVerificationOtpFactory.resendOtp(userDetail.getId(), request.getOtpType());
+        iEmailFactory.sendSimpleMessage(userDetail.getEmail(), SubjectEmailConstant.RESEND_OTP, otpDetail.getToken());
         return SuccessResponse.builder()
                 .success(true)
                 .build();
