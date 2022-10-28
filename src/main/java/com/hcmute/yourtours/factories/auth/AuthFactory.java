@@ -19,6 +19,7 @@ import com.hcmute.yourtours.models.user.UserInfo;
 import com.hcmute.yourtours.models.user.request.ForgotPasswordRequest;
 import com.hcmute.yourtours.models.user.request.ResetPasswordWithOtpRequest;
 import com.hcmute.yourtours.models.verification_token.VerificationOtpDetail;
+import com.hcmute.yourtours.models.verification_token.request.ResendVerifyOtp;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.stereotype.Component;
@@ -131,5 +132,13 @@ public class AuthFactory implements IAuthFactory {
                 .build();
     }
 
+    @Override
+    public SuccessResponse resendOtp(ResendVerifyOtp request) throws InvalidException {
+        UserDetail userDetail = iUserFactory.getDetailByEmail(request.getEmail());
+        iVerificationOtpFactory.resendOtp(userDetail.getId(), request.getOtpType());
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
+    }
 
 }

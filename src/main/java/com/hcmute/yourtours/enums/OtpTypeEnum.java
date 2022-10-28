@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.enums;
 
-public enum VerificationTokenTypeEnum {
+public enum OtpTypeEnum {
     CREATE_ACCOUNT,
     FORGOT_PASSWORD,
 }

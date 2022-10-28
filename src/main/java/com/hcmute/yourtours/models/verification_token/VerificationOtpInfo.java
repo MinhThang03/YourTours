@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.models.verification_token;
 
-import com.hcmute.yourtours.enums.VerificationTokenTypeEnum;
+import com.hcmute.yourtours.enums.OtpTypeEnum;
 import com.hcmute.yourtours.libs.model.BaseData;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,5 +24,5 @@ public class VerificationOtpInfo extends BaseData<UUID> {
 
     private LocalDateTime expiryDate;
 
-    private VerificationTokenTypeEnum type;
+    private OtpTypeEnum type;
 }
