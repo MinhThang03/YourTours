@@ -50,6 +50,7 @@ public class VerificationOtpFactory
                 .userId(detail.getUserId())
                 .expiryDate(calculateExpiryDate(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER))
                 .type(detail.getType())
+                .createdBy(detail.getCreatedBy())
                 .build();
     }
 
@@ -120,6 +121,7 @@ public class VerificationOtpFactory
                 .token(autoGenerateOtp())
                 .type(OtpTypeEnum.CREATE_ACCOUNT)
                 .expiryDate(calculateExpiryDate(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER))
+                .createdBy(userId.toString())
                 .build();
         return createModel(detail);
     }
