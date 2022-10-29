@@ -7,4 +7,5 @@ import com.hcmute.yourtours.models.owner_of_home.OwnerOfHomeInfo;
 import java.util.UUID;
 
 public interface IOwnerOfHomeFactory extends IDataFactory<UUID, OwnerOfHomeInfo, OwnerOfHomeDetail> {
+    boolean existByOwnerIdAndHomeId(UUID ownerId, UUID homeId);
 }

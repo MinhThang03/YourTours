@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface IAmenityCategoriesFactory extends IDataFactory<UUID, AmenityCategoryInfo, AmenityCategoryDetail> {
     Boolean existByAmenityCategoryId(UUID amenityCategoryId);
+
+
 }

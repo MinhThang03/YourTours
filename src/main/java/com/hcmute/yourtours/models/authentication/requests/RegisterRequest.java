@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.models.authentication.requests;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.yourtours.libs.util.constant.RegexUtils;
 import lombok.Data;
@@ -26,4 +27,7 @@ public class RegisterRequest {
     @Pattern(regexp = RegexUtils.EMAIL_REGEX, message = "Nhập không đúng định dạng email")
     private String email;
 
+
+    @JsonIgnore
+    private String createdBy;
 }

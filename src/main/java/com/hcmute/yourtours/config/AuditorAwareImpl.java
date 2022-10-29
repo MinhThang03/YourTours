@@ -24,6 +24,6 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 //            XAPIAuthentication auth = (XAPIAuthentication) authentication;
             return Optional.ofNullable(authentication.getName());
         }
-        return Optional.of("anonymous");
+        return Optional.empty();
     }
 }
