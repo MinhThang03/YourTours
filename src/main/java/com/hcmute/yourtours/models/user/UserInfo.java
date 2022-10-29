@@ -56,4 +56,7 @@ public class UserInfo extends BaseData<UUID> {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private RoleEnum role;
+
+    @JsonIgnore
+    private String createdBy;
 }

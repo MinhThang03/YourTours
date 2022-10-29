@@ -85,4 +85,9 @@ public class OwnerOfHomeFactory
         }
         return command.getId();
     }
+
+    @Override
+    public boolean existByOwnerIdAndHomeId(UUID ownerId, UUID homeId) {
+        return ownerOfHomesRepository.existsByUserIdAndHomeId(ownerId, homeId);
+    }
 }

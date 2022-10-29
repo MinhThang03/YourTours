@@ -6,12 +6,16 @@ import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.amenities_of_home.AmenityOfHomeDetail;
 import com.hcmute.yourtours.models.amenities_of_home.AmenityOfHomeInfo;
+import com.hcmute.yourtours.models.amenities_of_home.projection.AmenityOfHomeModel;
+import com.hcmute.yourtours.models.amenities_of_home.projection.AmenityOfHomeProjection;
 import com.hcmute.yourtours.repositories.AmenitiesOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -84,5 +88,20 @@ public class AmenitiesOfHomeFactory
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_AMENITIES_OF_HOME);
         }
         return command.getId();
+    }
+
+    @Override
+    public List<AmenityOfHomeModel> getAllByCategoryIdAndHomeId(UUID categoryId, UUID homeId) {
+        List<AmenityOfHomeProjection> projections = amenitiesOfHomeRepository
+                .findAllByAmenityCategoryIdAndHomeId(categoryId, homeId);
+
+        return projections.stream().map(item -> AmenityOfHomeModel.builder()
+                .name(item.getName())
+                .description(item.getDescription())
+                .status(item.getStatus())
+                .isHave(item.getIsHave())
+                .amenityId(item.getAmenityId())
+                .homeId(item.getHomeId())
+                .build()).collect(Collectors.toList());
     }
 }

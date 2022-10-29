@@ -85,6 +85,7 @@ public class UserFactory
                 .avatar(detail.getAvatar())
                 .status(detail.getStatus())
                 .role(detail.getRole())
+                .createdBy(detail.getCreatedBy())
                 .build();
     }
 
