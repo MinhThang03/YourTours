@@ -94,7 +94,7 @@ public class AuthFactory implements IAuthFactory {
                 .fullName(request.getFullName())
                 .password(request.getPassword())
                 .role(RoleEnum.USER)
-                .createdBy(request.getCreatedBy())
+                .createdBy("REGISTER")
                 .build();
 
         iUserFactory.createModel(userDetail);
