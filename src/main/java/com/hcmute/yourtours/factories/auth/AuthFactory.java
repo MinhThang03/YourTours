@@ -121,7 +121,8 @@ public class AuthFactory implements IAuthFactory {
         if (userDetail.getStatus().equals(UserStatusEnum.LOCK)) {
             throw new InvalidException(YourToursErrorCode.ACCOUNT_IS_LOCKED);
         } else {
-            iVerificationOtpFactory.createVerificationForgotPasswordOtp(userDetail.getId());
+            VerificationOtpDetail otpDetail = iVerificationOtpFactory.createVerificationForgotPasswordOtp(userDetail.getId());
+            iEmailFactory.sendSimpleMessage(userDetail.getEmail(), SubjectEmailConstant.FORGOT_PASSWORD_OTP, otpDetail.getToken());
             return SuccessResponse.builder()
                     .success(true)
                     .build();
