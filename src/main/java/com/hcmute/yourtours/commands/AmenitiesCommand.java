@@ -36,6 +36,9 @@ public class AmenitiesCommand extends NameData {
     @Column(name = "category_id", columnDefinition = "BINARY(16)")
     private UUID categoryId;
 
+    @Column(name = "icon")
+    private String icon;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private CommonStatusEnum status;

@@ -24,6 +24,8 @@ public class AmenityInfo extends NameDataModel<UUID> {
 
     private UUID categoryId;
 
+    private String icon;
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private AmenityCategoryDetail category;

@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.models.rooms_of_home;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hcmute.yourtours.libs.model.BaseData;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class RoomOfHomeInfo extends BaseData<UUID> {
     private String description;
 
+    @JsonIgnore
     private UUID homeId;
 
     private UUID categoryId;

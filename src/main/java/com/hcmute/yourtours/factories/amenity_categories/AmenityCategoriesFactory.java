@@ -43,6 +43,7 @@ public class AmenityCategoriesFactory
                 .name(detail.getName())
                 .description(detail.getDescription())
                 .status(detail.getStatus())
+                .isDefault(detail.getIsDefault())
                 .build();
     }
 
@@ -51,6 +52,7 @@ public class AmenityCategoriesFactory
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
+        entity.setIsDefault(detail.getIsDefault());
     }
 
     @Override
@@ -63,6 +65,7 @@ public class AmenityCategoriesFactory
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
+                .isDefault(entity.getIsDefault())
                 .build();
     }
 
@@ -76,6 +79,7 @@ public class AmenityCategoriesFactory
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
+                .isDefault(entity.getIsDefault())
                 .build();
     }
 
@@ -91,6 +95,28 @@ public class AmenityCategoriesFactory
     @Override
     public Boolean existByAmenityCategoryId(UUID amenityCategoryId) {
         return amenityCategoriesRepository.existsByAmenityCategoryId(amenityCategoryId);
+    }
+
+    @Override
+    protected void preCreate(AmenityCategoryDetail detail) throws InvalidException {
+        resetDefaultCategory(detail);
+    }
+
+    @Override
+    protected void preUpdate(UUID id, AmenityCategoryDetail detail) throws InvalidException {
+        resetDefaultCategory(detail);
+    }
+
+
+    private void resetDefaultCategory(AmenityCategoryDetail detail) throws InvalidException {
+        if (Boolean.TRUE.equals(detail.getIsDefault())) {
+            AmenityCategoriesCommand command = amenityCategoriesRepository.findByIsDefault(true).orElse(null);
+            if (command != null) {
+                AmenityCategoryDetail defaultDetail = convertToDetail(command);
+                defaultDetail.setIsDefault(false);
+                updateModel(defaultDetail.getId(), defaultDetail);
+            }
+        }
     }
 }
 

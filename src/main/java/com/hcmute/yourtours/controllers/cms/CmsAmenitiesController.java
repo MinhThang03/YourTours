@@ -10,9 +10,9 @@ import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
-import com.hcmute.yourtours.libs.model.filter.SimpleFilter;
 import com.hcmute.yourtours.models.amenities.AmenityDetail;
 import com.hcmute.yourtours.models.amenities.AmenityInfo;
+import com.hcmute.yourtours.models.amenities.filter.AmenityFilter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/cms/amenitíes")
+@RequestMapping("/api/v1/cms/amenities")
 @Tag(name = "CMS API: AMENITIES ", description = "API admin config các tiện ích")
 @Transactional
 public class CmsAmenitiesController
@@ -50,7 +50,7 @@ public class CmsAmenitiesController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<AmenityInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<AmenityInfo>>> getInfoPageWithFilter(AmenityFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 

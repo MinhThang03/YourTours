@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.models.images_home;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hcmute.yourtours.libs.model.BaseData;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,5 +19,6 @@ public class ImageHomeInfo extends BaseData<UUID> {
 
     private String path;
 
+    @JsonIgnore
     private UUID homeId;
 }

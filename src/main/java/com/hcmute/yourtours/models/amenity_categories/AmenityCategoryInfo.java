@@ -17,4 +17,6 @@ import java.util.UUID;
 @SuperBuilder
 public class AmenityCategoryInfo extends NameDataModel<UUID> {
     private CommonStatusEnum status;
+
+    private Boolean isDefault;
 }

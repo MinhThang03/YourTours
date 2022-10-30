@@ -12,4 +12,6 @@ public interface AmenityCategoriesRepository extends JpaRepository<AmenityCatego
     Optional<AmenityCategoriesCommand> findByAmenityCategoryId(UUID amenityCategoryId);
 
     Boolean existsByAmenityCategoryId(UUID amenityCategoryId);
+
+    Optional<AmenityCategoriesCommand> findByIsDefault(Boolean isDefault);
 }

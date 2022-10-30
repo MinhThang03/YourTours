@@ -4,6 +4,7 @@ import com.hcmute.yourtours.commands.RoomsOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeCreateModel;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeInfo;
 import com.hcmute.yourtours.repositories.RoomsOfHomeRepository;
@@ -11,6 +12,7 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -84,5 +86,21 @@ public class RoomsOfHomeFactory
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_ROOMS_OF_HOME);
         }
         return room.getId();
+    }
+
+    @Override
+    public void createListWithHomeId(UUID homeId, List<RoomOfHomeCreateModel> listCreate) throws InvalidException {
+        roomsOfHomeRepository.deleteAllByHomeId(homeId);
+        for (RoomOfHomeCreateModel item : listCreate) {
+            if (item.getNumber() != null) {
+                for (int i = 0; i < item.getNumber(); i++) {
+                    RoomOfHomeDetail detail = RoomOfHomeDetail.builder()
+                            .homeId(homeId)
+                            .categoryId(item.getCategoryId())
+                            .build();
+                    createModel(detail);
+                }
+            }
+        }
     }
 }
