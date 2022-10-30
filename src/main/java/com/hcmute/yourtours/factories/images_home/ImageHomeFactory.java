@@ -11,6 +11,7 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -90,5 +91,15 @@ public class ImageHomeFactory
             item.setHomeId(homeId);
             createModel(item);
         }
+    }
+
+    @Override
+    public List<ImageHomeDetail> getListByHomeId(UUID homeId) throws InvalidException {
+        List<ImagesHomeCommand> commands = imagesHomeRepository.findAllByHomeId(homeId);
+        List<ImageHomeDetail> result = new ArrayList<>();
+        for (ImagesHomeCommand command : commands) {
+            result.add(convertToDetail(command));
+        }
+        return result;
     }
 }

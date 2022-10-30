@@ -108,6 +108,7 @@ public class HomesFactory
                 .refundPolicy(entity.getRefundPolicy())
                 .status(entity.getStatus())
                 .numberOfGuests(entity.getNumberOfGuests())
+                .imagesOfHome(iImagesHomeFactory.getListByHomeId(entity.getHomeId()))
                 .build();
     }
 

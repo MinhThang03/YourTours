@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface IImagesHomeFactory extends IDataFactory<UUID, ImageHomeInfo, ImageHomeDetail> {
 
     void createListWithHomeId(UUID homeId, List<ImageHomeDetail> listCreate) throws InvalidException;
+
+    List<ImageHomeDetail> getListByHomeId(UUID homeId) throws InvalidException;
 }
