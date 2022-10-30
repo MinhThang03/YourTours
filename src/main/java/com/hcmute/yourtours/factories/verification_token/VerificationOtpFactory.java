@@ -131,6 +131,7 @@ public class VerificationOtpFactory
         VerificationOtpDetail detail = VerificationOtpDetail.builder()
                 .userId(userId)
                 .token(autoGenerateOtp())
+                .createdBy(userId.toString())
                 .type(OtpTypeEnum.CREATE_ACCOUNT)
                 .expiryDate(calculateExpiryDate(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER))
                 .build();
@@ -149,6 +150,7 @@ public class VerificationOtpFactory
                 .userId(userId)
                 .token(autoGenerateOtp())
                 .type(otpType)
+                .createdBy(userId.toString())
                 .expiryDate(calculateExpiryDate(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER))
                 .build();
         return createModel(detail);
