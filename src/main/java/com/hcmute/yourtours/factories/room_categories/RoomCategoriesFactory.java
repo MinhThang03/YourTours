@@ -4,9 +4,13 @@ import com.hcmute.yourtours.commands.RoomCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.room_categories.RoomCategoryDetail;
 import com.hcmute.yourtours.models.room_categories.RoomCategoryInfo;
+import com.hcmute.yourtours.models.room_categories.filter.RoomCategoryFilter;
 import com.hcmute.yourtours.repositories.RoomCategoriesRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,5 +99,12 @@ public class RoomCategoriesFactory
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_ROOM_CATEGORIES);
         }
         return optional.get().getId();
+    }
+
+    @Override
+    protected <F extends BaseFilter> Page<RoomCategoriesCommand> pageQuery(F filter, Integer number, Integer size) {
+        RoomCategoryFilter roomCategoryFilter = (RoomCategoryFilter) filter;
+        return roomCategoriesRepository.findPageWithFilter(roomCategoryFilter.getImportant(), PageRequest.of(number, size));
+
     }
 }

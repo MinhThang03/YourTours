@@ -40,4 +40,7 @@ public class HomeInfo extends NameDataModel<UUID> {
     private RefundPolicyEnum refundPolicy;
 
     private CommonStatusEnum status;
+
+    @Min(value = 0, message = "Số lượng khách không được phép nhỏ hơn 0")
+    private Integer numberOfGuests;
 }

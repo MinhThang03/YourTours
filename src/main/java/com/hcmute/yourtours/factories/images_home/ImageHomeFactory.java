@@ -11,6 +11,7 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -80,5 +81,14 @@ public class ImageHomeFactory
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_IMAGES_OF_HOME);
         }
         return image.getId();
+    }
+
+    @Override
+    public void createListWithHomeId(UUID homeId, List<ImageHomeDetail> listCreate) throws InvalidException {
+        imagesHomeRepository.deleteAllByHomeId(homeId);
+        for (ImageHomeDetail item : listCreate) {
+            item.setHomeId(homeId);
+            createModel(item);
+        }
     }
 }

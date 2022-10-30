@@ -11,9 +11,9 @@ import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
-import com.hcmute.yourtours.libs.model.filter.SimpleFilter;
 import com.hcmute.yourtours.models.room_categories.RoomCategoryDetail;
 import com.hcmute.yourtours.models.room_categories.RoomCategoryInfo;
+import com.hcmute.yourtours.models.room_categories.filter.RoomCategoryFilter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +51,7 @@ public class CmsRoomCategoriesController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<RoomCategoryInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<RoomCategoryInfo>>> getInfoPageWithFilter(RoomCategoryFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 

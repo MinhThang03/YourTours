@@ -7,4 +7,5 @@ import com.hcmute.yourtours.models.amenities.AmenityInfo;
 import java.util.UUID;
 
 public interface IAmenitiesFactory extends IDataFactory<UUID, AmenityInfo, AmenityDetail> {
+
 }

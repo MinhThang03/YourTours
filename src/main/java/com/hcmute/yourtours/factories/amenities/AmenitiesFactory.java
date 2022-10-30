@@ -5,10 +5,14 @@ import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenity_categories.IAmenityCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.amenities.AmenityDetail;
 import com.hcmute.yourtours.models.amenities.AmenityInfo;
+import com.hcmute.yourtours.models.amenities.filter.AmenityFilter;
 import com.hcmute.yourtours.models.amenity_categories.AmenityCategoryDetail;
 import com.hcmute.yourtours.repositories.AmenitiesRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +44,7 @@ public class AmenitiesFactory
 
     @Override
     protected void preCreate(AmenityDetail detail) throws InvalidException {
-        if (!iAmenityCategoriesFactory.existByAmenityCategoryId(detail.getCategoryId())) {
+        if (Boolean.FALSE.equals(iAmenityCategoriesFactory.existByAmenityCategoryId(detail.getCategoryId()))) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_AMENITY_CATEGORIES_AMENITY_FACTORY);
         }
     }
@@ -55,12 +59,13 @@ public class AmenitiesFactory
                 .description(detail.getDescription())
                 .status(detail.getStatus())
                 .categoryId(detail.getCategoryId())
+                .icon(detail.getIcon())
                 .build();
     }
 
     @Override
     protected void preUpdate(UUID id, AmenityDetail detail) throws InvalidException {
-        if (!iAmenityCategoriesFactory.existByAmenityCategoryId(detail.getCategoryId())) {
+        if (Boolean.FALSE.equals(iAmenityCategoriesFactory.existByAmenityCategoryId(detail.getCategoryId()))) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_AMENITY_CATEGORIES_AMENITY_FACTORY);
         }
     }
@@ -71,6 +76,7 @@ public class AmenitiesFactory
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
         entity.setCategoryId(detail.getCategoryId());
+        entity.setIcon(detail.getIcon());
     }
 
     @Override
@@ -85,6 +91,7 @@ public class AmenitiesFactory
                 .description(entity.getDescription())
                 .status(entity.getStatus())
                 .category(category)
+                .icon(entity.getIcon())
                 .build();
     }
 
@@ -100,6 +107,7 @@ public class AmenitiesFactory
                 .description(entity.getDescription())
                 .status(entity.getStatus())
                 .category(category)
+                .icon(entity.getIcon())
                 .build();
     }
 
@@ -110,5 +118,11 @@ public class AmenitiesFactory
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_AMENITY);
         }
         return optional.get().getId();
+    }
+
+    @Override
+    protected <F extends BaseFilter> Page<AmenitiesCommand> pageQuery(F filter, Integer number, Integer size) {
+        AmenityFilter amenityFilter = (AmenityFilter) filter;
+        return amenitiesRepository.getPageWithAmenityFilter(amenityFilter.getIsDefault(), PageRequest.of(number, size));
     }
 }

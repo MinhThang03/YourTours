@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 
 @Data
@@ -16,6 +17,7 @@ import javax.persistence.MappedSuperclass;
 @AllArgsConstructor
 public class NameData extends Persistence {
 
+    @Lob
     private String description;
 
     private String name;

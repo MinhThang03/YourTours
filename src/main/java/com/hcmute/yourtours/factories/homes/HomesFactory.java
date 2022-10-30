@@ -2,6 +2,9 @@ package com.hcmute.yourtours.factories.homes;
 
 import com.hcmute.yourtours.commands.HomesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
+import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
+import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.homes.HomeDetail;
@@ -20,10 +23,19 @@ public class HomesFactory
         implements IHomesFactory {
 
     private final HomesRepository homesRepository;
+    private final IImagesHomeFactory iImagesHomeFactory;
+    private final IRoomsOfHomeFactory iRoomsOfHomeFactory;
+    private final IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory;
 
-    protected HomesFactory(HomesRepository repository) {
+    protected HomesFactory(HomesRepository repository,
+                           IImagesHomeFactory iImagesHomeFactory,
+                           IRoomsOfHomeFactory iRoomsOfHomeFactory,
+                           IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory) {
         super(repository);
         this.homesRepository = repository;
+        this.iImagesHomeFactory = iImagesHomeFactory;
+        this.iRoomsOfHomeFactory = iRoomsOfHomeFactory;
+        this.iAmenitiesOfHomeFactory = iAmenitiesOfHomeFactory;
     }
 
     @Override
@@ -50,6 +62,7 @@ public class HomesFactory
                 .costPerNightDefault(detail.getCostPerNightDefault())
                 .refundPolicy(detail.getRefundPolicy())
                 .status(detail.getStatus())
+                .numberOfGuests(detail.getNumberOfGuests())
                 .build();
     }
 
@@ -67,6 +80,7 @@ public class HomesFactory
         entity.setCostPerNightDefault(detail.getCostPerNightDefault());
         entity.setRefundPolicy(detail.getRefundPolicy());
         entity.setStatus(detail.getStatus());
+        entity.setNumberOfGuests(detail.getNumberOfGuests());
     }
 
     @Override
@@ -88,6 +102,7 @@ public class HomesFactory
                 .costPerNightDefault(entity.getCostPerNightDefault())
                 .refundPolicy(entity.getRefundPolicy())
                 .status(entity.getStatus())
+                .numberOfGuests(entity.getNumberOfGuests())
                 .build();
     }
 
@@ -110,6 +125,7 @@ public class HomesFactory
                 .costPerNightDefault(entity.getCostPerNightDefault())
                 .refundPolicy(entity.getRefundPolicy())
                 .status(entity.getStatus())
+                .numberOfGuests(entity.getNumberOfGuests())
                 .build();
     }
 
@@ -120,5 +136,19 @@ public class HomesFactory
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_HOME);
         }
         return home.getId();
+    }
+
+    @Override
+    protected void preCreate(HomeDetail detail) throws InvalidException {
+        if (detail.getImagesOfHome().size() < 5) {
+            throw new InvalidException(YourToursErrorCode.LIST_IMAGES_HOME_NOT_ENOUGH_SIZE);
+        }
+    }
+
+    @Override
+    protected void postCreate(HomesCommand entity, HomeDetail detail) throws InvalidException {
+        iImagesHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getImagesOfHome());
+        iRoomsOfHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getRoomsOfHome());
+        iAmenitiesOfHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getAmenitiesOfHome());
     }
 }

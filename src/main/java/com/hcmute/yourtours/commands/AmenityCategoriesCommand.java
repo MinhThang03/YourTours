@@ -37,6 +37,9 @@ public class AmenityCategoriesCommand extends NameData {
     @Enumerated(EnumType.STRING)
     private CommonStatusEnum status;
 
+    @Column(name = "isDefault")
+    private Boolean isDefault;
+
     @Override
     protected void preWrite() {
         super.preWrite();

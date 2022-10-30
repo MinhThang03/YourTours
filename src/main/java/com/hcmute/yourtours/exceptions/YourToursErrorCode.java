@@ -25,6 +25,7 @@ public enum YourToursErrorCode implements IErrorCode {
     TOKEN_INVALID(HttpStatus.BAD_REQUEST, "400000015", "Mã otp không hợp lệ"),
     TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "400000016", "Mã otp đã hết hạn"),
     USER_OR_PASSWORD_NOT_CORRECT(HttpStatus.BAD_REQUEST, "400000017", "Email hoặc mật khẩu không chính xác"),
+    LIST_IMAGES_HOME_NOT_ENOUGH_SIZE(HttpStatus.BAD_REQUEST, "400000015", "Không đủ 5 hình ảnh"),
 
     //403
     FORBIDDEN(HttpStatus.FORBIDDEN, "4030000", "Bạn không đủ quyền truy cập"),

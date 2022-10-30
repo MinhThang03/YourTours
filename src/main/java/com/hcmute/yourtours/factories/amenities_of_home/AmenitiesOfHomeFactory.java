@@ -104,4 +104,14 @@ public class AmenitiesOfHomeFactory
                 .homeId(item.getHomeId())
                 .build()).collect(Collectors.toList());
     }
+
+    @Override
+    public void createListWithHomeId(UUID homeId, List<AmenityOfHomeDetail> listCreate) throws InvalidException {
+        amenitiesOfHomeRepository.deleteAllByHomeId(homeId);
+        for (AmenityOfHomeDetail item : listCreate) {
+            item.setHomeId(homeId);
+            item.setIsHave(true);
+            createModel(item);
+        }
+    }
 }

@@ -63,6 +63,9 @@ public class HomesCommand extends NameData {
     @Column(name = "cost_per_night_default")
     private Double costPerNightDefault;
 
+    @Column(name = "number_of_guests")
+    private Integer numberOfGuests;
+
     @Column(name = "refundPolicy")
     @Enumerated(EnumType.STRING)
     private RefundPolicyEnum refundPolicy;
