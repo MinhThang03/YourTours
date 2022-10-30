@@ -16,16 +16,16 @@ public interface AmenitiesRepository extends JpaRepository<AmenitiesCommand, Lon
     Optional<AmenitiesCommand> findByAmenityId(UUID amenityId);
 
     @Query(nativeQuery = true,
-            value = "select a.* " +
-                    "from amenities a " +
-                    "         inner join amenity_categories b on a.category_id = b.amenity_category_id " +
-                    "where b.is_default = :isDefault " +
-                    "   or :isDefault is null",
+            value = "select a.*  " +
+                    "from amenities a  " +
+                    "         inner join amenity_categories b on a.category_id = b.amenity_category_id  " +
+                    "where b.amenity_category_id = :categoryId  " +
+                    "   or :categoryId is null",
             countQuery = "select a.id  " +
                     "from amenities a  " +
                     "         inner join amenity_categories b on a.category_id = b.amenity_category_id  " +
-                    "where b.is_default = :isDefault  " +
-                    "   or :isDefault is null")
-    Page<AmenitiesCommand> getPageWithAmenityFilter(@Param("isDefault") Boolean isDefault,
+                    "where b.amenity_category_id = :categoryId  " +
+                    "   or :categoryId is null ")
+    Page<AmenitiesCommand> getPageWithAmenityFilter(@Param("categoryId") UUID categoryId,
                                                     Pageable pageable);
 }

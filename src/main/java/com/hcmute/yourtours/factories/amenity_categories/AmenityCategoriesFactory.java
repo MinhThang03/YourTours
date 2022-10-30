@@ -5,9 +5,13 @@ import com.hcmute.yourtours.commands.AmenityCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.amenity_categories.AmenityCategoryDetail;
 import com.hcmute.yourtours.models.amenity_categories.AmenityCategoryInfo;
+import com.hcmute.yourtours.models.amenity_categories.filter.AmenityCategoryFilter;
 import com.hcmute.yourtours.repositories.AmenityCategoriesRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,25 +102,13 @@ public class AmenityCategoriesFactory
     }
 
     @Override
-    protected void preCreate(AmenityCategoryDetail detail) throws InvalidException {
-        resetDefaultCategory(detail);
-    }
+    protected <F extends BaseFilter> Page<AmenityCategoriesCommand> pageQuery(F filter, Integer number, Integer size) {
+        AmenityCategoryFilter amenityCategoryFilter = (AmenityCategoryFilter) filter;
 
-    @Override
-    protected void preUpdate(UUID id, AmenityCategoryDetail detail) throws InvalidException {
-        resetDefaultCategory(detail);
-    }
-
-
-    private void resetDefaultCategory(AmenityCategoryDetail detail) throws InvalidException {
-        if (Boolean.TRUE.equals(detail.getIsDefault())) {
-            AmenityCategoriesCommand command = amenityCategoriesRepository.findByIsDefault(true).orElse(null);
-            if (command != null) {
-                AmenityCategoryDetail defaultDetail = convertToDetail(command);
-                defaultDetail.setIsDefault(false);
-                updateModel(defaultDetail.getId(), defaultDetail);
-            }
-        }
+        return amenityCategoriesRepository.findPageWithFilter(
+                amenityCategoryFilter.getIsDefault(),
+                PageRequest.of(number, size)
+        );
     }
 }
 

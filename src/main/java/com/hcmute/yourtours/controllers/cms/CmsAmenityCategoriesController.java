@@ -15,10 +15,10 @@ import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
-import com.hcmute.yourtours.libs.model.filter.SimpleFilter;
 import com.hcmute.yourtours.models.amenity_categories.AmenityCategoryDetail;
 import com.hcmute.yourtours.models.amenity_categories.AmenityCategoryHomeDetail;
 import com.hcmute.yourtours.models.amenity_categories.AmenityCategoryInfo;
+import com.hcmute.yourtours.models.amenity_categories.filter.AmenityCategoryFilter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +60,7 @@ public class CmsAmenityCategoriesController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<AmenityCategoryInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<AmenityCategoryInfo>>> getInfoPageWithFilter(AmenityCategoryFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 
