@@ -4,11 +4,13 @@ import com.hcmute.yourtours.commands.HomesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
+import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
+import com.hcmute.yourtours.models.owner_of_home.OwnerOfHomeDetail;
 import com.hcmute.yourtours.repositories.HomesRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
@@ -26,16 +28,19 @@ public class HomesFactory
     private final IImagesHomeFactory iImagesHomeFactory;
     private final IRoomsOfHomeFactory iRoomsOfHomeFactory;
     private final IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory;
+    private final IOwnerOfHomeFactory iOwnerOfHomeFactory;
 
     protected HomesFactory(HomesRepository repository,
                            IImagesHomeFactory iImagesHomeFactory,
                            IRoomsOfHomeFactory iRoomsOfHomeFactory,
-                           IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory) {
+                           IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory,
+                           IOwnerOfHomeFactory iOwnerOfHomeFactory) {
         super(repository);
         this.homesRepository = repository;
         this.iImagesHomeFactory = iImagesHomeFactory;
         this.iRoomsOfHomeFactory = iRoomsOfHomeFactory;
         this.iAmenitiesOfHomeFactory = iAmenitiesOfHomeFactory;
+        this.iOwnerOfHomeFactory = iOwnerOfHomeFactory;
     }
 
     @Override
@@ -150,5 +155,13 @@ public class HomesFactory
         iImagesHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getImagesOfHome());
         iRoomsOfHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getRoomsOfHome());
         iAmenitiesOfHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getAmenitiesOfHome());
+
+        OwnerOfHomeDetail ownerOfHomeDetail = OwnerOfHomeDetail.builder()
+                .homeId(entity.getHomeId())
+                .isMainOwner(true)
+                .userId(UUID.fromString(entity.getCreatedBy()))
+                .build();
+
+        iOwnerOfHomeFactory.createModel(ownerOfHomeDetail);
     }
 }
