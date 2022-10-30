@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -35,6 +36,7 @@ public class HomeInfo extends NameDataModel<UUID> {
     private String guide;
 
     @Min(value = 0, message = "Giá tiền không được phép nhỏ hơn 0")
+    @NotNull
     private Double costPerNightDefault;
 
     private RefundPolicyEnum refundPolicy;
