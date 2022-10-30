@@ -152,10 +152,6 @@ public class HomesFactory
 
     @Override
     protected void postCreate(HomesCommand entity, HomeDetail detail) throws InvalidException {
-        iImagesHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getImagesOfHome());
-        iRoomsOfHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getRoomsOfHome());
-        iAmenitiesOfHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getAmenitiesOfHome());
-
         OwnerOfHomeDetail ownerOfHomeDetail = OwnerOfHomeDetail.builder()
                 .homeId(entity.getHomeId())
                 .isMainOwner(true)
@@ -163,5 +159,9 @@ public class HomesFactory
                 .build();
 
         iOwnerOfHomeFactory.createModel(ownerOfHomeDetail);
+
+        iImagesHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getImagesOfHome());
+        iRoomsOfHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getRoomsOfHome());
+        iAmenitiesOfHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getAmenitiesOfHome());
     }
 }

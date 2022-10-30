@@ -33,4 +33,9 @@ public interface AmenitiesOfHomeRepository extends JpaRepository<AmenitiesOfHome
 
     @Modifying
     void deleteAllByHomeId(UUID homeId);
+
+    @Modifying
+    void deleteByHomeIdAndAmenityId(UUID homeId, UUID amenityId);
+
+    Optional<AmenitiesOfHomeCommand> findByHomeIdAndAmenityId(UUID homeId, UUID amenityId);
 }

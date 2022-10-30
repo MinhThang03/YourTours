@@ -2,6 +2,7 @@ package com.hcmute.yourtours.factories.amenities_of_home;
 
 import com.hcmute.yourtours.commands.AmenitiesOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.factories.common.IAuthorizationOwnerHomeFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.amenities_of_home.AmenityOfHomeDetail;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,10 +26,13 @@ public class AmenitiesOfHomeFactory
         implements IAmenitiesOfHomeFactory {
 
     private final AmenitiesOfHomeRepository amenitiesOfHomeRepository;
+    private final IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory;
 
-    protected AmenitiesOfHomeFactory(AmenitiesOfHomeRepository repository) {
+    protected AmenitiesOfHomeFactory(AmenitiesOfHomeRepository repository,
+                                     IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory) {
         super(repository);
         this.amenitiesOfHomeRepository = repository;
+        this.iAuthorizationOwnerHomeFactory = iAuthorizationOwnerHomeFactory;
     }
 
     @Override
@@ -112,6 +117,21 @@ public class AmenitiesOfHomeFactory
             item.setHomeId(homeId);
             item.setIsHave(true);
             createModel(item);
+        }
+    }
+
+    @Override
+    protected void preCreate(AmenityOfHomeDetail detail) throws InvalidException {
+        iAuthorizationOwnerHomeFactory.checkOwnerOfHome(detail.getHomeId());
+
+        Optional<AmenitiesOfHomeCommand> optional = amenitiesOfHomeRepository
+                .findByHomeIdAndAmenityId(detail.getHomeId(), detail.getAmenityId());
+
+        if (optional.isPresent()) {
+            if (optional.get().getIsHave().equals(detail.getIsHave())) {
+                detail.setIsHave(null);
+            }
+            deleteModel(optional.get().getAmenityOfHomeId(), null);
         }
     }
 }
