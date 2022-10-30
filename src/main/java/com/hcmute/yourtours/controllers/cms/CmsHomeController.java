@@ -5,10 +5,12 @@ import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
 import com.hcmute.yourtours.libs.model.factory.request.FactoryCreateRequest;
+import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
+import com.hcmute.yourtours.models.homes.filter.HomeFilter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +42,10 @@ public class CmsHomeController
     @Override
     public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, HomeDetail>>> getDetailById(UUID id) {
         return super.factoryGetDetailById(id);
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFilter(HomeFilter filter, Integer number, Integer size) {
+        return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 }

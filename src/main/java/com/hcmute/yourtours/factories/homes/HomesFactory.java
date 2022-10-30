@@ -8,11 +8,15 @@ import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
+import com.hcmute.yourtours.models.homes.filter.HomeFilter;
 import com.hcmute.yourtours.models.owner_of_home.OwnerOfHomeDetail;
 import com.hcmute.yourtours.repositories.HomesRepository;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -164,5 +168,12 @@ public class HomesFactory
         iImagesHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getImagesOfHome());
         iRoomsOfHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getRoomsOfHome());
         iAmenitiesOfHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getAmenitiesOfHome());
+    }
+
+
+    @Override
+    protected <F extends BaseFilter> Page<HomesCommand> pageQuery(F filter, Integer number, Integer size) {
+        HomeFilter homeFilter = (HomeFilter) filter;
+        return homesRepository.findPageWithFilter(homeFilter.getUserId(), PageRequest.of(number, size));
     }
 }
