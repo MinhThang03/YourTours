@@ -66,6 +66,15 @@ public class HomesCommand extends NameData {
     @Column(name = "number_of_guests")
     private Integer numberOfGuests;
 
+    @Column(name = "address_detail")
+    private String addressDetail;
+
+    @Column(name = "province_code")
+    private Integer provinceCode;
+
+    @Column(name = "rank")
+    private Integer rank;
+
     @Column(name = "refundPolicy")
     @Enumerated(EnumType.STRING)
     private RefundPolicyEnum refundPolicy;

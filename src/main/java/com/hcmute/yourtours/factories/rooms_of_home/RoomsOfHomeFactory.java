@@ -2,6 +2,7 @@ package com.hcmute.yourtours.factories.rooms_of_home;
 
 import com.hcmute.yourtours.commands.RoomsOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.factories.room_categories.IRoomCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeCreateModel;
@@ -22,10 +23,13 @@ public class RoomsOfHomeFactory
         implements IRoomsOfHomeFactory {
 
     private final RoomsOfHomeRepository roomsOfHomeRepository;
+    private final IRoomCategoriesFactory iRoomCategoriesFactory;
 
-    protected RoomsOfHomeFactory(RoomsOfHomeRepository repository) {
+    protected RoomsOfHomeFactory(RoomsOfHomeRepository repository,
+                                 IRoomCategoriesFactory iRoomCategoriesFactory) {
         super(repository);
         this.roomsOfHomeRepository = repository;
+        this.iRoomCategoriesFactory = iRoomCategoriesFactory;
     }
 
     @Override
@@ -95,6 +99,10 @@ public class RoomsOfHomeFactory
             if (item.getNumber() != null) {
                 for (int i = 0; i < item.getNumber(); i++) {
                     RoomOfHomeDetail detail = RoomOfHomeDetail.builder()
+                            .name(iRoomCategoriesFactory.getDetailModel(
+                                            item.getCategoryId(), null).getName()
+                                    .concat(" ")
+                                    .concat(String.valueOf(i)))
                             .homeId(homeId)
                             .categoryId(item.getCategoryId())
                             .build();

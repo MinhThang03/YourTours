@@ -38,7 +38,7 @@ public class OwnerOfHomeCommand extends Persistence {
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", columnDefinition = "BINARY(16)")
     private UUID userId;
 
     @Override

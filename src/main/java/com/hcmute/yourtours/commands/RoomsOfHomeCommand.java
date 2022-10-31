@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.commands;
 
-import com.hcmute.yourtours.commands.base.Persistence;
+import com.hcmute.yourtours.commands.base.NameData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "rooms_of_home")
-public class RoomsOfHomeCommand extends Persistence {
+public class RoomsOfHomeCommand extends NameData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)

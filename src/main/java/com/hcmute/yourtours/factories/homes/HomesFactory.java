@@ -72,6 +72,9 @@ public class HomesFactory
                 .refundPolicy(detail.getRefundPolicy())
                 .status(detail.getStatus())
                 .numberOfGuests(detail.getNumberOfGuests())
+                .provinceCode(detail.getProvinceCode())
+                .addressDetail(detail.getAddressDetail())
+                .rank(detail.getRank())
                 .build();
     }
 
@@ -90,6 +93,9 @@ public class HomesFactory
         entity.setRefundPolicy(detail.getRefundPolicy());
         entity.setStatus(detail.getStatus());
         entity.setNumberOfGuests(detail.getNumberOfGuests());
+        entity.setRank(detail.getRank());
+        entity.setProvinceCode(detail.getProvinceCode());
+        entity.setAddressDetail(detail.getAddressDetail());
     }
 
     @Override
@@ -113,6 +119,9 @@ public class HomesFactory
                 .status(entity.getStatus())
                 .numberOfGuests(entity.getNumberOfGuests())
                 .imagesOfHome(iImagesHomeFactory.getListByHomeId(entity.getHomeId()))
+                .provinceCode(entity.getProvinceCode())
+                .addressDetail(entity.getAddressDetail())
+                .rank(entity.getRank())
                 .build();
     }
 
@@ -136,6 +145,9 @@ public class HomesFactory
                 .refundPolicy(entity.getRefundPolicy())
                 .status(entity.getStatus())
                 .numberOfGuests(entity.getNumberOfGuests())
+                .provinceCode(entity.getProvinceCode())
+                .addressDetail(entity.getAddressDetail())
+                .rank(entity.getRank())
                 .build();
     }
 

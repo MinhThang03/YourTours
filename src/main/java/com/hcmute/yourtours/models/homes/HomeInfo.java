@@ -35,6 +35,12 @@ public class HomeInfo extends NameDataModel<UUID> {
 
     private String guide;
 
+    private String addressDetail;
+
+    private Integer provinceCode;
+
+    private Integer rank;
+
     @Min(value = 0, message = "Giá tiền không được phép nhỏ hơn 0")
     @NotNull
     private Double costPerNightDefault;

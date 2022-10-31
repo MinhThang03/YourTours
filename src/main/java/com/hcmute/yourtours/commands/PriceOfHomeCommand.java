@@ -18,7 +18,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "owner_of_home")
+@Table(name = "price_of_home")
 public class PriceOfHomeCommand extends Persistence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
