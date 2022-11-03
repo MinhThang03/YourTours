@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.models.homes;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.models.common.NameDataModel;
@@ -51,4 +52,11 @@ public class HomeInfo extends NameDataModel<UUID> {
 
     @Min(value = 0, message = "Số lượng khách không được phép nhỏ hơn 0")
     private Integer numberOfGuests;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long view;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long favorite;
+
 }

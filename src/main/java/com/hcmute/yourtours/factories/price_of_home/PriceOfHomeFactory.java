@@ -40,7 +40,7 @@ public class PriceOfHomeFactory
     protected PriceOfHomeFactory(
             PriceOfHomeRepository repository,
             PriceOfHomeRepository priceOfHomeRepository,
-            @Qualifier("cmsHomeFactory") IHomesFactory iHomesFactory,
+            @Qualifier("cmsHomesFactory") IHomesFactory iHomesFactory,
             IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory) {
         super(repository);
         this.priceOfHomeRepository = priceOfHomeRepository;

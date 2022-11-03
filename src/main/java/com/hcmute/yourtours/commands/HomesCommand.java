@@ -75,6 +75,12 @@ public class HomesCommand extends NameData {
     @Column(name = "rank")
     private Integer rank;
 
+    @Column(name = "view")
+    private Long view;
+
+    @Column(name = "favorite")
+    private Long favorite;
+
     @Column(name = "refundPolicy")
     @Enumerated(EnumType.STRING)
     private RefundPolicyEnum refundPolicy;

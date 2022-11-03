@@ -75,6 +75,8 @@ public class HomesFactory
                 .provinceCode(detail.getProvinceCode())
                 .addressDetail(detail.getAddressDetail())
                 .rank(detail.getRank())
+                .view(0L)
+                .favorite(0L)
                 .build();
     }
 
@@ -96,6 +98,8 @@ public class HomesFactory
         entity.setRank(detail.getRank());
         entity.setProvinceCode(detail.getProvinceCode());
         entity.setAddressDetail(detail.getAddressDetail());
+        entity.setView(detail.getView());
+        entity.setFavorite(detail.getFavorite());
     }
 
     @Override
@@ -122,6 +126,8 @@ public class HomesFactory
                 .provinceCode(entity.getProvinceCode())
                 .addressDetail(entity.getAddressDetail())
                 .rank(entity.getRank())
+                .view(entity.getView())
+                .favorite(entity.getFavorite())
                 .build();
     }
 
@@ -148,16 +154,14 @@ public class HomesFactory
                 .provinceCode(entity.getProvinceCode())
                 .addressDetail(entity.getAddressDetail())
                 .rank(entity.getRank())
+                .view(entity.getView())
+                .favorite(entity.getFavorite())
                 .build();
     }
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        HomesCommand home = homesRepository.findByHomeId(id).orElse(null);
-        if (home == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_HOME);
-        }
-        return home.getId();
+        return findByHomeId(id).getId();
     }
 
     @Override
@@ -186,6 +190,19 @@ public class HomesFactory
     @Override
     protected <F extends BaseFilter> Page<HomesCommand> pageQuery(F filter, Integer number, Integer size) {
         HomeFilter homeFilter = (HomeFilter) filter;
-        return homesRepository.findPageWithFilter(homeFilter.getUserId(), PageRequest.of(number, size));
+        return homesRepository.findPageWithFilter
+                (
+                        homeFilter.getUserId(),
+                        homeFilter.getSort() == null ? null : homeFilter.getSort().name(),
+                        PageRequest.of(number, size)
+                );
+    }
+
+    protected HomesCommand findByHomeId(UUID homeId) throws InvalidException {
+        HomesCommand home = homesRepository.findByHomeId(homeId).orElse(null);
+        if (home == null) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_HOME);
+        }
+        return home;
     }
 }
