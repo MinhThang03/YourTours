@@ -29,7 +29,7 @@ public class CmsHomeController
         implements ICmsHomeController {
 
 
-    protected CmsHomeController(@Qualifier("cmsHomeFactory") IHomesFactory iDataFactory,
+    protected CmsHomeController(@Qualifier("cmsHomesFactory") IHomesFactory iDataFactory,
                                 IResponseFactory iResponseFactory) {
         super(iDataFactory, iResponseFactory);
     }

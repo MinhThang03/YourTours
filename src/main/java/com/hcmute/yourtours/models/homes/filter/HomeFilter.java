@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.models.homes.filter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hcmute.yourtours.enums.HomeSortTypeEnum;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import lombok.Data;
 
@@ -11,4 +12,6 @@ public class HomeFilter implements BaseFilter {
 
     @JsonIgnore
     private UUID userId;
+
+    private HomeSortTypeEnum sort;
 }

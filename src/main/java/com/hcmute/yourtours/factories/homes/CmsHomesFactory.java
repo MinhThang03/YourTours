@@ -15,16 +15,16 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class CmsHomeFactory extends HomesFactory {
+public class CmsHomesFactory extends HomesFactory {
 
     private final AuditorAwareImpl auditorAware;
 
-    protected CmsHomeFactory(HomesRepository repository,
-                             IImagesHomeFactory iImagesHomeFactory,
-                             IRoomsOfHomeFactory iRoomsOfHomeFactory,
-                             IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory,
-                             IOwnerOfHomeFactory iOwnerOfHomeFactory,
-                             AuditorAwareImpl auditorAware) {
+    protected CmsHomesFactory(HomesRepository repository,
+                              IImagesHomeFactory iImagesHomeFactory,
+                              IRoomsOfHomeFactory iRoomsOfHomeFactory,
+                              IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory,
+                              IOwnerOfHomeFactory iOwnerOfHomeFactory,
+                              AuditorAwareImpl auditorAware) {
         super(repository,
                 iImagesHomeFactory,
                 iRoomsOfHomeFactory,

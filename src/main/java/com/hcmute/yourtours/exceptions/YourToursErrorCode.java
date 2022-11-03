@@ -58,6 +58,7 @@ public enum YourToursErrorCode implements IErrorCode {
     NOT_FOUND_DISCOUNT_CAMPAIGN(HttpStatus.NOT_FOUND, "4040022", "Không tìm thấy chiến dịch quảng cáo"),
     NOT_FOUND_VERIFICATION_TOKEN(HttpStatus.NOT_FOUND, "4040023", "Không tìm thấy token xác thực"),
     NOT_FOUND_SECURITY_OF_HOME(HttpStatus.NOT_FOUND, "40400024", "Không tìm thấy bảo mật của ngôi nhà"),
+    NOT_FOUND_BOOKING(HttpStatus.NOT_FOUND, "40400025", "Không tìm thấy lịch sử đặt nhà"),
 
     //409
     CONFIRM_PASSWORD_IS_NOT_VALID(HttpStatus.CONFLICT, "40900001", "Xác nhận mật khẩu không trùng khớp"),
