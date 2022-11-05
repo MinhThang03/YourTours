@@ -55,4 +55,21 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                             "order by count(a.id) desc "
             )
     Page<ProvinceProjection> getProvinceWithFilter(Pageable pageable);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.* " +
+                    "from homes a, " +
+                    "     item_favorites b " +
+                    "where a.home_id = b.home_id " +
+                    "  and b.user_id = :userId ",
+            countQuery = "select a.id " +
+                    "from homes a, " +
+                    "     item_favorites b " +
+                    "where a.home_id = b.home_id " +
+                    "  and b.user_id = :userId "
+    )
+    Page<HomesCommand> getFavoritesListByUserId(@Param("userId") UUID userId,
+                                                Pageable pageable);
 }

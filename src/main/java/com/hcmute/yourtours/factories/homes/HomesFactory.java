@@ -1,17 +1,23 @@
 package com.hcmute.yourtours.factories.homes;
 
 import com.hcmute.yourtours.commands.HomesCommand;
+import com.hcmute.yourtours.config.AuditorAwareImpl;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
+import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
+import com.hcmute.yourtours.libs.exceptions.ErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
+import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
+import com.hcmute.yourtours.models.item_favorties.ItemFavoritesDetail;
 import com.hcmute.yourtours.models.owner_of_home.OwnerOfHomeDetail;
 import com.hcmute.yourtours.repositories.HomesRepository;
 import lombok.NonNull;
@@ -20,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -28,23 +35,32 @@ public class HomesFactory
         extends BasePersistDataFactory<UUID, HomeInfo, HomeDetail, Long, HomesCommand>
         implements IHomesFactory {
 
-    private final HomesRepository homesRepository;
-    private final IImagesHomeFactory iImagesHomeFactory;
-    private final IRoomsOfHomeFactory iRoomsOfHomeFactory;
-    private final IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory;
-    private final IOwnerOfHomeFactory iOwnerOfHomeFactory;
+    protected final HomesRepository homesRepository;
+    protected final IImagesHomeFactory iImagesHomeFactory;
+    protected final IRoomsOfHomeFactory iRoomsOfHomeFactory;
+    protected final IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory;
+    protected final IOwnerOfHomeFactory iOwnerOfHomeFactory;
+    protected final AuditorAwareImpl auditorAware;
+    protected final IItemFavoritesFactory iItemFavoritesFactory;
 
-    protected HomesFactory(HomesRepository repository,
-                           IImagesHomeFactory iImagesHomeFactory,
-                           IRoomsOfHomeFactory iRoomsOfHomeFactory,
-                           IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory,
-                           IOwnerOfHomeFactory iOwnerOfHomeFactory) {
+    protected HomesFactory
+            (
+                    HomesRepository repository,
+                    IImagesHomeFactory iImagesHomeFactory,
+                    IRoomsOfHomeFactory iRoomsOfHomeFactory,
+                    IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory,
+                    IOwnerOfHomeFactory iOwnerOfHomeFactory,
+                    AuditorAwareImpl auditorAware,
+                    IItemFavoritesFactory iItemFavoritesFactory
+            ) {
         super(repository);
         this.homesRepository = repository;
         this.iImagesHomeFactory = iImagesHomeFactory;
         this.iRoomsOfHomeFactory = iRoomsOfHomeFactory;
         this.iAmenitiesOfHomeFactory = iAmenitiesOfHomeFactory;
         this.iOwnerOfHomeFactory = iOwnerOfHomeFactory;
+        this.auditorAware = auditorAware;
+        this.iItemFavoritesFactory = iItemFavoritesFactory;
     }
 
     @Override
@@ -198,11 +214,52 @@ public class HomesFactory
                 );
     }
 
-    protected HomesCommand findByHomeId(UUID homeId) throws InvalidException {
+    @Override
+    public HomesCommand findByHomeId(UUID homeId) throws InvalidException {
         HomesCommand home = homesRepository.findByHomeId(homeId).orElse(null);
         if (home == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_HOME);
         }
         return home;
     }
+
+    @Override
+    public void checkExistsByHomeId(UUID homeId) throws InvalidException {
+        HomesCommand home = homesRepository.findByHomeId(homeId).orElse(null);
+        if (home == null) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_HOME);
+        }
+    }
+
+    @Override
+    public SuccessResponse handleFavorites(ItemFavoritesDetail detail) throws InvalidException {
+        checkExistsByHomeId((detail.getHomeId()));
+        iItemFavoritesFactory.handleFavorites(detail);
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
+    }
+
+    @Override
+    public BasePagingResponse<HomeInfo> getFavoritesListOfCurrentUser(Integer number, Integer size) throws InvalidException {
+        Optional<String> userId = auditorAware.getCurrentAuditor();
+        if (userId.isEmpty()) {
+            throw new InvalidException(ErrorCode.UNAUTHORIZED);
+        }
+
+        Page<HomesCommand> page = homesRepository.getFavoritesListByUserId
+                (
+                        UUID.fromString(userId.get()),
+                        PageRequest.of(number, size)
+                );
+
+        return new BasePagingResponse<>(
+                convertList(page.getContent()),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements()
+        );
+    }
+
+
 }
