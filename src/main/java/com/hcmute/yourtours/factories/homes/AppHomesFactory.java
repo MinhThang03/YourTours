@@ -1,7 +1,9 @@
 package com.hcmute.yourtours.factories.homes;
 
+import com.hcmute.yourtours.config.AuditorAwareImpl;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
+import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -21,15 +23,17 @@ public class AppHomesFactory extends HomesFactory {
                     IImagesHomeFactory iImagesHomeFactory,
                     IRoomsOfHomeFactory iRoomsOfHomeFactory,
                     IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory,
-                    IOwnerOfHomeFactory iOwnerOfHomeFactory
+                    IOwnerOfHomeFactory iOwnerOfHomeFactory,
+                    IItemFavoritesFactory iItemFavoritesFactory,
+                    AuditorAwareImpl auditorAware
             ) {
         super(
                 repository,
                 iImagesHomeFactory,
                 iRoomsOfHomeFactory,
                 iAmenitiesOfHomeFactory,
-                iOwnerOfHomeFactory
-        );
+                iOwnerOfHomeFactory,
+                auditorAware, iItemFavoritesFactory);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.hcmute.yourtours.commands.HomesCommand;
 import com.hcmute.yourtours.config.AuditorAwareImpl;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
+import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
@@ -17,20 +18,23 @@ import java.util.UUID;
 @Service
 public class CmsHomesFactory extends HomesFactory {
 
-    private final AuditorAwareImpl auditorAware;
-
-    protected CmsHomesFactory(HomesRepository repository,
-                              IImagesHomeFactory iImagesHomeFactory,
-                              IRoomsOfHomeFactory iRoomsOfHomeFactory,
-                              IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory,
-                              IOwnerOfHomeFactory iOwnerOfHomeFactory,
-                              AuditorAwareImpl auditorAware) {
+    protected CmsHomesFactory
+            (
+                    HomesRepository repository,
+                    IImagesHomeFactory iImagesHomeFactory,
+                    IRoomsOfHomeFactory iRoomsOfHomeFactory,
+                    IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory,
+                    IOwnerOfHomeFactory iOwnerOfHomeFactory,
+                    AuditorAwareImpl auditorAware,
+                    IItemFavoritesFactory iItemFavoritesFactory
+            ) {
         super(repository,
                 iImagesHomeFactory,
                 iRoomsOfHomeFactory,
                 iAmenitiesOfHomeFactory,
-                iOwnerOfHomeFactory);
-        this.auditorAware = auditorAware;
+                iOwnerOfHomeFactory,
+                auditorAware,
+                iItemFavoritesFactory);
     }
 
     @Override
