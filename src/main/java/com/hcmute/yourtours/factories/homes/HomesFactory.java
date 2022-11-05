@@ -8,16 +8,13 @@ import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
-import com.hcmute.yourtours.libs.exceptions.ErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
-import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
-import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
-import com.hcmute.yourtours.models.item_favorties.ItemFavoritesDetail;
+import com.hcmute.yourtours.models.images_home.ImageHomeDetail;
 import com.hcmute.yourtours.models.owner_of_home.OwnerOfHomeDetail;
 import com.hcmute.yourtours.repositories.HomesRepository;
 import lombok.NonNull;
@@ -93,6 +90,8 @@ public class HomesFactory
                 .rank(detail.getRank())
                 .view(0L)
                 .favorite(0L)
+                .thumbnail(detail.getThumbnail())
+                .averageRate(detail.getAverageRate())
                 .build();
     }
 
@@ -116,6 +115,8 @@ public class HomesFactory
         entity.setAddressDetail(detail.getAddressDetail());
         entity.setView(detail.getView());
         entity.setFavorite(detail.getFavorite());
+        entity.setThumbnail(detail.getThumbnail());
+        entity.setAverageRate(detail.getAverageRate());
     }
 
     @Override
@@ -144,6 +145,8 @@ public class HomesFactory
                 .rank(entity.getRank())
                 .view(entity.getView())
                 .favorite(entity.getFavorite())
+                .thumbnail(entity.getThumbnail())
+                .averageRate(entity.getAverageRate())
                 .build();
     }
 
@@ -172,6 +175,8 @@ public class HomesFactory
                 .rank(entity.getRank())
                 .view(entity.getView())
                 .favorite(entity.getFavorite())
+                .averageRate(entity.getAverageRate())
+                .thumbnail(entity.getThumbnail())
                 .build();
     }
 
@@ -185,6 +190,9 @@ public class HomesFactory
         if (detail.getImagesOfHome().size() < 5) {
             throw new InvalidException(YourToursErrorCode.LIST_IMAGES_HOME_NOT_ENOUGH_SIZE);
         }
+
+        Optional<ImageHomeDetail> image = detail.getImagesOfHome().stream().findFirst();
+        image.ifPresent(imageHomeDetail -> detail.setThumbnail(imageHomeDetail.getPath()));
     }
 
     @Override
@@ -230,36 +238,5 @@ public class HomesFactory
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_HOME);
         }
     }
-
-    @Override
-    public SuccessResponse handleFavorites(ItemFavoritesDetail detail) throws InvalidException {
-        checkExistsByHomeId((detail.getHomeId()));
-        iItemFavoritesFactory.handleFavorites(detail);
-        return SuccessResponse.builder()
-                .success(true)
-                .build();
-    }
-
-    @Override
-    public BasePagingResponse<HomeInfo> getFavoritesListOfCurrentUser(Integer number, Integer size) throws InvalidException {
-        Optional<String> userId = auditorAware.getCurrentAuditor();
-        if (userId.isEmpty()) {
-            throw new InvalidException(ErrorCode.UNAUTHORIZED);
-        }
-
-        Page<HomesCommand> page = homesRepository.getFavoritesListByUserId
-                (
-                        UUID.fromString(userId.get()),
-                        PageRequest.of(number, size)
-                );
-
-        return new BasePagingResponse<>(
-                convertList(page.getContent()),
-                page.getNumber(),
-                page.getSize(),
-                page.getTotalElements()
-        );
-    }
-
 
 }

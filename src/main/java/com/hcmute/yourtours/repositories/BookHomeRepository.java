@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long> {
     Optional<BookHomesCommand> findByBookId(UUID bookId);
+
+    boolean existsByUserIdAndHomeId(UUID userId, UUID homeId);
 }

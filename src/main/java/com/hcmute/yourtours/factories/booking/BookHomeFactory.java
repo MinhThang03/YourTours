@@ -119,4 +119,9 @@ public class BookHomeFactory
         }
         return optional.get();
     }
+
+    @Override
+    public boolean existByUserIdAndHomeId(UUID userId, UUID homeId) {
+        return bookHomeRepository.existsByUserIdAndHomeId(userId, homeId);
+    }
 }

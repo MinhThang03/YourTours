@@ -1,8 +1,9 @@
-package com.hcmute.yourtours.factories.homes;
+package com.hcmute.yourtours.factories.homes.cms;
 
 import com.hcmute.yourtours.commands.HomesCommand;
 import com.hcmute.yourtours.config.AuditorAwareImpl;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
+import com.hcmute.yourtours.factories.homes.HomesFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;

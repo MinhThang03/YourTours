@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @Accessors(chain = true)
 public abstract class BaseData<T> implements Serializable {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

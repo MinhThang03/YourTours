@@ -81,9 +81,15 @@ public class HomesCommand extends NameData {
     @Column(name = "favorite")
     private Long favorite;
 
+    @Column(name = "thumbnail")
+    private String thumbnail;
+
     @Column(name = "refundPolicy")
     @Enumerated(EnumType.STRING)
     private RefundPolicyEnum refundPolicy;
+
+    @Column(name = "average_rate")
+    private Double averageRate;
 
     @Override
     protected void preWrite() {

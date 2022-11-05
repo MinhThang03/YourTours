@@ -27,6 +27,8 @@ public enum YourToursErrorCode implements IErrorCode {
     USER_OR_PASSWORD_NOT_CORRECT(HttpStatus.BAD_REQUEST, "400000017", "Email hoặc mật khẩu không chính xác"),
     LIST_IMAGES_HOME_NOT_ENOUGH_SIZE(HttpStatus.BAD_REQUEST, "400000018", "Không đủ 5 hình ảnh"),
     DAY_END_IS_BEFORE_DAY_START(HttpStatus.BAD_REQUEST, "400000020", "Ngày kết thúc không được xảy ra trước ngày bắt đầu"),
+    USER_NOT_BOOKING_HOME(HttpStatus.BAD_REQUEST, "400000021", "Khách hàng chưa đặt dịch vụ của ngôi nhà này"),
+
 
     //403
     FORBIDDEN(HttpStatus.FORBIDDEN, "4030000", "Bạn không đủ quyền truy cập"),
@@ -60,6 +62,7 @@ public enum YourToursErrorCode implements IErrorCode {
     NOT_FOUND_SECURITY_OF_HOME(HttpStatus.NOT_FOUND, "40400024", "Không tìm thấy bảo mật của ngôi nhà"),
     NOT_FOUND_BOOKING(HttpStatus.NOT_FOUND, "40400025", "Không tìm thấy lịch sử đặt nhà"),
     NOT_FOUND_ITEM_FAVORITES(HttpStatus.NOT_FOUND, "40400026", "Không tìm thấy đăng ký nhà yêu thích"),
+    NOT_EVALUATE(HttpStatus.NOT_FOUND, "40400027", "Không tìm thấy đánh giá của người dùng đối với ngôi nhà"),
 
 
     //409

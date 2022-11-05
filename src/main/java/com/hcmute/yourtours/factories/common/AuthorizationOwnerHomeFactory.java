@@ -3,7 +3,6 @@ package com.hcmute.yourtours.factories.common;
 import com.hcmute.yourtours.config.AuditorAwareImpl;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
-import com.hcmute.yourtours.libs.exceptions.ErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +21,10 @@ public class AuthorizationOwnerHomeFactory implements IAuthorizationOwnerHomeFac
 
     @Override
     public void checkOwnerOfHome(UUID homeId) throws InvalidException {
-        String userId = auditorAware.getCurrentAuditor().orElse(null);
-        if (userId == null) {
-            throw new InvalidException(ErrorCode.UNAUTHORIZED);
-        } else {
-            boolean check = iOwnerOfHomeFactory.existByOwnerIdAndHomeId(UUID.fromString(userId), homeId);
-            if (!check) {
-                throw new InvalidException(YourToursErrorCode.FORBIDDEN);
-            }
+        UUID userId = auditorAware.checkUnAuthorization();
+        boolean check = iOwnerOfHomeFactory.existByOwnerIdAndHomeId(userId, homeId);
+        if (!check) {
+            throw new InvalidException(YourToursErrorCode.FORBIDDEN);
         }
-
     }
 }
