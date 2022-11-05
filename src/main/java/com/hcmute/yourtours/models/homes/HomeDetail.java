@@ -16,7 +16,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @NoArgsConstructor
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 public class HomeDetail extends HomeInfo {
     @NotNull
     private List<ImageHomeDetail> imagesOfHome;
@@ -26,4 +26,8 @@ public class HomeDetail extends HomeInfo {
 
     @NotNull
     private List<AmenityOfHomeDetail> amenitiesOfHome;
+
+    private Double userRate;
+
+    private boolean isBooked;
 }

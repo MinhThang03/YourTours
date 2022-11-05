@@ -19,7 +19,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @NoArgsConstructor
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 public class HomeInfo extends NameDataModel<UUID> {
 
     private String wifi;
@@ -59,4 +59,8 @@ public class HomeInfo extends NameDataModel<UUID> {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long favorite;
 
+    private String thumbnail;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Double averageRate;
 }

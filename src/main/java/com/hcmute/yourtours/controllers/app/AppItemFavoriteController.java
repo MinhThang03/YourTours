@@ -2,6 +2,7 @@ package com.hcmute.yourtours.controllers.app;
 
 import com.hcmute.yourtours.controllers.app.interfaces.IItemFavoritesController;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
+import com.hcmute.yourtours.factories.homes.app.IAppHomesFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.exceptions.RestException;
@@ -32,14 +33,16 @@ public class AppItemFavoriteController
         extends BaseController<UUID, HomeInfo, HomeDetail>
         implements IItemFavoritesController {
 
-    private final IHomesFactory iHomesFactory;
+    private final IAppHomesFactory iHomesFactory;
 
     protected AppItemFavoriteController
             (
                     @Qualifier("appHomesFactory") IHomesFactory iDataFactory,
-                    IResponseFactory iResponseFactory) {
+                    IResponseFactory iResponseFactory,
+                    IAppHomesFactory iHomesFactory
+            ) {
         super(iDataFactory, iResponseFactory);
-        this.iHomesFactory = iDataFactory;
+        this.iHomesFactory = iHomesFactory;
     }
 
     @Override
