@@ -1,4 +1,4 @@
-package com.hcmute.yourtours.controllers.app.interfaces;
+package com.hcmute.yourtours.controllers.publics.interfaces;
 
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-public interface IAppProvinceController {
+public interface IPublicProvinceController {
     @GetMapping("page")
     ResponseEntity<BaseResponse<BasePagingResponse<ProvinceModel>>> getInfoPageWithFilter(
             @RequestParam(defaultValue = "0") Integer number,
