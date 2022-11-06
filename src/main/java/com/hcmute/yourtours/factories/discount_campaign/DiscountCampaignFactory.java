@@ -19,7 +19,7 @@ public class DiscountCampaignFactory
         extends BasePersistDataFactory<UUID, DiscountCampaignInfo, DiscountCampaignDetail, Long, DiscountCampaignCommand>
         implements IDiscountCampaignFactory {
 
-    private final DiscountCampaignRepository discountCampaignRepository;
+    protected final DiscountCampaignRepository discountCampaignRepository;
 
     protected DiscountCampaignFactory(DiscountCampaignRepository repository) {
         super(repository);

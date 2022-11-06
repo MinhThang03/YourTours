@@ -1,6 +1,6 @@
-package com.hcmute.yourtours.controllers.app;
+package com.hcmute.yourtours.controllers.publics;
 
-import com.hcmute.yourtours.controllers.app.interfaces.IAppProvinceController;
+import com.hcmute.yourtours.controllers.publics.interfaces.IPublicProvinceController;
 import com.hcmute.yourtours.factories.province.IProvinceFactory;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
 import com.hcmute.yourtours.libs.logging.LogContext;
@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/v1/app/provinces")
-@Tag(name = "APP API: province", description = "API lấy danh sách tỉnh")
+@RequestMapping("/api/v1/public/app/provinces")
+@Tag(name = "PUBLIC API: province", description = "API lấy danh sách tỉnh")
 @Transactional
-public class AppProvinceController implements IAppProvinceController {
+public class PublicProvinceController implements IPublicProvinceController {
 
     private final IResponseFactory iResponseFactory;
     private final IProvinceFactory iProvinceFactory;
 
-    public AppProvinceController(
+    public PublicProvinceController(
             IResponseFactory iResponseFactory,
             IProvinceFactory iProvinceFactory) {
         this.iResponseFactory = iResponseFactory;
