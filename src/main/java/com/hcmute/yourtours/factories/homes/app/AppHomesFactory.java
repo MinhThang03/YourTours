@@ -1,10 +1,10 @@
 package com.hcmute.yourtours.factories.homes.app;
 
 import com.hcmute.yourtours.commands.HomesCommand;
-import com.hcmute.yourtours.config.AuditorAwareImpl;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
 import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
+import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.homes.HomesFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
@@ -40,7 +40,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                     IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory,
                     IOwnerOfHomeFactory iOwnerOfHomeFactory,
                     IItemFavoritesFactory iItemFavoritesFactory,
-                    AuditorAwareImpl auditorAware,
+                    IGetUserFromTokenFactory iGetUserFromTokenFactory,
                     IUserEvaluateFactory iUserEvaluateFactory,
                     IBookHomeFactory iBookHomeFactory
             ) {
@@ -50,8 +50,9 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                 iRoomsOfHomeFactory,
                 iAmenitiesOfHomeFactory,
                 iOwnerOfHomeFactory,
-                auditorAware,
-                iItemFavoritesFactory);
+                iGetUserFromTokenFactory,
+                iItemFavoritesFactory
+        );
         this.iUserEvaluateFactory = iUserEvaluateFactory;
         this.iBookHomeFactory = iBookHomeFactory;
     }
@@ -65,7 +66,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
 
     @Override
     public SuccessResponse handleFavorites(ItemFavoritesDetail detail) throws InvalidException {
-        UUID userId = auditorAware.checkUnAuthorization();
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
         checkExistsByHomeId((detail.getHomeId()));
         detail.setUserId(userId);
         iItemFavoritesFactory.handleFavorites(detail);
@@ -76,7 +77,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
 
     @Override
     public BasePagingResponse<HomeInfo> getFavoritesListOfCurrentUser(Integer number, Integer size) throws InvalidException {
-        UUID userId = auditorAware.checkUnAuthorization();
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
 
         Page<HomesCommand> page = homesRepository.getFavoritesListByUserId
                 (
@@ -94,7 +95,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
 
     @Override
     public HomeDetail convertToDetail(HomesCommand entity) throws InvalidException {
-        UUID userId = auditorAware.checkUnAuthorization();
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
 
         HomeDetail detail = super.convertToDetail(entity);
         return detail.toBuilder()
@@ -104,7 +105,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
 
     @Override
     public HomeDetail createUserEvaluate(UserEvaluateDetail evaluateDetail) throws InvalidException {
-        UUID userId = auditorAware.checkUnAuthorization();
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
 
         if (!iBookHomeFactory.existByUserIdAndHomeId(userId, evaluateDetail.getHomeId())) {
             throw new InvalidException(YourToursErrorCode.USER_NOT_BOOKING_HOME);

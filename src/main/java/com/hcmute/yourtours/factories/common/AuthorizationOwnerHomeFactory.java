@@ -1,6 +1,5 @@
 package com.hcmute.yourtours.factories.common;
 
-import com.hcmute.yourtours.config.AuditorAwareImpl;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -11,20 +10,23 @@ import java.util.UUID;
 @Service
 public class AuthorizationOwnerHomeFactory implements IAuthorizationOwnerHomeFactory {
 
-    private final AuditorAwareImpl auditorAware;
     private final IOwnerOfHomeFactory iOwnerOfHomeFactory;
+    private final IGetUserFromTokenFactory iGetUserFromTokenFactory;
 
-    public AuthorizationOwnerHomeFactory(AuditorAwareImpl auditorAware, IOwnerOfHomeFactory iOwnerOfHomeFactory) {
-        this.auditorAware = auditorAware;
+    public AuthorizationOwnerHomeFactory(IOwnerOfHomeFactory iOwnerOfHomeFactory,
+                                         IGetUserFromTokenFactory iGetUserFromTokenFactory) {
         this.iOwnerOfHomeFactory = iOwnerOfHomeFactory;
+        this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
     }
 
     @Override
     public void checkOwnerOfHome(UUID homeId) throws InvalidException {
-        UUID userId = auditorAware.checkUnAuthorization();
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
         boolean check = iOwnerOfHomeFactory.existByOwnerIdAndHomeId(userId, homeId);
         if (!check) {
             throw new InvalidException(YourToursErrorCode.FORBIDDEN);
         }
     }
+
+
 }

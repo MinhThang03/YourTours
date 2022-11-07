@@ -2,12 +2,12 @@ package com.hcmute.yourtours.factories.user;
 
 
 import com.hcmute.yourtours.commands.UserCommand;
-import com.hcmute.yourtours.config.AuditorAwareImpl;
 import com.hcmute.yourtours.constant.RoleConstant;
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
 import com.hcmute.yourtours.email.IEmailFactory;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.verification_token.IVerificationOtpFactory;
 import com.hcmute.yourtours.keycloak.IKeycloakService;
 import com.hcmute.yourtours.libs.configuration.IConfigFactory;
@@ -45,7 +45,7 @@ public class UserFactory
     private final IEmailFactory iEmailFactory;
     private final IVerificationOtpFactory iVerificationOtpFactory;
 
-    private final AuditorAwareImpl auditorAware;
+    private final IGetUserFromTokenFactory iGetUserFromTokenFactory;
 
     protected UserFactory(
             UserRepository repository,
@@ -53,14 +53,15 @@ public class UserFactory
             IConfigFactory configFactory,
             IEmailFactory iEmailFactory,
             IVerificationOtpFactory iVerificationOtpFactory,
-            AuditorAwareImpl auditorAware) {
+            IGetUserFromTokenFactory iGetUserFromTokenFactory
+    ) {
         super(repository);
         this.iKeycloakService = iKeycloakService;
         this.configFactory = configFactory;
         this.userRepository = repository;
         this.iEmailFactory = iEmailFactory;
         this.iVerificationOtpFactory = iVerificationOtpFactory;
-        this.auditorAware = auditorAware;
+        this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
     }
 
     @Override
@@ -234,7 +235,7 @@ public class UserFactory
 
     @Override
     public UserDetail getDetailCurrentUser() throws InvalidException {
-        Optional<String> optional = auditorAware.getCurrentAuditor();
+        Optional<String> optional = iGetUserFromTokenFactory.getCurrentAuditor();
         if (optional.isEmpty()) {
             throw new InvalidException(ErrorCode.UNAUTHORIZED);
         } else {
@@ -244,7 +245,7 @@ public class UserFactory
 
     @Override
     public UserDetail updateCurrentUser(UserDetail detail) throws InvalidException {
-        String userId = auditorAware.getCurrentAuditor().orElse(null);
+        String userId = iGetUserFromTokenFactory.getCurrentAuditor().orElse(null);
         if (userId == null) {
             throw new InvalidException(ErrorCode.UNAUTHORIZED);
         } else {

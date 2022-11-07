@@ -1,9 +1,9 @@
 package com.hcmute.yourtours.factories.homes;
 
 import com.hcmute.yourtours.commands.HomesCommand;
-import com.hcmute.yourtours.config.AuditorAwareImpl;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
+import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
@@ -37,7 +37,7 @@ public class HomesFactory
     protected final IRoomsOfHomeFactory iRoomsOfHomeFactory;
     protected final IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory;
     protected final IOwnerOfHomeFactory iOwnerOfHomeFactory;
-    protected final AuditorAwareImpl auditorAware;
+    protected final IGetUserFromTokenFactory iGetUserFromTokenFactory;
     protected final IItemFavoritesFactory iItemFavoritesFactory;
 
     protected HomesFactory
@@ -47,7 +47,7 @@ public class HomesFactory
                     IRoomsOfHomeFactory iRoomsOfHomeFactory,
                     IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory,
                     IOwnerOfHomeFactory iOwnerOfHomeFactory,
-                    AuditorAwareImpl auditorAware,
+                    IGetUserFromTokenFactory iGetUserFromTokenFactory,
                     IItemFavoritesFactory iItemFavoritesFactory
             ) {
         super(repository);
@@ -56,7 +56,7 @@ public class HomesFactory
         this.iRoomsOfHomeFactory = iRoomsOfHomeFactory;
         this.iAmenitiesOfHomeFactory = iAmenitiesOfHomeFactory;
         this.iOwnerOfHomeFactory = iOwnerOfHomeFactory;
-        this.auditorAware = auditorAware;
+        this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
         this.iItemFavoritesFactory = iItemFavoritesFactory;
     }
 
