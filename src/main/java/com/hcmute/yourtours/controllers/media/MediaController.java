@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/media")
 @Tag(name = "MEDIA API: AWS S3")
@@ -44,5 +46,15 @@ public class MediaController implements IMediaController {
         }
     }
 
+    @Override
+    public ResponseEntity<BaseResponse<List<UploadMediaResponse>>> putListObjectFile(List<MultipartFile> files) {
+        try {
+            List<UploadMediaResponse> response = mediaService.uploadFiles(files);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e.getErrorCode());
+        }
+    }
 
 }
