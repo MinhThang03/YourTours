@@ -4,6 +4,7 @@ package com.hcmute.yourtours.factories.user;
 import com.hcmute.yourtours.commands.UserCommand;
 import com.hcmute.yourtours.constant.RoleConstant;
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
+import com.hcmute.yourtours.constant.TokenExpirationConstant;
 import com.hcmute.yourtours.email.IEmailFactory;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
@@ -293,7 +294,13 @@ public class UserFactory
     @Override
     protected void postCreate(UserCommand entity, UserDetail detail) throws InvalidException {
         VerificationOtpDetail tokenDetail = iVerificationOtpFactory.createVerificationOtpForUser(entity.getUserId());
-        iEmailFactory.sendSimpleMessage(entity.getEmail(), SubjectEmailConstant.ACTIVE_ACCOUNT, tokenDetail.getToken());
+        String emailContent = iEmailFactory.getEmailActiveEmailContent
+                (
+                        entity.getFullName(),
+                        String.valueOf(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER),
+                        tokenDetail.getToken()
+                );
+        iEmailFactory.sendSimpleMessage(entity.getEmail(), SubjectEmailConstant.ACTIVE_ACCOUNT, emailContent);
     }
 
     private UUID getCurrentUserId() throws InvalidException {

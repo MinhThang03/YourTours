@@ -106,6 +106,11 @@ dependencies {
      */
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.7.3'
 
+    /*
+    * Freemarker
+    */
+    implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.31'
+
 
 }
 
