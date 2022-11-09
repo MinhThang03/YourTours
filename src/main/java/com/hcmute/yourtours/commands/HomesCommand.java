@@ -91,6 +91,9 @@ public class HomesCommand extends NameData {
     @Column(name = "average_rate")
     private Double averageRate;
 
+    @Column(name = "number_of_reviews")
+    private Long numberOfReviews;
+
     @Override
     protected void preWrite() {
         super.preWrite();

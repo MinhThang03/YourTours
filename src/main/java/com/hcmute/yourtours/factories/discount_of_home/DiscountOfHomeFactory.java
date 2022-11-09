@@ -2,15 +2,21 @@ package com.hcmute.yourtours.factories.discount_of_home;
 
 import com.hcmute.yourtours.commands.DiscountOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.factories.discount_home_categories.IDiscountHomeCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoryDetail;
 import com.hcmute.yourtours.models.discount_of_home.DiscountOfHomeDetail;
 import com.hcmute.yourtours.models.discount_of_home.DiscountOfHomeInfo;
+import com.hcmute.yourtours.models.discount_of_home.models.DiscountOfHomeViewModel;
 import com.hcmute.yourtours.repositories.DiscountOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -20,10 +26,13 @@ public class DiscountOfHomeFactory
         implements IDiscountOfHomeFactory {
 
     protected final DiscountOfHomeRepository discountOfHomeRepository;
+    private final IDiscountHomeCategoriesFactory iDiscountHomeCategoriesFactory;
 
-    protected DiscountOfHomeFactory(DiscountOfHomeRepository repository) {
+    protected DiscountOfHomeFactory(DiscountOfHomeRepository repository,
+                                    IDiscountHomeCategoriesFactory iDiscountHomeCategoriesFactory) {
         super(repository);
         this.discountOfHomeRepository = repository;
+        this.iDiscountHomeCategoriesFactory = iDiscountHomeCategoriesFactory;
     }
 
     @Override
@@ -92,5 +101,29 @@ public class DiscountOfHomeFactory
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_DISCOUNTS_OF_HOME);
         }
         return command.getId();
+    }
+
+    @Override
+    protected void preCreate(DiscountOfHomeDetail detail) throws InvalidException {
+        iDiscountHomeCategoriesFactory.checkExistsByDiscountCategoryId(detail.getCategoryId());
+        discountOfHomeRepository.deleteAllByHomeIdAndCategoryId(detail.getHomeId(), detail.getCategoryId());
+    }
+
+    @Override
+    public List<DiscountOfHomeViewModel> getDiscountsOfHomeView(UUID homeId) throws InvalidException {
+        List<DiscountHomeCategoryDetail> categories = iDiscountHomeCategoriesFactory.getDiscountCategoriesActive();
+        List<DiscountOfHomeViewModel> result = new ArrayList<>();
+        for (DiscountHomeCategoryDetail category : categories) {
+            Optional<DiscountOfHomeCommand> optional = discountOfHomeRepository.findByHomeIdAndCategoryId(homeId, category.getId());
+            result.add
+                    (
+                            DiscountOfHomeViewModel
+                                    .builder()
+                                    .category(category)
+                                    .config(optional.isEmpty() ? null : convertToDetail(optional.get()))
+                                    .build()
+                    );
+        }
+        return result;
     }
 }

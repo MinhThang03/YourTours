@@ -2,15 +2,20 @@ package com.hcmute.yourtours.controllers.cms;
 
 import com.hcmute.yourtours.controllers.cms.interfaces.ICmsHomeController;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
+import com.hcmute.yourtours.factories.homes.cms.ICmsHandleViewHomeFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
+import com.hcmute.yourtours.libs.exceptions.InvalidException;
+import com.hcmute.yourtours.libs.exceptions.RestException;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
+import com.hcmute.yourtours.libs.logging.LogContext;
+import com.hcmute.yourtours.libs.logging.LogType;
 import com.hcmute.yourtours.libs.model.factory.request.FactoryCreateRequest;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
-import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
+import com.hcmute.yourtours.models.homes.models.HostHomeDetailModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +33,16 @@ public class CmsHomeController
         extends BaseController<UUID, HomeInfo, HomeDetail>
         implements ICmsHomeController {
 
+    private final ICmsHandleViewHomeFactory iCmsHandleViewHomeFactory;
 
-    protected CmsHomeController(@Qualifier("cmsHomesFactory") IHomesFactory iDataFactory,
-                                IResponseFactory iResponseFactory) {
+    protected CmsHomeController
+            (
+                    @Qualifier("cmsHomesFactory") IHomesFactory iDataFactory,
+                    IResponseFactory iResponseFactory,
+                    ICmsHandleViewHomeFactory iCmsHandleViewHomeFactory
+            ) {
         super(iDataFactory, iResponseFactory);
+        this.iCmsHandleViewHomeFactory = iCmsHandleViewHomeFactory;
     }
 
     @Override
@@ -39,13 +50,21 @@ public class CmsHomeController
         return super.factoryCreateModel(request);
     }
 
-    @Override
-    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, HomeDetail>>> getDetailById(UUID id) {
-        return super.factoryGetDetailById(id);
-    }
 
     @Override
     public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFilter(HomeFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<HostHomeDetailModel>> getDetailById(UUID id) {
+        try {
+            LogContext.push(LogType.REQUEST, id);
+            HostHomeDetailModel response = iCmsHandleViewHomeFactory.getDetailByHomeId(id);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
     }
 }

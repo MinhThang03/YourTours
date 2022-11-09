@@ -5,9 +5,11 @@ import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.room_categories.IRoomCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
-import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeCreateModel;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeInfo;
+import com.hcmute.yourtours.models.rooms_of_home.models.NumberOfRoomsModel;
+import com.hcmute.yourtours.models.rooms_of_home.models.RoomOfHomeCreateModel;
+import com.hcmute.yourtours.models.rooms_of_home.projections.NumberOfRoomsProjections;
 import com.hcmute.yourtours.repositories.RoomsOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -110,5 +113,20 @@ public class RoomsOfHomeFactory
                 }
             }
         }
+    }
+
+    @Override
+    public List<NumberOfRoomsModel> getNumberOfRoomCategoryByHomeId(UUID homeId) {
+        List<NumberOfRoomsProjections> projections = roomsOfHomeRepository.getNumberOfRoomCategoryByHomeId(homeId);
+        return projections.stream().map
+                        (
+                                item -> NumberOfRoomsModel
+                                        .builder()
+                                        .roomCategoryId(item.getRoomCategoryId())
+                                        .roomCategoryName(item.getRoomCategoryName())
+                                        .number(item.getNumber())
+                                        .build()
+                        )
+                .collect(Collectors.toList());
     }
 }

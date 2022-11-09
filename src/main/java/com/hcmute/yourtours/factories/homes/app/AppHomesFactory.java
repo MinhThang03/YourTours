@@ -120,6 +120,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
             return homeDetail;
         }
 
+        homeDetail.setNumberOfReviews(homeDetail.getNumberOfReviews() + 1);
         homeDetail.setAverageRate(iUserEvaluateFactory.getAverageRateOfHome(homeDetail.getId()));
         return updateModel(homeDetail.getId(), homeDetail);
     }

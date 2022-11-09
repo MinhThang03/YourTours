@@ -19,7 +19,7 @@ import java.util.UUID;
 public class SurchargeOfHomeInfo extends BaseData<UUID> {
 
     @NotNull
-    @Min(value = 0, message = "Giá thị phụ phí không được phép nhỏ hơn 0")
+    @Min(value = 0, message = "Giá trị phụ phí không được phép nhỏ hơn 0")
     private Double cost;
 
     private UUID categoryId;

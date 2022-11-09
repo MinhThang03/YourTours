@@ -45,4 +45,5 @@ public class CmsHomesFactory extends HomesFactory {
         iGetUserFromTokenFactory.getCurrentAuditor().ifPresent(userId -> homeFilter.setUserId(UUID.fromString(userId)));
         return super.pageQuery(homeFilter, number, size);
     }
+
 }

@@ -63,4 +63,7 @@ public class HomeInfo extends NameDataModel<UUID> {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Double averageRate;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long numberOfReviews;
 }
