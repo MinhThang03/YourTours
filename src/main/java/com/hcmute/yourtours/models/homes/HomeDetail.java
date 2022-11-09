@@ -2,7 +2,7 @@ package com.hcmute.yourtours.models.homes;
 
 import com.hcmute.yourtours.models.amenities_of_home.AmenityOfHomeDetail;
 import com.hcmute.yourtours.models.images_home.ImageHomeDetail;
-import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeCreateModel;
+import com.hcmute.yourtours.models.rooms_of_home.models.RoomOfHomeCreateModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

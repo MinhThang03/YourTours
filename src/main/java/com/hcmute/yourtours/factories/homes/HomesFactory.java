@@ -92,6 +92,7 @@ public class HomesFactory
                 .favorite(0L)
                 .thumbnail(detail.getThumbnail())
                 .averageRate(detail.getAverageRate())
+                .numberOfReviews(0L)
                 .build();
     }
 
@@ -117,6 +118,7 @@ public class HomesFactory
         entity.setFavorite(detail.getFavorite());
         entity.setThumbnail(detail.getThumbnail());
         entity.setAverageRate(detail.getAverageRate());
+        entity.setNumberOfReviews(detail.getNumberOfReviews());
     }
 
     @Override
@@ -147,6 +149,7 @@ public class HomesFactory
                 .favorite(entity.getFavorite())
                 .thumbnail(entity.getThumbnail())
                 .averageRate(entity.getAverageRate())
+                .numberOfReviews(entity.getNumberOfReviews())
                 .build();
     }
 
@@ -177,6 +180,7 @@ public class HomesFactory
                 .favorite(entity.getFavorite())
                 .averageRate(entity.getAverageRate())
                 .thumbnail(entity.getThumbnail())
+                .numberOfReviews(entity.getNumberOfReviews())
                 .build();
     }
 
@@ -238,5 +242,4 @@ public class HomesFactory
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_HOME);
         }
     }
-
 }

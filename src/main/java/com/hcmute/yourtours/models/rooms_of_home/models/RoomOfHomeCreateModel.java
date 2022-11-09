@@ -1,4 +1,4 @@
-package com.hcmute.yourtours.models.rooms_of_home;
+package com.hcmute.yourtours.models.rooms_of_home.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

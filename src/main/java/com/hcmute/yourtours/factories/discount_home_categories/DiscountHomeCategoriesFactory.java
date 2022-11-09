@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.discount_home_categories;
 
 import com.hcmute.yourtours.commands.DiscountHomeCategoriesCommand;
+import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -11,6 +12,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -93,5 +96,23 @@ public class DiscountHomeCategoriesFactory
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_DISCOUNT_CATEGORIES);
         }
         return optional.get().getId();
+    }
+
+    @Override
+    public void checkExistsByDiscountCategoryId(UUID categoryId) throws InvalidException {
+        Optional<DiscountHomeCategoriesCommand> optional = discountHomeCategoriesRepository.findByDiscountCategoryId(categoryId);
+        if (optional.isEmpty()) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_DISCOUNT_CATEGORIES);
+        }
+    }
+
+    @Override
+    public List<DiscountHomeCategoryDetail> getDiscountCategoriesActive() throws InvalidException {
+        List<DiscountHomeCategoriesCommand> commands = discountHomeCategoriesRepository.findAllByStatus(CommonStatusEnum.ACTIVE);
+        List<DiscountHomeCategoryDetail> result = new ArrayList<>();
+        for (DiscountHomeCategoriesCommand command : commands) {
+            result.add(convertToDetail(command));
+        }
+        return result;
     }
 }
