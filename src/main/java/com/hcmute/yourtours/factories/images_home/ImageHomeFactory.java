@@ -94,11 +94,13 @@ public class ImageHomeFactory
     }
 
     @Override
-    public List<ImageHomeDetail> getListByHomeId(UUID homeId) throws InvalidException {
+    public List<ImageHomeDetail> getListByHomeId(UUID homeId, String pathThumbnail) throws InvalidException {
         List<ImagesHomeCommand> commands = imagesHomeRepository.findAllByHomeId(homeId);
         List<ImageHomeDetail> result = new ArrayList<>();
         for (ImagesHomeCommand command : commands) {
-            result.add(convertToDetail(command));
+            if (!command.getPath().equals(pathThumbnail)) {
+                result.add(convertToDetail(command));
+            }
         }
         return result;
     }

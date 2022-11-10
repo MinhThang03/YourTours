@@ -305,7 +305,7 @@ public class UserFactory
         String emailContent = iEmailFactory.getEmailActiveEmailContent
                 (
                         entity.getFullName(),
-                        String.valueOf(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER),
+                        String.valueOf(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER / 60),
                         tokenDetail.getToken()
                 );
         iEmailFactory.sendSimpleMessage(entity.getEmail(), SubjectEmailConstant.ACTIVE_ACCOUNT, emailContent);

@@ -12,5 +12,5 @@ public interface IImagesHomeFactory extends IDataFactory<UUID, ImageHomeInfo, Im
 
     void createListWithHomeId(UUID homeId, List<ImageHomeDetail> listCreate) throws InvalidException;
 
-    List<ImageHomeDetail> getListByHomeId(UUID homeId) throws InvalidException;
+    List<ImageHomeDetail> getListByHomeId(UUID homeId, String pathThumbnail) throws InvalidException;
 }

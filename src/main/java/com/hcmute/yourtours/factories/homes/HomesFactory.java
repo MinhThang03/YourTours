@@ -141,7 +141,7 @@ public class HomesFactory
                 .refundPolicy(entity.getRefundPolicy())
                 .status(entity.getStatus())
                 .numberOfGuests(entity.getNumberOfGuests())
-                .imagesOfHome(iImagesHomeFactory.getListByHomeId(entity.getHomeId()))
+                .imagesOfHome(iImagesHomeFactory.getListByHomeId(entity.getHomeId(), entity.getThumbnail()))
                 .provinceCode(entity.getProvinceCode())
                 .addressDetail(entity.getAddressDetail())
                 .rank(entity.getRank())
