@@ -42,7 +42,7 @@ public class CmsHomesFactory extends HomesFactory {
     @Override
     protected <F extends BaseFilter> Page<HomesCommand> pageQuery(F filter, Integer number, Integer size) {
         HomeFilter homeFilter = (HomeFilter) filter;
-        iGetUserFromTokenFactory.getCurrentAuditor().ifPresent(userId -> homeFilter.setUserId(UUID.fromString(userId)));
+        iGetUserFromTokenFactory.getCurrentUser().ifPresent(userId -> homeFilter.setUserId(UUID.fromString(userId)));
         return super.pageQuery(homeFilter, number, size);
     }
 

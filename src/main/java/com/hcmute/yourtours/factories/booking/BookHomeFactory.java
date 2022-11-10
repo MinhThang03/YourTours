@@ -6,13 +6,20 @@ import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
+import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.repositories.BookHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -123,5 +130,28 @@ public class BookHomeFactory
     @Override
     public boolean existByUserIdAndHomeId(UUID userId, UUID homeId) {
         return bookHomeRepository.existsByUserIdAndHomeId(userId, homeId);
+    }
+
+    @Override
+    public List<LocalDate> getDatesIsBooked(List<MonthAndYearModel> months, UUID homeId) {
+        List<LocalDate> result = new ArrayList<>();
+        for (MonthAndYearModel month : months) {
+            List<LocalDate> dates = getListDayOfMonth(month.getMonth(), month.getYear());
+            for (LocalDate date : dates) {
+                Optional<BookHomesCommand> optional = bookHomeRepository.findOneByBetweenDate(date, homeId);
+                if (optional.isPresent()) {
+                    result.add(date);
+                }
+            }
+        }
+        return result;
+    }
+
+
+    private List<LocalDate> getListDayOfMonth(Integer month, Integer year) {
+        YearMonth ym = YearMonth.of(year, Month.of(month));
+        LocalDate firstOfMonth = ym.atDay(1);
+        LocalDate firstOfFollowingMonth = ym.plusMonths(1).atDay(1);
+        return firstOfMonth.datesUntil(firstOfFollowingMonth).collect(Collectors.toList());
     }
 }

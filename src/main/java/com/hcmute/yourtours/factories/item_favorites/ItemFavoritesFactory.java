@@ -16,7 +16,9 @@ import java.util.UUID;
 
 @Service
 @Transactional
-public class ItemFavoritesFactory extends BasePersistDataFactory<UUID, ItemFavoritesInfo, ItemFavoritesDetail, Long, ItemFavoritesCommand> implements IItemFavoritesFactory {
+public class ItemFavoritesFactory
+        extends BasePersistDataFactory<UUID, ItemFavoritesInfo, ItemFavoritesDetail, Long, ItemFavoritesCommand>
+        implements IItemFavoritesFactory {
 
     private final ItemFavoritesRepository itemFavoritesRepository;
 
@@ -83,5 +85,10 @@ public class ItemFavoritesFactory extends BasePersistDataFactory<UUID, ItemFavor
         } else {
             itemFavoritesRepository.deleteByUserIdAndHomeId(detail.getUserId(), detail.getHomeId());
         }
+    }
+
+    @Override
+    public boolean existByUserIdAndHomeId(UUID userId, UUID homeId) {
+        return itemFavoritesRepository.existsByUserIdAndHomeId(userId, homeId);
     }
 }

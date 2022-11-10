@@ -2,12 +2,17 @@ package com.hcmute.yourtours.factories.user_evaluate;
 
 import com.hcmute.yourtours.commands.UserEvaluateCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateDetail;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateInfo;
+import com.hcmute.yourtours.models.user_evaluate.filter.EvaluateFilter;
 import com.hcmute.yourtours.repositories.UserEvaluateRepository;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +27,14 @@ public class UserEvaluateFactory
         implements IUserEvaluateFactory {
 
     private final UserEvaluateRepository userEvaluateRepository;
+    private final IUserFactory iUserFactory;
 
-    protected UserEvaluateFactory(UserEvaluateRepository repository) {
+    protected UserEvaluateFactory(
+            UserEvaluateRepository repository,
+            IUserFactory iUserFactory) {
         super(repository);
         this.userEvaluateRepository = repository;
+        this.iUserFactory = iUserFactory;
     }
 
     @Override
@@ -67,6 +76,7 @@ public class UserEvaluateFactory
                 .userId(entity.getUserId())
                 .point(entity.getPoint())
                 .comment(entity.getComment())
+                .userFullName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .build();
     }
 
@@ -81,6 +91,7 @@ public class UserEvaluateFactory
                 .homeId(entity.getHomeId())
                 .userId(entity.getUserId())
                 .point(entity.getPoint())
+                .userFullName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .comment(entity.getComment())
                 .build();
     }
@@ -121,5 +132,20 @@ public class UserEvaluateFactory
         Double point = evaluates.stream().map(UserEvaluateCommand::getPoint).reduce(0.0, Double::sum);
         int count = evaluates.size();
         return point / count;
+    }
+
+    @Override
+    protected void preCreate(UserEvaluateDetail detail) throws InvalidException {
+        iUserFactory.checkExistsByUserId(detail.getUserId());
+    }
+
+    @Override
+    protected <F extends BaseFilter> Page<UserEvaluateCommand> pageQuery(F filter, Integer number, Integer size) {
+        EvaluateFilter evaluateFilter = (EvaluateFilter) filter;
+        return userEvaluateRepository.findPageWithEvaluateFilter
+                (
+                        evaluateFilter.getTypeFilter() == null ? null : evaluateFilter.getTypeFilter().name(),
+                        evaluateFilter.getHomeId(),
+                        PageRequest.of(number, size));
     }
 }
