@@ -72,7 +72,7 @@ public class HomesCommand extends NameData {
     @Column(name = "province_code")
     private Integer provinceCode;
 
-    @Column(name = "rank")
+    @Column(name = "ranking")
     private Integer rank;
 
     @Column(name = "view")
@@ -84,7 +84,7 @@ public class HomesCommand extends NameData {
     @Column(name = "thumbnail")
     private String thumbnail;
 
-    @Column(name = "refundPolicy")
+    @Column(name = "refund_policy")
     @Enumerated(EnumType.STRING)
     private RefundPolicyEnum refundPolicy;
 
