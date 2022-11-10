@@ -236,7 +236,7 @@ public class UserFactory
 
     @Override
     public UserDetail getDetailCurrentUser() throws InvalidException {
-        Optional<String> optional = iGetUserFromTokenFactory.getCurrentAuditor();
+        Optional<String> optional = iGetUserFromTokenFactory.getCurrentUser();
         if (optional.isEmpty()) {
             throw new InvalidException(ErrorCode.UNAUTHORIZED);
         } else {
@@ -246,7 +246,7 @@ public class UserFactory
 
     @Override
     public UserDetail updateCurrentUser(UserDetail detail) throws InvalidException {
-        String userId = iGetUserFromTokenFactory.getCurrentAuditor().orElse(null);
+        String userId = iGetUserFromTokenFactory.getCurrentUser().orElse(null);
         if (userId == null) {
             throw new InvalidException(ErrorCode.UNAUTHORIZED);
         } else {
@@ -287,6 +287,14 @@ public class UserFactory
                         .success(true)
                         .build();
             }
+        }
+    }
+
+    @Override
+    public void checkExistsByUserId(UUID userId) throws InvalidException {
+        Optional<UserCommand> optional = userRepository.findByUserId(userId);
+        if (optional.isEmpty()) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
         }
     }
 

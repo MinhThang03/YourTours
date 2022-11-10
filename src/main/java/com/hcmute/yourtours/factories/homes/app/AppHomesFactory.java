@@ -94,16 +94,6 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
     }
 
     @Override
-    public HomeDetail convertToDetail(HomesCommand entity) throws InvalidException {
-        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
-
-        HomeDetail detail = super.convertToDetail(entity);
-        return detail.toBuilder()
-                .isBooked(iBookHomeFactory.existByUserIdAndHomeId(userId, entity.getHomeId()))
-                .build();
-    }
-
-    @Override
     public HomeDetail createUserEvaluate(UserEvaluateDetail evaluateDetail) throws InvalidException {
         UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
 

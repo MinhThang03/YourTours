@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 public class GetUserFromTokenFactory implements IGetUserFromTokenFactory {
     @Override
-    public Optional<String> getCurrentAuditor() {
+    public Optional<String> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof DefaultUserDetail) {
             DefaultUserDetail defaultUserDetail = (DefaultUserDetail) authentication.getPrincipal();
@@ -28,7 +28,7 @@ public class GetUserFromTokenFactory implements IGetUserFromTokenFactory {
 
     @Override
     public UUID checkUnAuthorization() throws InvalidException {
-        Optional<String> userId = getCurrentAuditor();
+        Optional<String> userId = getCurrentUser();
         if (userId.isEmpty()) {
             throw new InvalidException(ErrorCode.UNAUTHORIZED);
         }

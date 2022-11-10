@@ -26,4 +26,6 @@ public interface IUserFactory extends IDataFactory<UUID, UserInfo, UserDetail> {
 
     SuccessResponse requestForgotPassword(ForgotPasswordRequest request) throws InvalidException;
 
+    void checkExistsByUserId(UUID userId) throws InvalidException;
+
 }

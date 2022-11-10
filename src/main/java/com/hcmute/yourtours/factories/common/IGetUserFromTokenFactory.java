@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface IGetUserFromTokenFactory {
-    Optional<String> getCurrentAuditor();
+    Optional<String> getCurrentUser();
 
     UUID checkUnAuthorization() throws InvalidException;
 }

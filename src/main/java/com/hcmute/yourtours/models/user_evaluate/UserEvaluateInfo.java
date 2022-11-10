@@ -31,4 +31,7 @@ public class UserEvaluateInfo extends BaseData<UUID> {
     private Double point;
 
     private String comment;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String userFullName;
 }

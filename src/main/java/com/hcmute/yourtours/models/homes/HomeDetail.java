@@ -26,8 +26,4 @@ public class HomeDetail extends HomeInfo {
 
     @NotNull
     private List<AmenityOfHomeDetail> amenitiesOfHome;
-
-    private Double userRate;
-
-    private boolean isBooked;
 }
