@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,4 +29,17 @@ public interface AmenitiesRepository extends JpaRepository<AmenitiesCommand, Lon
                     "   or :categoryId is null ")
     Page<AmenitiesCommand> getPageWithAmenityFilter(@Param("categoryId") UUID categoryId,
                                                     Pageable pageable);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.* " +
+                    "from amenities a, " +
+                    "     amenities_of_home b " +
+                    "where a.amenity_id = b.amenity_id " +
+                    "  and b.home_id = :homeId " +
+                    "limit :limit "
+    )
+    List<AmenitiesCommand> getLimitByHomeId(@Param("homeId") UUID homeId,
+                                            @Param("limit") Integer limit);
 }

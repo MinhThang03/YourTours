@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.factories.homes.cms;
 
+import com.hcmute.yourtours.factories.amenities.IAmenitiesFactory;
 import com.hcmute.yourtours.factories.common.IAuthorizationOwnerHomeFactory;
 import com.hcmute.yourtours.factories.discount_of_home.IDiscountOfHomeFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
@@ -22,6 +23,7 @@ public class CmsHandleViewHomeFactory implements ICmsHandleViewHomeFactory {
     private final ISurchargeOfHomeFactory iSurchargeOfHomeFactory;
     private final IDiscountOfHomeFactory iDiscountOfHomeFactory;
     private final IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory;
+    private final IAmenitiesFactory iAmenitiesFactory;
 
     public CmsHandleViewHomeFactory
             (
@@ -29,13 +31,15 @@ public class CmsHandleViewHomeFactory implements ICmsHandleViewHomeFactory {
                     IRoomsOfHomeFactory iRoomsOfHomeFactory,
                     ISurchargeOfHomeFactory iSurchargeOfHomeFactory,
                     IDiscountOfHomeFactory iDiscountOfHomeFactory,
-                    IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory
+                    IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory,
+                    IAmenitiesFactory iAmenitiesFactory
             ) {
         this.iHomesFactory = iHomesFactory;
         this.iRoomsOfHomeFactory = iRoomsOfHomeFactory;
         this.iSurchargeOfHomeFactory = iSurchargeOfHomeFactory;
         this.iDiscountOfHomeFactory = iDiscountOfHomeFactory;
         this.iAuthorizationOwnerHomeFactory = iAuthorizationOwnerHomeFactory;
+        this.iAmenitiesFactory = iAmenitiesFactory;
     }
 
     @Override
@@ -47,6 +51,7 @@ public class CmsHandleViewHomeFactory implements ICmsHandleViewHomeFactory {
                 .discounts(iDiscountOfHomeFactory.getDiscountsOfHomeView(homeId))
                 .numberOfRooms(iRoomsOfHomeFactory.getNumberOfRoomCategoryByHomeId(homeId))
                 .surcharges(iSurchargeOfHomeFactory.getListCategoryWithHomeId(homeId))
+                .amenities(iAmenitiesFactory.getLimitTrueByHomeId(homeId))
                 .build();
     }
 }

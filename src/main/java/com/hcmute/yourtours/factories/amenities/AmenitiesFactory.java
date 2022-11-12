@@ -17,6 +17,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -124,5 +125,11 @@ public class AmenitiesFactory
     protected <F extends BaseFilter> Page<AmenitiesCommand> pageQuery(F filter, Integer number, Integer size) {
         AmenityFilter amenityFilter = (AmenityFilter) filter;
         return amenitiesRepository.getPageWithAmenityFilter(amenityFilter.getCategoryId(), PageRequest.of(number, size));
+    }
+
+    @Override
+    public List<AmenityInfo> getLimitTrueByHomeId(UUID homeId) throws InvalidException {
+        List<AmenitiesCommand> commands = amenitiesRepository.getLimitByHomeId(homeId, 2);
+        return convertList(commands);
     }
 }
