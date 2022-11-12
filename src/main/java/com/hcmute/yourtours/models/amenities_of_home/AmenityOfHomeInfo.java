@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class AmenityOfHomeInfo extends BaseData<UUID> {
     private Boolean isHave;
 
+    @NotNull
     private UUID amenityId;
 
     private UUID homeId;

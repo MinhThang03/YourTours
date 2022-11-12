@@ -7,6 +7,7 @@ import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.factories.surcharges_of_home.ISurchargeOfHomeFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
+import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.models.HostHomeDetailModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,19 @@ public class CmsHandleViewHomeFactory implements ICmsHandleViewHomeFactory {
                 .surcharges(iSurchargeOfHomeFactory.getListCategoryWithHomeId(homeId))
                 .amenities(iAmenitiesFactory.getLimitTrueByHomeId(homeId))
                 .build();
+    }
+
+    @Override
+    public HostHomeDetailModel updateProfile(UUID homeId, HomeDetail detail) throws InvalidException {
+        HomeDetail origin = iHomesFactory.getDetailModel(homeId, null);
+        origin = origin.toBuilder()
+                .name(detail.getName())
+                .costPerNightDefault(detail.getCostPerNightDefault())
+                .description(detail.getDescription())
+                .guide(detail.getGuide())
+                .refundPolicy(detail.getRefundPolicy())
+                .build();
+        iHomesFactory.updateModel(homeId, origin);
+        return getDetailByHomeId(homeId);
     }
 }

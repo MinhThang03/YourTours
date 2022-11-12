@@ -10,6 +10,7 @@ import com.hcmute.yourtours.libs.factory.IResponseFactory;
 import com.hcmute.yourtours.libs.logging.LogContext;
 import com.hcmute.yourtours.libs.logging.LogType;
 import com.hcmute.yourtours.libs.model.factory.request.FactoryCreateRequest;
+import com.hcmute.yourtours.libs.model.factory.request.FactoryUpdateRequest;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
@@ -61,6 +62,18 @@ public class CmsHomeController
         try {
             LogContext.push(LogType.REQUEST, id);
             HostHomeDetailModel response = iCmsHandleViewHomeFactory.getDetailByHomeId(id);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<HostHomeDetailModel>> updateModel(FactoryUpdateRequest<UUID, HomeDetail> request) {
+        try {
+            LogContext.push(LogType.REQUEST, request);
+            HostHomeDetailModel response = iCmsHandleViewHomeFactory.updateProfile(request.getId(), request.getData());
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {
