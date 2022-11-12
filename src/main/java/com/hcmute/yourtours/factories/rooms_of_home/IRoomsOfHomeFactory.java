@@ -13,5 +13,6 @@ import java.util.UUID;
 public interface IRoomsOfHomeFactory extends IDataFactory<UUID, RoomOfHomeInfo, RoomOfHomeDetail> {
     void createListWithHomeId(UUID homeId, List<RoomOfHomeCreateModel> listCreate) throws InvalidException;
 
-    List<NumberOfRoomsModel> getNumberOfRoomCategoryByHomeId(UUID homeId);
+    List<NumberOfRoomsModel> getNumberOfRoomCategoryByHomeId(UUID homeId, Boolean important);
+
 }

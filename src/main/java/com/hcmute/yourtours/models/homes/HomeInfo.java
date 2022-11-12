@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.models.common.NameDataModel;
+import com.hcmute.yourtours.models.rooms_of_home.models.NumberOfRoomsModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,9 @@ import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -66,4 +69,14 @@ public class HomeInfo extends NameDataModel<UUID> {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long numberOfReviews;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private LocalDateTime lastModifiedDate;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private List<NumberOfRoomsModel> roomsImportant;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Integer numberOfBed;
+
 }

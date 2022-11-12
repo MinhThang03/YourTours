@@ -116,8 +116,8 @@ public class RoomsOfHomeFactory
     }
 
     @Override
-    public List<NumberOfRoomsModel> getNumberOfRoomCategoryByHomeId(UUID homeId) {
-        List<NumberOfRoomsProjections> projections = roomsOfHomeRepository.getNumberOfRoomCategoryByHomeId(homeId);
+    public List<NumberOfRoomsModel> getNumberOfRoomCategoryByHomeId(UUID homeId, Boolean important) {
+        List<NumberOfRoomsProjections> projections = roomsOfHomeRepository.getNumberOfRoomCategoryByHomeId(homeId, important);
         return projections.stream().map
                         (
                                 item -> NumberOfRoomsModel

@@ -21,14 +21,16 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand,
 
     @Query(
             nativeQuery = true,
-            value = "select count(a.id) as number, " +
-                    "       a.room_category_id as roomCategoryId, " +
-                    "       b.name as roomCategoryName " +
-                    "from rooms_of_home a, " +
-                    "     room_categories b " +
-                    "where a.home_id = :homeId " +
-                    "  and a.room_category_id = b.room_category_id " +
+            value = "select count(a.id)        as number,   " +
+                    "       a.room_category_id as roomCategoryId,   " +
+                    "       b.name             as roomCategoryName   " +
+                    "from rooms_of_home a,   " +
+                    "     room_categories b   " +
+                    "where a.home_id = :homeId   " +
+                    "  and a.room_category_id = b.room_category_id   " +
+                    "  and (b.important = :important or :important is null)   " +
                     "group by a.room_category_id "
     )
-    List<NumberOfRoomsProjections> getNumberOfRoomCategoryByHomeId(@Param("homeId") UUID homeId);
+    List<NumberOfRoomsProjections> getNumberOfRoomCategoryByHomeId(@Param("homeId") UUID homeId,
+                                                                   @Param("important") Boolean important);
 }

@@ -150,6 +150,7 @@ public class HomesFactory
                 .thumbnail(entity.getThumbnail())
                 .averageRate(entity.getAverageRate())
                 .numberOfReviews(entity.getNumberOfReviews())
+                .lastModifiedDate(entity.getLastModifiedDate())
                 .build();
     }
 
@@ -181,6 +182,7 @@ public class HomesFactory
                 .averageRate(entity.getAverageRate())
                 .thumbnail(entity.getThumbnail())
                 .numberOfReviews(entity.getNumberOfReviews())
+                .lastModifiedDate(entity.getLastModifiedDate())
                 .build();
     }
 

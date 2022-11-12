@@ -88,4 +88,9 @@ public class BedsOfHomeFactory
         }
         return bedConfig.getId();
     }
+
+    @Override
+    public Integer getNumberOfBedWithHomeId(UUID homeId) {
+        return bedsOfHomeRepository.countNumberOfBedByHomeId(homeId);
+    }
 }

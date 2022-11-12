@@ -49,7 +49,7 @@ public class CmsHandleViewHomeFactory implements ICmsHandleViewHomeFactory {
         return HostHomeDetailModel.builder()
                 .homeDetail(iHomesFactory.getDetailModel(homeId, null))
                 .discounts(iDiscountOfHomeFactory.getDiscountsOfHomeView(homeId))
-                .numberOfRooms(iRoomsOfHomeFactory.getNumberOfRoomCategoryByHomeId(homeId))
+                .numberOfRooms(iRoomsOfHomeFactory.getNumberOfRoomCategoryByHomeId(homeId, null))
                 .surcharges(iSurchargeOfHomeFactory.getListCategoryWithHomeId(homeId))
                 .amenities(iAmenitiesFactory.getLimitTrueByHomeId(homeId))
                 .build();
