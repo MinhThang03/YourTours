@@ -46,6 +46,8 @@ public class AmenityCategoryHomeFactory implements IAmenityCategoryHomeFactory {
 
     @Override
     public BasePagingResponse<AmenityCategoryHomeDetail> getPageWithChildren(AmenityCategoryFilter filter, Integer number, Integer size) throws InvalidException {
+        iAuthorizationOwnerHomeFactory.checkOwnerOfHome(filter.getHomeId());
+
         BasePagingResponse<AmenityCategoryInfo> infos = iAmenityCategoriesFactory.getInfoPage(filter, number, size);
         List<AmenityCategoryHomeDetail> result = new ArrayList<>();
         for (AmenityCategoryInfo item : infos.getContent()) {
