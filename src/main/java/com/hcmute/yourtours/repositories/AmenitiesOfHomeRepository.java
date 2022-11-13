@@ -25,9 +25,10 @@ public interface AmenitiesOfHomeRepository extends JpaRepository<AmenitiesOfHome
                     "       c.is_have     as isHave " +
                     "from amenity_categories a " +
                     "         inner join amenities b on a.amenity_category_id = b.category_id " +
-                    "         left join amenities_of_home c on b.amenity_id = c.amenity_id " +
-                    "where a.amenity_category_id = :categoryId " +
-                    "  and c.home_id = :homeId ;")
+                    "         left join (select a.* " +
+                    "                    from amenities_of_home a " +
+                    "                    where a.home_id = :homeId) c on b.amenity_id = c.amenity_id " +
+                    "where a.amenity_category_id = :categoryId")
     List<AmenityOfHomeProjection> findAllByAmenityCategoryIdAndHomeId(@Param("categoryId") UUID categoryId,
                                                                       @Param("homeId") UUID homeId);
 
