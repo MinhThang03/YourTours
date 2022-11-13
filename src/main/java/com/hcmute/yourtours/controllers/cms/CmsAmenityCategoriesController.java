@@ -79,4 +79,15 @@ public class CmsAmenityCategoriesController
             throw new RestException(e.getErrorCode());
         }
     }
+
+    @Override
+    public ResponseEntity<BaseResponse<BasePagingResponse<AmenityCategoryHomeDetail>>> getInfoPageAndChildren(AmenityCategoryFilter filter, Integer number, Integer size) {
+        try {
+            BasePagingResponse<AmenityCategoryHomeDetail> response = iAmenityCategoryHomeFactory.getPageWithChildren(filter, number, size);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e.getErrorCode());
+        }
+    }
 }

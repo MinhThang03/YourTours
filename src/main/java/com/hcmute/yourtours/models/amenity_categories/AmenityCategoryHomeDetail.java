@@ -11,6 +11,6 @@ import java.util.List;
 @Builder
 public class AmenityCategoryHomeDetail {
     @JsonUnwrapped
-    private AmenityCategoryDetail amenityCategoryDetail;
+    private AmenityCategoryInfo amenityCategory;
     private List<AmenityOfHomeModel> childAmenities;
 }
