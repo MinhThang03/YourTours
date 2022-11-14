@@ -123,15 +123,21 @@ public class AmenitiesOfHomeFactory
     @Override
     protected void preCreate(AmenityOfHomeDetail detail) throws InvalidException {
         iAuthorizationOwnerHomeFactory.checkOwnerOfHome(detail.getHomeId());
+    }
 
+    @Override
+    protected AmenityOfHomeDetail aroundCreate(AmenityOfHomeDetail detail) throws InvalidException {
         Optional<AmenitiesOfHomeCommand> optional = amenitiesOfHomeRepository
                 .findByHomeIdAndAmenityId(detail.getHomeId(), detail.getAmenityId());
 
         if (optional.isPresent()) {
-            if (optional.get().getIsHave().equals(detail.getIsHave())) {
+            Boolean isHave = optional.get().getIsHave();
+            if (isHave != null && isHave.equals(detail.getIsHave())) {
                 detail.setIsHave(null);
             }
-            deleteModel(optional.get().getAmenityOfHomeId(), null);
+            return updateModel(optional.get().getAmenityOfHomeId(), detail);
         }
+
+        return super.aroundCreate(detail);
     }
 }
