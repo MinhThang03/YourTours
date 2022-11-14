@@ -140,7 +140,7 @@ public class PriceOfHomeFactory
 
     @Override
     public PriceOfHomeWithMonthResponse getByHomeIdAndMonth(PriceOfHomeFilter filter) throws InvalidException {
-        List<LocalDate> daysOfMonth = getListDayOfMonth(filter.getMonth());
+        List<LocalDate> daysOfMonth = getListDayOfMonth(filter.getMonth(), filter.getYear());
 
         List<PriceOfHomeDetail> prices = new ArrayList<>();
         for (LocalDate date : daysOfMonth) {
@@ -167,8 +167,8 @@ public class PriceOfHomeFactory
                 .build();
     }
 
-    private List<LocalDate> getListDayOfMonth(Integer month) {
-        YearMonth ym = YearMonth.of(LocalDate.now().getYear(), Month.of(month));
+    private List<LocalDate> getListDayOfMonth(Integer month, Integer year) {
+        YearMonth ym = YearMonth.of(year, Month.of(month));
         LocalDate firstOfMonth = ym.atDay(1);
         LocalDate firstOfFollowingMonth = ym.plusMonths(1).atDay(1);
         return firstOfMonth.datesUntil(firstOfFollowingMonth).collect(Collectors.toList());

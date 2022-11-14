@@ -17,5 +17,8 @@ public class PriceOfHomeFilter implements BaseFilter {
     private Integer month;
 
     @NotNull
+    private Integer year;
+
+    @NotNull
     private UUID homeId;
 }
