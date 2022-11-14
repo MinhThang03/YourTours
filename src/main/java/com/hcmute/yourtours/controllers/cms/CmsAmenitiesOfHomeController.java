@@ -31,6 +31,6 @@ public class CmsAmenitiesOfHomeController
 
     @Override
     public ResponseEntity<BaseResponse<AmenityOfHomeDetail>> createModel(FactoryCreateRequest<UUID, AmenityOfHomeDetail> request) {
-        return createModel(request);
+        return factoryCreateModel(request);
     }
 }
