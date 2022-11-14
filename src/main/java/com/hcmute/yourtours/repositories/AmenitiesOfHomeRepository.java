@@ -29,7 +29,7 @@ public interface AmenitiesOfHomeRepository extends JpaRepository<AmenitiesOfHome
                     "                    from amenities_of_home a " +
                     "                    where a.home_id = :homeId) c on b.amenity_id = c.amenity_id " +
                     "where a.amenity_category_id = :categoryId " +
-                    "sort by b.name ")
+                    "order by b.name ")
     List<AmenityOfHomeProjection> findAllByAmenityCategoryIdAndHomeId(@Param("categoryId") UUID categoryId,
                                                                       @Param("homeId") UUID homeId);
 
