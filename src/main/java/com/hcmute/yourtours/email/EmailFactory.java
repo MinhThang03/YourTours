@@ -54,13 +54,28 @@ public class EmailFactory implements IEmailFactory {
 
     @Override
     public String getEmailActiveEmailContent(String userName, String expired, String otp) {
+        return getEmailOtp(userName, expired, otp, "Email_Active_Email.ftl");
+    }
+
+    @Override
+    public String getEmailResendOtpContent(String userName, String expired, String otp) {
+        return getEmailOtp(userName, expired, otp, "Email_Resend_Email.ftl");
+    }
+
+    @Override
+    public String getEmailForgotPasswordContent(String userName, String expired, String otp) {
+        return getEmailOtp(userName, expired, otp, "Email_Forgot_Password.ftl");
+    }
+
+
+    private String getEmailOtp(String userName, String expired, String otp, String fileNameTemplate) {
         try {
             StringWriter stringWriter = new StringWriter();
             Map<String, Object> model = new HashMap<>();
             model.put("name", userName);
             model.put("expired", expired);
             model.put("otp", otp);
-            freeMarkerConfiguration.getTemplate("Email_Active_Email.ftl").process(model, stringWriter);
+            freeMarkerConfiguration.getTemplate(fileNameTemplate).process(model, stringWriter);
             return stringWriter.getBuffer().toString();
         } catch (Exception ignore) {
             ignore.printStackTrace();
@@ -68,4 +83,6 @@ public class EmailFactory implements IEmailFactory {
             return null;
         }
     }
+
+
 }

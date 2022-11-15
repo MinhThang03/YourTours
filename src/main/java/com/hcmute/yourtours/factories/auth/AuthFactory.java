@@ -2,6 +2,7 @@ package com.hcmute.yourtours.factories.auth;
 
 
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
+import com.hcmute.yourtours.constant.TokenExpirationConstant;
 import com.hcmute.yourtours.email.IEmailFactory;
 import com.hcmute.yourtours.enums.RoleEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
@@ -122,7 +123,15 @@ public class AuthFactory implements IAuthFactory {
             throw new InvalidException(YourToursErrorCode.ACCOUNT_IS_LOCKED);
         } else {
             VerificationOtpDetail otpDetail = iVerificationOtpFactory.createVerificationForgotPasswordOtp(userDetail.getId());
-            iEmailFactory.sendSimpleMessage(userDetail.getEmail(), SubjectEmailConstant.FORGOT_PASSWORD_OTP, otpDetail.getToken());
+
+            String emailContent = iEmailFactory.getEmailForgotPasswordContent
+                    (
+                            userDetail.getFullName(),
+                            String.valueOf(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER / 60),
+                            otpDetail.getToken()
+                    );
+
+            iEmailFactory.sendSimpleMessage(userDetail.getEmail(), SubjectEmailConstant.FORGOT_PASSWORD_OTP, emailContent);
             return SuccessResponse.builder()
                     .success(true)
                     .build();
@@ -142,7 +151,15 @@ public class AuthFactory implements IAuthFactory {
     public SuccessResponse resendOtp(ResendVerifyOtp request) throws InvalidException {
         UserDetail userDetail = iUserFactory.getDetailByEmail(request.getEmail());
         VerificationOtpDetail otpDetail = iVerificationOtpFactory.resendOtp(userDetail.getId(), request.getOtpType());
-        iEmailFactory.sendSimpleMessage(userDetail.getEmail(), SubjectEmailConstant.RESEND_OTP, otpDetail.getToken());
+
+        String emailContent = iEmailFactory.getEmailResendOtpContent
+                (
+                        userDetail.getFullName(),
+                        String.valueOf(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER / 60),
+                        otpDetail.getToken()
+                );
+
+        iEmailFactory.sendSimpleMessage(userDetail.getEmail(), SubjectEmailConstant.RESEND_OTP, emailContent);
         return SuccessResponse.builder()
                 .success(true)
                 .build();
