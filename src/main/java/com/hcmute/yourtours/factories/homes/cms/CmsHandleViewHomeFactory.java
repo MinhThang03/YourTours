@@ -64,7 +64,16 @@ public class CmsHandleViewHomeFactory implements ICmsHandleViewHomeFactory {
                 .costPerNightDefault(detail.getCostPerNightDefault())
                 .description(detail.getDescription())
                 .guide(detail.getGuide())
-                .refundPolicy(detail.getRefundPolicy())
+                .build();
+        iHomesFactory.updateModel(homeId, origin);
+        return getDetailByHomeId(homeId);
+    }
+
+    @Override
+    public HostHomeDetailModel updatePrice(UUID homeId, HomeDetail detail) throws InvalidException {
+        HomeDetail origin = iHomesFactory.getDetailModel(homeId, null);
+        origin = origin.toBuilder()
+                .costPerNightDefault(detail.getCostPerNightDefault())
                 .build();
         iHomesFactory.updateModel(homeId, origin);
         return getDetailByHomeId(homeId);

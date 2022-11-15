@@ -17,6 +17,7 @@ import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
 import com.hcmute.yourtours.models.homes.models.HostHomeDetailModel;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -70,10 +71,23 @@ public class CmsHomeController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<HostHomeDetailModel>> updateModel(FactoryUpdateRequest<UUID, HomeDetail> request) {
+    public ResponseEntity<BaseResponse<HostHomeDetailModel>> updateBaseProfile(FactoryUpdateRequest<UUID, HomeDetail> request) {
         try {
             LogContext.push(LogType.REQUEST, request);
             HostHomeDetailModel response = iCmsHandleViewHomeFactory.updateProfile(request.getId(), request.getData());
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
+    }
+
+    @Override
+    @Operation(summary = "Chỉnh sửa giá tiền của nhà")
+    public ResponseEntity<BaseResponse<HostHomeDetailModel>> updatePrice(FactoryUpdateRequest<UUID, HomeDetail> request) {
+        try {
+            LogContext.push(LogType.REQUEST, request);
+            HostHomeDetailModel response = iCmsHandleViewHomeFactory.updatePrice(request.getId(), request.getData());
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {

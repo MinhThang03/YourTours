@@ -10,4 +10,6 @@ public interface ICmsHandleViewHomeFactory {
     HostHomeDetailModel getDetailByHomeId(UUID homeId) throws InvalidException;
 
     HostHomeDetailModel updateProfile(UUID homeId, HomeDetail detail) throws InvalidException;
+
+    HostHomeDetailModel updatePrice(UUID homeId, HomeDetail detail) throws InvalidException;
 }

@@ -25,5 +25,8 @@ public interface ICmsHomeController extends
     ResponseEntity<BaseResponse<HostHomeDetailModel>> getDetailById(@PathVariable UUID id);
 
     @PutMapping("update/homes-profile")
-    ResponseEntity<BaseResponse<HostHomeDetailModel>> updateModel(@RequestBody @Valid FactoryUpdateRequest<UUID, HomeDetail> request);
+    ResponseEntity<BaseResponse<HostHomeDetailModel>> updateBaseProfile(@RequestBody @Valid FactoryUpdateRequest<UUID, HomeDetail> request);
+
+    @PutMapping("update/homes-price")
+    ResponseEntity<BaseResponse<HostHomeDetailModel>> updatePrice(@RequestBody @Valid FactoryUpdateRequest<UUID, HomeDetail> request);
 }
