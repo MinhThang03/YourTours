@@ -17,6 +17,9 @@ import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
 import com.hcmute.yourtours.models.homes.models.HostHomeDetailModel;
+import com.hcmute.yourtours.models.homes.models.UpdateAddressHomeModel;
+import com.hcmute.yourtours.models.homes.models.UpdateBasePriceHomeModel;
+import com.hcmute.yourtours.models.homes.models.UpdateBaseProfileHomeModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -70,8 +73,22 @@ public class CmsHomeController
         }
     }
 
+
     @Override
-    public ResponseEntity<BaseResponse<HostHomeDetailModel>> updateBaseProfile(FactoryUpdateRequest<UUID, HomeDetail> request) {
+    @Operation(summary = "Chỉnh sửa địa chỉ")
+    public ResponseEntity<BaseResponse<HostHomeDetailModel>> updateAddress(FactoryUpdateRequest<UUID, UpdateAddressHomeModel> request) {
+        try {
+            LogContext.push(LogType.REQUEST, request);
+            HostHomeDetailModel response = iCmsHandleViewHomeFactory.updateAddress(request.getId(), request.getData());
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<HostHomeDetailModel>> updateBaseProfile(FactoryUpdateRequest<UUID, UpdateBaseProfileHomeModel> request) {
         try {
             LogContext.push(LogType.REQUEST, request);
             HostHomeDetailModel response = iCmsHandleViewHomeFactory.updateProfile(request.getId(), request.getData());
@@ -84,7 +101,7 @@ public class CmsHomeController
 
     @Override
     @Operation(summary = "Chỉnh sửa giá tiền của nhà")
-    public ResponseEntity<BaseResponse<HostHomeDetailModel>> updatePrice(FactoryUpdateRequest<UUID, HomeDetail> request) {
+    public ResponseEntity<BaseResponse<HostHomeDetailModel>> updatePrice(FactoryUpdateRequest<UUID, UpdateBasePriceHomeModel> request) {
         try {
             LogContext.push(LogType.REQUEST, request);
             HostHomeDetailModel response = iCmsHandleViewHomeFactory.updatePrice(request.getId(), request.getData());

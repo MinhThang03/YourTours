@@ -9,6 +9,9 @@ import com.hcmute.yourtours.factories.surcharges_of_home.ISurchargeOfHomeFactory
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.models.HostHomeDetailModel;
+import com.hcmute.yourtours.models.homes.models.UpdateAddressHomeModel;
+import com.hcmute.yourtours.models.homes.models.UpdateBasePriceHomeModel;
+import com.hcmute.yourtours.models.homes.models.UpdateBaseProfileHomeModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,11 +60,10 @@ public class CmsHandleViewHomeFactory implements ICmsHandleViewHomeFactory {
     }
 
     @Override
-    public HostHomeDetailModel updateProfile(UUID homeId, HomeDetail detail) throws InvalidException {
+    public HostHomeDetailModel updateProfile(UUID homeId, UpdateBaseProfileHomeModel detail) throws InvalidException {
         HomeDetail origin = iHomesFactory.getDetailModel(homeId, null);
         origin = origin.toBuilder()
                 .name(detail.getName())
-                .costPerNightDefault(detail.getCostPerNightDefault())
                 .description(detail.getDescription())
                 .guide(detail.getGuide())
                 .build();
@@ -70,10 +72,21 @@ public class CmsHandleViewHomeFactory implements ICmsHandleViewHomeFactory {
     }
 
     @Override
-    public HostHomeDetailModel updatePrice(UUID homeId, HomeDetail detail) throws InvalidException {
+    public HostHomeDetailModel updatePrice(UUID homeId, UpdateBasePriceHomeModel detail) throws InvalidException {
         HomeDetail origin = iHomesFactory.getDetailModel(homeId, null);
         origin = origin.toBuilder()
                 .costPerNightDefault(detail.getCostPerNightDefault())
+                .build();
+        iHomesFactory.updateModel(homeId, origin);
+        return getDetailByHomeId(homeId);
+    }
+
+    @Override
+    public HostHomeDetailModel updateAddress(UUID homeId, UpdateAddressHomeModel detail) throws InvalidException {
+        HomeDetail origin = iHomesFactory.getDetailModel(homeId, null);
+        origin = origin.toBuilder()
+                .provinceCode(detail.getProvinceCode())
+                .addressDetail(detail.getAddress())
                 .build();
         iHomesFactory.updateModel(homeId, origin);
         return getDetailByHomeId(homeId);
