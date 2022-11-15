@@ -106,7 +106,9 @@ public class DiscountOfHomeFactory
     @Override
     protected void preCreate(DiscountOfHomeDetail detail) throws InvalidException {
         iDiscountHomeCategoriesFactory.checkExistsByDiscountCategoryId(detail.getCategoryId());
-        discountOfHomeRepository.deleteAllByHomeIdAndCategoryId(detail.getHomeId(), detail.getCategoryId());
+
+        List<DiscountOfHomeCommand> listDelete = discountOfHomeRepository.findAllByHomeIdAndCategoryId(detail.getHomeId(), detail.getCategoryId());
+        repository.deleteAll(listDelete);
     }
 
     @Override

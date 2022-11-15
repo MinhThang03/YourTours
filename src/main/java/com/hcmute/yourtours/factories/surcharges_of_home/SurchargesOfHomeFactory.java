@@ -107,6 +107,8 @@ public class SurchargesOfHomeFactory
 
     @Override
     protected void preCreate(SurchargeOfHomeDetail detail) throws InvalidException {
-        surchargesOfHomeRepository.deleteAllByHomeIdAndCategoryId(detail.getHomeId(), detail.getCategoryId());
+        List<SurchargesOfHomeCommand> listDelete =
+                surchargesOfHomeRepository.findAllByHomeIdAndCategoryId(detail.getHomeId(), detail.getCategoryId());
+        repository.deleteAll(listDelete);
     }
 }

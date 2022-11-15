@@ -31,4 +31,6 @@ public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHo
 
     @Modifying
     void deleteAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
+
+    List<SurchargesOfHomeCommand> findAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
 }
