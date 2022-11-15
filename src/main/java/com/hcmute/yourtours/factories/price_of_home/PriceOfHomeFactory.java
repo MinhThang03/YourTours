@@ -110,7 +110,10 @@ public class PriceOfHomeFactory
 
     @Override
     protected void preCreate(PriceOfHomeDetail detail) throws InvalidException {
-        priceOfHomeRepository.deleteByHomeIdAndDate(detail.getHomeId(), detail.getDate());
+        List<PriceOfHomeCommand> listDelete = priceOfHomeRepository.findAllByHomeIdAndDate(detail.getHomeId(), detail.getDate());
+        if (!listDelete.isEmpty()) {
+            repository.deleteAll(listDelete);
+        }
     }
 
     @Override
