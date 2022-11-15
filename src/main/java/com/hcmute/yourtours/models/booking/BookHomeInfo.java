@@ -46,4 +46,9 @@ public class BookHomeInfo extends BaseData<UUID> {
 
     private BookRoomStatusEnum status;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String homeName;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String customerName;
 }

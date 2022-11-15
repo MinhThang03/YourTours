@@ -33,7 +33,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
 
     public AppHandleViewHomeFactory(
             @Qualifier("appHomesFactory") IHomesFactory iHomesFactory,
-            IBookHomeFactory iBookHomeFactory,
+            @Qualifier("bookHomeFactory") IBookHomeFactory iBookHomeFactory,
             IGetUserFromTokenFactory iGetUserFromTokenFactory,
             IUserEvaluateFactory iUserEvaluateFactory,
             IItemFavoritesFactory iItemFavoritesFactory) {

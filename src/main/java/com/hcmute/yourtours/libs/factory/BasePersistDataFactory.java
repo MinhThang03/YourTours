@@ -132,7 +132,7 @@ public abstract class BasePersistDataFactory<I, IF extends BaseData<I>, DT exten
     protected void postDetail(ET entity, DT detail) throws InvalidException {
     }
 
-    protected <F extends BaseFilter> Page<ET> pageQuery(F filter, Integer number, Integer size) {
+    protected <F extends BaseFilter> Page<ET> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
         return repository.findAll(PageRequest.of(number, size));
     }
 
@@ -151,7 +151,6 @@ public abstract class BasePersistDataFactory<I, IF extends BaseData<I>, DT exten
     protected <F extends BaseFilter> Iterable<ET> listQuery() {
         return repository.findAll();
     }
-
 
 
     @Override

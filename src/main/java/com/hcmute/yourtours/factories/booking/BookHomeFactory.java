@@ -2,6 +2,8 @@ package com.hcmute.yourtours.factories.booking;
 
 import com.hcmute.yourtours.commands.BookHomesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.factories.homes.IHomesFactory;
+import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
@@ -9,6 +11,7 @@ import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.repositories.BookHomeRepository;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +30,17 @@ public class BookHomeFactory
         extends BasePersistDataFactory<UUID, BookHomeInfo, BookHomeDetail, Long, BookHomesCommand>
         implements IBookHomeFactory {
 
-    private final BookHomeRepository bookHomeRepository;
+    protected final BookHomeRepository bookHomeRepository;
+    protected final IHomesFactory iHomesFactory;
+    protected final IUserFactory iUserFactory;
 
-    protected BookHomeFactory(BookHomeRepository repository) {
+    protected BookHomeFactory(BookHomeRepository repository,
+                              @Qualifier("homesFactory") IHomesFactory iHomesFactory,
+                              IUserFactory iUserFactory) {
         super(repository);
         this.bookHomeRepository = repository;
+        this.iHomesFactory = iHomesFactory;
+        this.iUserFactory = iUserFactory;
     }
 
     @Override
@@ -89,6 +98,8 @@ public class BookHomeFactory
                 .visaAccount(entity.getVisaAccount())
                 .homeId(entity.getHomeId())
                 .userId(entity.getUserId())
+                .homeName(iHomesFactory.getDetailModel(entity.getHomeId(), null).getName())
+                .customerName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .status(entity.getStatus())
                 .build();
 
@@ -110,6 +121,8 @@ public class BookHomeFactory
                 .homeId(entity.getHomeId())
                 .userId(entity.getUserId())
                 .status(entity.getStatus())
+                .homeName(iHomesFactory.getDetailModel(entity.getHomeId(), null).getName())
+                .customerName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .build();
     }
 
@@ -147,6 +160,14 @@ public class BookHomeFactory
         return result;
     }
 
+
+    @Override
+    protected void preCreate(BookHomeDetail detail) throws InvalidException {
+        iHomesFactory.checkExistsByHomeId(detail.getHomeId());
+        if (detail.getUserId() != null) {
+            iUserFactory.checkExistsByUserId(detail.getUserId());
+        }
+    }
 
     private List<LocalDate> getListDayOfMonth(Integer month, Integer year) {
         YearMonth ym = YearMonth.of(year, Month.of(month));

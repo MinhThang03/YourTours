@@ -1,6 +1,8 @@
 package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.commands.BookHomesCommand;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,4 +28,26 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
     )
     Optional<BookHomesCommand> findOneByBetweenDate(@Param("date") LocalDate date,
                                                     @Param("homeId") UUID homeId);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.* " +
+                    "from book_home a, " +
+                    "     owner_of_home b " +
+                    "where a.home_id = b.home_id " +
+                    "  and b.user_id = :userId " +
+                    "  and (a.status = :status or :status is null) " +
+                    "order by a.date_start ",
+            countQuery = "select a.id  " +
+                    "from book_home a,  " +
+                    "     owner_of_home b  " +
+                    "where a.home_id = b.home_id  " +
+                    "  and b.user_id = :userId  " +
+                    "  and (a.status = :status or :status is null)  " +
+                    "order by a.date_start "
+    )
+    Page<BookHomesCommand> findAllByCmsFilter(@Param("status") String status,
+                                              @Param("userId") UUID userId,
+                                              Pageable pageable);
 }

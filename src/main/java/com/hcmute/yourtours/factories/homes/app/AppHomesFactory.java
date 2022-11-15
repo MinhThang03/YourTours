@@ -20,6 +20,7 @@ import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.item_favorties.ItemFavoritesDetail;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateDetail;
 import com.hcmute.yourtours.repositories.HomesRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                     IItemFavoritesFactory iItemFavoritesFactory,
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
                     IUserEvaluateFactory iUserEvaluateFactory,
-                    IBookHomeFactory iBookHomeFactory
+                    @Qualifier("bookHomeFactory") IBookHomeFactory iBookHomeFactory
             ) {
         super(
                 repository,
