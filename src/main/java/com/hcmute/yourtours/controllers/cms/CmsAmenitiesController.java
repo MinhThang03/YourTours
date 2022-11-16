@@ -1,8 +1,8 @@
 package com.hcmute.yourtours.controllers.cms;
 
 import com.hcmute.yourtours.controllers.cms.interfaces.ICmsAmenitiesController;
+import com.hcmute.yourtours.factories.amenities.IAmenitiesFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
-import com.hcmute.yourtours.libs.factory.IDataFactory;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
 import com.hcmute.yourtours.libs.model.factory.request.FactoryCreateRequest;
 import com.hcmute.yourtours.libs.model.factory.request.FactoryUpdateRequest;
@@ -14,6 +14,7 @@ import com.hcmute.yourtours.models.amenities.AmenityDetail;
 import com.hcmute.yourtours.models.amenities.AmenityInfo;
 import com.hcmute.yourtours.models.amenities.filter.AmenityFilter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,9 @@ public class CmsAmenitiesController
         implements ICmsAmenitiesController {
 
 
-    protected CmsAmenitiesController(IDataFactory<UUID, AmenityInfo, AmenityDetail> iDataFactory, IResponseFactory iResponseFactory) {
+    protected CmsAmenitiesController(
+            @Qualifier("amenitiesFactory") IAmenitiesFactory iDataFactory,
+            IResponseFactory iResponseFactory) {
         super(iDataFactory, iResponseFactory);
     }
 

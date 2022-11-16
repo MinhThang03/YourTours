@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.controllers.publics;
 
-import com.hcmute.yourtours.controllers.publics.interfaces.IPublicHomeFactory;
+import com.hcmute.yourtours.controllers.publics.interfaces.IPublicHomeController;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
@@ -20,13 +20,13 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/public/homes")
-@Tag(name = "PUBLIC API: homes", description = "API lấy danh sách nhà")
+@Tag(name = "PUBLIC API: HOMES", description = "API lấy danh sách nhà")
 @Transactional
-public class PublicHomeFactory
+public class PublicHomeController
         extends BaseController<UUID, HomeInfo, HomeDetail>
-        implements IPublicHomeFactory {
+        implements IPublicHomeController {
 
-    protected PublicHomeFactory
+    protected PublicHomeController
             (
                     @Qualifier("appHomesFactory") IHomesFactory iDataFactory,
                     IResponseFactory iResponseFactory) {
@@ -42,4 +42,5 @@ public class PublicHomeFactory
             ) {
         return factoryGetInfoPageWithFilter(filter, number, size);
     }
+
 }

@@ -42,4 +42,24 @@ public interface AmenitiesRepository extends JpaRepository<AmenitiesCommand, Lon
     )
     List<AmenitiesCommand> getLimitByHomeId(@Param("homeId") UUID homeId,
                                             @Param("limit") Integer limit);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.*  " +
+                    "from amenities a  " +
+                    "where a.set_filter = 'true'  " +
+                    "limit :offset , :limit "
+    )
+    List<AmenitiesCommand> getLimitSetFilter(@Param("offset") Integer offset,
+                                             @Param("limit") Integer limit);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select  count(a.id)  " +
+                    "from amenities a  " +
+                    "where a.set_filter = 'true'  "
+    )
+    Long countLimitSetFilter();
 }

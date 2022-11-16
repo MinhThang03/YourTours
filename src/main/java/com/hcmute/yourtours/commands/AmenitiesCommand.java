@@ -39,6 +39,9 @@ public class AmenitiesCommand extends NameData {
     @Column(name = "icon")
     private String icon;
 
+    @Column(name = "set_filter")
+    private Boolean setFilter;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private CommonStatusEnum status;

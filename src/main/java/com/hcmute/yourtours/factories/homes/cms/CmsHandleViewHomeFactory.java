@@ -36,7 +36,7 @@ public class CmsHandleViewHomeFactory implements ICmsHandleViewHomeFactory {
                     ISurchargeOfHomeFactory iSurchargeOfHomeFactory,
                     IDiscountOfHomeFactory iDiscountOfHomeFactory,
                     IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory,
-                    IAmenitiesFactory iAmenitiesFactory
+                    @Qualifier("amenitiesFactory") IAmenitiesFactory iAmenitiesFactory
             ) {
         this.iHomesFactory = iHomesFactory;
         this.iRoomsOfHomeFactory = iRoomsOfHomeFactory;

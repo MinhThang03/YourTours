@@ -6,5 +6,6 @@ import com.hcmute.yourtours.models.homes.filter.HomeFilter;
 
 import java.util.UUID;
 
-public interface IPublicHomeFactory extends IGetInfoPageController<UUID, HomeInfo, HomeFilter> {
+public interface IPublicHomeController extends IGetInfoPageController<UUID, HomeInfo, HomeFilter> {
+
 }

@@ -27,8 +27,8 @@ public class AmenitiesFactory
         extends BasePersistDataFactory<UUID, AmenityInfo, AmenityDetail, Long, AmenitiesCommand>
         implements IAmenitiesFactory {
 
-    private final AmenitiesRepository amenitiesRepository;
-    private final IAmenityCategoriesFactory iAmenityCategoriesFactory;
+    protected final AmenitiesRepository amenitiesRepository;
+    protected final IAmenityCategoriesFactory iAmenityCategoriesFactory;
 
     protected AmenitiesFactory(AmenitiesRepository repository,
                                IAmenityCategoriesFactory iAmenityCategoriesFactory) {
@@ -61,6 +61,7 @@ public class AmenitiesFactory
                 .status(detail.getStatus())
                 .categoryId(detail.getCategoryId())
                 .icon(detail.getIcon())
+                .setFilter(detail.getSetFilter())
                 .build();
     }
 
@@ -78,6 +79,7 @@ public class AmenitiesFactory
         entity.setStatus(detail.getStatus());
         entity.setCategoryId(detail.getCategoryId());
         entity.setIcon(detail.getIcon());
+        entity.setSetFilter(detail.getSetFilter());
     }
 
     @Override
@@ -93,6 +95,7 @@ public class AmenitiesFactory
                 .status(entity.getStatus())
                 .category(category)
                 .icon(entity.getIcon())
+                .setFilter(entity.getSetFilter())
                 .build();
     }
 
@@ -109,6 +112,7 @@ public class AmenitiesFactory
                 .status(entity.getStatus())
                 .category(category)
                 .icon(entity.getIcon())
+                .setFilter(entity.getSetFilter())
                 .build();
     }
 
