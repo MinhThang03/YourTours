@@ -25,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -58,7 +59,25 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
         this.iBookHomeFactory = iBookHomeFactory;
     }
 
+
     @Override
+    public HomeInfo convertToInfo(HomesCommand entity) throws InvalidException {
+        HomeInfo info = super.convertToInfo(entity);
+        return info.toBuilder()
+                .isFavorite(checkIsFavorite(entity.getHomeId()))
+                .build();
+    }
+
+    @Override
+    public HomeDetail convertToDetail(HomesCommand entity) throws InvalidException {
+        HomeDetail detail = super.convertToDetail(entity);
+        return detail.toBuilder()
+                .isFavorite(checkIsFavorite(entity.getHomeId()))
+                .build();
+    }
+
+    @Override
+
     protected <F extends BaseFilter> void preGetDetail(UUID id, F filter) throws InvalidException {
         HomeDetail detail = convertToDetail(findByHomeId(id));
         detail.setView(detail.getView() + 1);
@@ -116,4 +135,14 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
         return updateModel(homeDetail.getId(), homeDetail);
     }
 
+
+    private boolean checkIsFavorite(UUID homeId) {
+        Optional<String> userId = iGetUserFromTokenFactory.getCurrentUser();
+        if (userId.isEmpty()) {
+            return false;
+        }
+
+        Optional<HomesCommand> home = homesRepository.findIsFavoriteByHomeIdAndUserId(homeId, UUID.fromString(userId.get()));
+        return home.isPresent();
+    }
 }

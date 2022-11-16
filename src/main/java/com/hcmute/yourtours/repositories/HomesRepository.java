@@ -74,4 +74,17 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
     )
     Page<HomesCommand> getFavoritesListByUserId(@Param("userId") UUID userId,
                                                 Pageable pageable);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.* " +
+                    "from homes a, " +
+                    "     item_favorites b " +
+                    "where a.home_id = :homeId " +
+                    "  and b.user_id = :userId " +
+                    "limit 1 "
+    )
+    Optional<HomesCommand> findIsFavoriteByHomeIdAndUserId(@Param("homeId") UUID homeId,
+                                                           @Param("userId") UUID userId);
 }

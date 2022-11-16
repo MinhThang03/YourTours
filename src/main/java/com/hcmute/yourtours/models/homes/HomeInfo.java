@@ -79,4 +79,7 @@ public class HomeInfo extends NameDataModel<UUID> {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer numberOfBed;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Boolean isFavorite;
+
 }
