@@ -45,6 +45,7 @@ public class DiscountCampaignFactory
                 .dateStart(detail.getDateStart())
                 .dateEnd(detail.getDateEnd())
                 .homeId(detail.getHomeId())
+                .banner(detail.getBanner())
                 .build();
     }
 
@@ -57,6 +58,7 @@ public class DiscountCampaignFactory
         entity.setDateStart(detail.getDateStart());
         entity.setDateEnd(detail.getDateEnd());
         entity.setHomeId(detail.getHomeId());
+        entity.setBanner(detail.getBanner());
 
     }
 
@@ -74,6 +76,7 @@ public class DiscountCampaignFactory
                 .dateStart(entity.getDateStart())
                 .dateEnd(entity.getDateEnd())
                 .homeId(entity.getHomeId())
+                .banner(entity.getBanner())
                 .build();
     }
 
@@ -91,6 +94,7 @@ public class DiscountCampaignFactory
                 .dateStart(entity.getDateStart())
                 .dateEnd(entity.getDateEnd())
                 .homeId(entity.getHomeId())
+                .banner(entity.getBanner())
                 .build();
     }
 

@@ -48,6 +48,9 @@ public class DiscountCampaignCommand extends NameData {
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
 
+    @Column(name = "banner")
+    private String banner;
+
     @Override
     protected void preWrite() {
         super.preWrite();

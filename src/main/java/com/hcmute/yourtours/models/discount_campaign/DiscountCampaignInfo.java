@@ -32,4 +32,7 @@ public class DiscountCampaignInfo extends NameDataModel<UUID> {
     private UUID homeId;
 
     private String codeName;
+
+    private String banner;
+
 }
