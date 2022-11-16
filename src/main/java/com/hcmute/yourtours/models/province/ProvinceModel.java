@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class ProvinceModel {
-    private String provinceCode;
+    private Integer provinceCode;
     private Long numberBooking;
 }
