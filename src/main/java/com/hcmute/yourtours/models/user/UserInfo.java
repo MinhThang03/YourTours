@@ -59,4 +59,7 @@ public class UserInfo extends BaseData<UUID> {
 
     @JsonIgnore
     private String createdBy;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private boolean isOwner;
 }

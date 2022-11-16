@@ -119,6 +119,7 @@ public class UserFactory
                 .avatar(entity.getAvatar())
                 .status(entity.getStatus())
                 .role(entity.getRole())
+                .isOwner(isOwner(entity.getUserId()))
                 .build();
     }
 
@@ -138,6 +139,7 @@ public class UserFactory
                 .avatar(entity.getAvatar())
                 .status(entity.getStatus())
                 .role(entity.getRole())
+                .isOwner(isOwner(entity.getUserId()))
                 .build();
     }
 
@@ -331,4 +333,9 @@ public class UserFactory
         return userRepository.existsByEmail(username);
     }
 
+
+    private boolean isOwner(UUID userId) {
+        Optional<UserCommand> isOwner = userRepository.findByUserIdAndOwner(userId);
+        return isOwner.isPresent();
+    }
 }
