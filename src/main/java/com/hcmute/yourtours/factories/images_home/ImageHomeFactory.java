@@ -104,4 +104,14 @@ public class ImageHomeFactory
         }
         return result;
     }
+
+    @Override
+    public List<ImageHomeDetail> getFullListByHomeId(UUID homeId, String pathThumbnail) throws InvalidException {
+        List<ImagesHomeCommand> commands = imagesHomeRepository.findAllByHomeId(homeId);
+        List<ImageHomeDetail> result = new ArrayList<>();
+        for (ImagesHomeCommand command : commands) {
+            result.add(convertToDetail(command));
+        }
+        return result;
+    }
 }

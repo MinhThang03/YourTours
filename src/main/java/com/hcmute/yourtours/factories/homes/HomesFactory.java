@@ -178,6 +178,7 @@ public class HomesFactory
                 .addressDetail(entity.getAddressDetail())
                 .rank(entity.getRank())
                 .view(entity.getView())
+                .imagesOfHome(iImagesHomeFactory.getFullListByHomeId(entity.getHomeId(), entity.getThumbnail()))
                 .favorite(entity.getFavorite())
                 .averageRate(entity.getAverageRate())
                 .thumbnail(entity.getThumbnail())

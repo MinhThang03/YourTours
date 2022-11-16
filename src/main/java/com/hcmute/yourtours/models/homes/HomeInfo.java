@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.models.common.NameDataModel;
+import com.hcmute.yourtours.models.images_home.ImageHomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.models.NumberOfRoomsModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -81,5 +82,8 @@ public class HomeInfo extends NameDataModel<UUID> {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Boolean isFavorite;
+
+    @NotNull
+    private List<ImageHomeDetail> imagesOfHome;
 
 }
