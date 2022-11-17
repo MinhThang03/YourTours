@@ -27,6 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -140,6 +141,15 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
 
     @Override
     public BasePagingResponse<HomeInfo> getPageWithFullFilter(HomeDetailFilter filter, Integer number, Integer size) throws InvalidException {
+        int lenght = 0;
+        if (filter.getAmenities() != null) {
+            lenght = filter.getAmenities().size();
+        }
+
+        if (filter.getAmenities() == null || filter.getAmenities().isEmpty()) {
+            filter.setAmenities(List.of(UUID.randomUUID()));
+        }
+
         Page<HomesCommand> pageEntity = homesRepository.getPageWithFullFilter
                 (
                         filter.getAmenityId(),
@@ -148,6 +158,8 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                         filter.getNumberOfBed(),
                         filter.getNumberOfBedRoom(),
                         filter.getNumberOfBathRoom(),
+                        filter.getAmenities(),
+                        lenght,
                         PageRequest.of(number, size)
                 );
 

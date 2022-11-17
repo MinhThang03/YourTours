@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.commands.HomesCommand;
-import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.models.province.ProvinceProjection;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
@@ -11,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -94,59 +94,61 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
 
     @Query(
             nativeQuery = true,
-            value = "select distinct a.* " +
-                    "from homes a " +
-                    "         inner join " +
-                    "     amenities_of_home b on a.home_id = b.home_id " +
-                    "         left join (select count(a.id) as numberOfBed, " +
-                    "                           b.home_id " +
-                    "                    from beds_of_home a, " +
-                    "                         rooms_of_home b " +
-                    "                    where a.room_of_home_id = b.room_of_home_id " +
-                    "                    group by b.home_id) c on b.home_id = c.home_id " +
-                    "         left join (select count(a.id) as numberOfBedRoom, " +
-                    "                           a.home_id " +
-                    "                    from rooms_of_home a " +
-                    "                    where a.room_category_id = 0x9893715b26154dd9b1ca2d94ae1d3b34 " +
-                    "                    group by a.home_id) d on a.home_id = d.home_id " +
-                    "         left join (select count(a.id) as numberOfBathRoom, " +
-                    "                           a.home_id " +
-                    "                    from rooms_of_home a " +
-                    "                    where a.room_category_id = 0xb2d2707eee6c415cb4eb34786d870f39 " +
-                    "                    group by a.home_id) e on e.home_id = a.home_id " +
-                    "where (:amenityId is null or b.amenity_id = :amenityId) " +
-                    "  and (:priceFrom is null or :priceTo is null or " +
-                    "       (a.cost_per_night_default >= :priceFrom and a.cost_per_night_default <= :priceTo)) " +
-                    "  and (:numberOfBed is null or c.numberOfBed = :numberOfBed) " +
-                    "  and (:numberOfBedRoom is null or d.numberOfBedRoom = :numberOfBedRoom) " +
-                    "  and (:numberOfBathRoom is null or e.numberOfBathRoom = :numberOfBathRoom) " +
+            value = "select distinct a.*  " +
+                    "from homes a  " +
+                    "         inner join  " +
+                    "     amenities_of_home b on a.home_id = b.home_id  " +
+                    "         left join (select count(a.id) as numberOfBed,  " +
+                    "                           b.home_id  " +
+                    "                    from beds_of_home a,  " +
+                    "                         rooms_of_home b  " +
+                    "                    where a.room_of_home_id = b.room_of_home_id  " +
+                    "                    group by b.home_id) c on b.home_id = c.home_id  " +
+                    "         left join (select count(a.id) as numberOfBedRoom,  " +
+                    "                           a.home_id  " +
+                    "                    from rooms_of_home a  " +
+                    "                    where a.room_category_id = 0x9893715b26154dd9b1ca2d94ae1d3b34  " +
+                    "                    group by a.home_id) d on a.home_id = d.home_id  " +
+                    "         left join (select count(a.id) as numberOfBathRoom,  " +
+                    "                           a.home_id  " +
+                    "                    from rooms_of_home a  " +
+                    "                    where a.room_category_id = 0xb2d2707eee6c415cb4eb34786d870f39  " +
+                    "                    group by a.home_id) e on e.home_id = a.home_id  " +
+                    "where (:amenityId is null or b.amenity_id = :amenityId)  " +
+                    "  and (:priceFrom is null or :priceTo is null or  " +
+                    "       (a.cost_per_night_default >= :priceFrom and a.cost_per_night_default <= :priceTo))  " +
+                    "  and (:numberOfBed is null or c.numberOfBed = :numberOfBed)  " +
+                    "  and (:numberOfBedRoom is null or d.numberOfBedRoom = :numberOfBedRoom)  " +
+                    "  and (:numberOfBathRoom is null or e.numberOfBathRoom = :numberOfBathRoom)  " +
+                    "  and IF(:size > 0, b.amenity_id in :amenities, true)  " +
                     "order by a.created_date desc ",
-            countQuery = "select distinct a.id " +
-                    "from homes a " +
-                    "         inner join " +
-                    "     amenities_of_home b on a.home_id = b.home_id " +
-                    "         left join (select count(a.id) as numberOfBed, " +
-                    "                           b.home_id " +
-                    "                    from beds_of_home a, " +
-                    "                         rooms_of_home b " +
-                    "                    where a.room_of_home_id = b.room_of_home_id " +
-                    "                    group by b.home_id) c on b.home_id = c.home_id " +
-                    "         left join (select count(a.id) as numberOfBedRoom, " +
-                    "                           a.home_id " +
-                    "                    from rooms_of_home a " +
-                    "                    where a.room_category_id = 0x9893715b26154dd9b1ca2d94ae1d3b34 " +
-                    "                    group by a.home_id) d on a.home_id = d.home_id " +
-                    "         left join (select count(a.id) as numberOfBathRoom, " +
-                    "                           a.home_id " +
-                    "                    from rooms_of_home a " +
-                    "                    where a.room_category_id = 0xb2d2707eee6c415cb4eb34786d870f39 " +
-                    "                    group by a.home_id) e on e.home_id = a.home_id " +
-                    "where (:amenityId is null or b.amenity_id = :amenityId) " +
-                    "  and (:priceFrom is null or :priceTo is null or " +
-                    "       (a.cost_per_night_default >= :priceFrom and a.cost_per_night_default <= :priceTo)) " +
-                    "  and (:numberOfBed is null or c.numberOfBed = :numberOfBed) " +
-                    "  and (:numberOfBedRoom is null or d.numberOfBedRoom = :numberOfBedRoom) " +
-                    "  and (:numberOfBathRoom is null or e.numberOfBathRoom = :numberOfBathRoom) " +
+            countQuery = "select distinct a.id  " +
+                    "from homes a  " +
+                    "         inner join  " +
+                    "     amenities_of_home b on a.home_id = b.home_id  " +
+                    "         left join (select count(a.id) as numberOfBed,  " +
+                    "                           b.home_id  " +
+                    "                    from beds_of_home a,  " +
+                    "                         rooms_of_home b  " +
+                    "                    where a.room_of_home_id = b.room_of_home_id  " +
+                    "                    group by b.home_id) c on b.home_id = c.home_id  " +
+                    "         left join (select count(a.id) as numberOfBedRoom,  " +
+                    "                           a.home_id  " +
+                    "                    from rooms_of_home a  " +
+                    "                    where a.room_category_id = 0x9893715b26154dd9b1ca2d94ae1d3b34  " +
+                    "                    group by a.home_id) d on a.home_id = d.home_id  " +
+                    "         left join (select count(a.id) as numberOfBathRoom,  " +
+                    "                           a.home_id  " +
+                    "                    from rooms_of_home a  " +
+                    "                    where a.room_category_id = 0xb2d2707eee6c415cb4eb34786d870f39  " +
+                    "                    group by a.home_id) e on e.home_id = a.home_id  " +
+                    "where (:amenityId is null or b.amenity_id = :amenityId)  " +
+                    "  and (:priceFrom is null or :priceTo is null or  " +
+                    "       (a.cost_per_night_default >= :priceFrom and a.cost_per_night_default <= :priceTo))  " +
+                    "  and (:numberOfBed is null or c.numberOfBed = :numberOfBed)  " +
+                    "  and (:numberOfBedRoom is null or d.numberOfBedRoom = :numberOfBedRoom)  " +
+                    "  and (:numberOfBathRoom is null or e.numberOfBathRoom = :numberOfBathRoom)  " +
+                    "  and IF(:size > 0, b.amenity_id in :amenities, true)  " +
                     "order by a.created_date desc "
     )
     Page<HomesCommand> getPageWithFullFilter(@Param("amenityId") UUID amenityId,
@@ -155,5 +157,7 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                                              @Param("numberOfBed") Integer numberOfBed,
                                              @Param("numberOfBedRoom") Integer numberOfBedRoom,
                                              @Param("numberOfBathRoom") Integer numberOfBathRoom,
+                                             @Param("amenities") List<UUID> amenities,
+                                             @Param("size") Integer size,
                                              Pageable pageable);
 }
