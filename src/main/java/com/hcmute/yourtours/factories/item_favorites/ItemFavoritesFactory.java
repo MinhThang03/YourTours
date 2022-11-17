@@ -79,12 +79,14 @@ public class ItemFavoritesFactory
 
 
     @Override
-    public void handleFavorites(ItemFavoritesDetail detail) throws InvalidException {
+    public boolean handleFavorites(ItemFavoritesDetail detail) throws InvalidException {
         Optional<ItemFavoritesCommand> optional = itemFavoritesRepository.findByUserIdAndHomeId(detail.getUserId(), detail.getHomeId());
         if (optional.isEmpty()) {
             createModel(detail);
+            return true;
         } else {
             deleteModel(optional.get().getItemFavoritesId(), null);
+            return false;
         }
     }
 

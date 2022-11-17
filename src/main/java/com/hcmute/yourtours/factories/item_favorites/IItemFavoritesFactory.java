@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface IItemFavoritesFactory extends IDataFactory<UUID, ItemFavoritesInfo, ItemFavoritesDetail> {
 
-    void handleFavorites(ItemFavoritesDetail detail) throws InvalidException;
+    boolean handleFavorites(ItemFavoritesDetail detail) throws InvalidException;
 
     boolean existByUserIdAndHomeId(UUID userId, UUID homeId);
 }

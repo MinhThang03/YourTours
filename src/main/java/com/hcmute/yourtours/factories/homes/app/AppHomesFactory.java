@@ -90,9 +90,9 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
         UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
         checkExistsByHomeId((detail.getHomeId()));
         detail.setUserId(userId);
-        iItemFavoritesFactory.handleFavorites(detail);
+        boolean result = iItemFavoritesFactory.handleFavorites(detail);
         return SuccessResponse.builder()
-                .success(true)
+                .success(result)
                 .build();
     }
 

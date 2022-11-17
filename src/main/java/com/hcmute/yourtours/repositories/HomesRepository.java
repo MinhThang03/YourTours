@@ -78,11 +78,12 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
 
     @Query(
             nativeQuery = true,
-            value = "select a.* " +
-                    "from homes a, " +
-                    "     item_favorites b " +
-                    "where a.home_id = :homeId " +
-                    "  and b.user_id = :userId " +
+            value = "select a.*  " +
+                    "from homes a,  " +
+                    "     item_favorites b  " +
+                    "where a.home_id = :homeId  " +
+                    "  and b.user_id = :userId  " +
+                    "  and a.home_id = b.home_id  " +
                     "limit 1 "
     )
     Optional<HomesCommand> findIsFavoriteByHomeIdAndUserId(@Param("homeId") UUID homeId,
