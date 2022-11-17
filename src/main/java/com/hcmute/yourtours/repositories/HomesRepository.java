@@ -87,4 +87,70 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
     )
     Optional<HomesCommand> findIsFavoriteByHomeIdAndUserId(@Param("homeId") UUID homeId,
                                                            @Param("userId") UUID userId);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select distinct a.* " +
+                    "from homes a " +
+                    "         inner join " +
+                    "     amenities_of_home b on a.home_id = b.home_id " +
+                    "         left join (select count(a.id) as numberOfBed, " +
+                    "                           b.home_id " +
+                    "                    from beds_of_home a, " +
+                    "                         rooms_of_home b " +
+                    "                    where a.room_of_home_id = b.room_of_home_id " +
+                    "                    group by b.home_id) c on b.home_id = c.home_id " +
+                    "         left join (select count(a.id) as numberOfBedRoom, " +
+                    "                           a.home_id " +
+                    "                    from rooms_of_home a " +
+                    "                    where a.room_category_id = 0x9893715b26154dd9b1ca2d94ae1d3b34 " +
+                    "                    group by a.home_id) d on a.home_id = d.home_id " +
+                    "         left join (select count(a.id) as numberOfBathRoom, " +
+                    "                           a.home_id " +
+                    "                    from rooms_of_home a " +
+                    "                    where a.room_category_id = 0xb2d2707eee6c415cb4eb34786d870f39 " +
+                    "                    group by a.home_id) e on e.home_id = a.home_id " +
+                    "where (:amenityId is null or b.amenity_id = :amenityId) " +
+                    "  and (:priceFrom is null or :priceTo is null or " +
+                    "       (a.cost_per_night_default >= :priceFrom and a.cost_per_night_default <= :priceTo)) " +
+                    "  and (:numberOfBed is null or c.numberOfBed = :numberOfBed) " +
+                    "  and (:numberOfBedRoom is null or d.numberOfBedRoom = :numberOfBedRoom) " +
+                    "  and (:numberOfBathRoom is null or e.numberOfBathRoom = :numberOfBathRoom) " +
+                    "order by a.created_date desc ",
+            countQuery = "select distinct a.id " +
+                    "from homes a " +
+                    "         inner join " +
+                    "     amenities_of_home b on a.home_id = b.home_id " +
+                    "         left join (select count(a.id) as numberOfBed, " +
+                    "                           b.home_id " +
+                    "                    from beds_of_home a, " +
+                    "                         rooms_of_home b " +
+                    "                    where a.room_of_home_id = b.room_of_home_id " +
+                    "                    group by b.home_id) c on b.home_id = c.home_id " +
+                    "         left join (select count(a.id) as numberOfBedRoom, " +
+                    "                           a.home_id " +
+                    "                    from rooms_of_home a " +
+                    "                    where a.room_category_id = 0x9893715b26154dd9b1ca2d94ae1d3b34 " +
+                    "                    group by a.home_id) d on a.home_id = d.home_id " +
+                    "         left join (select count(a.id) as numberOfBathRoom, " +
+                    "                           a.home_id " +
+                    "                    from rooms_of_home a " +
+                    "                    where a.room_category_id = 0xb2d2707eee6c415cb4eb34786d870f39 " +
+                    "                    group by a.home_id) e on e.home_id = a.home_id " +
+                    "where (:amenityId is null or b.amenity_id = :amenityId) " +
+                    "  and (:priceFrom is null or :priceTo is null or " +
+                    "       (a.cost_per_night_default >= :priceFrom and a.cost_per_night_default <= :priceTo)) " +
+                    "  and (:numberOfBed is null or c.numberOfBed = :numberOfBed) " +
+                    "  and (:numberOfBedRoom is null or d.numberOfBedRoom = :numberOfBedRoom) " +
+                    "  and (:numberOfBathRoom is null or e.numberOfBathRoom = :numberOfBathRoom) " +
+                    "order by a.created_date desc "
+    )
+    Page<HomesCommand> getPageWithFullFilter(@Param("amenityId") UUID amenityId,
+                                             @Param("priceFrom") Double priceFrom,
+                                             @Param("priceTo") Double priceTo,
+                                             @Param("numberOfBed") Integer numberOfBed,
+                                             @Param("numberOfBedRoom") Integer numberOfBedRoom,
+                                             @Param("numberOfBathRoom") Integer numberOfBathRoom,
+                                             Pageable pageable);
 }

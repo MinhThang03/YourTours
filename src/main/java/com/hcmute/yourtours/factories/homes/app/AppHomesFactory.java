@@ -17,6 +17,7 @@ import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
+import com.hcmute.yourtours.models.homes.filter.HomeDetailFilter;
 import com.hcmute.yourtours.models.item_favorties.ItemFavoritesDetail;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateDetail;
 import com.hcmute.yourtours.repositories.HomesRepository;
@@ -133,6 +134,27 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
         homeDetail.setNumberOfReviews(homeDetail.getNumberOfReviews() + 1);
         homeDetail.setAverageRate(iUserEvaluateFactory.getAverageRateOfHome(homeDetail.getId()));
         return updateModel(homeDetail.getId(), homeDetail);
+    }
+
+    @Override
+    public BasePagingResponse<HomeInfo> getPageWithFullFilter(HomeDetailFilter filter, Integer number, Integer size) throws InvalidException {
+        Page<HomesCommand> pageEntity = homesRepository.getPageWithFullFilter
+                (
+                        filter.getAmenityId(),
+                        filter.getPriceFrom(),
+                        filter.getPriceTo(),
+                        filter.getNumberOfBed(),
+                        filter.getNumberOfBedRoom(),
+                        filter.getNumberOfBathRoom(),
+                        PageRequest.of(number, size)
+                );
+
+        return new BasePagingResponse<>(
+                convertList(pageEntity.getContent()),
+                pageEntity.getNumber(),
+                pageEntity.getSize(),
+                pageEntity.getTotalElements()
+        );
     }
 
 
