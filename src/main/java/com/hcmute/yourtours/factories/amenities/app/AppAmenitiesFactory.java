@@ -48,7 +48,7 @@ public class AppAmenitiesFactory extends AmenitiesFactory implements IAppAmeniti
         if (number == 0) {
             contents.add(AmenitiesCommand.builder()
                     .name("Mới")
-                    .icon("")
+                    .icon("https://img.icons8.com/ios-filled/25/null/new.png")
                     .build());
         }
 
