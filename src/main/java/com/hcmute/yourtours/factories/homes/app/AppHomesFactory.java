@@ -104,7 +104,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
         Page<HomesCommand> page = homesRepository.getFavoritesListByUserId
                 (
                         userId,
-                        CommonStatusEnum.ACTIVE,
+                        CommonStatusEnum.ACTIVE.name(),
                         PageRequest.of(number, size)
                 );
 

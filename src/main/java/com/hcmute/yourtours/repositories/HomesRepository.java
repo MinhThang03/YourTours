@@ -74,7 +74,7 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                     "  and a.status = :status "
     )
     Page<HomesCommand> getFavoritesListByUserId(@Param("userId") UUID userId,
-                                                @Param("status") CommonStatusEnum status,
+                                                @Param("status") String status,
                                                 Pageable pageable);
 
 
