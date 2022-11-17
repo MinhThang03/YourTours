@@ -7,7 +7,7 @@ import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategory
 
 import java.util.UUID;
 
-public interface ICmsDiscountHomeController extends
+public interface ICmsDiscountHomeCategoryController extends
         ICreateModelController<UUID, DiscountHomeCategoryDetail>,
         IUpdateModelController<UUID, DiscountHomeCategoryDetail>,
         IGetDetailByIdController<UUID, DiscountHomeCategoryDetail>,

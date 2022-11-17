@@ -7,7 +7,7 @@ import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCatego
 
 import java.util.UUID;
 
-public interface ICmsSurchargeHomeController extends
+public interface ICmsSurchargeCategoryController extends
         ICreateModelController<UUID, SurchargeHomeCategoryDetail>,
         IUpdateModelController<UUID, SurchargeHomeCategoryDetail>,
         IGetDetailByIdController<UUID, SurchargeHomeCategoryDetail>,
