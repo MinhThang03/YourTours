@@ -20,7 +20,6 @@ public class ItemFavoritesInfo extends BaseData<UUID> {
     @NotNull
     private UUID homeId;
 
-    @NotNull
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID userId;
 }
