@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.homes.app;
 
 import com.hcmute.yourtours.commands.HomesCommand;
+import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
 import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
@@ -103,6 +104,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
         Page<HomesCommand> page = homesRepository.getFavoritesListByUserId
                 (
                         userId,
+                        CommonStatusEnum.ACTIVE,
                         PageRequest.of(number, size)
                 );
 

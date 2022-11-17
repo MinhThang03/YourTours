@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.commands.HomesCommand;
+import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.models.province.ProvinceProjection;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
@@ -73,6 +74,7 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                     "  and a.status = :status "
     )
     Page<HomesCommand> getFavoritesListByUserId(@Param("userId") UUID userId,
+                                                @Param("status") CommonStatusEnum status,
                                                 Pageable pageable);
 
 
