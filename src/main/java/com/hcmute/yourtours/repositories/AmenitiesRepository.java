@@ -48,7 +48,7 @@ public interface AmenitiesRepository extends JpaRepository<AmenitiesCommand, Lon
             nativeQuery = true,
             value = "select a.*  " +
                     "from amenities a  " +
-                    "where a.set_filter = 'true'  " +
+                    "where a.set_filter is true  " +
                     "limit :offset , :limit "
     )
     List<AmenitiesCommand> getLimitSetFilter(@Param("offset") Integer offset,
