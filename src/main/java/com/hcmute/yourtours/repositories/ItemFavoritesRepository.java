@@ -16,4 +16,6 @@ public interface ItemFavoritesRepository extends JpaRepository<ItemFavoritesComm
 
     @Modifying
     void deleteByUserIdAndHomeId(UUID userId, UUID homeId);
+
+    Optional<ItemFavoritesCommand> findByUserIdAndHomeId(UUID userId, UUID homeId);
 }

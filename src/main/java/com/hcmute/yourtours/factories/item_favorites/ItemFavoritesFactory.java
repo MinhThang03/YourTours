@@ -80,10 +80,11 @@ public class ItemFavoritesFactory
 
     @Override
     public void handleFavorites(ItemFavoritesDetail detail) throws InvalidException {
-        if (!itemFavoritesRepository.existsByUserIdAndHomeId(detail.getUserId(), detail.getHomeId())) {
+        Optional<ItemFavoritesCommand> optional = itemFavoritesRepository.findByUserIdAndHomeId(detail.getUserId(), detail.getHomeId());
+        if (optional.isEmpty()) {
             createModel(detail);
         } else {
-            itemFavoritesRepository.deleteByUserIdAndHomeId(detail.getUserId(), detail.getHomeId());
+            deleteModel(optional.get().getItemFavoritesId(), null);
         }
     }
 
