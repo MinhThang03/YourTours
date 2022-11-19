@@ -26,4 +26,7 @@ public class RoomOfHomeInfo extends NameDataModel<UUID> {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private RoomCategoryDetail categoryDetail;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String descriptionOfBed;
 }

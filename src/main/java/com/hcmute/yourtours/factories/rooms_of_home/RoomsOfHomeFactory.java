@@ -2,6 +2,7 @@ package com.hcmute.yourtours.factories.rooms_of_home;
 
 import com.hcmute.yourtours.commands.RoomsOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.factories.beds_of_home.IBedsOfHomeFactory;
 import com.hcmute.yourtours.factories.common.IAuthorizationOwnerHomeFactory;
 import com.hcmute.yourtours.factories.room_categories.IRoomCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -35,16 +36,20 @@ public class RoomsOfHomeFactory
     private final IRoomCategoriesFactory iRoomCategoriesFactory;
     private final IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory;
 
+    private final IBedsOfHomeFactory iBedsOfHomeFactory;
+
     protected RoomsOfHomeFactory
             (
                     RoomsOfHomeRepository repository,
                     IRoomCategoriesFactory iRoomCategoriesFactory,
-                    IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory
+                    IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory,
+                    IBedsOfHomeFactory iBedsOfHomeFactory
             ) {
         super(repository);
         this.roomsOfHomeRepository = repository;
         this.iRoomCategoriesFactory = iRoomCategoriesFactory;
         this.iAuthorizationOwnerHomeFactory = iAuthorizationOwnerHomeFactory;
+        this.iBedsOfHomeFactory = iBedsOfHomeFactory;
     }
 
     @Override
@@ -85,6 +90,7 @@ public class RoomsOfHomeFactory
                 .categoryId(entity.getCategoryId())
                 .name(entity.getName())
                 .categoryDetail(iRoomCategoriesFactory.getDetailModel(entity.getCategoryId(), null))
+                .descriptionOfBed(iBedsOfHomeFactory.getDescriptionNumberBedOfRoom(entity.getRoomOfHomeId()))
                 .build();
     }
 
@@ -100,6 +106,7 @@ public class RoomsOfHomeFactory
                 .categoryId(entity.getCategoryId())
                 .name(entity.getName())
                 .categoryDetail(iRoomCategoriesFactory.getDetailModel(entity.getCategoryId(), null))
+                .descriptionOfBed(iBedsOfHomeFactory.getDescriptionNumberBedOfRoom(entity.getRoomOfHomeId()))
                 .build();
     }
 

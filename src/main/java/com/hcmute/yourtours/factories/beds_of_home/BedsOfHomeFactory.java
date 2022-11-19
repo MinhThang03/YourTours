@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -124,6 +125,23 @@ public class BedsOfHomeFactory
         return SuccessResponse.builder()
                 .success(true)
                 .build();
+    }
+
+    @Override
+    public String getDescriptionNumberBedOfRoom(UUID roomHomeId) throws InvalidException {
+        List<BedsOfHomeCommand> roomsOfHome = bedsOfHomeRepository.findAllByRoomOfHomeId(roomHomeId);
+        if (roomsOfHome.isEmpty()) {
+            return null;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (BedsOfHomeCommand item : roomsOfHome) {
+            builder.append(item.getAmount());
+            builder.append(" ");
+            builder.append(iBedCategoriesFactory.getDetailModel(item.getCategoryId(), null).getName());
+            builder.append(" ");
+        }
+        return builder.toString();
     }
 
 
