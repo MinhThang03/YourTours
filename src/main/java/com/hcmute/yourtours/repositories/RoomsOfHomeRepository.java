@@ -2,6 +2,8 @@ package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.commands.RoomsOfHomeCommand;
 import com.hcmute.yourtours.models.rooms_of_home.projections.NumberOfRoomsProjections;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -33,4 +35,19 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand,
     )
     List<NumberOfRoomsProjections> getNumberOfRoomCategoryByHomeId(@Param("homeId") UUID homeId,
                                                                    @Param("important") Boolean important);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.* " +
+                    "from rooms_of_home a " +
+                    "where a.home_id = :homeId " +
+                    "   or :homeId is null ",
+            countQuery = "select a.id " +
+                    "from rooms_of_home a " +
+                    "where a.home_id = :homeId " +
+                    "   or :homeId is null "
+    )
+    Page<RoomsOfHomeCommand> getPageWithFilter(@Param("homeId") UUID homeId,
+                                               Pageable pageable);
 }

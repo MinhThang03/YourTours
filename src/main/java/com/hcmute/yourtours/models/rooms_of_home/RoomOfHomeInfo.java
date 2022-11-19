@@ -1,7 +1,9 @@
 package com.hcmute.yourtours.models.rooms_of_home;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.yourtours.models.common.NameDataModel;
+import com.hcmute.yourtours.models.room_categories.RoomCategoryDetail;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,4 +23,7 @@ public class RoomOfHomeInfo extends NameDataModel<UUID> {
     private UUID homeId;
 
     private UUID categoryId;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private RoomCategoryDetail categoryDetail;
 }

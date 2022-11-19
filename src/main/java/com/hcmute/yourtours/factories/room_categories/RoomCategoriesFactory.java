@@ -107,4 +107,12 @@ public class RoomCategoriesFactory
         return roomCategoriesRepository.findPageWithFilter(roomCategoryFilter.getImportant(), PageRequest.of(number, size));
 
     }
+
+    @Override
+    public void checkExistByRoomCategoryId(UUID roomCategoryId) throws InvalidException {
+        Optional<RoomCategoriesCommand> optional = roomCategoriesRepository.findByRoomCategoryId(roomCategoryId);
+        if (optional.isEmpty()) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_ROOM_CATEGORIES);
+        }
+    }
 }

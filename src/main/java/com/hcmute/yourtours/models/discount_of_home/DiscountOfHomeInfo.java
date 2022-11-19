@@ -19,14 +19,15 @@ import java.util.UUID;
 public class DiscountOfHomeInfo extends BaseData<UUID> {
 
     @Min(value = 0, message = "phần trăm khuyến mãi không được phép nhỏ hơn 0")
-    @NotNull
     private Double percent;
 
     private Integer numberDateStay;
 
     private Integer numberMonthAdvance;
 
+    @NotNull
     private UUID homeId;
 
+    @NotNull
     private UUID categoryId;
 }
