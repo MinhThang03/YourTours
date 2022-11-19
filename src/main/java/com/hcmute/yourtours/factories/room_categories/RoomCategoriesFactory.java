@@ -24,7 +24,7 @@ public class RoomCategoriesFactory
         extends BasePersistDataFactory<UUID, RoomCategoryInfo, RoomCategoryDetail, Long, RoomCategoriesCommand>
         implements IRoomCategoriesFactory {
 
-    private final RoomCategoriesRepository roomCategoriesRepository;
+    protected final RoomCategoriesRepository roomCategoriesRepository;
 
     protected RoomCategoriesFactory(RoomCategoriesRepository repository) {
         super(repository);

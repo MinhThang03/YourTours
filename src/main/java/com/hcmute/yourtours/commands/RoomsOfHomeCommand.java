@@ -42,6 +42,9 @@ public class RoomsOfHomeCommand extends NameData {
     @Column(name = "room_category_id", columnDefinition = "BINARY(16)")
     private UUID categoryId;
 
+    @Column(name = "order_flag")
+    private Integer orderFlag;
+
 
     @Override
     protected void preWrite() {

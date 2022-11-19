@@ -5,7 +5,6 @@ import com.hcmute.yourtours.models.rooms_of_home.projections.NumberOfRoomsProjec
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -18,8 +17,6 @@ import java.util.UUID;
 public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand, Long> {
     Optional<RoomsOfHomeCommand> findByRoomOfHomeId(UUID roomOfHomeId);
 
-    @Modifying
-    void deleteAllByHomeId(UUID homeId);
 
     @Query(
             nativeQuery = true,
@@ -50,4 +47,19 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand,
     )
     Page<RoomsOfHomeCommand> getPageWithFilter(@Param("homeId") UUID homeId,
                                                Pageable pageable);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.* " +
+                    "from rooms_of_home a " +
+                    "where a.home_id = :homeId " +
+                    "  and a.room_category_id = :categoryId " +
+                    "order by a.order_flag desc " +
+                    "limit 1 "
+    )
+    Optional<RoomsOfHomeCommand> findByHomeIdAndCategoryIdWithMaxOrder(@Param("homeId") UUID homeId,
+                                                                       @Param("categoryId") UUID categoryId);
+
+    Long countAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
 }

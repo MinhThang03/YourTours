@@ -11,9 +11,11 @@ import com.hcmute.yourtours.libs.logging.LogType;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
+import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeInfo;
 import com.hcmute.yourtours.models.rooms_of_home.filter.RoomOfHomeFilter;
+import com.hcmute.yourtours.models.rooms_of_home.models.CreateListRoomOfHomeModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,5 +57,17 @@ public class CmsRoomOfHomeController
     @Override
     public ResponseEntity<BaseResponse<FactoryDeleteResponse>> deleteModelById(UUID id) {
         return factoryDeleteWithFilter(id, null);
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<SuccessResponse>> createModelWithList(CreateListRoomOfHomeModel request) {
+        try {
+            LogContext.push(LogType.REQUEST, request);
+            SuccessResponse response = iRoomsOfHomeFactory.createWithListModel(request);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
     }
 }

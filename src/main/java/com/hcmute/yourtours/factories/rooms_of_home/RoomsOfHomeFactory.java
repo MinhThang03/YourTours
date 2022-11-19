@@ -9,20 +9,24 @@ import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
+import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeInfo;
 import com.hcmute.yourtours.models.rooms_of_home.filter.RoomOfHomeFilter;
+import com.hcmute.yourtours.models.rooms_of_home.models.CreateListRoomOfHomeModel;
 import com.hcmute.yourtours.models.rooms_of_home.models.NumberOfRoomsModel;
 import com.hcmute.yourtours.models.rooms_of_home.models.RoomOfHomeCreateModel;
 import com.hcmute.yourtours.models.rooms_of_home.projections.NumberOfRoomsProjections;
 import com.hcmute.yourtours.repositories.RoomsOfHomeRepository;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -35,13 +39,12 @@ public class RoomsOfHomeFactory
     private final RoomsOfHomeRepository roomsOfHomeRepository;
     private final IRoomCategoriesFactory iRoomCategoriesFactory;
     private final IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory;
-
     private final IBedsOfHomeFactory iBedsOfHomeFactory;
 
     protected RoomsOfHomeFactory
             (
                     RoomsOfHomeRepository repository,
-                    IRoomCategoriesFactory iRoomCategoriesFactory,
+                    @Qualifier("roomCategoriesFactory") IRoomCategoriesFactory iRoomCategoriesFactory,
                     IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory,
                     IBedsOfHomeFactory iBedsOfHomeFactory
             ) {
@@ -121,15 +124,29 @@ public class RoomsOfHomeFactory
 
     @Override
     public void createListWithHomeId(UUID homeId, List<RoomOfHomeCreateModel> listCreate) throws InvalidException {
-        roomsOfHomeRepository.deleteAllByHomeId(homeId);
+        if (homeId == null || listCreate == null) {
+            return;
+        }
+
         for (RoomOfHomeCreateModel item : listCreate) {
             if (item.getNumber() != null) {
+
+                int number = 1;
+                Optional<RoomsOfHomeCommand> optional = roomsOfHomeRepository.findByHomeIdAndCategoryIdWithMaxOrder(homeId, item.getCategoryId());
+                if (optional.isPresent()) {
+                    number += optional.get().getOrderFlag();
+                }
+
                 for (int i = 0; i < item.getNumber(); i++) {
+                    Integer orderFlag = number + i;
+                    String name = iRoomCategoriesFactory.getDetailModel(
+                                    item.getCategoryId(), null).getName()
+                            .concat(" ")
+                            .concat(String.valueOf(orderFlag));
+
                     RoomOfHomeDetail detail = RoomOfHomeDetail.builder()
-                            .name(iRoomCategoriesFactory.getDetailModel(
-                                            item.getCategoryId(), null).getName()
-                                    .concat(" ")
-                                    .concat(String.valueOf(i)))
+                            .name(name)
+                            .orderFlag(orderFlag)
                             .homeId(homeId)
                             .categoryId(item.getCategoryId())
                             .build();
@@ -138,6 +155,7 @@ public class RoomsOfHomeFactory
             }
         }
     }
+
 
     @Override
     public List<NumberOfRoomsModel> getNumberOfRoomCategoryByHomeId(UUID homeId, Boolean important) {
@@ -166,6 +184,19 @@ public class RoomsOfHomeFactory
     }
 
     @Override
+    public SuccessResponse createWithListModel(CreateListRoomOfHomeModel request) throws InvalidException {
+        createListWithHomeId(request.getHomeId(), request.getListCreate());
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
+    }
+
+    @Override
+    public Long countNumberRoomOfHome(UUID homeId, UUID categoryId) throws InvalidException {
+        return roomsOfHomeRepository.countAllByHomeIdAndCategoryId(homeId, categoryId);
+    }
+
+    @Override
     protected void preCreate(RoomOfHomeDetail detail) throws InvalidException {
         iRoomCategoriesFactory.checkExistByRoomCategoryId(detail.getCategoryId());
     }
@@ -184,6 +215,4 @@ public class RoomsOfHomeFactory
         }
         iBedsOfHomeFactory.deleteAllByRoomHomeId(room.getRoomOfHomeId());
     }
-
-
 }
