@@ -8,7 +8,6 @@ import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
@@ -25,9 +24,7 @@ public class DiscountOfHomeInfo extends BaseData<UUID> {
 
     private Integer numberMonthAdvance;
 
-    @NotNull
     private UUID homeId;
 
-    @NotNull
     private UUID categoryId;
 }

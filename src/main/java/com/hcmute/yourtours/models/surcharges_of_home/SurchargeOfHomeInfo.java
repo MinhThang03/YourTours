@@ -8,7 +8,6 @@ import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
@@ -20,9 +19,7 @@ public class SurchargeOfHomeInfo extends BaseData<UUID> {
     @Min(value = 0, message = "Giá trị phụ phí không được phép nhỏ hơn 0")
     private Double cost;
 
-    @NotNull
     private UUID categoryId;
 
-    @NotNull
     private UUID homeId;
 }
