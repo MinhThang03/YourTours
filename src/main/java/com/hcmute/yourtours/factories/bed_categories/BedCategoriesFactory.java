@@ -86,4 +86,12 @@ public class BedCategoriesFactory
         }
         return optional.get().getId();
     }
+
+    @Override
+    public void checkExistsByBedCategoryId(UUID bedCategoryId) throws InvalidException {
+        Optional<BedCategoriesCommand> optional = bedCategoriesRepository.findByBedCategoryId(bedCategoryId);
+        if (optional.isEmpty()) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_BED_CATEGORIES);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.models.bed_categories;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.models.common.NameDataModel;
 import lombok.Data;
@@ -14,7 +15,10 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @NoArgsConstructor
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 public class BedCategoryInfo extends NameDataModel<UUID> {
     private CommonStatusEnum status;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Integer numberOfRoom;
 }
