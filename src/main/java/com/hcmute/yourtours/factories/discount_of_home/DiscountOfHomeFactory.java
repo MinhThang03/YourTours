@@ -5,9 +5,11 @@ import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.discount_home_categories.IDiscountHomeCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoryDetail;
 import com.hcmute.yourtours.models.discount_of_home.DiscountOfHomeDetail;
 import com.hcmute.yourtours.models.discount_of_home.DiscountOfHomeInfo;
+import com.hcmute.yourtours.models.discount_of_home.models.CreateListDiscountOfHomeModel;
 import com.hcmute.yourtours.models.discount_of_home.models.DiscountOfHomeViewModel;
 import com.hcmute.yourtours.repositories.DiscountOfHomeRepository;
 import lombok.NonNull;
@@ -127,5 +129,17 @@ public class DiscountOfHomeFactory
                     );
         }
         return result;
+    }
+
+    @Override
+    public SuccessResponse createListDiscountOfHome(CreateListDiscountOfHomeModel request) throws InvalidException {
+        if (request != null && request.getListDiscountOfHomeDetail() != null) {
+            for (DiscountOfHomeDetail item : request.getListDiscountOfHomeDetail()) {
+                createModel(item);
+            }
+        }
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
     }
 }

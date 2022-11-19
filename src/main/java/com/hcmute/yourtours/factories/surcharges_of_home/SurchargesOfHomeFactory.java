@@ -4,8 +4,10 @@ import com.hcmute.yourtours.commands.SurchargesOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.surcharges_of_home.SurchargeOfHomeDetail;
 import com.hcmute.yourtours.models.surcharges_of_home.SurchargeOfHomeInfo;
+import com.hcmute.yourtours.models.surcharges_of_home.models.CreateListSurchargeHomeModel;
 import com.hcmute.yourtours.models.surcharges_of_home.models.SurchargeHomeViewModel;
 import com.hcmute.yourtours.models.surcharges_of_home.projections.SurchargeHomeViewProjection;
 import com.hcmute.yourtours.repositories.SurchargesOfHomeRepository;
@@ -103,6 +105,18 @@ public class SurchargesOfHomeFactory
                                         .build()
                         )
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public SuccessResponse createListSurchargeOfHome(CreateListSurchargeHomeModel request) throws InvalidException {
+        if (request != null && request.getListSurchargeHomeDetail() != null) {
+            for (SurchargeOfHomeDetail item : request.getListSurchargeHomeDetail()) {
+                createModel(item);
+            }
+        }
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
     }
 
     @Override
