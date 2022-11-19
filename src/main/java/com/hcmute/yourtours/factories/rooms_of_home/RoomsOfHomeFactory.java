@@ -62,6 +62,7 @@ public class RoomsOfHomeFactory
                 .description(detail.getDescription())
                 .homeId(detail.getHomeId())
                 .categoryId(detail.getCategoryId())
+                .name(detail.getName())
                 .build();
     }
 
@@ -82,6 +83,7 @@ public class RoomsOfHomeFactory
                 .description(entity.getDescription())
                 .homeId(entity.getHomeId())
                 .categoryId(entity.getCategoryId())
+                .name(entity.getName())
                 .categoryDetail(iRoomCategoriesFactory.getDetailModel(entity.getCategoryId(), null))
                 .build();
     }
@@ -96,6 +98,7 @@ public class RoomsOfHomeFactory
                 .description(entity.getDescription())
                 .homeId(entity.getHomeId())
                 .categoryId(entity.getCategoryId())
+                .name(entity.getName())
                 .categoryDetail(iRoomCategoriesFactory.getDetailModel(entity.getCategoryId(), null))
                 .build();
     }
