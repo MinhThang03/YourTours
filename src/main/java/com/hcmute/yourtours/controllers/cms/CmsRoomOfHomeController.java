@@ -10,6 +10,7 @@ import com.hcmute.yourtours.libs.logging.LogContext;
 import com.hcmute.yourtours.libs.logging.LogType;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
+import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeInfo;
 import com.hcmute.yourtours.models.rooms_of_home.filter.RoomOfHomeFilter;
@@ -49,5 +50,10 @@ public class CmsRoomOfHomeController
         } catch (InvalidException e) {
             throw new RestException(e);
         }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<FactoryDeleteResponse>> deleteModelById(UUID id) {
+        return factoryDeleteWithFilter(id, null);
     }
 }

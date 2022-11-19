@@ -175,4 +175,15 @@ public class RoomsOfHomeFactory
         RoomOfHomeFilter roomOfHomeFilter = (RoomOfHomeFilter) filter;
         return roomsOfHomeRepository.getPageWithFilter(roomOfHomeFilter.getHomeId(), PageRequest.of(number, size));
     }
+
+    @Override
+    protected <F extends BaseFilter> void preDelete(UUID id, F filter) throws InvalidException {
+        RoomsOfHomeCommand room = roomsOfHomeRepository.findByRoomOfHomeId(id).orElse(null);
+        if (room == null) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_ROOMS_OF_HOME);
+        }
+        iBedsOfHomeFactory.deleteAllByRoomHomeId(room.getRoomOfHomeId());
+    }
+
+
 }

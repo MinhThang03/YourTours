@@ -144,6 +144,16 @@ public class BedsOfHomeFactory
         return builder.toString();
     }
 
+    @Override
+    public void deleteAllByRoomHomeId(UUID roomHomeId) throws InvalidException {
+        List<BedsOfHomeCommand> roomsOfHome = bedsOfHomeRepository.findAllByRoomOfHomeId(roomHomeId);
+        if (!roomsOfHome.isEmpty()) {
+            for (BedsOfHomeCommand item : roomsOfHome) {
+                deleteModel(item.getRoomOfHomeId(), null);
+            }
+        }
+    }
+
 
     @Override
     protected void preCreate(BedOfHomeDetail detail) throws InvalidException {

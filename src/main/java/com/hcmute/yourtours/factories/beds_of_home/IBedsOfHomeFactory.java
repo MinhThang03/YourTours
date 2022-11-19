@@ -17,4 +17,6 @@ public interface IBedsOfHomeFactory extends IDataFactory<UUID, BedOfHomeInfo, Be
     SuccessResponse createListModel(CreateListBedOfHomeDetail request) throws InvalidException;
 
     String getDescriptionNumberBedOfRoom(UUID roomHomeId) throws InvalidException;
+
+    void deleteAllByRoomHomeId(UUID roomHomeId) throws InvalidException;
 }
