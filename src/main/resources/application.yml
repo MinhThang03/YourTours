@@ -91,6 +91,7 @@ common:
           - http://localhost:8000
           - http://localhost:3000
           - https://api-parking-dev.hcm.unicloud.ai/swagger-ui/
+          - https://your-tours-client.vercel.app/
         allowed-methods: ${CORS_METHODS:*}
         allowed-headers: ${CORS_HEADERS:*}
 
