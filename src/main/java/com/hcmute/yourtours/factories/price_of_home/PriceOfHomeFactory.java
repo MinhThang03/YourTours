@@ -24,7 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -165,29 +168,22 @@ public class PriceOfHomeFactory
         double total = 0.0;
         LocalDate date = request.getDateFrom();
 
-        Map<Double, Integer> detailPrice = new HashMap<>();
+        List<ArrayPriceAndDayModels> priceDetail = new ArrayList<>();
 
         while (!date.isAfter(request.getDateTo())) {
             PriceOfHomeDetail detail = findByHomeIdAndDate(request.getHomeId(), date);
             total += detail.getPrice();
 
-            int number = 1;
-            if (detailPrice.get(detail.getPrice()) != null) {
-                number += detailPrice.get(detail.getPrice());
-            }
-            detailPrice.put(detail.getPrice(), number);
+            priceDetail.add(
+                    ArrayPriceAndDayModels.builder()
+                            .day(date)
+                            .cost(detail.getPrice())
+                            .build()
+            );
 
             date = date.plusDays(1);
         }
 
-        List<ArrayPriceAndDayModels> priceDetail = new ArrayList<>();
-
-        for (Map.Entry<Double, Integer> entry : detailPrice.entrySet()) {
-            priceDetail.add(ArrayPriceAndDayModels.builder()
-                    .cost(entry.getKey())
-                    .day(entry.getValue())
-                    .build());
-        }
 
         return PriceOfHomeResponse.builder()
                 .totalCost(total)
