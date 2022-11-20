@@ -164,4 +164,12 @@ public class BedsOfHomeFactory
             deleteModel(optional.get().getBedOfHomeId(), null);
         }
     }
+
+    @Override
+    protected BedOfHomeDetail aroundCreate(BedOfHomeDetail detail) throws InvalidException {
+        if (detail.getAmount() == 0) {
+            return null;
+        }
+        return super.aroundCreate(detail);
+    }
 }
