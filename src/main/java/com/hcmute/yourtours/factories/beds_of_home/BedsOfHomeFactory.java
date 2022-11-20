@@ -149,7 +149,7 @@ public class BedsOfHomeFactory
         List<BedsOfHomeCommand> roomsOfHome = bedsOfHomeRepository.findAllByRoomOfHomeId(roomHomeId);
         if (!roomsOfHome.isEmpty()) {
             for (BedsOfHomeCommand item : roomsOfHome) {
-                deleteModel(item.getRoomOfHomeId(), null);
+                deleteModel(item.getBedOfHomeId(), null);
             }
         }
     }

@@ -96,7 +96,7 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
             nativeQuery = true,
             value = "select distinct a.*  " +
                     "from homes a  " +
-                    "         inner join  " +
+                    "         left join  " +
                     "     amenities_of_home b on a.home_id = b.home_id  " +
                     "         left join (select count(a.id) as numberOfBed,  " +
                     "                           b.home_id  " +
@@ -124,7 +124,7 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                     "order by a.created_date desc ",
             countQuery = "select distinct a.id  " +
                     "from homes a  " +
-                    "         inner join  " +
+                    "         left join  " +
                     "     amenities_of_home b on a.home_id = b.home_id  " +
                     "         left join (select count(a.id) as numberOfBed,  " +
                     "                           b.home_id  " +
