@@ -6,6 +6,8 @@ import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
+import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
+import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.factories.user_evaluate.IUserEvaluateFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
@@ -30,18 +32,26 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
     private final IGetUserFromTokenFactory iGetUserFromTokenFactory;
     private final IUserEvaluateFactory iUserEvaluateFactory;
     private final IItemFavoritesFactory iItemFavoritesFactory;
+    private final IRoomsOfHomeFactory iRoomsOfHomeFactory;
+
+    private final IOwnerOfHomeFactory iOwnerOfHomeFactory;
 
     public AppHandleViewHomeFactory(
             @Qualifier("appHomesFactory") IHomesFactory iHomesFactory,
             @Qualifier("bookHomeFactory") IBookHomeFactory iBookHomeFactory,
             IGetUserFromTokenFactory iGetUserFromTokenFactory,
             IUserEvaluateFactory iUserEvaluateFactory,
-            IItemFavoritesFactory iItemFavoritesFactory) {
+            IItemFavoritesFactory iItemFavoritesFactory,
+            IRoomsOfHomeFactory iRoomsOfHomeFactory,
+            IOwnerOfHomeFactory iOwnerOfHomeFactory
+    ) {
         this.iHomesFactory = iHomesFactory;
         this.iBookHomeFactory = iBookHomeFactory;
         this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
         this.iUserEvaluateFactory = iUserEvaluateFactory;
         this.iItemFavoritesFactory = iItemFavoritesFactory;
+        this.iRoomsOfHomeFactory = iRoomsOfHomeFactory;
+        this.iOwnerOfHomeFactory = iOwnerOfHomeFactory;
     }
 
     @Override
@@ -62,6 +72,8 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                     .homeDetail(homeDetail)
                     .evaluates(evaluates)
                     .dateIsBooked(getDatesIdBooked(homeId))
+                    .ownerName(iOwnerOfHomeFactory.getMainOwnerOfHome(homeId))
+                    .rooms(iRoomsOfHomeFactory.getRoomHaveConfigBed(homeId))
                     .build();
 
             Optional<String> userId = iGetUserFromTokenFactory.getCurrentUser();

@@ -6,9 +6,11 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeDetailFilter;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
+import com.hcmute.yourtours.models.homes.models.UserHomeDetailModel;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
@@ -23,5 +25,8 @@ public interface IPublicHomeController extends IGetInfoPageController<UUID, Home
             @RequestParam(defaultValue = "0") Integer number,
             @RequestParam(defaultValue = "20") Integer size
     );
+
+    @GetMapping("{id}/detail")
+    ResponseEntity<BaseResponse<UserHomeDetailModel>> getDetailById(@PathVariable UUID id);
 
 }

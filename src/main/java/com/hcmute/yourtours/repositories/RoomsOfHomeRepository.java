@@ -2,6 +2,7 @@ package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.commands.RoomsOfHomeCommand;
 import com.hcmute.yourtours.models.rooms_of_home.projections.NumberOfRoomsProjections;
+import com.hcmute.yourtours.models.rooms_of_home.projections.RoomOfHomeDetailWithBedProjections;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,7 +40,8 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand,
             value = "select a.* " +
                     "from rooms_of_home a " +
                     "where a.home_id = :homeId " +
-                    "   or :homeId is null ",
+                    "   or :homeId is null " +
+                    "order by a.name ",
             countQuery = "select a.id " +
                     "from rooms_of_home a " +
                     "where a.home_id = :homeId " +
@@ -62,4 +64,21 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand,
                                                                        @Param("categoryId") UUID categoryId);
 
     Long countAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.name            as roomName,   " +
+                    "       a.room_of_home_id as roomHomeId,   " +
+                    "       b.amount          as numberOfBed,   " +
+                    "       c.name            as nameOfBed   " +
+                    "from rooms_of_home a,   " +
+                    "     beds_of_home b,   " +
+                    "     bed_categories c   " +
+                    "where a.room_of_home_id = b.room_of_home_id   " +
+                    "  and b.bed_category_id = c.bed_category_id   " +
+                    "  and a.home_id = :homeId   " +
+                    "  and b.amount is not null"
+    )
+    List<RoomOfHomeDetailWithBedProjections> getRoomHaveConfigBed(@Param("homeId") UUID homeId);
 }

@@ -2,7 +2,6 @@ package com.hcmute.yourtours.controllers.app;
 
 import com.hcmute.yourtours.controllers.app.interfaces.IAppHomeController;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
-import com.hcmute.yourtours.factories.homes.app.IAppHandleViewHomeFactory;
 import com.hcmute.yourtours.factories.homes.app.IAppHomesFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -15,7 +14,6 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
-import com.hcmute.yourtours.models.homes.models.UserHomeDetailModel;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateDetail;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,18 +35,16 @@ public class AppHomeController
 
 
     private final IAppHomesFactory iAppHomesFactory;
-    private final IAppHandleViewHomeFactory iAppHandleViewHomeFactory;
+
 
     protected AppHomeController
             (
                     @Qualifier("appHomesFactory") IHomesFactory iDataFactory,
                     IResponseFactory iResponseFactory,
-                    IAppHomesFactory iAppHomesFactory,
-                    IAppHandleViewHomeFactory iAppHandleViewHomeFactory
+                    IAppHomesFactory iAppHomesFactory
             ) {
         super(iDataFactory, iResponseFactory);
         this.iAppHomesFactory = iAppHomesFactory;
-        this.iAppHandleViewHomeFactory = iAppHandleViewHomeFactory;
     }
 
 
@@ -75,15 +71,5 @@ public class AppHomeController
         }
     }
 
-    @Override
-    public ResponseEntity<BaseResponse<UserHomeDetailModel>> getDetailById(UUID id) {
-        try {
-            LogContext.push(LogType.REQUEST, id);
-            UserHomeDetailModel response = iAppHandleViewHomeFactory.getDetailByHomeId(id);
-            LogContext.push(LogType.RESPONSE, response);
-            return iResponseFactory.success(response);
-        } catch (InvalidException e) {
-            throw new RestException(e);
-        }
-    }
+
 }

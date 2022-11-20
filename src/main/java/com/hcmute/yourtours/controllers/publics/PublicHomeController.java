@@ -2,6 +2,7 @@ package com.hcmute.yourtours.controllers.publics;
 
 import com.hcmute.yourtours.controllers.publics.interfaces.IPublicHomeController;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
+import com.hcmute.yourtours.factories.homes.app.IAppHandleViewHomeFactory;
 import com.hcmute.yourtours.factories.homes.app.IAppHomesFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -15,6 +16,7 @@ import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeDetailFilter;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
+import com.hcmute.yourtours.models.homes.models.UserHomeDetailModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,16 +35,19 @@ public class PublicHomeController
         extends BaseController<UUID, HomeInfo, HomeDetail>
         implements IPublicHomeController {
 
-    private final IAppHomesFactory iHomesFactory;
+    private final IAppHomesFactory iAppHomesFactory;
+    private final IAppHandleViewHomeFactory iAppHandleViewHomeFactory;
 
     protected PublicHomeController
             (
                     @Qualifier("appHomesFactory") IHomesFactory iDataFactory,
                     IResponseFactory iResponseFactory,
-                    IAppHomesFactory iHomesFactory
+                    IAppHomesFactory iAppHomesFactory,
+                    IAppHandleViewHomeFactory iAppHandleViewHomeFactory
             ) {
         super(iDataFactory, iResponseFactory);
-        this.iHomesFactory = iHomesFactory;
+        this.iAppHomesFactory = iAppHomesFactory;
+        this.iAppHandleViewHomeFactory = iAppHandleViewHomeFactory;
     }
 
     @Override
@@ -59,7 +64,19 @@ public class PublicHomeController
     @Operation(summary = "Get paging with full filter")
     public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFullFilter(HomeDetailFilter filter, Integer number, Integer size) {
         try {
-            BasePagingResponse<HomeInfo> response = iHomesFactory.getPageWithFullFilter(filter, number, size);
+            BasePagingResponse<HomeInfo> response = iAppHomesFactory.getPageWithFullFilter(filter, number, size);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<UserHomeDetailModel>> getDetailById(UUID id) {
+        try {
+            LogContext.push(LogType.REQUEST, id);
+            UserHomeDetailModel response = iAppHandleViewHomeFactory.getDetailByHomeId(id);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {

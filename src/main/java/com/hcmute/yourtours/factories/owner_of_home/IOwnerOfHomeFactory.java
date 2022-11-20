@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface IOwnerOfHomeFactory extends IDataFactory<UUID, OwnerOfHomeInfo, OwnerOfHomeDetail> {
     boolean existByOwnerIdAndHomeId(UUID ownerId, UUID homeId);
+
+    String getMainOwnerOfHome(UUID homeId);
 }

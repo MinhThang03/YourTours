@@ -90,4 +90,9 @@ public class OwnerOfHomeFactory
     public boolean existByOwnerIdAndHomeId(UUID ownerId, UUID homeId) {
         return ownerOfHomesRepository.existsByUserIdAndHomeId(ownerId, homeId);
     }
+
+    @Override
+    public String getMainOwnerOfHome(UUID homeId) {
+        return ownerOfHomesRepository.getMainOwnerNameOfHome(homeId);
+    }
 }

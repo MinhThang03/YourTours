@@ -16,7 +16,9 @@ import com.hcmute.yourtours.models.rooms_of_home.filter.RoomOfHomeFilter;
 import com.hcmute.yourtours.models.rooms_of_home.models.CreateListRoomOfHomeModel;
 import com.hcmute.yourtours.models.rooms_of_home.models.NumberOfRoomsModel;
 import com.hcmute.yourtours.models.rooms_of_home.models.RoomOfHomeCreateModel;
+import com.hcmute.yourtours.models.rooms_of_home.models.RoomOfHomeDetailWithBedModel;
 import com.hcmute.yourtours.models.rooms_of_home.projections.NumberOfRoomsProjections;
+import com.hcmute.yourtours.models.rooms_of_home.projections.RoomOfHomeDetailWithBedProjections;
 import com.hcmute.yourtours.repositories.RoomsOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -198,6 +200,19 @@ public class RoomsOfHomeFactory
     @Override
     public Long countNumberRoomOfHome(UUID homeId, UUID categoryId) throws InvalidException {
         return roomsOfHomeRepository.countAllByHomeIdAndCategoryId(homeId, categoryId);
+    }
+
+    @Override
+    public List<RoomOfHomeDetailWithBedModel> getRoomHaveConfigBed(UUID homeId) {
+        List<RoomOfHomeDetailWithBedProjections> projections = roomsOfHomeRepository.getRoomHaveConfigBed(homeId);
+        return projections.stream().map(
+                item -> RoomOfHomeDetailWithBedModel.builder()
+                        .nameOfBed(item.getNameOfBed())
+                        .roomName(item.getRoomName())
+                        .roomHomeId(item.getRoomHomeId())
+                        .numberOfBed(item.getNumberOfBed())
+                        .build()
+        ).collect(Collectors.toList());
     }
 
     @Override

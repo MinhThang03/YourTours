@@ -10,6 +10,7 @@ import com.hcmute.yourtours.models.rooms_of_home.filter.RoomOfHomeFilter;
 import com.hcmute.yourtours.models.rooms_of_home.models.CreateListRoomOfHomeModel;
 import com.hcmute.yourtours.models.rooms_of_home.models.NumberOfRoomsModel;
 import com.hcmute.yourtours.models.rooms_of_home.models.RoomOfHomeCreateModel;
+import com.hcmute.yourtours.models.rooms_of_home.models.RoomOfHomeDetailWithBedModel;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,4 +25,6 @@ public interface IRoomsOfHomeFactory extends IDataFactory<UUID, RoomOfHomeInfo, 
     SuccessResponse createWithListModel(CreateListRoomOfHomeModel request) throws InvalidException;
 
     Long countNumberRoomOfHome(UUID homeId, UUID categoryId) throws InvalidException;
+
+    List<RoomOfHomeDetailWithBedModel> getRoomHaveConfigBed(UUID homeId);
 }

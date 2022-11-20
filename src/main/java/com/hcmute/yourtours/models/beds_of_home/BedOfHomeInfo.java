@@ -21,7 +21,7 @@ public class BedOfHomeInfo extends BaseData<UUID> {
 
     private UUID roomOfHomeId;
 
-    @Min(value = 0, message = "số lượng giường cấu hình không được phép nhỏ hơn 0")
+    @Min(value = 0, message = "số lượng giường cấu hình không được phép nhỏ hơn 1")
     @NotNull
     private Integer amount;
 }
