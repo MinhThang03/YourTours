@@ -81,6 +81,7 @@ public class BookHomeFactory
         entity.setHomeId(detail.getHomeId());
         entity.setUserId(detail.getUserId());
         entity.setStatus(detail.getStatus());
+        entity.setTotalCost(detail.getTotalCost());
     }
 
     @Override
@@ -101,6 +102,7 @@ public class BookHomeFactory
                 .homeName(iHomesFactory.getDetailModel(entity.getHomeId(), null).getName())
                 .customerName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .status(entity.getStatus())
+                .totalCost(entity.getTotalCost())
                 .build();
 
     }
@@ -123,6 +125,7 @@ public class BookHomeFactory
                 .status(entity.getStatus())
                 .homeName(iHomesFactory.getDetailModel(entity.getHomeId(), null).getName())
                 .customerName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
+                .totalCost(entity.getTotalCost())
                 .build();
     }
 

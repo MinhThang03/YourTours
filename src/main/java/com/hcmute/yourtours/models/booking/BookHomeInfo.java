@@ -51,4 +51,8 @@ public class BookHomeInfo extends BaseData<UUID> {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String customerName;
+
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Double totalCost;
 }

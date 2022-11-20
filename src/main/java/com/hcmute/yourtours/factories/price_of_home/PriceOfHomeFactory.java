@@ -10,7 +10,9 @@ import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.price_of_home.PriceOfHomeDetail;
 import com.hcmute.yourtours.models.price_of_home.PriceOfHomeInfo;
 import com.hcmute.yourtours.models.price_of_home.filter.PriceOfHomeFilter;
+import com.hcmute.yourtours.models.price_of_home.request.GetPriceOfHomeRequest;
 import com.hcmute.yourtours.models.price_of_home.request.PriceOfHomeCreateRequest;
+import com.hcmute.yourtours.models.price_of_home.response.PriceOfHomeResponse;
 import com.hcmute.yourtours.models.price_of_home.response.PriceOfHomeWithMonthResponse;
 import com.hcmute.yourtours.repositories.PriceOfHomeRepository;
 import lombok.NonNull;
@@ -156,6 +158,26 @@ public class PriceOfHomeFactory
                 .prices(prices)
                 .build();
     }
+
+    @Override
+    public PriceOfHomeResponse getCostBetweenDay(GetPriceOfHomeRequest request) throws InvalidException {
+        if (request.getDateFrom().isAfter(request.getDateTo())) {
+            throw new InvalidException(YourToursErrorCode.INPUT_DAY_NOT_VALID);
+        }
+        double total = 0.0;
+        LocalDate date = request.getDateFrom();
+
+        while (!date.isAfter(request.getDateTo())) {
+            PriceOfHomeDetail detail = findByHomeIdAndDate(request.getHomeId(), date);
+            total += detail.getPrice();
+            date = date.plusDays(1);
+        }
+
+        return PriceOfHomeResponse.builder()
+                .cost(total)
+                .build();
+    }
+
 
     private PriceOfHomeDetail findByHomeIdAndDate(UUID homeId, LocalDate date) throws InvalidException {
         Optional<PriceOfHomeCommand> optional = priceOfHomeRepository.findByHomeIdAndDate(homeId, date);

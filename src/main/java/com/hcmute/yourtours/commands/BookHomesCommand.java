@@ -67,6 +67,9 @@ public class BookHomesCommand extends Persistence {
     @Enumerated(EnumType.STRING)
     private BookRoomStatusEnum status;
 
+    @Column(name = "total_cost")
+    private Double totalCost;
+
 
     @Override
     protected void preWrite() {

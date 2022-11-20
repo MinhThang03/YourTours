@@ -28,7 +28,7 @@ public enum YourToursErrorCode implements IErrorCode {
     LIST_IMAGES_HOME_NOT_ENOUGH_SIZE(HttpStatus.BAD_REQUEST, "400000018", "Không đủ 5 hình ảnh"),
     DAY_END_IS_BEFORE_DAY_START(HttpStatus.BAD_REQUEST, "400000020", "Ngày kết thúc không được xảy ra trước ngày bắt đầu"),
     USER_NOT_BOOKING_HOME(HttpStatus.BAD_REQUEST, "400000021", "Khách hàng chưa đặt dịch vụ của ngôi nhà này"),
-
+    INPUT_DAY_NOT_VALID(HttpStatus.BAD_REQUEST, "400000022", "Dữ liệu ngày vào không hợp lệ"),
 
     //403
     FORBIDDEN(HttpStatus.FORBIDDEN, "4030000", "Bạn không đủ quyền truy cập"),
