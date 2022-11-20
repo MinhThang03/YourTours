@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface IAmenitiesFactory extends IDataFactory<UUID, AmenityInfo, AmenityDetail> {
     List<AmenityInfo> getLimitTrueByHomeId(UUID homeId) throws InvalidException;
 
+    List<AmenityInfo> getAllByHomeId(UUID homeId) throws InvalidException;
 }

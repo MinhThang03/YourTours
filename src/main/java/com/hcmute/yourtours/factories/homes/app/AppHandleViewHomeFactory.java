@@ -1,7 +1,10 @@
 package com.hcmute.yourtours.factories.homes.app;
 
+import com.hcmute.yourtours.constant.RoomCategoryIdConstant;
 import com.hcmute.yourtours.enums.EvaluateFilterTypeEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.factories.amenities.IAmenitiesFactory;
+import com.hcmute.yourtours.factories.beds_of_home.IBedsOfHomeFactory;
 import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
@@ -14,6 +17,7 @@ import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.models.UserHomeDetailModel;
+import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeInfo;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateInfo;
 import com.hcmute.yourtours.models.user_evaluate.filter.EvaluateFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,8 +37,9 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
     private final IUserEvaluateFactory iUserEvaluateFactory;
     private final IItemFavoritesFactory iItemFavoritesFactory;
     private final IRoomsOfHomeFactory iRoomsOfHomeFactory;
-
     private final IOwnerOfHomeFactory iOwnerOfHomeFactory;
+    private final IAmenitiesFactory iAmenitiesFactory;
+    private final IBedsOfHomeFactory iBedsOfHomeFactory;
 
     public AppHandleViewHomeFactory(
             @Qualifier("appHomesFactory") IHomesFactory iHomesFactory,
@@ -43,7 +48,9 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
             IUserEvaluateFactory iUserEvaluateFactory,
             IItemFavoritesFactory iItemFavoritesFactory,
             IRoomsOfHomeFactory iRoomsOfHomeFactory,
-            IOwnerOfHomeFactory iOwnerOfHomeFactory
+            IOwnerOfHomeFactory iOwnerOfHomeFactory,
+            @Qualifier("appAmenitiesFactory") IAmenitiesFactory iAmenitiesFactory,
+            IBedsOfHomeFactory iBedsOfHomeFactory
     ) {
         this.iHomesFactory = iHomesFactory;
         this.iBookHomeFactory = iBookHomeFactory;
@@ -52,6 +59,8 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
         this.iItemFavoritesFactory = iItemFavoritesFactory;
         this.iRoomsOfHomeFactory = iRoomsOfHomeFactory;
         this.iOwnerOfHomeFactory = iOwnerOfHomeFactory;
+        this.iAmenitiesFactory = iAmenitiesFactory;
+        this.iBedsOfHomeFactory = iBedsOfHomeFactory;
     }
 
     @Override
@@ -74,6 +83,8 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                     .dateIsBooked(getDatesIdBooked(homeId))
                     .ownerName(iOwnerOfHomeFactory.getMainOwnerOfHome(homeId))
                     .rooms(iRoomsOfHomeFactory.getRoomHaveConfigBed(homeId))
+                    .amenitiesView(iAmenitiesFactory.getAllByHomeId(homeId))
+                    .descriptionHomeDetail(getDescriptionHomeDetail(homeDetail))
                     .build();
 
             Optional<String> userId = iGetUserFromTokenFactory.getCurrentUser();
@@ -108,5 +119,42 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                 .build());
 
         return iBookHomeFactory.getDatesIsBooked(models, homeId);
+    }
+
+    private String getDescriptionHomeDetail(HomeDetail detail) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(detail.getNumberOfGuests());
+        builder.append(" ");
+        builder.append("Khách");
+        builder.append(" ");
+
+        try {
+
+
+            List<RoomOfHomeInfo> bedRooms = iRoomsOfHomeFactory.getAllByHomeIdAndCategoryId(detail.getId(), RoomCategoryIdConstant.BED_ROOM_CATEGORY_ID);
+            if (!bedRooms.isEmpty()) {
+                builder.append(bedRooms.size());
+                builder.append(" ");
+                builder.append("Phòng ngủ");
+                builder.append(" ");
+            }
+
+            Integer numberOfBed = iBedsOfHomeFactory.getNumberOfBedWithHomeId(detail.getId());
+            builder.append(numberOfBed);
+            builder.append(" ");
+            builder.append("Giường");
+            builder.append(" ");
+
+            List<RoomOfHomeInfo> bathRooms = iRoomsOfHomeFactory.getAllByHomeIdAndCategoryId(detail.getId(), RoomCategoryIdConstant.BATH_ROOM_CATEGORY_ID);
+            if (!bedRooms.isEmpty()) {
+                builder.append(bathRooms.size());
+                builder.append(" ");
+                builder.append("Phòng tắm");
+                builder.append(" ");
+            }
+        } catch (InvalidException e) {
+            // ignore
+        }
+        return builder.toString();
     }
 }

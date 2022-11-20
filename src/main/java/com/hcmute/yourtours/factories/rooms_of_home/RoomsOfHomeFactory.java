@@ -216,6 +216,12 @@ public class RoomsOfHomeFactory
     }
 
     @Override
+    public List<RoomOfHomeInfo> getAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId) throws InvalidException {
+        List<RoomsOfHomeCommand> commands = roomsOfHomeRepository.findAllByHomeIdAndCategoryId(homeId, categoryId);
+        return convertList(commands);
+    }
+
+    @Override
     protected void preCreate(RoomOfHomeDetail detail) throws InvalidException {
         iRoomCategoriesFactory.checkExistByRoomCategoryId(detail.getCategoryId());
     }

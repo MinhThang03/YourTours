@@ -46,6 +46,17 @@ public interface AmenitiesRepository extends JpaRepository<AmenitiesCommand, Lon
 
     @Query(
             nativeQuery = true,
+            value = "select a.* " +
+                    "from amenities a, " +
+                    "     amenities_of_home b " +
+                    "where a.amenity_id = b.amenity_id " +
+                    "  and b.home_id = :homeId "
+    )
+    List<AmenitiesCommand> getByByHomeId(@Param("homeId") UUID homeId);
+
+
+    @Query(
+            nativeQuery = true,
             value = "select a.*  " +
                     "from amenities a  " +
                     "where a.set_filter is true  " +

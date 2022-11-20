@@ -136,4 +136,10 @@ public class AmenitiesFactory
         List<AmenitiesCommand> commands = amenitiesRepository.getLimitByHomeId(homeId, 2);
         return convertList(commands);
     }
+
+    @Override
+    public List<AmenityInfo> getAllByHomeId(UUID homeId) throws InvalidException {
+        List<AmenitiesCommand> commands = amenitiesRepository.getByByHomeId(homeId);
+        return convertList(commands);
+    }
 }

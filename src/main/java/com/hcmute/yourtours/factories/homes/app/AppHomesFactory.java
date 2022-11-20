@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.homes.app;
 
 import com.hcmute.yourtours.commands.HomesCommand;
+import com.hcmute.yourtours.constant.RoomCategoryIdConstant;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
@@ -160,6 +161,8 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                         filter.getNumberOfBathRoom(),
                         filter.getAmenities(),
                         lenght,
+                        RoomCategoryIdConstant.BED_ROOM_CATEGORY_ID,
+                        RoomCategoryIdConstant.BATH_ROOM_CATEGORY_ID,
                         PageRequest.of(number, size)
                 );
 

@@ -107,12 +107,12 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                     "         left join (select count(a.id) as numberOfBedRoom,  " +
                     "                           a.home_id  " +
                     "                    from rooms_of_home a  " +
-                    "                    where a.room_category_id = 0x9893715b26154dd9b1ca2d94ae1d3b34  " +
+                    "                    where a.room_category_id = :bedRoomId  " +
                     "                    group by a.home_id) d on a.home_id = d.home_id  " +
                     "         left join (select count(a.id) as numberOfBathRoom,  " +
                     "                           a.home_id  " +
                     "                    from rooms_of_home a  " +
-                    "                    where a.room_category_id = 0xb2d2707eee6c415cb4eb34786d870f39  " +
+                    "                    where a.room_category_id = :bathRoomId  " +
                     "                    group by a.home_id) e on e.home_id = a.home_id  " +
                     "where (:amenityId is null or b.amenity_id = :amenityId)  " +
                     "  and (:priceFrom is null or :priceTo is null or  " +
@@ -135,12 +135,12 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                     "         left join (select count(a.id) as numberOfBedRoom,  " +
                     "                           a.home_id  " +
                     "                    from rooms_of_home a  " +
-                    "                    where a.room_category_id = 0x9893715b26154dd9b1ca2d94ae1d3b34  " +
+                    "                    where a.room_category_id = :bedRoomId  " +
                     "                    group by a.home_id) d on a.home_id = d.home_id  " +
                     "         left join (select count(a.id) as numberOfBathRoom,  " +
                     "                           a.home_id  " +
                     "                    from rooms_of_home a  " +
-                    "                    where a.room_category_id = 0xb2d2707eee6c415cb4eb34786d870f39  " +
+                    "                    where a.room_category_id = :bathRoomId  " +
                     "                    group by a.home_id) e on e.home_id = a.home_id  " +
                     "where (:amenityId is null or b.amenity_id = :amenityId)  " +
                     "  and (:priceFrom is null or :priceTo is null or  " +
@@ -159,5 +159,7 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                                              @Param("numberOfBathRoom") Integer numberOfBathRoom,
                                              @Param("amenities") List<UUID> amenities,
                                              @Param("size") Integer size,
+                                             @Param("bedRoomId") UUID bedRoomId,
+                                             @Param("bathRoomId") UUID bathRoomId,
                                              Pageable pageable);
 }

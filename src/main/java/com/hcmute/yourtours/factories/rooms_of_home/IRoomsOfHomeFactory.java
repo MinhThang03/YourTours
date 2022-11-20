@@ -27,4 +27,6 @@ public interface IRoomsOfHomeFactory extends IDataFactory<UUID, RoomOfHomeInfo, 
     Long countNumberRoomOfHome(UUID homeId, UUID categoryId) throws InvalidException;
 
     List<RoomOfHomeDetailWithBedModel> getRoomHaveConfigBed(UUID homeId);
+
+    List<RoomOfHomeInfo> getAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId) throws InvalidException;
 }

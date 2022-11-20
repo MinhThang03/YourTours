@@ -81,4 +81,6 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand,
                     "  and b.amount is not null"
     )
     List<RoomOfHomeDetailWithBedProjections> getRoomHaveConfigBed(@Param("homeId") UUID homeId);
+
+    List<RoomsOfHomeCommand> findAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
 }

@@ -2,6 +2,7 @@ package com.hcmute.yourtours.models.homes.models;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
+import com.hcmute.yourtours.models.amenities.AmenityInfo;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.models.RoomOfHomeDetailWithBedModel;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateInfo;
@@ -24,4 +25,6 @@ public class UserHomeDetailModel implements Serializable {
     private boolean isFavorite;
     private List<LocalDate> dateIsBooked;
     private String ownerName;
+    private List<AmenityInfo> amenitiesView;
+    private String descriptionHomeDetail;
 }
