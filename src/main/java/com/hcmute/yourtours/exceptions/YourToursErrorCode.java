@@ -63,6 +63,8 @@ public enum YourToursErrorCode implements IErrorCode {
     NOT_FOUND_BOOKING(HttpStatus.NOT_FOUND, "40400025", "Không tìm thấy lịch sử đặt nhà"),
     NOT_FOUND_ITEM_FAVORITES(HttpStatus.NOT_FOUND, "40400026", "Không tìm thấy đăng ký nhà yêu thích"),
     NOT_EVALUATE(HttpStatus.NOT_FOUND, "40400027", "Không tìm thấy đánh giá của người dùng đối với ngôi nhà"),
+    NOT_FOUND_BOOKING_GUEST_DETAIL(HttpStatus.NOT_FOUND, "40400028", "Không tìm thấy thông tin chi tiết về loại khách trong của lượt đặt"),
+    NOT_FOUND_BOOKING_SURCHARGE_DETAIL(HttpStatus.NOT_FOUND, "40400029", "Không tìm thấy thông tin chi tiết về phụ phí trong của lượt đặt"),
 
 
     //409
