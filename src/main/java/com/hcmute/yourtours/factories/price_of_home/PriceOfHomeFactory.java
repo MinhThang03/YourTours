@@ -10,6 +10,7 @@ import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.price_of_home.PriceOfHomeDetail;
 import com.hcmute.yourtours.models.price_of_home.PriceOfHomeInfo;
 import com.hcmute.yourtours.models.price_of_home.filter.PriceOfHomeFilter;
+import com.hcmute.yourtours.models.price_of_home.models.ArrayPriceAndDayModels;
 import com.hcmute.yourtours.models.price_of_home.request.GetPriceOfHomeRequest;
 import com.hcmute.yourtours.models.price_of_home.request.PriceOfHomeCreateRequest;
 import com.hcmute.yourtours.models.price_of_home.response.PriceOfHomeResponse;
@@ -23,10 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -167,14 +165,33 @@ public class PriceOfHomeFactory
         double total = 0.0;
         LocalDate date = request.getDateFrom();
 
+        Map<Double, Integer> detailPrice = new HashMap<>();
+
         while (!date.isAfter(request.getDateTo())) {
             PriceOfHomeDetail detail = findByHomeIdAndDate(request.getHomeId(), date);
             total += detail.getPrice();
+
+            int number = 1;
+            if (detailPrice.get(detail.getPrice()) != null) {
+                number += detailPrice.get(detail.getPrice());
+            }
+            detailPrice.put(detail.getPrice(), number);
+
             date = date.plusDays(1);
         }
 
+        List<ArrayPriceAndDayModels> priceDetail = new ArrayList<>();
+
+        for (Map.Entry<Double, Integer> entry : detailPrice.entrySet()) {
+            priceDetail.add(ArrayPriceAndDayModels.builder()
+                    .cost(entry.getKey())
+                    .day(entry.getValue())
+                    .build());
+        }
+
         return PriceOfHomeResponse.builder()
-                .cost(total)
+                .totalCost(total)
+                .detail(priceDetail)
                 .build();
     }
 
