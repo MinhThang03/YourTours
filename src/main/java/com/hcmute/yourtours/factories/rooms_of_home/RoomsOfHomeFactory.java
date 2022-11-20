@@ -71,6 +71,7 @@ public class RoomsOfHomeFactory
                 .homeId(detail.getHomeId())
                 .categoryId(detail.getCategoryId())
                 .name(detail.getName())
+                .orderFlag(detail.getOrderFlag())
                 .build();
     }
 
@@ -79,6 +80,7 @@ public class RoomsOfHomeFactory
         entity.setDescription(detail.getDescription());
         entity.setHomeId(detail.getHomeId());
         entity.setCategoryId(detail.getCategoryId());
+        entity.setOrderFlag(detail.getOrderFlag());
     }
 
     @Override
@@ -92,6 +94,7 @@ public class RoomsOfHomeFactory
                 .homeId(entity.getHomeId())
                 .categoryId(entity.getCategoryId())
                 .name(entity.getName())
+                .orderFlag(entity.getOrderFlag())
                 .categoryDetail(iRoomCategoriesFactory.getDetailModel(entity.getCategoryId(), null))
                 .descriptionOfBed(iBedsOfHomeFactory.getDescriptionNumberBedOfRoom(entity.getRoomOfHomeId()))
                 .build();
@@ -108,6 +111,7 @@ public class RoomsOfHomeFactory
                 .homeId(entity.getHomeId())
                 .categoryId(entity.getCategoryId())
                 .name(entity.getName())
+                .orderFlag(entity.getOrderFlag())
                 .categoryDetail(iRoomCategoriesFactory.getDetailModel(entity.getCategoryId(), null))
                 .descriptionOfBed(iBedsOfHomeFactory.getDescriptionNumberBedOfRoom(entity.getRoomOfHomeId()))
                 .build();
