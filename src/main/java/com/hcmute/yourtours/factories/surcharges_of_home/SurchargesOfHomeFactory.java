@@ -4,6 +4,7 @@ import com.hcmute.yourtours.commands.SurchargesOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.surcharges_of_home.SurchargeOfHomeDetail;
 import com.hcmute.yourtours.models.surcharges_of_home.SurchargeOfHomeInfo;
@@ -12,6 +13,8 @@ import com.hcmute.yourtours.models.surcharges_of_home.models.SurchargeHomeViewMo
 import com.hcmute.yourtours.models.surcharges_of_home.projections.SurchargeHomeViewProjection;
 import com.hcmute.yourtours.repositories.SurchargesOfHomeRepository;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -118,6 +121,29 @@ public class SurchargesOfHomeFactory
                 .success(true)
                 .build();
     }
+
+    @Override
+    public BasePagingResponse<SurchargeHomeViewModel> getPageSurchargeOfHome(UUID homeId, Integer number, Integer size) {
+        Page<SurchargeHomeViewProjection> page = surchargesOfHomeRepository.getPageByHomeId(homeId, PageRequest.of(number, size));
+
+        List<SurchargeHomeViewModel> content = page.getContent().stream().map
+                (
+                        item -> SurchargeHomeViewModel.builder()
+                                .surchargeCategoryId(item.getSurchargeCategoryId())
+                                .surchargeCategoryName(item.getSurchargeCategoryName())
+                                .description(item.getDescription())
+                                .cost(item.getCost())
+                                .build()
+                ).collect(Collectors.toList());
+
+        return new BasePagingResponse<>(
+                content,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements()
+        );
+    }
+
 
     @Override
     protected void preCreate(SurchargeOfHomeDetail detail) throws InvalidException {

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/public/app/provinces")
-@Tag(name = "PUBLIC API: province", description = "API lấy danh sách tỉnh")
+@Tag(name = "PUBLIC API: PROVINCE", description = "API lấy danh sách tỉnh")
 @Transactional
 public class PublicProvinceController implements IPublicProvinceController {
 

@@ -2,8 +2,10 @@ package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.commands.SurchargesOfHomeCommand;
 import com.hcmute.yourtours.models.surcharges_of_home.projections.SurchargeHomeViewProjection;
+import io.lettuce.core.dynamic.annotation.Param;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -29,8 +31,26 @@ public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHo
     )
     List<SurchargeHomeViewProjection> getListCategoryWithHomeId(UUID homeId);
 
-    @Modifying
-    void deleteAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
-
     List<SurchargesOfHomeCommand> findAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
+
+    @Query(
+            nativeQuery = true,
+            value = "select b.surcharge_category_id as surchargeCategoryId,   " +
+                    "       b.name                  as surchargeCategoryName,   " +
+                    "       b.description           as description,   " +
+                    "       a.cost                  as cost   " +
+                    "from surcharges_of_home a,   " +
+                    "     surcharge_home_categories b   " +
+                    "where b.status = 'ACTIVE'   " +
+                    "  and a.surcharge_category_id = b.surcharge_category_id   " +
+                    "  and a.home_id = :homeId ",
+            countQuery = "select b.id    " +
+                    "from surcharges_of_home a,    " +
+                    "     surcharge_home_categories b    " +
+                    "where b.status = 'ACTIVE'    " +
+                    "  and a.surcharge_category_id = b.surcharge_category_id    " +
+                    "  and a.home_id = :homeId "
+    )
+    Page<SurchargeHomeViewProjection> getPageByHomeId(@Param("homeId") UUID homeId,
+                                                      Pageable pageable);
 }

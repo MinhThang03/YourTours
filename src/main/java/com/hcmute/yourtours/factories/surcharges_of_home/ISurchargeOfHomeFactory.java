@@ -2,6 +2,7 @@ package com.hcmute.yourtours.factories.surcharges_of_home;
 
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.IDataFactory;
+import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.surcharges_of_home.SurchargeOfHomeDetail;
 import com.hcmute.yourtours.models.surcharges_of_home.SurchargeOfHomeInfo;
@@ -15,4 +16,6 @@ public interface ISurchargeOfHomeFactory extends IDataFactory<UUID, SurchargeOfH
     List<SurchargeHomeViewModel> getListCategoryWithHomeId(UUID homeId);
 
     SuccessResponse createListSurchargeOfHome(CreateListSurchargeHomeModel request) throws InvalidException;
+
+    BasePagingResponse<SurchargeHomeViewModel> getPageSurchargeOfHome(UUID homeId, Integer number, Integer size);
 }
