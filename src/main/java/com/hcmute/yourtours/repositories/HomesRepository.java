@@ -19,16 +19,14 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
     Optional<HomesCommand> findByHomeId(UUID homeID);
 
     @Query(nativeQuery = true,
-            value = "select a.*  " +
-                    "from homes a  " +
-                    "         inner join owner_of_home b on a.home_id = b.home_id  " +
-                    "where a.deleted = false  " +
-                    "  and (b.user_id = :userId or :userId is null)  " +
-                    "order by case  " +
-                    "             when :sortBy = 'VIEW' then a.view  " +
-                    "             when :sortBy = 'FAVORITE' then a.favorite  " +
-                    "             else a.created_date  " +
-                    "             end desc  ",
+            value = "select a.*    " +
+                    "from homes a    " +
+                    "         inner join owner_of_home b on a.home_id = b.home_id    " +
+                    "where a.deleted = false    " +
+                    "  and (b.user_id = :userId or :userId is null)    " +
+                    "order by case when :sortBy = 'VIEW' then a.view end desc,    " +
+                    "         case when :sortBy = 'FAVORITE' then a.favorite end desc,    " +
+                    "         a.created_date desc ",
             countQuery = "select a.id " +
                     "from homes a " +
                     "         inner join owner_of_home b on a.home_id = b.home_id " +

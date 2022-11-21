@@ -18,4 +18,6 @@ public interface ISurchargeOfHomeFactory extends IDataFactory<UUID, SurchargeOfH
     SuccessResponse createListSurchargeOfHome(CreateListSurchargeHomeModel request) throws InvalidException;
 
     BasePagingResponse<SurchargeHomeViewModel> getPageSurchargeOfHome(UUID homeId, Integer number, Integer size);
+
+    SurchargeOfHomeDetail getByHomeIdAndCategoryId(UUID homeId, UUID categoryId) throws InvalidException;
 }

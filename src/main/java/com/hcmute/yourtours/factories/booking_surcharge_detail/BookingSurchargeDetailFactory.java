@@ -10,6 +10,7 @@ import com.hcmute.yourtours.repositories.BookingSurchargeDetailRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -86,5 +87,22 @@ public class BookingSurchargeDetailFactory
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_BOOKING_SURCHARGE_DETAIL);
         }
         return optional.get().getId();
+    }
+
+    @Override
+    public void createListModel(UUID bookingId, List<BookingSurchargeDetailDetail> listDetail) throws InvalidException {
+        if (listDetail == null) {
+            return;
+        }
+
+        List<BookingHomeSurchargeDetailCommand> listDelete = bookingSurchargeDetailRepository.findAllByBooking(bookingId);
+        for (BookingHomeSurchargeDetailCommand item : listDelete) {
+            deleteModel(item.getBookingSurchargeDetailId(), null);
+        }
+
+        for (BookingSurchargeDetailDetail item : listDetail) {
+            item.setBooking(bookingId);
+            createModel(item);
+        }
     }
 }

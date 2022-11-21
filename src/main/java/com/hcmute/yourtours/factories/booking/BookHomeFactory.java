@@ -163,6 +163,17 @@ public class BookHomeFactory
         return result;
     }
 
+    @Override
+    public void checkDateBookingOfHomeValid(LocalDate dateStart, LocalDate dateEnd, UUID homeId) throws InvalidException {
+        while (!dateStart.isAfter(dateEnd)) {
+            Optional<BookHomesCommand> optional = bookHomeRepository.findOneByBetweenDate(dateStart, homeId);
+            if (optional.isPresent()) {
+                throw new InvalidException(YourToursErrorCode.DATE_BOOKING_IS_INVALID);
+            }
+            dateStart = dateStart.plusDays(1);
+        }
+    }
+
 
     @Override
     protected void preCreate(BookHomeDetail detail) throws InvalidException {

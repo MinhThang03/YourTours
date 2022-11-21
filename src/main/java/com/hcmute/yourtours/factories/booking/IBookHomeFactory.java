@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.factories.booking;
 
+import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.IDataFactory;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
@@ -13,4 +14,6 @@ public interface IBookHomeFactory extends IDataFactory<UUID, BookHomeInfo, BookH
     boolean existByUserIdAndHomeId(UUID userId, UUID homeId);
 
     List<LocalDate> getDatesIsBooked(List<MonthAndYearModel> months, UUID homeId);
+
+    void checkDateBookingOfHomeValid(LocalDate dateStart, LocalDate dateEnd, UUID homeId) throws InvalidException;
 }

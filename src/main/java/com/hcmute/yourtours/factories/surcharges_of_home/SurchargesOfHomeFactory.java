@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -142,6 +143,15 @@ public class SurchargesOfHomeFactory
                 page.getSize(),
                 page.getTotalElements()
         );
+    }
+
+    @Override
+    public SurchargeOfHomeDetail getByHomeIdAndCategoryId(UUID homeId, UUID categoryId) throws InvalidException {
+        Optional<SurchargesOfHomeCommand> optional = surchargesOfHomeRepository.findByHomeIdAndCategoryId(homeId, categoryId);
+        if (optional.isEmpty()) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_SURCHARGES_OF_HOME);
+        }
+        return convertToDetail(optional.get());
     }
 
 

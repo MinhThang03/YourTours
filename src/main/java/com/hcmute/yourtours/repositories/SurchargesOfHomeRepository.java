@@ -33,6 +33,8 @@ public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHo
 
     List<SurchargesOfHomeCommand> findAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
 
+    Optional<SurchargesOfHomeCommand> findByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
+
     @Query(
             nativeQuery = true,
             value = "select b.surcharge_category_id as surchargeCategoryId,   " +
@@ -43,12 +45,14 @@ public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHo
                     "     surcharge_home_categories b   " +
                     "where b.status = 'ACTIVE'   " +
                     "  and a.surcharge_category_id = b.surcharge_category_id   " +
+                    "  and a.cost is not null  " +
                     "  and a.home_id = :homeId ",
             countQuery = "select b.id    " +
                     "from surcharges_of_home a,    " +
                     "     surcharge_home_categories b    " +
                     "where b.status = 'ACTIVE'    " +
                     "  and a.surcharge_category_id = b.surcharge_category_id    " +
+                    "  and a.cost is not null  " +
                     "  and a.home_id = :homeId "
     )
     Page<SurchargeHomeViewProjection> getPageByHomeId(@Param("homeId") UUID homeId,

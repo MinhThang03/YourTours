@@ -10,6 +10,7 @@ import com.hcmute.yourtours.repositories.BookingGuestDetailRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -87,5 +88,23 @@ public class BookingGuestDetailFactory
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_BOOKING_GUEST_DETAIL);
         }
         return optional.get().getId();
+    }
+
+
+    @Override
+    public void createListModel(UUID bookingId, List<BookingGuestDetailDetail> listDetail) throws InvalidException {
+        if (listDetail == null) {
+            return;
+        }
+
+        List<BookingHomeGuestDetailCommand> listDelete = bookingGuestDetailRepository.findAllByBooking(bookingId);
+        for (BookingHomeGuestDetailCommand item : listDelete) {
+            deleteModel(item.getBookingGuestDetailId(), null);
+        }
+
+        for (BookingGuestDetailDetail item : listDetail) {
+            item.setBooking(bookingId);
+            createModel(item);
+        }
     }
 }

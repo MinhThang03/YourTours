@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.models.price_of_home.request;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
+@Builder
 public class GetPriceOfHomeRequest {
 
     @NotNull
