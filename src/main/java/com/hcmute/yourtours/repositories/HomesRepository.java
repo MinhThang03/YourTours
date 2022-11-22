@@ -19,21 +19,25 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
     Optional<HomesCommand> findByHomeId(UUID homeID);
 
     @Query(nativeQuery = true,
-            value = "select a.*    " +
-                    "from homes a    " +
-                    "         inner join owner_of_home b on a.home_id = b.home_id    " +
-                    "where a.deleted = false    " +
-                    "  and (b.user_id = :userId or :userId is null)    " +
-                    "order by case when :sortBy = 'VIEW' then a.view end desc,    " +
-                    "         case when :sortBy = 'FAVORITE' then a.favorite end desc,    " +
-                    "         a.created_date desc ",
+            value = "select a.*  " +
+                    "from homes a  " +
+                    "         inner join owner_of_home b on a.home_id = b.home_id  " +
+                    "where a.deleted = false  " +
+                    "  and (b.user_id = :userId or :userId is null)  " +
+                    "  and (a.status = :status or :status is null)  " +
+                    "order by case when :sortBy = 'VIEW' then a.view end desc,  " +
+                    "         case when :sortBy = 'FAVORITE' then a.favorite end desc,  " +
+                    "         a.created_date desc  ",
             countQuery = "select a.id " +
                     "from homes a " +
                     "         inner join owner_of_home b on a.home_id = b.home_id " +
                     "where a.deleted = false " +
-                    "  and (b.user_id = :userId or :userId is null) ")
+                    "  and (b.user_id = :userId or :userId is null) " +
+                    "  and (a.status = :status or :status is null)  " +
+                    "")
     Page<HomesCommand> findPageWithFilter(@Param(":userId") UUID userId,
                                           @Param("sortBy") String sortBy,
+                                          @Param("status") String status,
                                           PageRequest pageRequest);
 
 
@@ -119,6 +123,7 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                     "  and (:numberOfBedRoom is null or d.numberOfBedRoom = :numberOfBedRoom)  " +
                     "  and (:numberOfBathRoom is null or e.numberOfBathRoom = :numberOfBathRoom)  " +
                     "  and IF(:size > 0, b.amenity_id in :amenities, true)  " +
+                    "  and a.status = 'ACTIVE'  " +
                     "order by a.created_date desc ",
             countQuery = "select distinct a.id  " +
                     "from homes a  " +
@@ -147,6 +152,7 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                     "  and (:numberOfBedRoom is null or d.numberOfBedRoom = :numberOfBedRoom)  " +
                     "  and (:numberOfBathRoom is null or e.numberOfBathRoom = :numberOfBathRoom)  " +
                     "  and IF(:size > 0, b.amenity_id in :amenities, true)  " +
+                    "  and a.status = 'ACTIVE'  " +
                     "order by a.created_date desc "
     )
     Page<HomesCommand> getPageWithFullFilter(@Param("amenityId") UUID amenityId,

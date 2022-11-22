@@ -20,6 +20,7 @@ import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeDetailFilter;
+import com.hcmute.yourtours.models.homes.filter.HomeFilter;
 import com.hcmute.yourtours.models.item_favorties.ItemFavoritesDetail;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateDetail;
 import com.hcmute.yourtours.repositories.HomesRepository;
@@ -183,5 +184,18 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
 
         Optional<HomesCommand> home = homesRepository.findIsFavoriteByHomeIdAndUserId(homeId, UUID.fromString(userId.get()));
         return home.isPresent();
+    }
+
+
+    @Override
+    protected <F extends BaseFilter> Page<HomesCommand> pageQuery(F filter, Integer number, Integer size) {
+        HomeFilter homeFilter = (HomeFilter) filter;
+        return homesRepository.findPageWithFilter
+                (
+                        homeFilter.getUserId(),
+                        homeFilter.getSort() == null ? null : homeFilter.getSort().name(),
+                        CommonStatusEnum.ACTIVE.name(),
+                        PageRequest.of(number, size)
+                );
     }
 }

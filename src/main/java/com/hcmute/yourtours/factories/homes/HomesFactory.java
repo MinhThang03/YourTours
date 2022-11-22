@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.homes;
 
 import com.hcmute.yourtours.commands.HomesCommand;
+import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.enums.ProvinceEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
@@ -89,7 +90,7 @@ public class HomesFactory
                 .guide(detail.getGuide())
                 .costPerNightDefault(detail.getCostPerNightDefault())
                 .refundPolicy(detail.getRefundPolicy())
-                .status(detail.getStatus())
+                .status(CommonStatusEnum.ACTIVE)
                 .numberOfGuests(detail.getNumberOfGuests())
                 .provinceCode(detail.getProvinceCode())
                 .addressDetail(detail.getAddressDetail())
@@ -231,6 +232,7 @@ public class HomesFactory
                 (
                         homeFilter.getUserId(),
                         homeFilter.getSort() == null ? null : homeFilter.getSort().name(),
+                        null,
                         PageRequest.of(number, size)
                 );
     }
