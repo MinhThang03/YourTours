@@ -113,6 +113,11 @@ public class PriceOfHomeFactory
 
     @Override
     protected void preCreate(PriceOfHomeDetail detail) throws InvalidException {
+        LocalDate now = LocalDate.now();
+        if (detail.getDate().isBefore(now)) {
+            throw new InvalidException(YourToursErrorCode.INPUT_DAY_IS_BEFORE);
+        }
+
         List<PriceOfHomeCommand> listDelete = priceOfHomeRepository.findAllByHomeIdAndDate(detail.getHomeId(), detail.getDate());
         if (!listDelete.isEmpty()) {
             repository.deleteAll(listDelete);
@@ -211,4 +216,6 @@ public class PriceOfHomeFactory
         LocalDate firstOfFollowingMonth = ym.plusMonths(1).atDay(1);
         return firstOfMonth.datesUntil(firstOfFollowingMonth).collect(Collectors.toList());
     }
+
+
 }

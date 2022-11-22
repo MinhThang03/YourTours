@@ -11,6 +11,8 @@ import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
+import com.hcmute.yourtours.models.booking_guest_detail.BookingGuestDetailDetail;
+import com.hcmute.yourtours.models.booking_guest_detail.BookingGuestDetailInfo;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
@@ -23,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -243,6 +246,15 @@ public class HomesFactory
         HomesCommand home = homesRepository.findByHomeId(homeId).orElse(null);
         if (home == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_HOME);
+        }
+    }
+
+    @Override
+    public void checkNumberOfGuestOfHome(UUID homeId, List<BookingGuestDetailDetail> guests) throws InvalidException {
+        int numberOfGuest = guests.stream().map(BookingGuestDetailInfo::getNumber).reduce(0, Integer::sum);
+        HomeDetail homeDetail = getDetailModel(homeId, null);
+        if (numberOfGuest > homeDetail.getNumberOfGuests()) {
+            throw new InvalidException(YourToursErrorCode.NUMBER_OF_GUESTS_IS_EXCEED);
         }
     }
 }

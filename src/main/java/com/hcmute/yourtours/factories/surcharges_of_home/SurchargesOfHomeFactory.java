@@ -146,6 +146,23 @@ public class SurchargesOfHomeFactory
     }
 
     @Override
+    public List<SurchargeHomeViewModel> getListSurchargeOfHome(UUID homeId) {
+        List<SurchargeHomeViewProjection> projections = surchargesOfHomeRepository.getListByHomeId(homeId);
+
+        return projections.stream().map
+                (
+                        item -> SurchargeHomeViewModel.builder()
+                                .surchargeCategoryId(item.getSurchargeCategoryId())
+                                .surchargeCategoryName(item.getSurchargeCategoryName())
+                                .description(item.getDescription())
+                                .cost(item.getCost())
+                                .build()
+                ).collect(Collectors.toList());
+
+
+    }
+
+    @Override
     public SurchargeOfHomeDetail getByHomeIdAndCategoryId(UUID homeId, UUID categoryId) throws InvalidException {
         Optional<SurchargesOfHomeCommand> optional = surchargesOfHomeRepository.findByHomeIdAndCategoryId(homeId, categoryId);
         if (optional.isEmpty()) {

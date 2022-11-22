@@ -13,7 +13,7 @@ import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking_surcharge_detail.BookingSurchargeDetailDetail;
 import com.hcmute.yourtours.models.price_of_home.request.GetPriceOfHomeRequest;
-import com.hcmute.yourtours.models.surcharges_of_home.SurchargeOfHomeDetail;
+import com.hcmute.yourtours.models.surcharges_of_home.models.SurchargeHomeViewModel;
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.repositories.BookHomeRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -54,26 +54,24 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
     @Override
     protected void preCreate(BookHomeDetail detail) throws InvalidException {
 
+        iHomesFactory.checkExistsByHomeId(detail.getHomeId());
 
         super.checkDateBookingOfHomeValid(detail.getDateStart(), detail.getDateEnd(), detail.getHomeId());
+        iHomesFactory.checkNumberOfGuestOfHome(detail.getHomeId(), detail.getGuests());
 
         double surchargeFee = 0.0;
-        if (detail.getSurcharges() != null) {
-            List<BookingSurchargeDetailDetail> arraySurcharge = new ArrayList<>();
-            for (BookingSurchargeDetailDetail surcharge : detail.getSurcharges()) {
-                SurchargeOfHomeDetail surchargeOfHomeDetail = iSurchargeOfHomeFactory.getByHomeIdAndCategoryId(detail.getHomeId(), surcharge.getSurchargeId());
-                if (surchargeOfHomeDetail.getCost() == null) {
-                    surcharge.setCostOfSurcharge(0.0);
-                } else {
-                    surcharge.setCostOfSurcharge(surchargeOfHomeDetail.getCost());
-                }
-                surchargeFee += surcharge.getCostOfSurcharge();
-                arraySurcharge.add(surcharge);
-            }
 
-            detail.setSurcharges(arraySurcharge);
+        List<SurchargeHomeViewModel> surcharges = iSurchargeOfHomeFactory.getListSurchargeOfHome(detail.getHomeId());
+        List<BookingSurchargeDetailDetail> bookingSurcharges = new ArrayList<>();
+        for (SurchargeHomeViewModel item : surcharges) {
+            bookingSurcharges.add(BookingSurchargeDetailDetail.builder()
+                    .surchargeId(item.getSurchargeCategoryId())
+                    .costOfSurcharge(item.getCost())
+                    .build());
+            surchargeFee += item.getCost();
         }
 
+        detail.setSurcharges(bookingSurcharges);
         double cost = iPriceOfHomeFactory.getCostBetweenDay(GetPriceOfHomeRequest.builder()
                 .homeId(detail.getHomeId())
                 .dateFrom(detail.getDateStart())

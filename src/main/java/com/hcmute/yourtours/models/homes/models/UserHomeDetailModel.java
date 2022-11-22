@@ -5,6 +5,7 @@ import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.models.amenities.AmenityInfo;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.models.RoomOfHomeDetailWithBedModel;
+import com.hcmute.yourtours.models.surcharges_of_home.models.SurchargeHomeViewModel;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateInfo;
 import lombok.Builder;
 import lombok.Data;
@@ -27,4 +28,5 @@ public class UserHomeDetailModel implements Serializable {
     private String ownerName;
     private List<AmenityInfo> amenitiesView;
     private String descriptionHomeDetail;
+    private List<SurchargeHomeViewModel> surcharges;
 }

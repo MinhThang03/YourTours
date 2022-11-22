@@ -11,6 +11,7 @@ import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
+import com.hcmute.yourtours.factories.surcharges_of_home.ISurchargeOfHomeFactory;
 import com.hcmute.yourtours.factories.user_evaluate.IUserEvaluateFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
@@ -40,6 +41,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
     private final IOwnerOfHomeFactory iOwnerOfHomeFactory;
     private final IAmenitiesFactory iAmenitiesFactory;
     private final IBedsOfHomeFactory iBedsOfHomeFactory;
+    private final ISurchargeOfHomeFactory iSurchargeOfHomeFactory;
 
     public AppHandleViewHomeFactory(
             @Qualifier("appHomesFactory") IHomesFactory iHomesFactory,
@@ -50,7 +52,8 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
             IRoomsOfHomeFactory iRoomsOfHomeFactory,
             IOwnerOfHomeFactory iOwnerOfHomeFactory,
             @Qualifier("appAmenitiesFactory") IAmenitiesFactory iAmenitiesFactory,
-            IBedsOfHomeFactory iBedsOfHomeFactory
+            IBedsOfHomeFactory iBedsOfHomeFactory,
+            ISurchargeOfHomeFactory iSurchargeOfHomeFactory
     ) {
         this.iHomesFactory = iHomesFactory;
         this.iBookHomeFactory = iBookHomeFactory;
@@ -61,6 +64,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
         this.iOwnerOfHomeFactory = iOwnerOfHomeFactory;
         this.iAmenitiesFactory = iAmenitiesFactory;
         this.iBedsOfHomeFactory = iBedsOfHomeFactory;
+        this.iSurchargeOfHomeFactory = iSurchargeOfHomeFactory;
     }
 
     @Override
@@ -85,6 +89,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                     .rooms(iRoomsOfHomeFactory.getRoomHaveConfigBed(homeId))
                     .amenitiesView(iAmenitiesFactory.getAllByHomeId(homeId))
                     .descriptionHomeDetail(getDescriptionHomeDetail(homeDetail))
+                    .surcharges(iSurchargeOfHomeFactory.getListSurchargeOfHome(homeId))
                     .build();
 
             Optional<String> userId = iGetUserFromTokenFactory.getCurrentUser();
