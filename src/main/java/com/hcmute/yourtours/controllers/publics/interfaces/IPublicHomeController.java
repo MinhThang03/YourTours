@@ -31,7 +31,7 @@ public interface IPublicHomeController extends IGetInfoPageController<UUID, Home
 
 
     @GetMapping("page/search")
-    ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFullFilter(
+    ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithProvince(
             @RequestParam String keyword,
             @RequestParam(defaultValue = "0") Integer number,
             @RequestParam(defaultValue = "20") Integer size

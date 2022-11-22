@@ -88,7 +88,7 @@ public class PublicHomeController
 
     @Override
     @Operation(summary = "Tìm kiếm nhà theo tỉnh")
-    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFullFilter(String keyword, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithProvince(String keyword, Integer number, Integer size) {
         try {
             BasePagingResponse<HomeInfo> response = iHomesFactory.getFilterWithProvinceName(keyword, number, size);
             LogContext.push(LogType.RESPONSE, response);
