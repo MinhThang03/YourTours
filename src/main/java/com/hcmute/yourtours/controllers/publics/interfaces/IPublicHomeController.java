@@ -29,4 +29,13 @@ public interface IPublicHomeController extends IGetInfoPageController<UUID, Home
     @GetMapping("{id}/detail")
     ResponseEntity<BaseResponse<UserHomeDetailModel>> getDetailById(@PathVariable UUID id);
 
+
+    @GetMapping("page/search")
+    ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFullFilter(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") Integer number,
+            @RequestParam(defaultValue = "20") Integer size
+    );
+
+
 }

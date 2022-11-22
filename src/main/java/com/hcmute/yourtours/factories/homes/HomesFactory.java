@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.homes;
 
 import com.hcmute.yourtours.commands.HomesCommand;
+import com.hcmute.yourtours.enums.ProvinceEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
@@ -10,6 +11,7 @@ import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.booking_guest_detail.BookingGuestDetailDetail;
 import com.hcmute.yourtours.models.booking_guest_detail.BookingGuestDetailInfo;
@@ -25,6 +27,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -256,5 +259,34 @@ public class HomesFactory
         if (numberOfGuest > homeDetail.getNumberOfGuests()) {
             throw new InvalidException(YourToursErrorCode.NUMBER_OF_GUESTS_IS_EXCEED);
         }
+    }
+
+    @Override
+    public BasePagingResponse<HomeInfo> getFilterWithProvinceName(String search, Integer number, Integer size) throws InvalidException {
+        List<Integer> provinceCode = new ArrayList<>();
+
+        for (ProvinceEnum province : ProvinceEnum.values()) {
+            if (province.getProvinceName().toUpperCase().contains(search.toUpperCase())) {
+                provinceCode.add(province.getProvinceCode());
+            }
+        }
+
+        if (provinceCode.isEmpty()) {
+            return new BasePagingResponse<>(
+                    new ArrayList<>(),
+                    number,
+                    size,
+                    0
+            );
+        }
+
+        Page<HomesCommand> page = homesRepository.getPageWithListProvinceCode(provinceCode, PageRequest.of(number, size));
+
+        return new BasePagingResponse<>(
+                convertList(page.getContent()),
+                number,
+                size,
+                page.getTotalElements()
+        );
     }
 }

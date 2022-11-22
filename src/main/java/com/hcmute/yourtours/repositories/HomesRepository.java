@@ -160,4 +160,21 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                                              @Param("bedRoomId") UUID bedRoomId,
                                              @Param("bathRoomId") UUID bathRoomId,
                                              Pageable pageable);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.*  " +
+                    "from homes a  " +
+                    "where a.province_code in :listProvinceCode  " +
+                    "  and a.status = 'ACTIVE'  " +
+                    "order by a.view desc ",
+            countQuery = "select a.id  " +
+                    "from homes a  " +
+                    "where a.province_code in :listProvinceCode  " +
+                    "  and a.status = 'ACTIVE'  " +
+                    "order by a.view desc  "
+    )
+    Page<HomesCommand> getPageWithListProvinceCode(@Param("listProvinceCode") List<Integer> listProvinceCode,
+                                                   Pageable pageable);
 }

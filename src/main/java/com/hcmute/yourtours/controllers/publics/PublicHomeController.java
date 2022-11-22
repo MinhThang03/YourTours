@@ -37,6 +37,7 @@ public class PublicHomeController
 
     private final IAppHomesFactory iAppHomesFactory;
     private final IAppHandleViewHomeFactory iAppHandleViewHomeFactory;
+    private final IHomesFactory iHomesFactory;
 
     protected PublicHomeController
             (
@@ -48,6 +49,7 @@ public class PublicHomeController
         super(iDataFactory, iResponseFactory);
         this.iAppHomesFactory = iAppHomesFactory;
         this.iAppHandleViewHomeFactory = iAppHandleViewHomeFactory;
+        this.iHomesFactory = iDataFactory;
     }
 
     @Override
@@ -77,6 +79,18 @@ public class PublicHomeController
         try {
             LogContext.push(LogType.REQUEST, id);
             UserHomeDetailModel response = iAppHandleViewHomeFactory.getDetailByHomeId(id);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
+    }
+
+    @Override
+    @Operation(summary = "Tìm kiếm nhà theo tỉnh")
+    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFullFilter(String keyword, Integer number, Integer size) {
+        try {
+            BasePagingResponse<HomeInfo> response = iHomesFactory.getFilterWithProvinceName(keyword, number, size);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {
