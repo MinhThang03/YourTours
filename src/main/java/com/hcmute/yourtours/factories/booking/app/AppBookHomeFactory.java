@@ -10,6 +10,7 @@ import com.hcmute.yourtours.factories.price_of_home.IPriceOfHomeFactory;
 import com.hcmute.yourtours.factories.surcharges_of_home.ISurchargeOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking_surcharge_detail.BookingSurchargeDetailDetail;
 import com.hcmute.yourtours.models.price_of_home.request.GetPriceOfHomeRequest;
@@ -17,6 +18,8 @@ import com.hcmute.yourtours.models.surcharges_of_home.models.SurchargeHomeViewMo
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.repositories.BookHomeRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -94,5 +97,12 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
     protected void postCreate(BookHomesCommand entity, BookHomeDetail detail) throws InvalidException {
         iBookingGuestDetailFactory.createListModel(entity.getBookId(), detail.getGuests());
         iBookingSurchargeDetailFactory.createListModel(entity.getBookId(), detail.getSurcharges());
+    }
+
+    @Override
+    protected <F extends BaseFilter> Page<BookHomesCommand> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
+        UUID customerId = iGetUserFromTokenFactory.checkUnAuthorization();
+
+        return bookHomeRepository.findBookingOfUser(customerId, PageRequest.of(number, size));
     }
 }

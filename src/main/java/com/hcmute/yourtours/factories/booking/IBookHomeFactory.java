@@ -5,6 +5,7 @@ import com.hcmute.yourtours.libs.factory.IDataFactory;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
+import com.hcmute.yourtours.models.common.SuccessResponse;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,4 +17,6 @@ public interface IBookHomeFactory extends IDataFactory<UUID, BookHomeInfo, BookH
     List<LocalDate> getDatesIsBooked(List<MonthAndYearModel> months, UUID homeId);
 
     void checkDateBookingOfHomeValid(LocalDate dateStart, LocalDate dateEnd, UUID homeId) throws InvalidException;
+
+    SuccessResponse handleCancelBooking(UUID bookingId) throws InvalidException;
 }

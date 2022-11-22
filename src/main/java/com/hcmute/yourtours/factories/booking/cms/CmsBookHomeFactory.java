@@ -39,6 +39,7 @@ public class CmsBookHomeFactory extends BookHomeFactory {
                 (
                         bookingFilter.getStatus() == null ? null : bookingFilter.getStatus().name(),
                         ownerId,
+                        bookingFilter.getDataStart(),
                         PageRequest.of(number, size)
                 );
     }

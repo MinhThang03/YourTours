@@ -1,6 +1,8 @@
 package com.hcmute.yourtours.factories.booking;
 
 import com.hcmute.yourtours.commands.BookHomesCommand;
+import com.hcmute.yourtours.enums.BookRoomStatusEnum;
+import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
@@ -9,6 +11,8 @@ import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
+import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.repositories.BookHomeRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -172,6 +176,37 @@ public class BookHomeFactory
             }
             dateStart = dateStart.plusDays(1);
         }
+    }
+
+    @Override
+    public SuccessResponse handleCancelBooking(UUID bookingId) throws InvalidException {
+        BookHomeDetail detail = getDetailModel(bookingId, null);
+        HomeDetail homeDetail = iHomesFactory.getDetailModel(detail.getHomeId(), null);
+        RefundPolicyEnum refund = homeDetail.getRefundPolicy();
+
+        int numberOfDate = 0;
+
+        switch (refund) {
+            case NO_REFUND:
+                throw new InvalidException(YourToursErrorCode.BOOKING_HOME_IS_NOT_REFUND);
+            case BEFORE_ONE_DAY:
+                numberOfDate = 1;
+                break;
+            case BEFORE_SEVEN_DAYS:
+                numberOfDate = 7;
+                break;
+        }
+
+        LocalDate dateCompare = detail.getDateStart().minusDays(numberOfDate);
+        if (LocalDate.now().isAfter(dateCompare)) {
+            throw new InvalidException(YourToursErrorCode.DATE_CANCELED_IS_EXCEED);
+        }
+
+        detail.setStatus(BookRoomStatusEnum.CANCELED);
+        updateModel(detail.getId(), detail);
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
     }
 
 
