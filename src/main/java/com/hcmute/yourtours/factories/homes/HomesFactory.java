@@ -282,10 +282,20 @@ public class HomesFactory
             );
         }
 
+        List<HomeInfo> result = new ArrayList<>();
+
         Page<HomesCommand> page = homesRepository.getPageWithListProvinceCode(provinceCode, PageRequest.of(number, size));
+        for (HomesCommand homesCommand : page.getContent()) {
+            result.add(HomeInfo.builder()
+                    .id(homesCommand.getHomeId())
+                    .thumbnail(homesCommand.getThumbnail())
+                    .name(homesCommand.getName())
+                    .costPerNightDefault(homesCommand.getCostPerNightDefault())
+                    .build());
+        }
 
         return new BasePagingResponse<>(
-                convertList(page.getContent()),
+                result,
                 number,
                 size,
                 page.getTotalElements()
