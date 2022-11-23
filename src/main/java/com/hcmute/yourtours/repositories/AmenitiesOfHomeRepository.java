@@ -3,7 +3,6 @@ package com.hcmute.yourtours.repositories;
 import com.hcmute.yourtours.commands.AmenitiesOfHomeCommand;
 import com.hcmute.yourtours.models.amenities_of_home.projection.AmenityOfHomeProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -33,11 +32,6 @@ public interface AmenitiesOfHomeRepository extends JpaRepository<AmenitiesOfHome
     List<AmenityOfHomeProjection> findAllByAmenityCategoryIdAndHomeId(@Param("categoryId") UUID categoryId,
                                                                       @Param("homeId") UUID homeId);
 
-    @Modifying
-    void deleteAllByHomeId(UUID homeId);
-
-    @Modifying
-    void deleteByHomeIdAndAmenityId(UUID homeId, UUID amenityId);
 
     Optional<AmenitiesOfHomeCommand> findByHomeIdAndAmenityId(UUID homeId, UUID amenityId);
 }
