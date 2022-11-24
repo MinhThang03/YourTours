@@ -50,6 +50,16 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand,
     Page<RoomsOfHomeCommand> getPageWithFilter(@Param("homeId") UUID homeId,
                                                Pageable pageable);
 
+    @Query(
+            nativeQuery = true,
+            value = "select a.* " +
+                    "from rooms_of_home a " +
+                    "where a.home_id = :homeId " +
+                    "   or :homeId is null " +
+                    "order by a.name "
+    )
+    List<RoomsOfHomeCommand> getListWithFilter(@Param("homeId") UUID homeId);
+
 
     @Query(
             nativeQuery = true,

@@ -3,7 +3,6 @@ package com.hcmute.yourtours.factories.rooms_of_home;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.IDataFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
-import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeInfo;
 import com.hcmute.yourtours.models.rooms_of_home.filter.RoomOfHomeFilter;
@@ -22,7 +21,7 @@ public interface IRoomsOfHomeFactory extends IDataFactory<UUID, RoomOfHomeInfo, 
 
     BasePagingResponse<RoomOfHomeInfo> getPageRoomOfHomeOfHost(RoomOfHomeFilter filter, Integer number, Integer size) throws InvalidException;
 
-    SuccessResponse createWithListModel(CreateListRoomOfHomeModel request) throws InvalidException;
+    List<RoomOfHomeInfo> createWithListModel(CreateListRoomOfHomeModel request) throws InvalidException;
 
     Long countNumberRoomOfHome(UUID homeId, UUID categoryId) throws InvalidException;
 

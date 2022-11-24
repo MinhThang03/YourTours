@@ -9,7 +9,6 @@ import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
-import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeInfo;
 import com.hcmute.yourtours.models.rooms_of_home.filter.RoomOfHomeFilter;
@@ -190,11 +189,12 @@ public class RoomsOfHomeFactory
     }
 
     @Override
-    public SuccessResponse createWithListModel(CreateListRoomOfHomeModel request) throws InvalidException {
+    public List<RoomOfHomeInfo> createWithListModel(CreateListRoomOfHomeModel request) throws InvalidException {
+        iAuthorizationOwnerHomeFactory.checkOwnerOfHome(request.getHomeId());
         createListWithHomeId(request.getHomeId(), request.getListCreate());
-        return SuccessResponse.builder()
-                .success(true)
-                .build();
+
+        List<RoomsOfHomeCommand> commands = roomsOfHomeRepository.getListWithFilter(request.getHomeId());
+        return convertList(commands);
     }
 
     @Override

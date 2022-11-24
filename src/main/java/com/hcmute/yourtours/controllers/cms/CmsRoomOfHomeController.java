@@ -11,7 +11,6 @@ import com.hcmute.yourtours.libs.logging.LogType;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
-import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeInfo;
 import com.hcmute.yourtours.models.rooms_of_home.filter.RoomOfHomeFilter;
@@ -22,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -60,10 +60,10 @@ public class CmsRoomOfHomeController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<SuccessResponse>> createModelWithList(CreateListRoomOfHomeModel request) {
+    public ResponseEntity<BaseResponse<List<RoomOfHomeInfo>>> createModelWithList(CreateListRoomOfHomeModel request) {
         try {
             LogContext.push(LogType.REQUEST, request);
-            SuccessResponse response = iRoomsOfHomeFactory.createWithListModel(request);
+            List<RoomOfHomeInfo> response = iRoomsOfHomeFactory.createWithListModel(request);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {
