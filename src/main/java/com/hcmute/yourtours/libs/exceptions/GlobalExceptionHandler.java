@@ -60,12 +60,6 @@ public class GlobalExceptionHandler {
         return iResponseFactory.error(e);
     }
 
-    // TODO: 10/2/2022
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ErrorResponse> customExceptionHandler(Exception e) {
-//        log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
-//        return iResponseFactory.error(new InvalidException(ErrorCode.SERVER_ERROR));
-//    }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> accessDeniedExceptionHandler(Exception e) {
