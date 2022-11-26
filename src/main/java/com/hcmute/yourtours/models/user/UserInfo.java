@@ -41,7 +41,7 @@ public class UserInfo extends BaseData<UUID> {
 
     @NotNull
     @NotBlank
-    @Pattern(regexp = RegexUtils.PHONE_REGEX, message = "Nhập không đúng định dạng email")
+    @Pattern(regexp = RegexUtils.PHONE_REGEX, message = "Nhập không đúng định dạng số điện thoại")
     private String phoneNumber;
 
     private LocalDate dateOfBirth;
