@@ -252,7 +252,11 @@ public class UserFactory
         if (userId == null) {
             throw new InvalidException(ErrorCode.UNAUTHORIZED);
         } else {
-            return updateModel(UUID.fromString(userId), detail);
+            UUID userUuid = UUID.fromString(userId);
+            UserDetail userDetail = getDetailModel(userUuid, null);
+            detail.setRole(userDetail.getRole());
+            detail.setStatus(userDetail.getStatus());
+            return updateModel(userUuid, detail);
         }
     }
 
