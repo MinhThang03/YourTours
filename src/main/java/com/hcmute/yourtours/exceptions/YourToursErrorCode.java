@@ -33,6 +33,8 @@ public enum YourToursErrorCode implements IErrorCode {
     NUMBER_OF_GUESTS_IS_EXCEED(HttpStatus.BAD_REQUEST, "400000024", "Số lượng khách đã vượt quá số lượng cho phép của ngôi nhà"),
     BOOKING_HOME_IS_NOT_REFUND(HttpStatus.BAD_REQUEST, "400000025", "Chính sách của ngôi nhà không cho phép hủy"),
     DATE_CANCELED_IS_EXCEED(HttpStatus.BAD_REQUEST, "400000026", "Đã quá ngày được phép hủy đặt nhà"),
+    DATE_START_BOOKING_IN_VALID(HttpStatus.BAD_REQUEST, "400000027", "Ngày bát đầu đặt không hợp lệ"),
+    DATE_BOOKING_IN_VALID(HttpStatus.BAD_REQUEST, "400000028", "Ngày đặt không hợp lệ"),
 
 
     //403

@@ -10,4 +10,5 @@ import java.time.LocalDate;
 public class ArrayPriceAndDayModels {
     private double cost;
     private LocalDate day;
+    private boolean isEspecially;
 }

@@ -4,6 +4,7 @@ import com.hcmute.yourtours.commands.PriceOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.common.IAuthorizationOwnerHomeFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
+import com.hcmute.yourtours.factories.surcharges_of_home.ISurchargeOfHomeFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.common.SuccessResponse;
@@ -15,6 +16,7 @@ import com.hcmute.yourtours.models.price_of_home.request.GetPriceOfHomeRequest;
 import com.hcmute.yourtours.models.price_of_home.request.PriceOfHomeCreateRequest;
 import com.hcmute.yourtours.models.price_of_home.response.PriceOfHomeResponse;
 import com.hcmute.yourtours.models.price_of_home.response.PriceOfHomeWithMonthResponse;
+import com.hcmute.yourtours.models.surcharges_of_home.models.SurchargeHomeViewModel;
 import com.hcmute.yourtours.repositories.PriceOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,16 +41,20 @@ public class PriceOfHomeFactory
     private final PriceOfHomeRepository priceOfHomeRepository;
     private final IHomesFactory iHomesFactory;
     private final IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory;
+    private final ISurchargeOfHomeFactory iSurchargeOfHomeFactory;
 
     protected PriceOfHomeFactory(
             PriceOfHomeRepository repository,
             PriceOfHomeRepository priceOfHomeRepository,
             @Qualifier("cmsHomesFactory") IHomesFactory iHomesFactory,
-            IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory) {
+            IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory,
+            ISurchargeOfHomeFactory iSurchargeOfHomeFactory
+    ) {
         super(repository);
         this.priceOfHomeRepository = priceOfHomeRepository;
         this.iHomesFactory = iHomesFactory;
         this.iAuthorizationOwnerHomeFactory = iAuthorizationOwnerHomeFactory;
+        this.iSurchargeOfHomeFactory = iSurchargeOfHomeFactory;
     }
 
     @Override
@@ -182,6 +188,7 @@ public class PriceOfHomeFactory
             priceDetail.add(
                     ArrayPriceAndDayModels.builder()
                             .day(date)
+                            .isEspecially(detail.isEspecially())
                             .cost(detail.getPrice())
                             .build()
             );
@@ -189,9 +196,16 @@ public class PriceOfHomeFactory
             date = date.plusDays(1);
         }
 
+        double surchargeFee = 0.0;
+
+        List<SurchargeHomeViewModel> surcharges = iSurchargeOfHomeFactory.getListSurchargeOfHome(request.getHomeId());
+        for (SurchargeHomeViewModel item : surcharges) {
+            surchargeFee += item.getCost();
+        }
 
         return PriceOfHomeResponse.builder()
                 .totalCost(total)
+                .totalCostWithSurcharge(total + surchargeFee)
                 .detail(priceDetail)
                 .build();
     }
@@ -200,12 +214,15 @@ public class PriceOfHomeFactory
     private PriceOfHomeDetail findByHomeIdAndDate(UUID homeId, LocalDate date) throws InvalidException {
         Optional<PriceOfHomeCommand> optional = priceOfHomeRepository.findByHomeIdAndDate(homeId, date);
         if (optional.isPresent()) {
+            PriceOfHomeDetail detail = convertToDetail(optional.get());
+            detail.setEspecially(true);
             return convertToDetail(optional.get());
         }
 
         return PriceOfHomeDetail.builder()
                 .date(date)
                 .homeId(homeId)
+                .isEspecially(false)
                 .price(iHomesFactory.getDetailModel(homeId, null).getCostPerNightDefault())
                 .build();
     }

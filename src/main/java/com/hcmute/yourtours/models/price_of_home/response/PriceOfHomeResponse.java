@@ -11,4 +11,5 @@ import java.util.List;
 public class PriceOfHomeResponse {
     private double totalCost;
     private List<ArrayPriceAndDayModels> detail;
+    private double totalCostWithSurcharge;
 }

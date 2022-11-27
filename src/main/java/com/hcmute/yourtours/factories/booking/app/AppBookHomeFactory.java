@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.booking.app;
 
 import com.hcmute.yourtours.commands.BookHomesCommand;
+import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.booking.BookHomeFactory;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
 import com.hcmute.yourtours.factories.booking_surcharge_detail.IBookingSurchargeDetailFactory;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -58,6 +60,14 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
     protected void preCreate(BookHomeDetail detail) throws InvalidException {
 
         iHomesFactory.checkExistsByHomeId(detail.getHomeId());
+
+        if (detail.getDateStart().isBefore(LocalDate.now())) {
+            throw new InvalidException(YourToursErrorCode.DATE_START_BOOKING_IN_VALID);
+        }
+
+        if (detail.getDateStart().isAfter(detail.getDateEnd())) {
+            throw new InvalidException(YourToursErrorCode.DATE_BOOKING_IN_VALID);
+        }
 
         super.checkDateBookingOfHomeValid(detail.getDateStart(), detail.getDateEnd(), detail.getHomeId());
         iHomesFactory.checkNumberOfGuestOfHome(detail.getHomeId(), detail.getGuests());

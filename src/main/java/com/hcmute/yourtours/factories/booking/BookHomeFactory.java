@@ -68,7 +68,7 @@ public class BookHomeFactory
                 .visaAccount(detail.getVisaAccount())
                 .homeId(detail.getHomeId())
                 .userId(detail.getUserId())
-                .status(detail.getStatus())
+                .status(BookRoomStatusEnum.WAITING)
                 .build();
 
     }
@@ -215,6 +215,14 @@ public class BookHomeFactory
         iHomesFactory.checkExistsByHomeId(detail.getHomeId());
         if (detail.getUserId() != null) {
             iUserFactory.checkExistsByUserId(detail.getUserId());
+        }
+
+        if (detail.getDateStart().isBefore(LocalDate.now())) {
+            throw new InvalidException(YourToursErrorCode.DATE_START_BOOKING_IN_VALID);
+        }
+
+        if (detail.getDateStart().isAfter(detail.getDateEnd())) {
+            throw new InvalidException(YourToursErrorCode.DATE_BOOKING_IN_VALID);
         }
     }
 
