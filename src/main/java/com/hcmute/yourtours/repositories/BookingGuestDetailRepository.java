@@ -17,8 +17,8 @@ public interface BookingGuestDetailRepository extends JpaRepository<BookingHomeG
 
     @Query(
             nativeQuery = true,
-            value = "select COALESCE(sum(a.number), 0)" +
-                    "from book_home_guest_detail a" +
+            value = "select COALESCE(sum(a.number), 0) " +
+                    "from book_home_guest_detail a " +
                     "where a.booking = :bookingId "
     )
     Integer sumNumberGuestsOfBooking(UUID bookingId);
