@@ -4,6 +4,7 @@ import com.hcmute.yourtours.commands.BookHomesCommand;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -37,14 +38,19 @@ public class BookHomeFactory
     protected final BookHomeRepository bookHomeRepository;
     protected final IHomesFactory iHomesFactory;
     protected final IUserFactory iUserFactory;
+    protected final IBookingGuestDetailFactory iBookingGuestDetailFactory;
 
-    protected BookHomeFactory(BookHomeRepository repository,
-                              @Qualifier("homesFactory") IHomesFactory iHomesFactory,
-                              IUserFactory iUserFactory) {
+    protected BookHomeFactory(
+            BookHomeRepository repository,
+            @Qualifier("homesFactory") IHomesFactory iHomesFactory,
+            IUserFactory iUserFactory,
+            IBookingGuestDetailFactory iBookingGuestDetailFactory
+    ) {
         super(repository);
         this.bookHomeRepository = repository;
         this.iHomesFactory = iHomesFactory;
         this.iUserFactory = iUserFactory;
+        this.iBookingGuestDetailFactory = iBookingGuestDetailFactory;
     }
 
     @Override
@@ -107,6 +113,8 @@ public class BookHomeFactory
                 .customerName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .status(entity.getStatus())
                 .totalCost(entity.getTotalCost())
+                .id(entity.getBookId())
+                .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getBookId()))
                 .build();
 
     }
@@ -130,6 +138,8 @@ public class BookHomeFactory
                 .homeName(iHomesFactory.getDetailModel(entity.getHomeId(), null).getName())
                 .customerName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .totalCost(entity.getTotalCost())
+                .id(entity.getBookId())
+                .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getBookId()))
                 .build();
     }
 

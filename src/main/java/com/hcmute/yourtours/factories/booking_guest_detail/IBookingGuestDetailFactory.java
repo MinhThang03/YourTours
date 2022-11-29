@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface IBookingGuestDetailFactory extends IDataFactory<UUID, BookingGuestDetailInfo, BookingGuestDetailDetail> {
 
     void createListModel(UUID bookingId, List<BookingGuestDetailDetail> listDetail) throws InvalidException;
+
+    Integer getNumberGuestsOfBooking(UUID booking);
 }

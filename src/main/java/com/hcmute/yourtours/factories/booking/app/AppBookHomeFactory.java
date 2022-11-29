@@ -34,7 +34,6 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
     private final ISurchargeOfHomeFactory iSurchargeOfHomeFactory;
     private final IPriceOfHomeFactory iPriceOfHomeFactory;
     private final IBookingSurchargeDetailFactory iBookingSurchargeDetailFactory;
-    private final IBookingGuestDetailFactory iBookingGuestDetailFactory;
     private final IGetUserFromTokenFactory iGetUserFromTokenFactory;
 
     protected AppBookHomeFactory
@@ -48,11 +47,10 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
                     IBookingGuestDetailFactory iBookingGuestDetailFactory,
                     IGetUserFromTokenFactory iGetUserFromTokenFactory
             ) {
-        super(repository, iHomesFactory, iUserFactory);
+        super(repository, iHomesFactory, iUserFactory, iBookingGuestDetailFactory);
         this.iSurchargeOfHomeFactory = iSurchargeOfHomeFactory;
         this.iPriceOfHomeFactory = iPriceOfHomeFactory;
         this.iBookingSurchargeDetailFactory = iBookingSurchargeDetailFactory;
-        this.iBookingGuestDetailFactory = iBookingGuestDetailFactory;
         this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
     }
 

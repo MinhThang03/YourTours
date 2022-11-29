@@ -2,6 +2,7 @@ package com.hcmute.yourtours.factories.booking.cms;
 
 import com.hcmute.yourtours.commands.BookHomesCommand;
 import com.hcmute.yourtours.factories.booking.BookHomeFactory;
+import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
@@ -21,12 +22,15 @@ public class CmsBookHomeFactory extends BookHomeFactory {
 
     private final IGetUserFromTokenFactory iGetUserFromTokenFactory;
 
-    protected CmsBookHomeFactory(
-            BookHomeRepository repository,
-            @Qualifier("cmsHomesFactory") IHomesFactory iHomesFactory,
-            IUserFactory iUserFactory,
-            IGetUserFromTokenFactory iGetUserFromTokenFactory) {
-        super(repository, iHomesFactory, iUserFactory);
+    protected CmsBookHomeFactory
+            (
+                    BookHomeRepository repository,
+                    @Qualifier("cmsHomesFactory") IHomesFactory iHomesFactory,
+                    IUserFactory iUserFactory,
+                    IGetUserFromTokenFactory iGetUserFromTokenFactory,
+                    IBookingGuestDetailFactory iBookingGuestDetailFactory
+            ) {
+        super(repository, iHomesFactory, iUserFactory, iBookingGuestDetailFactory);
         this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
     }
 

@@ -98,6 +98,7 @@ public class BookingGuestDetailFactory
         }
 
         List<BookingHomeGuestDetailCommand> listDelete = bookingGuestDetailRepository.findAllByBooking(bookingId);
+
         for (BookingHomeGuestDetailCommand item : listDelete) {
             deleteModel(item.getBookingGuestDetailId(), null);
         }
@@ -106,5 +107,10 @@ public class BookingGuestDetailFactory
             item.setBooking(bookingId);
             createModel(item);
         }
+    }
+
+    @Override
+    public Integer getNumberGuestsOfBooking(UUID booking) {
+        return bookingGuestDetailRepository.sumNumberGuestsOfBooking(booking);
     }
 }
