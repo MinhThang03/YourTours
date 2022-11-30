@@ -8,6 +8,7 @@ import com.hcmute.yourtours.libs.exceptions.RestException;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
 import com.hcmute.yourtours.libs.logging.LogContext;
 import com.hcmute.yourtours.libs.logging.LogType;
+import com.hcmute.yourtours.libs.model.factory.request.FactoryCreateRequest;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
@@ -60,5 +61,10 @@ public class AppBookHomeController
         } catch (InvalidException e) {
             throw new RestException(e);
         }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<BookHomeDetail>> createModel(FactoryCreateRequest<UUID, BookHomeDetail> request) {
+        return factoryCreateModel(request);
     }
 }

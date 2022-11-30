@@ -10,6 +10,7 @@ import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
+import com.hcmute.yourtours.factories.price_of_home.IPriceOfHomeFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.factories.surcharges_of_home.ISurchargeOfHomeFactory;
 import com.hcmute.yourtours.factories.user_evaluate.IUserEvaluateFactory;
@@ -18,6 +19,8 @@ import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.models.UserHomeDetailModel;
+import com.hcmute.yourtours.models.price_of_home.request.GetPriceOfHomeRequest;
+import com.hcmute.yourtours.models.price_of_home.response.PriceOfHomeResponse;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeInfo;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateInfo;
 import com.hcmute.yourtours.models.user_evaluate.filter.EvaluateFilter;
@@ -42,6 +45,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
     private final IAmenitiesFactory iAmenitiesFactory;
     private final IBedsOfHomeFactory iBedsOfHomeFactory;
     private final ISurchargeOfHomeFactory iSurchargeOfHomeFactory;
+    private final IPriceOfHomeFactory iPriceOfHomeFactory;
 
     public AppHandleViewHomeFactory(
             @Qualifier("appHomesFactory") IHomesFactory iHomesFactory,
@@ -53,7 +57,8 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
             IOwnerOfHomeFactory iOwnerOfHomeFactory,
             @Qualifier("appAmenitiesFactory") IAmenitiesFactory iAmenitiesFactory,
             IBedsOfHomeFactory iBedsOfHomeFactory,
-            ISurchargeOfHomeFactory iSurchargeOfHomeFactory
+            ISurchargeOfHomeFactory iSurchargeOfHomeFactory,
+            IPriceOfHomeFactory iPriceOfHomeFactory
     ) {
         this.iHomesFactory = iHomesFactory;
         this.iBookHomeFactory = iBookHomeFactory;
@@ -65,6 +70,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
         this.iAmenitiesFactory = iAmenitiesFactory;
         this.iBedsOfHomeFactory = iBedsOfHomeFactory;
         this.iSurchargeOfHomeFactory = iSurchargeOfHomeFactory;
+        this.iPriceOfHomeFactory = iPriceOfHomeFactory;
     }
 
     @Override
@@ -81,6 +87,12 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                             0,
                             20);
 
+            PriceOfHomeResponse price = iPriceOfHomeFactory.getCostBetweenDay(GetPriceOfHomeRequest.builder()
+                    .dateTo(LocalDate.now())
+                    .dateFrom(LocalDate.now())
+                    .homeId(homeId)
+                    .build());
+
             UserHomeDetailModel result = UserHomeDetailModel.builder()
                     .homeDetail(homeDetail)
                     .evaluates(evaluates)
@@ -90,6 +102,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                     .amenitiesView(iAmenitiesFactory.getAllByHomeId(homeId))
                     .descriptionHomeDetail(getDescriptionHomeDetail(homeDetail))
                     .surcharges(iSurchargeOfHomeFactory.getListSurchargeOfHome(homeId))
+                    .totalCostBooking(price.getTotalCostWithSurcharge())
                     .build();
 
             Optional<String> userId = iGetUserFromTokenFactory.getCurrentUser();
@@ -162,4 +175,5 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
         }
         return builder.toString();
     }
+
 }

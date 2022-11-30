@@ -29,4 +29,5 @@ public class UserHomeDetailModel implements Serializable {
     private List<AmenityInfo> amenitiesView;
     private String descriptionHomeDetail;
     private List<SurchargeHomeViewModel> surcharges;
+    private Double totalCostBooking;
 }

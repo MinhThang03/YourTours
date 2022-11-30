@@ -1,8 +1,10 @@
 package com.hcmute.yourtours.controllers.app.interfaces;
 
+import com.hcmute.yourtours.libs.controller.ICreateModelController;
 import com.hcmute.yourtours.libs.controller.IGetInfoPageController;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
+import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.request.CancelBookingRequest;
 import com.hcmute.yourtours.models.common.SuccessResponse;
@@ -14,7 +16,8 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 public interface IAppBookHomeController extends
-        IGetInfoPageController<UUID, BookHomeInfo, BaseFilter> {
+        IGetInfoPageController<UUID, BookHomeInfo, BaseFilter>,
+        ICreateModelController<UUID, BookHomeDetail> {
 
     @PutMapping("/cancel/booking")
     ResponseEntity<BaseResponse<SuccessResponse>> cancelBooking(@RequestBody @Valid CancelBookingRequest request);
