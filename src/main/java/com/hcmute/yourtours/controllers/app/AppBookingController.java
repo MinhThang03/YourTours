@@ -6,7 +6,9 @@ import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
 import com.hcmute.yourtours.libs.model.factory.request.FactoryCreateRequest;
+import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,5 +39,10 @@ public class AppBookingController
     @Override
     public ResponseEntity<BaseResponse<BookHomeDetail>> createModel(FactoryCreateRequest<UUID, BookHomeDetail> request) {
         return factoryCreateModel(request);
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<BasePagingResponse<BookHomeInfo>>> getInfoPageWithFilter(BaseFilter filter, Integer number, Integer size) {
+        return factoryGetInfoPageWithFilter(filter, number, size);
     }
 }
