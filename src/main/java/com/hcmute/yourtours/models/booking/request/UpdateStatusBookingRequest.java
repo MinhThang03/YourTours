@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
-public class CancelBookingRequest {
+public class UpdateStatusBookingRequest {
     @NotNull
     private UUID bookingId;
 }

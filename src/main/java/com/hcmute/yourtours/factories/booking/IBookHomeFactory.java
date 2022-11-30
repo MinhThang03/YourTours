@@ -19,4 +19,8 @@ public interface IBookHomeFactory extends IDataFactory<UUID, BookHomeInfo, BookH
     void checkDateBookingOfHomeValid(LocalDate dateStart, LocalDate dateEnd, UUID homeId) throws InvalidException;
 
     SuccessResponse handleCancelBooking(UUID bookingId) throws InvalidException;
+
+    SuccessResponse handleCheckInBooking(UUID bookingId) throws InvalidException;
+
+    SuccessResponse handleCheckOutBooking(UUID bookingId) throws InvalidException;
 }

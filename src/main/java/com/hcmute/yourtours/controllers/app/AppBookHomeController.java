@@ -14,7 +14,7 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
-import com.hcmute.yourtours.models.booking.request.CancelBookingRequest;
+import com.hcmute.yourtours.models.booking.request.UpdateStatusBookingRequest;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -52,7 +52,7 @@ public class AppBookHomeController
 
     @Override
     @Operation(summary = "Xử lý hủy đặt phòng")
-    public ResponseEntity<BaseResponse<SuccessResponse>> cancelBooking(CancelBookingRequest request) {
+    public ResponseEntity<BaseResponse<SuccessResponse>> cancelBooking(UpdateStatusBookingRequest request) {
         LogContext.push(LogType.REQUEST, request);
         try {
             SuccessResponse response = iBookHomeFactory.handleCancelBooking(request.getBookingId());

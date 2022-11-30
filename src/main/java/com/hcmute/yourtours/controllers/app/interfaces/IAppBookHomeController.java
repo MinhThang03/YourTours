@@ -6,7 +6,7 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
-import com.hcmute.yourtours.models.booking.request.CancelBookingRequest;
+import com.hcmute.yourtours.models.booking.request.UpdateStatusBookingRequest;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,6 +19,8 @@ public interface IAppBookHomeController extends
         IGetInfoPageController<UUID, BookHomeInfo, BaseFilter>,
         ICreateModelController<UUID, BookHomeDetail> {
 
-    @PutMapping("/cancel/booking")
-    ResponseEntity<BaseResponse<SuccessResponse>> cancelBooking(@RequestBody @Valid CancelBookingRequest request);
+    @PutMapping("/cancel")
+    ResponseEntity<BaseResponse<SuccessResponse>> cancelBooking(@RequestBody @Valid UpdateStatusBookingRequest request);
+
+
 }

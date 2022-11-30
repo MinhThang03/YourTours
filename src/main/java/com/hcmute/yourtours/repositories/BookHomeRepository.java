@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -73,4 +74,15 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
     )
     Page<BookHomesCommand> findBookingOfUser(@Param("customerId") UUID customerId,
                                              Pageable pageable);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.* " +
+                    "from book_home a " +
+                    "where DATE(a.date_end) < DATE(:date) " +
+                    "  and a.status <> :status "
+    )
+    List<BookHomesCommand> findAllCommandNeedUpdateCheckOut(@Param("date") LocalDate date,
+                                                            @Param("status") String status);
 }

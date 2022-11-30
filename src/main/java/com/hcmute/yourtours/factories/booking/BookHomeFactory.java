@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.booking;
 
 import com.hcmute.yourtours.commands.BookHomesCommand;
+import com.hcmute.yourtours.constant.CornConstant;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
@@ -16,7 +17,9 @@ import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.repositories.BookHomeRepository;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +34,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class BookHomeFactory
         extends BasePersistDataFactory<UUID, BookHomeInfo, BookHomeDetail, Long, BookHomesCommand>
         implements IBookHomeFactory {
@@ -220,6 +224,40 @@ public class BookHomeFactory
                 .build();
     }
 
+    @Override
+    public SuccessResponse handleCheckInBooking(UUID bookingId) throws InvalidException {
+        BookHomeDetail detail = getDetailModel(bookingId, null);
+
+        if (!detail.getStatus().equals(BookRoomStatusEnum.WAITING)) {
+            throw new InvalidException(YourToursErrorCode.BOOK_HOME_CHECK_IN_IS_IN_VALID);
+        }
+
+        if (LocalDate.now().isAfter(detail.getDateEnd())) {
+            throw new InvalidException(YourToursErrorCode.DATE_CHECK_IN_IS_EXCEED);
+        }
+
+        detail.setStatus(BookRoomStatusEnum.CHECK_IN);
+        updateModel(detail.getId(), detail);
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
+    }
+
+    @Override
+    public SuccessResponse handleCheckOutBooking(UUID bookingId) throws InvalidException {
+        BookHomeDetail detail = getDetailModel(bookingId, null);
+
+        if (!detail.getStatus().equals(BookRoomStatusEnum.CHECK_IN)) {
+            throw new InvalidException(YourToursErrorCode.BOOK_HOME_CHECK_OUT_IS_IN_VALID);
+        }
+
+        detail.setStatus(BookRoomStatusEnum.CHECK_OUT);
+        updateModel(detail.getId(), detail);
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
+    }
+
 
     @Override
     protected void preCreate(BookHomeDetail detail) throws InvalidException {
@@ -242,5 +280,24 @@ public class BookHomeFactory
         LocalDate firstOfMonth = ym.atDay(1);
         LocalDate firstOfFollowingMonth = ym.plusMonths(1).atDay(1);
         return firstOfMonth.datesUntil(firstOfFollowingMonth).collect(Collectors.toList());
+    }
+
+    @Scheduled(cron = CornConstant.CORN_DAILY)
+    protected void autoUpdateCheckOut() {
+        for (int i = 0; i <= 3; i++) {
+            try {
+                List<BookHomesCommand> bookHomes = bookHomeRepository.findAllCommandNeedUpdateCheckOut(LocalDate.now(), BookRoomStatusEnum.CHECK_OUT.name());
+                for (BookHomesCommand bookHome : bookHomes) {
+                    if (bookHome.getStatus().equals(BookRoomStatusEnum.CANCELED)) {
+                        bookHome.setStatus(BookRoomStatusEnum.CHECK_OUT);
+                        repository.save(bookHome);
+                    }
+                }
+                log.info("--- JOB SCHEDULE UPDATE STATUS BOOKING IS SUCCESSFUL !");
+                return;
+            } catch (Exception e) {
+                log.error("--- JOB SCHEDULE UPDATE STATUS BOOKING IS ERROR !");
+            }
+        }
     }
 }
