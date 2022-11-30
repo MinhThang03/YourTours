@@ -1,7 +1,7 @@
-package com.hcmute.yourtours.controllers.publics;
+package com.hcmute.yourtours.controllers.app;
 
 
-import com.hcmute.yourtours.controllers.publics.interfaces.IPublicBookingController;
+import com.hcmute.yourtours.controllers.app.interfaces.IAppBookingController;
 import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
@@ -19,15 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/public/booking")
+@RequestMapping("/api/v1/app/booking")
 @Tag(name = "PUBLIC API: BOOKING", description = "API public đặt phòng")
 @Transactional
-public class PublicBookingController
+public class AppBookingController
         extends BaseController<UUID, BookHomeInfo, BookHomeDetail>
-        implements IPublicBookingController {
+        implements IAppBookingController {
 
 
-    protected PublicBookingController
+    protected AppBookingController
             (
                     @Qualifier("appBookHomeFactory") IBookHomeFactory iDataFactory,
                     IResponseFactory iResponseFactory) {

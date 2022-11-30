@@ -75,6 +75,7 @@ public class BookHomeFactory
                 .homeId(detail.getHomeId())
                 .userId(detail.getUserId())
                 .status(BookRoomStatusEnum.WAITING)
+                .totalCost(detail.getTotalCost())
                 .build();
 
     }
