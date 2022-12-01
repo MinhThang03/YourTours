@@ -96,6 +96,7 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
             UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
             UserDetail userDetail = iUserFactory.getDetailModel(userId, null);
             detail.setEmail(userDetail.getEmail());
+            detail.setUserId(userId);
             detail.setPhoneNumber(userDetail.getPhoneNumber());
         }
     }
