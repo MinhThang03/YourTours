@@ -6,6 +6,7 @@ import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
+import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
@@ -45,6 +46,7 @@ public class BookHomeFactory
     protected final IUserFactory iUserFactory;
     protected final IBookingGuestDetailFactory iBookingGuestDetailFactory;
     protected final IOwnerOfHomeFactory iOwnerOfHomeFactory;
+    protected final IGetUserFromTokenFactory iGetUserFromTokenFactory;
 
     protected BookHomeFactory
             (
@@ -52,7 +54,8 @@ public class BookHomeFactory
                     @Qualifier("homesFactory") IHomesFactory iHomesFactory,
                     IUserFactory iUserFactory,
                     IBookingGuestDetailFactory iBookingGuestDetailFactory,
-                    IOwnerOfHomeFactory iOwnerOfHomeFactory
+                    IOwnerOfHomeFactory iOwnerOfHomeFactory,
+                    IGetUserFromTokenFactory iGetUserFromTokenFactory
             ) {
         super(repository);
         this.bookHomeRepository = repository;
@@ -60,6 +63,7 @@ public class BookHomeFactory
         this.iUserFactory = iUserFactory;
         this.iBookingGuestDetailFactory = iBookingGuestDetailFactory;
         this.iOwnerOfHomeFactory = iOwnerOfHomeFactory;
+        this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
     }
 
     @Override
@@ -214,7 +218,15 @@ public class BookHomeFactory
 
     @Override
     public SuccessResponse handleCancelBooking(UUID bookingId) throws InvalidException {
+
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
+
         BookHomeDetail detail = getDetailModel(bookingId, null);
+
+        if (!userId.equals(detail.getUserId())) {
+            throw new InvalidException(YourToursErrorCode.NO_PERMISSION_CANCEL_BOOKING);
+        }
+
         HomeDetail homeDetail = iHomesFactory.getDetailModel(detail.getHomeId(), null);
         RefundPolicyEnum refund = homeDetail.getRefundPolicy();
 

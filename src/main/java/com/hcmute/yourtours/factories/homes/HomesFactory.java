@@ -3,6 +3,7 @@ package com.hcmute.yourtours.factories.homes;
 import com.hcmute.yourtours.commands.HomesCommand;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.enums.ProvinceEnum;
+import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
@@ -100,6 +101,7 @@ public class HomesFactory
                 .thumbnail(detail.getThumbnail())
                 .averageRate(detail.getAverageRate())
                 .numberOfReviews(0L)
+                .refundPolicy(RefundPolicyEnum.BEFORE_ONE_DAY)
                 .build();
     }
 

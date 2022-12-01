@@ -21,7 +21,6 @@ import java.util.UUID;
 @Service
 public class CmsBookHomeFactory extends BookHomeFactory {
 
-    private final IGetUserFromTokenFactory iGetUserFromTokenFactory;
 
     protected CmsBookHomeFactory
             (
@@ -32,8 +31,7 @@ public class CmsBookHomeFactory extends BookHomeFactory {
                     IBookingGuestDetailFactory iBookingGuestDetailFactory,
                     IOwnerOfHomeFactory iOwnerOfHomeFactory
             ) {
-        super(repository, iHomesFactory, iUserFactory, iBookingGuestDetailFactory, iOwnerOfHomeFactory);
-        this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
+        super(repository, iHomesFactory, iUserFactory, iBookingGuestDetailFactory, iOwnerOfHomeFactory, iGetUserFromTokenFactory);
     }
 
     @Override

@@ -81,6 +81,7 @@ public enum YourToursErrorCode implements IErrorCode {
     ACCOUNT_IS_LOCKED(HttpStatus.CONFLICT, "40900002", "Tài khoản của bạn đã bị khóa"),
     CONVERT_TO_UUID_IS_ERROR(HttpStatus.CONFLICT, "40900003", "Không đúng định dạng UUID"),
     DATE_BOOKING_IS_INVALID(HttpStatus.CONFLICT, "40900004", "Ngôi nhà đã được đặt trong những ngày này"),
+    NO_PERMISSION_CANCEL_BOOKING(HttpStatus.CONFLICT, "40900005", "Bạn không có quyền hủy lịch đặt nhà này"),
 
     ;
     private final HttpStatus httpStatus;
