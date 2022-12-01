@@ -7,6 +7,7 @@ import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
+import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -43,18 +44,22 @@ public class BookHomeFactory
     protected final IHomesFactory iHomesFactory;
     protected final IUserFactory iUserFactory;
     protected final IBookingGuestDetailFactory iBookingGuestDetailFactory;
+    protected final IOwnerOfHomeFactory iOwnerOfHomeFactory;
 
-    protected BookHomeFactory(
-            BookHomeRepository repository,
-            @Qualifier("homesFactory") IHomesFactory iHomesFactory,
-            IUserFactory iUserFactory,
-            IBookingGuestDetailFactory iBookingGuestDetailFactory
-    ) {
+    protected BookHomeFactory
+            (
+                    BookHomeRepository repository,
+                    @Qualifier("homesFactory") IHomesFactory iHomesFactory,
+                    IUserFactory iUserFactory,
+                    IBookingGuestDetailFactory iBookingGuestDetailFactory,
+                    IOwnerOfHomeFactory iOwnerOfHomeFactory
+            ) {
         super(repository);
         this.bookHomeRepository = repository;
         this.iHomesFactory = iHomesFactory;
         this.iUserFactory = iUserFactory;
         this.iBookingGuestDetailFactory = iBookingGuestDetailFactory;
+        this.iOwnerOfHomeFactory = iOwnerOfHomeFactory;
     }
 
     @Override
@@ -104,6 +109,9 @@ public class BookHomeFactory
         if (entity == null) {
             return null;
         }
+
+        HomeDetail homeDetail = iHomesFactory.getDetailModel(entity.getHomeId(), null);
+
         return BookHomeDetail.builder()
                 .dateStart(entity.getDateStart())
                 .dateEnd(entity.getDateEnd())
@@ -114,11 +122,13 @@ public class BookHomeFactory
                 .visaAccount(entity.getVisaAccount())
                 .homeId(entity.getHomeId())
                 .userId(entity.getUserId())
-                .homeName(iHomesFactory.getDetailModel(entity.getHomeId(), null).getName())
+                .homeName(homeDetail.getName())
                 .customerName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .status(entity.getStatus())
                 .totalCost(entity.getTotalCost())
                 .id(entity.getBookId())
+                .thumbnail(homeDetail.getThumbnail())
+                .owner(iOwnerOfHomeFactory.getMainOwnerOfHome(entity.getHomeId()))
                 .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getBookId()))
                 .build();
 
@@ -129,6 +139,9 @@ public class BookHomeFactory
         if (entity == null) {
             return null;
         }
+
+        HomeDetail homeDetail = iHomesFactory.getDetailModel(entity.getHomeId(), null);
+
         return BookHomeInfo.builder()
                 .dateStart(entity.getDateStart())
                 .dateEnd(entity.getDateEnd())
@@ -140,7 +153,9 @@ public class BookHomeFactory
                 .homeId(entity.getHomeId())
                 .userId(entity.getUserId())
                 .status(entity.getStatus())
-                .homeName(iHomesFactory.getDetailModel(entity.getHomeId(), null).getName())
+                .homeName(homeDetail.getName())
+                .thumbnail(homeDetail.getThumbnail())
+                .owner(iOwnerOfHomeFactory.getMainOwnerOfHome(entity.getHomeId()))
                 .customerName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .totalCost(entity.getTotalCost())
                 .id(entity.getBookId())

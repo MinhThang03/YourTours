@@ -5,6 +5,7 @@ import com.hcmute.yourtours.factories.booking.BookHomeFactory;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
+import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
@@ -28,9 +29,10 @@ public class CmsBookHomeFactory extends BookHomeFactory {
                     @Qualifier("cmsHomesFactory") IHomesFactory iHomesFactory,
                     IUserFactory iUserFactory,
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
-                    IBookingGuestDetailFactory iBookingGuestDetailFactory
+                    IBookingGuestDetailFactory iBookingGuestDetailFactory,
+                    IOwnerOfHomeFactory iOwnerOfHomeFactory
             ) {
-        super(repository, iHomesFactory, iUserFactory, iBookingGuestDetailFactory);
+        super(repository, iHomesFactory, iUserFactory, iBookingGuestDetailFactory, iOwnerOfHomeFactory);
         this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
     }
 

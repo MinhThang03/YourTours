@@ -7,6 +7,7 @@ import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFa
 import com.hcmute.yourtours.factories.booking_surcharge_detail.IBookingSurchargeDetailFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
+import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.price_of_home.IPriceOfHomeFactory;
 import com.hcmute.yourtours.factories.surcharges_of_home.ISurchargeOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
@@ -45,9 +46,10 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
                     IPriceOfHomeFactory iPriceOfHomeFactory,
                     IBookingSurchargeDetailFactory iBookingSurchargeDetailFactory,
                     IBookingGuestDetailFactory iBookingGuestDetailFactory,
-                    IGetUserFromTokenFactory iGetUserFromTokenFactory
+                    IGetUserFromTokenFactory iGetUserFromTokenFactory,
+                    IOwnerOfHomeFactory iOwnerOfHomeFactory
             ) {
-        super(repository, iHomesFactory, iUserFactory, iBookingGuestDetailFactory);
+        super(repository, iHomesFactory, iUserFactory, iBookingGuestDetailFactory, iOwnerOfHomeFactory);
         this.iSurchargeOfHomeFactory = iSurchargeOfHomeFactory;
         this.iPriceOfHomeFactory = iPriceOfHomeFactory;
         this.iBookingSurchargeDetailFactory = iBookingSurchargeDetailFactory;
