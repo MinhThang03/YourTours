@@ -130,6 +130,8 @@ public class BookHomeFactory
                 .thumbnail(homeDetail.getThumbnail())
                 .owner(iOwnerOfHomeFactory.getMainOwnerOfHome(entity.getHomeId()))
                 .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getBookId()))
+                .homeAddressDetail(homeDetail.getAddressDetail())
+                .homeProvinceCode(homeDetail.getProvinceCode())
                 .build();
 
     }
@@ -160,6 +162,8 @@ public class BookHomeFactory
                 .totalCost(entity.getTotalCost())
                 .id(entity.getBookId())
                 .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getBookId()))
+                .homeAddressDetail(homeDetail.getAddressDetail())
+                .homeProvinceCode(homeDetail.getProvinceCode())
                 .build();
     }
 
