@@ -89,6 +89,7 @@ public class BookHomeFactory
                 .userId(detail.getUserId())
                 .status(BookRoomStatusEnum.WAITING)
                 .totalCost(detail.getTotalCost())
+                .percent(detail.getPercent())
                 .build();
 
     }
@@ -106,6 +107,7 @@ public class BookHomeFactory
         entity.setUserId(detail.getUserId());
         entity.setStatus(detail.getStatus());
         entity.setTotalCost(detail.getTotalCost());
+        entity.setPercent(detail.getPercent());
     }
 
     @Override
@@ -136,6 +138,7 @@ public class BookHomeFactory
                 .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getBookId()))
                 .homeAddressDetail(homeDetail.getAddressDetail())
                 .homeProvinceCode(homeDetail.getProvinceCode())
+                .percent(entity.getPercent())
                 .build();
 
     }
@@ -168,6 +171,7 @@ public class BookHomeFactory
                 .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getBookId()))
                 .homeAddressDetail(homeDetail.getAddressDetail())
                 .homeProvinceCode(homeDetail.getProvinceCode())
+                .percent(entity.getPercent())
                 .build();
     }
 

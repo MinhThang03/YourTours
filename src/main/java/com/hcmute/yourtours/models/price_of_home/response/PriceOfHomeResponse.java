@@ -10,6 +10,8 @@ import java.util.List;
 @Builder
 public class PriceOfHomeResponse {
     private double totalCost;
+    private Double percent;
+    private String discountName;
     private List<ArrayPriceAndDayModels> detail;
     private double totalCostWithSurcharge;
 }

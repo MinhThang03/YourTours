@@ -72,6 +72,9 @@ public class BookHomeInfo extends BaseData<UUID> {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer homeProvinceCode;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Double percent;
+
     private List<BookingSurchargeDetailDetail> surcharges;
 
     private List<BookingGuestDetailDetail> guests;

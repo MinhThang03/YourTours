@@ -70,6 +70,9 @@ public class BookHomesCommand extends Persistence {
     @Column(name = "total_cost")
     private Double totalCost;
 
+    @Column(name = "percent")
+    private Double percent;
+
 
     @Override
     protected void preWrite() {

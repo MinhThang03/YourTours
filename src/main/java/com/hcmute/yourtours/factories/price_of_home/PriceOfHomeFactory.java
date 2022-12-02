@@ -3,11 +3,13 @@ package com.hcmute.yourtours.factories.price_of_home;
 import com.hcmute.yourtours.commands.PriceOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.common.IAuthorizationOwnerHomeFactory;
+import com.hcmute.yourtours.factories.discount_of_home.IDiscountOfHomeFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.surcharges_of_home.ISurchargeOfHomeFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.discount_of_home.models.DiscountOfHomeViewModel;
 import com.hcmute.yourtours.models.price_of_home.PriceOfHomeDetail;
 import com.hcmute.yourtours.models.price_of_home.PriceOfHomeInfo;
 import com.hcmute.yourtours.models.price_of_home.filter.PriceOfHomeFilter;
@@ -23,6 +25,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
@@ -42,19 +45,22 @@ public class PriceOfHomeFactory
     private final IHomesFactory iHomesFactory;
     private final IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory;
     private final ISurchargeOfHomeFactory iSurchargeOfHomeFactory;
+    private final IDiscountOfHomeFactory iDiscountOfHomeFactory;
 
     protected PriceOfHomeFactory(
             PriceOfHomeRepository repository,
             PriceOfHomeRepository priceOfHomeRepository,
             @Qualifier("cmsHomesFactory") IHomesFactory iHomesFactory,
             IAuthorizationOwnerHomeFactory iAuthorizationOwnerHomeFactory,
-            ISurchargeOfHomeFactory iSurchargeOfHomeFactory
+            ISurchargeOfHomeFactory iSurchargeOfHomeFactory,
+            IDiscountOfHomeFactory iDiscountOfHomeFactory
     ) {
         super(repository);
         this.priceOfHomeRepository = priceOfHomeRepository;
         this.iHomesFactory = iHomesFactory;
         this.iAuthorizationOwnerHomeFactory = iAuthorizationOwnerHomeFactory;
         this.iSurchargeOfHomeFactory = iSurchargeOfHomeFactory;
+        this.iDiscountOfHomeFactory = iDiscountOfHomeFactory;
     }
 
     @Override
@@ -203,9 +209,36 @@ public class PriceOfHomeFactory
             surchargeFee += item.getCost();
         }
 
+        Long numberOfDay = Duration.between(request.getDateFrom(), request.getDateTo()).toDays();
+
+        List<DiscountOfHomeViewModel> discounts = iDiscountOfHomeFactory.getDiscountsOfHomeView(request.getHomeId());
+        Double percent = null;
+        String discountOfName = null;
+        for (DiscountOfHomeViewModel discount : discounts) {
+            Double temp = null;
+            if (discount.getCategory().getNumDateDefault() <= numberOfDay) {
+                temp = discount.getConfig().getPercent();
+            }
+
+            if (percent == null || (temp != null && percent < temp)) {
+                percent = temp;
+                discountOfName = discount.getCategory().getName();
+            }
+        }
+
+        double totalCost;
+
+        if (percent != null) {
+            totalCost = Math.round((total + surchargeFee) * (percent / 100));
+        } else {
+            totalCost = total + surchargeFee;
+        }
+
         return PriceOfHomeResponse.builder()
                 .totalCost(total)
-                .totalCostWithSurcharge(total + surchargeFee)
+                .totalCostWithSurcharge(totalCost)
+                .discountName(discountOfName)
+                .percent(percent)
                 .detail(priceDetail)
                 .build();
     }

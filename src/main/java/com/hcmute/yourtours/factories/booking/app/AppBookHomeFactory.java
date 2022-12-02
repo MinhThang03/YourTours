@@ -16,6 +16,7 @@ import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking_surcharge_detail.BookingSurchargeDetailDetail;
 import com.hcmute.yourtours.models.price_of_home.request.GetPriceOfHomeRequest;
+import com.hcmute.yourtours.models.price_of_home.response.PriceOfHomeResponse;
 import com.hcmute.yourtours.models.surcharges_of_home.models.SurchargeHomeViewModel;
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.repositories.BookHomeRepository;
@@ -70,7 +71,6 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
         super.checkDateBookingOfHomeValid(detail.getDateStart(), detail.getDateEnd(), detail.getHomeId());
         iHomesFactory.checkNumberOfGuestOfHome(detail.getHomeId(), detail.getGuests());
 
-        double surchargeFee = 0.0;
 
         List<SurchargeHomeViewModel> surcharges = iSurchargeOfHomeFactory.getListSurchargeOfHome(detail.getHomeId());
         List<BookingSurchargeDetailDetail> bookingSurcharges = new ArrayList<>();
@@ -79,18 +79,18 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
                     .surchargeId(item.getSurchargeCategoryId())
                     .costOfSurcharge(item.getCost())
                     .build());
-            surchargeFee += item.getCost();
         }
 
         detail.setSurcharges(bookingSurcharges);
-        double cost = iPriceOfHomeFactory.getCostBetweenDay(GetPriceOfHomeRequest.builder()
+        PriceOfHomeResponse priceOfHomeResponse = iPriceOfHomeFactory.getCostBetweenDay(GetPriceOfHomeRequest.builder()
                 .homeId(detail.getHomeId())
                 .dateFrom(detail.getDateStart())
                 .dateTo(detail.getDateEnd())
-                .build()).getTotalCost();
+                .build());
 
-        detail.setCost(cost);
-        detail.setTotalCost(cost + surchargeFee);
+        detail.setCost(priceOfHomeResponse.getTotalCost());
+        detail.setTotalCost(priceOfHomeResponse.getTotalCostWithSurcharge());
+        detail.setPercent(detail.getPercent());
 
         if (detail.getEmail() == null || detail.getPhoneNumber() == null) {
             UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
