@@ -117,6 +117,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
         } catch (InvalidException e) {
             throw e;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new InvalidException(YourToursErrorCode.CONVERT_TO_UUID_IS_ERROR);
         }
 

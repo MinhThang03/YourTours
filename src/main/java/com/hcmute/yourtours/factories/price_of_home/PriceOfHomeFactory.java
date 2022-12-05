@@ -25,10 +25,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.YearMonth;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -209,7 +206,7 @@ public class PriceOfHomeFactory
             surchargeFee += item.getCost();
         }
 
-        Long numberOfDay = Duration.between(request.getDateFrom(), request.getDateTo()).toDays();
+        Long numberOfDay = Duration.between(LocalDateTime.of(request.getDateFrom(), LocalTime.MIDNIGHT), LocalDateTime.of(request.getDateTo(), LocalTime.MIDNIGHT)).toDays();
 
         List<DiscountOfHomeViewModel> discounts = iDiscountOfHomeFactory.getDiscountsOfHomeView(request.getHomeId());
         Double percent = null;
