@@ -6,6 +6,8 @@ import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.statistic.host.models.HomeBookingStatistic;
+import com.hcmute.yourtours.models.statistic.host.models.RevenueStatistic;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,4 +25,12 @@ public interface IBookHomeFactory extends IDataFactory<UUID, BookHomeInfo, BookH
     SuccessResponse handleCheckInBooking(UUID bookingId) throws InvalidException;
 
     SuccessResponse handleCheckOutBooking(UUID bookingId) throws InvalidException;
+
+    Long totalBookingOfOwner(UUID ownerId);
+
+    Long totalBookingOfOwnerFinish(UUID ownerId);
+
+    List<HomeBookingStatistic> getHomeBookingStatisticWithOwner(UUID ownerId);
+
+    List<RevenueStatistic> getRevenueStatisticWithOwnerAndYear(UUID ownerId, Integer year);
 }

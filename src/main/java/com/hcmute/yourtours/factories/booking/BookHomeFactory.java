@@ -3,6 +3,7 @@ package com.hcmute.yourtours.factories.booking;
 import com.hcmute.yourtours.commands.BookHomesCommand;
 import com.hcmute.yourtours.constant.CornConstant;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
+import com.hcmute.yourtours.enums.MonthEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
@@ -17,6 +18,9 @@ import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
+import com.hcmute.yourtours.models.statistic.host.models.HomeBookingStatistic;
+import com.hcmute.yourtours.models.statistic.host.models.RevenueStatistic;
+import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
 import com.hcmute.yourtours.repositories.BookHomeRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -293,6 +297,42 @@ public class BookHomeFactory
                 .build();
     }
 
+    @Override
+    public Long totalBookingOfOwner(UUID ownerId) {
+        return bookHomeRepository.countTotalBookingOfOwner(ownerId);
+    }
+
+    @Override
+    public Long totalBookingOfOwnerFinish(UUID ownerId) {
+        return bookHomeRepository.countTotalBookingOfOwnerFinish(ownerId, BookRoomStatusEnum.CHECK_OUT.name());
+    }
+
+    @Override
+    public List<HomeBookingStatistic> getHomeBookingStatisticWithOwner(UUID ownerId) {
+        List<HomeBookingStatisticProjection> projections = bookHomeRepository.getHomeBookingStatisticWithOwner(ownerId);
+        return projections.stream().map(
+                item -> HomeBookingStatistic.builder()
+                        .numberOfBooking(item.getNumberOfBooking())
+                        .homeId(item.getHomeId())
+                        .homeName(item.getHomeName())
+                        .build()
+        ).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RevenueStatistic> getRevenueStatisticWithOwnerAndYear(UUID ownerId, Integer year) {
+        List<RevenueStatistic> result = new ArrayList<>();
+
+        for (MonthEnum item : MonthEnum.values()) {
+            Double revenue = bookHomeRepository.getRevenueWithOwnerIdAndYear(ownerId, BookRoomStatusEnum.CHECK_OUT.name(), item.getMonthValue(), year);
+            result.add(RevenueStatistic.builder()
+                    .amount(revenue)
+                    .month(item.getMonthName())
+                    .build());
+        }
+        return result;
+    }
+
 
     @Override
     protected void preCreate(BookHomeDetail detail) throws InvalidException {
@@ -316,6 +356,7 @@ public class BookHomeFactory
         LocalDate firstOfFollowingMonth = ym.plusMonths(1).atDay(1);
         return firstOfMonth.datesUntil(firstOfFollowingMonth).collect(Collectors.toList());
     }
+
 
     @Scheduled(cron = CornConstant.CORN_DAILY)
     protected void autoUpdateCheckOut() {
