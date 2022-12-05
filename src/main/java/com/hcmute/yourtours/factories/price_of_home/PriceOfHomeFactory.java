@@ -248,7 +248,7 @@ public class PriceOfHomeFactory
         if (optional.isPresent()) {
             PriceOfHomeDetail detail = convertToDetail(optional.get());
             detail.setEspecially(true);
-            return convertToDetail(optional.get());
+            return detail;
         }
 
         return PriceOfHomeDetail.builder()

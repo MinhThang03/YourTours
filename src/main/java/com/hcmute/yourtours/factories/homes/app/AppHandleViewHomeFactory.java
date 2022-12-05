@@ -145,7 +145,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
         builder.append(detail.getNumberOfGuests());
         builder.append(" ");
         builder.append("Khách");
-        builder.append(" ");
+        builder.append(" - ");
 
         try {
 
@@ -155,14 +155,14 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                 builder.append(bedRooms.size());
                 builder.append(" ");
                 builder.append("Phòng ngủ");
-                builder.append(" ");
+                builder.append(" - ");
             }
 
             Integer numberOfBed = iBedsOfHomeFactory.getNumberOfBedWithHomeId(detail.getId());
             builder.append(numberOfBed);
             builder.append(" ");
             builder.append("Giường");
-            builder.append(" ");
+            builder.append(" - ");
 
             List<RoomOfHomeInfo> bathRooms = iRoomsOfHomeFactory.getAllByHomeIdAndCategoryId(detail.getId(), RoomCategoryIdConstant.BATH_ROOM_CATEGORY_ID);
             if (!bedRooms.isEmpty()) {
