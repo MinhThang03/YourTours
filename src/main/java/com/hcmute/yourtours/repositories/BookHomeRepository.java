@@ -94,7 +94,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "from book_home a, " +
                     "     owner_of_home b " +
                     "where a.home_id = b.home_id " +
-                    "  and b.owner_of_home_id = :ownerId "
+                    "  and b.user_id = :ownerId "
     )
     Long countTotalBookingOfOwner(UUID ownerId);
 
@@ -104,7 +104,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "from book_home a,  " +
                     "     owner_of_home b  " +
                     "where a.home_id = b.home_id  " +
-                    "  and b.owner_of_home_id = :ownerId  " +
+                    "  and b.user_id = :ownerId  " +
                     "  and a.status = :status "
     )
     Long countTotalBookingOfOwnerFinish(UUID ownerId, String status);
@@ -118,7 +118,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "     owner_of_home b,   " +
                     "     homes c   " +
                     "where a.home_id = b.home_id   " +
-                    "  and b.owner_of_home_id = :ownerId   " +
+                    "  and b.user_id = :ownerId   " +
                     "  and a.home_id = c.home_id   " +
                     "group by c.name, a.home_id "
     )
@@ -131,7 +131,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "from book_home a,   " +
                     "     owner_of_home b   " +
                     "where a.home_id = b.home_id   " +
-                    "  and b.owner_of_home_id = :ownerId   " +
+                    "  and b.user_id = :ownerId   " +
                     "  and a.status = :status   " +
                     "  and MONTH(a.date_start) = :month   " +
                     "  and YEAR(a.date_start) = :year "
