@@ -21,6 +21,7 @@ import com.hcmute.yourtours.models.price_of_home.response.PriceOfHomeWithMonthRe
 import com.hcmute.yourtours.models.surcharges_of_home.models.SurchargeHomeViewModel;
 import com.hcmute.yourtours.repositories.PriceOfHomeRepository;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @Transactional
 public class PriceOfHomeFactory
         extends BasePersistDataFactory<UUID, PriceOfHomeInfo, PriceOfHomeDetail, Long, PriceOfHomeCommand>
@@ -206,8 +208,7 @@ public class PriceOfHomeFactory
             surchargeFee += item.getCost();
         }
 
-        Long numberOfDay = Duration.between(LocalDateTime.of(request.getDateFrom(), LocalTime.MIDNIGHT), LocalDateTime.of(request.getDateTo(), LocalTime.MIDNIGHT)).toDays();
-
+        Long numberOfDay = Duration.between(LocalDateTime.of(request.getDateFrom(), LocalTime.MIDNIGHT), LocalDateTime.of(request.getDateTo(), LocalTime.MIDNIGHT)).toDays() + 1;
         List<DiscountOfHomeViewModel> discounts = iDiscountOfHomeFactory.getDiscountsOfHomeView(request.getHomeId());
         Double percent = null;
         String discountOfName = null;
@@ -233,6 +234,7 @@ public class PriceOfHomeFactory
 
         return PriceOfHomeResponse.builder()
                 .totalCost(total)
+                .totalCostWithNoDiscount(total + surchargeFee)
                 .totalCostWithSurcharge(totalCost)
                 .discountName(discountOfName)
                 .percent(percent)

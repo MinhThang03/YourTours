@@ -14,4 +14,5 @@ public class PriceOfHomeResponse {
     private String discountName;
     private List<ArrayPriceAndDayModels> detail;
     private double totalCostWithSurcharge;
+    private double totalCostWithNoDiscount;
 }
