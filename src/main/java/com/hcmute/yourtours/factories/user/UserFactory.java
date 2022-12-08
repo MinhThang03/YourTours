@@ -26,6 +26,8 @@ import com.hcmute.yourtours.models.verification_token.VerificationOtpDetail;
 import com.hcmute.yourtours.repositories.UserRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -341,5 +343,10 @@ public class UserFactory
     private boolean isOwner(UUID userId) {
         Optional<UserCommand> isOwner = userRepository.findByUserIdAndOwner(userId);
         return isOwner.isPresent();
+    }
+
+    @Override
+    protected <F extends BaseFilter> Page<UserCommand> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
+        return userRepository.getAll(PageRequest.of(number, size));
     }
 }

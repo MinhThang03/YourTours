@@ -1,6 +1,8 @@
 package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.commands.UserCommand;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -27,4 +29,10 @@ public interface UserRepository extends JpaRepository<UserCommand, Long> {
                     "limit 1 "
     )
     Optional<UserCommand> findByUserIdAndOwner(UUID userId);
+
+    @Query(
+            value = "select a from UserCommand  a order by a.createdDate desc ",
+            countQuery = "select a.id from UserCommand  a order by a.createdDate desc "
+    )
+    Page<UserCommand> getAll(PageRequest pageRequest);
 }
