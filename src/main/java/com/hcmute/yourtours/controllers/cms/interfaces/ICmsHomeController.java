@@ -34,7 +34,7 @@ public interface ICmsHomeController extends
     @PutMapping("update/homes-address")
     ResponseEntity<BaseResponse<HostHomeDetailModel>> updateAddress(@RequestBody @Valid FactoryUpdateRequest<UUID, UpdateAddressHomeModel> request);
 
-    @PutMapping("admin/pages")
+    @GetMapping("admin/pages")
     ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getPageWithRoleAdmin(@RequestParam(defaultValue = "0") Integer number,
                                                                                     @RequestParam(defaultValue = "20") Integer size);
 }
