@@ -303,4 +303,10 @@ public class HomesFactory
                 page.getTotalElements()
         );
     }
+
+    @Override
+    public BasePagingResponse<HomeInfo> getPageWithRoleAdmin(Integer number, Integer size) throws InvalidException {
+        HomeFilter filter = HomeFilter.builder().build();
+        return getInfoPage(filter, number, size);
+    }
 }

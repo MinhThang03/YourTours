@@ -3,6 +3,7 @@ package com.hcmute.yourtours.controllers.cms.interfaces;
 import com.hcmute.yourtours.libs.controller.ICreateModelController;
 import com.hcmute.yourtours.libs.controller.IGetInfoPageController;
 import com.hcmute.yourtours.libs.model.factory.request.FactoryUpdateRequest;
+import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
@@ -12,10 +13,7 @@ import com.hcmute.yourtours.models.homes.models.UpdateAddressHomeModel;
 import com.hcmute.yourtours.models.homes.models.UpdateBasePriceHomeModel;
 import com.hcmute.yourtours.models.homes.models.UpdateBaseProfileHomeModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.UUID;
@@ -35,4 +33,8 @@ public interface ICmsHomeController extends
 
     @PutMapping("update/homes-address")
     ResponseEntity<BaseResponse<HostHomeDetailModel>> updateAddress(@RequestBody @Valid FactoryUpdateRequest<UUID, UpdateAddressHomeModel> request);
+
+    @PutMapping("/admin/pages")
+    ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getPageWithRoleAdmin(@RequestParam(defaultValue = 0) Integer number,
+                                                                                    @RequestParam(defaultValue = 20) Integer size);
 }

@@ -39,6 +39,7 @@ public class CmsHomeController
         implements ICmsHomeController {
 
     private final ICmsHandleViewHomeFactory iCmsHandleViewHomeFactory;
+    private final IHomesFactory iHomesFactory;
 
     protected CmsHomeController
             (
@@ -48,6 +49,7 @@ public class CmsHomeController
             ) {
         super(iDataFactory, iResponseFactory);
         this.iCmsHandleViewHomeFactory = iCmsHandleViewHomeFactory;
+        this.iHomesFactory = iDataFactory;
     }
 
     @Override
@@ -80,6 +82,17 @@ public class CmsHomeController
         try {
             LogContext.push(LogType.REQUEST, request);
             HostHomeDetailModel response = iCmsHandleViewHomeFactory.updateAddress(request.getId(), request.getData());
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getPageWithRoleAdmin(Integer number, Integer size) {
+        try {
+            BasePagingResponse<HomeInfo> response = iHomesFactory.getPageWithRoleAdmin(number, size);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {

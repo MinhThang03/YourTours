@@ -19,4 +19,6 @@ public interface IHomesFactory extends IDataFactory<UUID, HomeInfo, HomeDetail> 
     void checkNumberOfGuestOfHome(UUID homeId, List<BookingGuestDetailDetail> guests) throws InvalidException;
 
     BasePagingResponse<HomeInfo> getFilterWithProvinceName(String search, Integer number, Integer size) throws InvalidException;
+
+    BasePagingResponse<HomeInfo> getPageWithRoleAdmin(Integer number, Integer size) throws InvalidException;
 }
