@@ -306,7 +306,18 @@ public class HomesFactory
 
     @Override
     public BasePagingResponse<HomeInfo> getPageWithRoleAdmin(Integer number, Integer size) throws InvalidException {
-        HomeFilter filter = HomeFilter.builder().build();
-        return getInfoPage(filter, number, size);
+        Page<HomesCommand> page = homesRepository.findPageWithFilter
+                (
+                        null,
+                        null,
+                        null,
+                        PageRequest.of(number, size)
+                );
+        return new BasePagingResponse<>(
+                convertList(page.getContent()),
+                number,
+                size,
+                page.getTotalElements()
+        );
     }
 }
