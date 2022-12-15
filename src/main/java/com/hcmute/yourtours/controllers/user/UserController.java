@@ -9,6 +9,7 @@ import com.hcmute.yourtours.libs.logging.LogContext;
 import com.hcmute.yourtours.libs.logging.LogType;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
+import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.models.user.UserInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -54,7 +55,19 @@ public class UserController
     @Override
     public ResponseEntity<BaseResponse<UserDetail>> updateCurrentUser(UserDetail request) {
         try {
+            LogContext.push(LogType.REQUEST, request);
             UserDetail response = iUserFactory.updateCurrentUser(request);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e.getErrorCode());
+        }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<SuccessResponse>> requestActiveAccount() {
+        try {
+            SuccessResponse response = iUserFactory.requestActiveAccount();
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {

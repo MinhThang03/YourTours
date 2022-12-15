@@ -306,17 +306,20 @@ public class UserFactory
         }
     }
 
+    @Override
+    public SuccessResponse requestActiveAccount() throws InvalidException {
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
+        UserDetail detail = getDetailModel(userId, null);
+        requestActiveAccount(detail.getId(), detail.getFullName(), detail.getEmail());
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
+    }
+
 
     @Override
     protected void postCreate(UserCommand entity, UserDetail detail) throws InvalidException {
-        VerificationOtpDetail tokenDetail = iVerificationOtpFactory.createVerificationOtpForUser(entity.getUserId());
-        String emailContent = iEmailFactory.getEmailActiveEmailContent
-                (
-                        entity.getFullName(),
-                        String.valueOf(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER / 60),
-                        tokenDetail.getToken()
-                );
-        iEmailFactory.sendSimpleMessage(entity.getEmail(), SubjectEmailConstant.ACTIVE_ACCOUNT, emailContent);
+        requestActiveAccount(entity.getUserId(), entity.getFullName(), entity.getEmail());
     }
 
     private UUID getCurrentUserId() throws InvalidException {
@@ -349,4 +352,16 @@ public class UserFactory
     protected <F extends BaseFilter> Page<UserCommand> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
         return userRepository.getAll(PageRequest.of(number, size));
     }
+
+    public void requestActiveAccount(UUID userId, String fullName, String email) throws InvalidException {
+        VerificationOtpDetail tokenDetail = iVerificationOtpFactory.createVerificationOtpForUser(userId);
+        String emailContent = iEmailFactory.getEmailActiveEmailContent
+                (
+                        fullName,
+                        String.valueOf(TokenExpirationConstant.EXPIRATION_TOKEN_REGISTER / 60),
+                        tokenDetail.getToken()
+                );
+        iEmailFactory.sendSimpleMessage(email, SubjectEmailConstant.ACTIVE_ACCOUNT, emailContent);
+    }
+
 }

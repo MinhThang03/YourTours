@@ -28,4 +28,6 @@ public interface IUserFactory extends IDataFactory<UUID, UserInfo, UserDetail> {
 
     void checkExistsByUserId(UUID userId) throws InvalidException;
 
+    SuccessResponse requestActiveAccount() throws InvalidException;
+
 }

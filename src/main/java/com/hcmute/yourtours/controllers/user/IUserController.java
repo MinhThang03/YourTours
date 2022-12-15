@@ -2,10 +2,12 @@ package com.hcmute.yourtours.controllers.user;
 
 import com.hcmute.yourtours.libs.controller.IGetDetailByIdController;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
+import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.user.UserDetail;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -23,4 +25,8 @@ public interface IUserController extends
     @PutMapping("update/current-user")
     @Operation(summary = "Cập nhật thông tin cá nhân của user đang đăng nhập")
     ResponseEntity<BaseResponse<UserDetail>> updateCurrentUser(@RequestBody @Valid UserDetail request);
+
+    @PostMapping("request/active")
+    @Operation(summary = "Yêu cầu gửi otp kích hoạt tài khoản")
+    ResponseEntity<BaseResponse<SuccessResponse>> requestActiveAccount();
 }
