@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.booking.app;
 
 import com.hcmute.yourtours.commands.BookHomesCommand;
+import com.hcmute.yourtours.constant.FeeRateOfAdminConstant;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.booking.BookHomeFactory;
@@ -105,6 +106,9 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
         detail.setTotalCost(priceOfHomeResponse.getTotalCostWithSurcharge());
         detail.setPercent(detail.getPercent());
 
+        double costOfAdmin = detail.getTotalCost() * (FeeRateOfAdminConstant.FEE_RATE_OF_ADMIN / 100);
+        detail.setCostOfAdmin(costOfAdmin);
+        detail.setCostOfHost(detail.getTotalCost() - costOfAdmin);
     }
 
 

@@ -94,6 +94,9 @@ public class BookHomeFactory
                 .status(BookRoomStatusEnum.WAITING)
                 .totalCost(detail.getTotalCost())
                 .percent(detail.getPercent())
+                .moneyPayed(detail.getMoneyPayed())
+                .costOfHost(detail.getCostOfHost())
+                .costOfAdmin(detail.getCostOfAdmin())
                 .build();
 
     }
@@ -112,6 +115,7 @@ public class BookHomeFactory
         entity.setStatus(detail.getStatus());
         entity.setTotalCost(detail.getTotalCost());
         entity.setPercent(detail.getPercent());
+        entity.setMoneyPayed(detail.getMoneyPayed());
     }
 
     @Override
@@ -143,6 +147,9 @@ public class BookHomeFactory
                 .homeAddressDetail(homeDetail.getAddressDetail())
                 .homeProvinceCode(homeDetail.getProvinceCode())
                 .percent(entity.getPercent())
+                .costOfHost(entity.getCostOfHost())
+                .costOfAdmin(entity.getCostOfAdmin())
+                .moneyPayed(entity.getMoneyPayed())
                 .build();
 
     }
@@ -176,6 +183,9 @@ public class BookHomeFactory
                 .homeAddressDetail(homeDetail.getAddressDetail())
                 .homeProvinceCode(homeDetail.getProvinceCode())
                 .percent(entity.getPercent())
+                .costOfHost(entity.getCostOfHost())
+                .costOfAdmin(entity.getCostOfAdmin())
+                .moneyPayed(entity.getMoneyPayed())
                 .build();
     }
 

@@ -78,4 +78,12 @@ public class BookHomeInfo extends BaseData<UUID> {
     private List<BookingSurchargeDetailDetail> surcharges;
 
     private List<BookingGuestDetailDetail> guests;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Double costOfHost;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Double costOfAdmin;
+
+    private Double moneyPayed;
 }
