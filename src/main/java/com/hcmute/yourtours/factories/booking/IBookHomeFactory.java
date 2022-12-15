@@ -26,11 +26,11 @@ public interface IBookHomeFactory extends IDataFactory<UUID, BookHomeInfo, BookH
 
     SuccessResponse handleCheckOutBooking(UUID bookingId) throws InvalidException;
 
-    Long totalBookingOfOwner(UUID ownerId);
+    Long totalBookingOfOwner(UUID ownerId, Integer year);
 
-    Long totalBookingOfOwnerFinish(UUID ownerId);
+    Long totalBookingOfOwnerFinish(UUID ownerId, Integer year);
 
-    List<HomeBookingStatistic> getHomeBookingStatisticWithOwner(UUID ownerId);
+    List<HomeBookingStatistic> getHomeBookingStatisticWithOwner(UUID ownerId, Integer year);
 
     List<RevenueStatistic> getRevenueStatisticWithOwnerAndYear(UUID ownerId, Integer year);
 }

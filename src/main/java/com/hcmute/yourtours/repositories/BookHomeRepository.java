@@ -94,9 +94,10 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "from book_home a, " +
                     "     owner_of_home b " +
                     "where a.home_id = b.home_id " +
+                    "  and YEAR(a.date_start) = :year " +
                     "  and b.user_id = :ownerId "
     )
-    Long countTotalBookingOfOwner(UUID ownerId);
+    Long countTotalBookingOfOwner(UUID ownerId, Integer year);
 
     @Query(
             nativeQuery = true,
@@ -105,9 +106,10 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "     owner_of_home b  " +
                     "where a.home_id = b.home_id  " +
                     "  and b.user_id = :ownerId  " +
+                    "  and YEAR(a.date_start) = :year " +
                     "  and a.status = :status "
     )
-    Long countTotalBookingOfOwnerFinish(UUID ownerId, String status);
+    Long countTotalBookingOfOwnerFinish(UUID ownerId, String status, Integer year);
 
     @Query(
             nativeQuery = true,
@@ -120,14 +122,15 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "where a.home_id = b.home_id   " +
                     "  and b.user_id = :ownerId   " +
                     "  and a.home_id = c.home_id   " +
+                    "  and YEAR(a.date_start) = :year " +
                     "group by c.name, a.home_id "
     )
-    List<HomeBookingStatisticProjection> getHomeBookingStatisticWithOwner(UUID ownerId);
+    List<HomeBookingStatisticProjection> getHomeBookingStatisticWithOwner(UUID ownerId, Integer year);
 
 
     @Query(
             nativeQuery = true,
-            value = "select coalesce(sum(a.total_cost), 0)   " +
+            value = "select coalesce(sum(a.cost_of_host), 0)   " +
                     "from book_home a,   " +
                     "     owner_of_home b   " +
                     "where a.home_id = b.home_id   " +

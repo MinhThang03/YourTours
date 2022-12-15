@@ -37,9 +37,9 @@ public class OwnerStatisticFactory implements IOwnerStatisticFactory {
 
         UUID ownerId = iGetUserFromTokenFactory.checkUnAuthorization();
 
-        Long totalBooking = iBookHomeFactory.totalBookingOfOwner(ownerId);
-        Long totalBookingFinish = iBookHomeFactory.totalBookingOfOwnerFinish(ownerId);
-        List<HomeBookingStatistic> homeBookingStatistics = iBookHomeFactory.getHomeBookingStatisticWithOwner(ownerId);
+        Long totalBooking = iBookHomeFactory.totalBookingOfOwner(ownerId, filter.getYear());
+        Long totalBookingFinish = iBookHomeFactory.totalBookingOfOwnerFinish(ownerId, filter.getYear());
+        List<HomeBookingStatistic> homeBookingStatistics = iBookHomeFactory.getHomeBookingStatisticWithOwner(ownerId, filter.getYear());
         List<RevenueStatistic> revenueStatistics = iBookHomeFactory.getRevenueStatisticWithOwnerAndYear(ownerId, filter.getYear());
 
         return OwnerStatistic.builder()

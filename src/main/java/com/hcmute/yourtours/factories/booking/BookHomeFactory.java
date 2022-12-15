@@ -308,18 +308,18 @@ public class BookHomeFactory
     }
 
     @Override
-    public Long totalBookingOfOwner(UUID ownerId) {
-        return bookHomeRepository.countTotalBookingOfOwner(ownerId);
+    public Long totalBookingOfOwner(UUID ownerId, Integer year) {
+        return bookHomeRepository.countTotalBookingOfOwner(ownerId, year);
     }
 
     @Override
-    public Long totalBookingOfOwnerFinish(UUID ownerId) {
-        return bookHomeRepository.countTotalBookingOfOwnerFinish(ownerId, BookRoomStatusEnum.CHECK_OUT.name());
+    public Long totalBookingOfOwnerFinish(UUID ownerId, Integer year) {
+        return bookHomeRepository.countTotalBookingOfOwnerFinish(ownerId, BookRoomStatusEnum.CHECK_OUT.name(), year);
     }
 
     @Override
-    public List<HomeBookingStatistic> getHomeBookingStatisticWithOwner(UUID ownerId) {
-        List<HomeBookingStatisticProjection> projections = bookHomeRepository.getHomeBookingStatisticWithOwner(ownerId);
+    public List<HomeBookingStatistic> getHomeBookingStatisticWithOwner(UUID ownerId, Integer year) {
+        List<HomeBookingStatisticProjection> projections = bookHomeRepository.getHomeBookingStatisticWithOwner(ownerId, year);
         return projections.stream().map(
                 item -> HomeBookingStatistic.builder()
                         .numberOfBooking(item.getNumberOfBooking())
