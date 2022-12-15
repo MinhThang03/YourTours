@@ -12,6 +12,7 @@ import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
+import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.factories.user_evaluate.IUserEvaluateFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
@@ -49,7 +50,8 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                     IItemFavoritesFactory iItemFavoritesFactory,
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
                     IUserEvaluateFactory iUserEvaluateFactory,
-                    @Qualifier("bookHomeFactory") IBookHomeFactory iBookHomeFactory
+                    @Qualifier("bookHomeFactory") IBookHomeFactory iBookHomeFactory,
+                    IUserFactory iUserFactory
             ) {
         super(
                 repository,
@@ -58,8 +60,8 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                 iAmenitiesOfHomeFactory,
                 iOwnerOfHomeFactory,
                 iGetUserFromTokenFactory,
-                iItemFavoritesFactory
-        );
+                iItemFavoritesFactory,
+                iUserFactory);
         this.iUserEvaluateFactory = iUserEvaluateFactory;
         this.iBookHomeFactory = iBookHomeFactory;
     }

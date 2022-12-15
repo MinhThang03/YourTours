@@ -82,6 +82,7 @@ public enum YourToursErrorCode implements IErrorCode {
     CONVERT_TO_UUID_IS_ERROR(HttpStatus.CONFLICT, "40900003", "Không đúng định dạng UUID"),
     DATE_BOOKING_IS_INVALID(HttpStatus.CONFLICT, "40900004", "Ngôi nhà đã được đặt trong những ngày này"),
     NO_PERMISSION_CANCEL_BOOKING(HttpStatus.CONFLICT, "40900005", "Bạn không có quyền hủy lịch đặt nhà này"),
+    ACCOUNT_NOT_ACTIVE(HttpStatus.CONFLICT, "40900006", "Tài khoản của bạn chưa được kích hoạt"),
 
     ;
     private final HttpStatus httpStatus;

@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.booking.app;
 
 import com.hcmute.yourtours.commands.BookHomesCommand;
+import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.booking.BookHomeFactory;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
@@ -58,6 +59,18 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
     @Override
     protected void preCreate(BookHomeDetail detail) throws InvalidException {
 
+        if (detail.getEmail() == null || detail.getPhoneNumber() == null) {
+            UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
+            UserDetail userDetail = iUserFactory.getDetailModel(userId, null);
+            detail.setEmail(userDetail.getEmail());
+            detail.setUserId(userId);
+            detail.setPhoneNumber(userDetail.getPhoneNumber());
+
+            if (userDetail.getStatus() == null || !userDetail.getStatus().equals(UserStatusEnum.ACTIVE)) {
+                throw new InvalidException(YourToursErrorCode.ACCOUNT_NOT_ACTIVE);
+            }
+        }
+
         iHomesFactory.checkExistsByHomeId(detail.getHomeId());
 
         if (detail.getDateStart().isBefore(LocalDate.now())) {
@@ -92,13 +105,6 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
         detail.setTotalCost(priceOfHomeResponse.getTotalCostWithSurcharge());
         detail.setPercent(detail.getPercent());
 
-        if (detail.getEmail() == null || detail.getPhoneNumber() == null) {
-            UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
-            UserDetail userDetail = iUserFactory.getDetailModel(userId, null);
-            detail.setEmail(userDetail.getEmail());
-            detail.setUserId(userId);
-            detail.setPhoneNumber(userDetail.getPhoneNumber());
-        }
     }
 
 

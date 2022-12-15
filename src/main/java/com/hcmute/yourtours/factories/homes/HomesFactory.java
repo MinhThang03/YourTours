@@ -4,6 +4,7 @@ import com.hcmute.yourtours.commands.HomesCommand;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.enums.ProvinceEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
+import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
@@ -11,6 +12,7 @@ import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
+import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
@@ -22,6 +24,7 @@ import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
 import com.hcmute.yourtours.models.images_home.ImageHomeDetail;
 import com.hcmute.yourtours.models.owner_of_home.OwnerOfHomeDetail;
+import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.repositories.HomesRepository;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
@@ -47,6 +50,7 @@ public class HomesFactory
     protected final IOwnerOfHomeFactory iOwnerOfHomeFactory;
     protected final IGetUserFromTokenFactory iGetUserFromTokenFactory;
     protected final IItemFavoritesFactory iItemFavoritesFactory;
+    protected final IUserFactory iUserFactory;
 
     protected HomesFactory
             (
@@ -56,7 +60,8 @@ public class HomesFactory
                     IAmenitiesOfHomeFactory iAmenitiesOfHomeFactory,
                     IOwnerOfHomeFactory iOwnerOfHomeFactory,
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
-                    IItemFavoritesFactory iItemFavoritesFactory
+                    IItemFavoritesFactory iItemFavoritesFactory,
+                    IUserFactory iUserFactory
             ) {
         super(repository);
         this.homesRepository = repository;
@@ -66,6 +71,7 @@ public class HomesFactory
         this.iOwnerOfHomeFactory = iOwnerOfHomeFactory;
         this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
         this.iItemFavoritesFactory = iItemFavoritesFactory;
+        this.iUserFactory = iUserFactory;
     }
 
     @Override
@@ -209,6 +215,12 @@ public class HomesFactory
 
         Optional<ImageHomeDetail> image = detail.getImagesOfHome().stream().findFirst();
         image.ifPresent(imageHomeDetail -> detail.setThumbnail(imageHomeDetail.getPath()));
+
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
+        UserDetail userDetail = iUserFactory.getDetailModel(userId, null);
+        if (userDetail.getStatus() == null || !userDetail.getStatus().equals(UserStatusEnum.ACTIVE)) {
+            throw new InvalidException(YourToursErrorCode.ACCOUNT_NOT_ACTIVE);
+        }
     }
 
     @Override
