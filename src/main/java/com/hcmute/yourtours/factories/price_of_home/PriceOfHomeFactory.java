@@ -213,6 +213,10 @@ public class PriceOfHomeFactory
         Double percent = null;
         String discountOfName = null;
         for (DiscountOfHomeViewModel discount : discounts) {
+            if (discount.getConfig() == null) {
+                continue;
+            }
+
             Double temp = null;
             if (discount.getCategory().getNumDateDefault() <= numberOfDay) {
                 temp = discount.getConfig().getPercent();
