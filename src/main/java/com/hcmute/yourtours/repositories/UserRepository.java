@@ -39,16 +39,18 @@ public interface UserRepository extends JpaRepository<UserCommand, Long> {
 
     @Query(
             nativeQuery = true,
-            value = "select a.numberOfGuests  as numberOfGuests," +
-                    "       b.numberOfOwner   as numberOfOwner," +
-                    "       c.numberOfBooking as numberOfBooking," +
-                    "       d.totalCost       as totalCost" +
-                    "from (select count(distinct (a.user_id)) as numberOfGuests" +
-                    "      from book_home a) a," +
-                    "     (select count(distinct a.user_id) as numberOfOwner from owner_of_home a) b," +
-                    "     (select count(a.id) as numberOfBooking from book_home a) c," +
-                    "     (select coalesce(sum(coalesce(a.cost_of_admin, 0)), 0) as totalCost" +
-                    "      from book_home a" +
+            value = "select a.numberOfGuests  as numberOfGuests, " +
+                    "       b.numberOfOwner   as numberOfOwner, " +
+                    "       c.numberOfBooking as numberOfBooking, " +
+                    "       d.totalCost       as totalCost " +
+                    "from (select count(a.userId) as numberOfGuests " +
+                    "      from (select distinct a.user_id as userId " +
+                    "            from book_home a) a) a, " +
+                    "     (select count(a.userId) as numberOfOwner " +
+                    "      from (select distinct a.user_id as userId from owner_of_home a) a) b, " +
+                    "     (select count(a.id) as numberOfBooking from book_home a) c, " +
+                    "     (select coalesce(sum(coalesce(a.cost_of_admin, 0)), 0) as totalCost " +
+                    "      from book_home a " +
                     "      where a.status = 'CHECK_IN') d "
     )
     StatisticCountProjections getAdminStatisticCount();
