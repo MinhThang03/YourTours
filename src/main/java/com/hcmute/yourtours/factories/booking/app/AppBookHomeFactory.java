@@ -106,7 +106,7 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
         detail.setTotalCost(priceOfHomeResponse.getTotalCostWithSurcharge());
         detail.setPercent(detail.getPercent());
 
-        double costOfAdmin = detail.getTotalCost() * (FeeRateOfAdminConstant.FEE_RATE_OF_ADMIN / 100);
+        double costOfAdmin = Math.round(detail.getTotalCost() * (FeeRateOfAdminConstant.FEE_RATE_OF_ADMIN / 100));
         detail.setCostOfAdmin(costOfAdmin);
         detail.setCostOfHost(detail.getTotalCost() - costOfAdmin);
     }

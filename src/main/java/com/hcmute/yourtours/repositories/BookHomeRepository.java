@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.commands.BookHomesCommand;
+import com.hcmute.yourtours.models.booking.projections.InfoUserBookingProjection;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -152,4 +153,26 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "  and YEAR(a.date_start) = :year "
     )
     Double getRevenueWithAdminIdAndYear(String status, Integer month, Integer year);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select count(a.id)                      as numberOfBooking, " +
+                    "       coalesce(sum(a.cost_of_host), 0) as totalCost, " +
+                    "       a.user_id                        as userId, " +
+                    "       b.full_name                      as fullName " +
+                    "from book_home a " +
+                    "         inner join user b " +
+                    "where a.user_id = b.userid " +
+                    "group by a.user_id, b.full_name ",
+            countQuery = "select count(a.id)                      as numberOfBooking, " +
+                    "       coalesce(sum(a.cost_of_host), 0) as totalCost, " +
+                    "       a.user_id                        as userId, " +
+                    "       b.full_name                      as fullName " +
+                    "from book_home a " +
+                    "         inner join user b " +
+                    "where a.user_id = b.userid " +
+                    "group by a.user_id, b.full_name "
+    )
+    Page<InfoUserBookingProjection> getPageStatisticInfoUserBooking(Pageable pageable);
 }
