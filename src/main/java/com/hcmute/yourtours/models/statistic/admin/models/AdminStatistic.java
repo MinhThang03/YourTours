@@ -1,4 +1,4 @@
-package com.hcmute.yourtours.models.statistic.host.models;
+package com.hcmute.yourtours.models.statistic.admin.models;
 
 import com.hcmute.yourtours.models.statistic.common.RevenueStatistic;
 import lombok.Builder;
@@ -9,9 +9,10 @@ import java.util.List;
 
 @Data
 @Builder
-public class OwnerStatistic implements Serializable {
+public class AdminStatistic implements Serializable {
+    private Long totalNumberOfGuests;
+    private Long totalNumberOfOwner;
     private Long totalNumberOfBooking;
-    private Long totalNumberOfBookingFinish;
-    private transient List<HomeBookingStatistic> homeStatistic;
+    private Double totalNumberOfRevenue;
     private transient List<RevenueStatistic> revenueStatistics;
 }

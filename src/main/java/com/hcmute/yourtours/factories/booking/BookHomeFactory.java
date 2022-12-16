@@ -18,8 +18,8 @@ import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
+import com.hcmute.yourtours.models.statistic.common.RevenueStatistic;
 import com.hcmute.yourtours.models.statistic.host.models.HomeBookingStatistic;
-import com.hcmute.yourtours.models.statistic.host.models.RevenueStatistic;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
 import com.hcmute.yourtours.repositories.BookHomeRepository;
 import lombok.NonNull;
@@ -335,6 +335,24 @@ public class BookHomeFactory
 
         for (MonthEnum item : MonthEnum.values()) {
             Double revenue = bookHomeRepository.getRevenueWithOwnerIdAndYear(ownerId, BookRoomStatusEnum.CHECK_OUT.name(), item.getMonthValue(), year);
+            result.add(RevenueStatistic.builder()
+                    .amount(revenue)
+                    .month(item.getMonthName())
+                    .build());
+        }
+        return result;
+    }
+
+    @Override
+    public List<RevenueStatistic> getRevenueStatisticWithAdminAndYear(Integer year) {
+        if (year == null) {
+            year = LocalDate.now().getYear();
+        }
+
+        List<RevenueStatistic> result = new ArrayList<>();
+
+        for (MonthEnum item : MonthEnum.values()) {
+            Double revenue = bookHomeRepository.getRevenueWithAdminIdAndYear(BookRoomStatusEnum.CHECK_OUT.name(), item.getMonthValue(), year);
             result.add(RevenueStatistic.builder()
                     .amount(revenue)
                     .month(item.getMonthName())

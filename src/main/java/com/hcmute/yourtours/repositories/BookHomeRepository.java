@@ -140,4 +140,16 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "  and YEAR(a.date_start) = :year "
     )
     Double getRevenueWithOwnerIdAndYear(UUID ownerId, String status, Integer month, Integer year);
+
+    @Query(
+            nativeQuery = true,
+            value = "select coalesce(sum(a.cost_of_admin), 0)   " +
+                    "from book_home a,   " +
+                    "     owner_of_home b   " +
+                    "where a.home_id = b.home_id   " +
+                    "  and a.status = :status   " +
+                    "  and MONTH(a.date_start) = :month   " +
+                    "  and YEAR(a.date_start) = :year "
+    )
+    Double getRevenueWithAdminIdAndYear(String status, Integer month, Integer year);
 }

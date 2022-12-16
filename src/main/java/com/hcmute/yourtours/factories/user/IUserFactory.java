@@ -5,6 +5,7 @@ import com.hcmute.yourtours.libs.factory.IDataFactory;
 import com.hcmute.yourtours.models.authentication.requests.UserChangePasswordRequest;
 import com.hcmute.yourtours.models.authentication.response.ChangePasswordResponse;
 import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.statistic.admin.projections.StatisticCountProjections;
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.models.user.UserInfo;
 import com.hcmute.yourtours.models.user.request.ForgotPasswordRequest;
@@ -29,5 +30,7 @@ public interface IUserFactory extends IDataFactory<UUID, UserInfo, UserDetail> {
     void checkExistsByUserId(UUID userId) throws InvalidException;
 
     SuccessResponse requestActiveAccount() throws InvalidException;
+
+    StatisticCountProjections getStatisticCountOfAdmin();
 
 }
