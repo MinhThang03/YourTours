@@ -19,6 +19,7 @@ import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.authentication.requests.UserChangePasswordRequest;
 import com.hcmute.yourtours.models.authentication.response.ChangePasswordResponse;
 import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.statistic.admin.projections.StatisticCountProjections;
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.models.user.UserInfo;
 import com.hcmute.yourtours.models.user.request.ForgotPasswordRequest;
@@ -314,6 +315,11 @@ public class UserFactory
         return SuccessResponse.builder()
                 .success(true)
                 .build();
+    }
+
+    @Override
+    public StatisticCountProjections getStatisticCountOfAdmin() {
+        return userRepository.getAdminStatisticCount();
     }
 
 

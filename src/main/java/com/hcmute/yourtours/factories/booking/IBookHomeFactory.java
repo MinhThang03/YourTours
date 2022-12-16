@@ -6,8 +6,8 @@ import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.statistic.common.RevenueStatistic;
 import com.hcmute.yourtours.models.statistic.host.models.HomeBookingStatistic;
-import com.hcmute.yourtours.models.statistic.host.models.RevenueStatistic;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,4 +33,6 @@ public interface IBookHomeFactory extends IDataFactory<UUID, BookHomeInfo, BookH
     List<HomeBookingStatistic> getHomeBookingStatisticWithOwner(UUID ownerId, Integer year);
 
     List<RevenueStatistic> getRevenueStatisticWithOwnerAndYear(UUID ownerId, Integer year);
+
+    List<RevenueStatistic> getRevenueStatisticWithAdminAndYear(Integer year);
 }

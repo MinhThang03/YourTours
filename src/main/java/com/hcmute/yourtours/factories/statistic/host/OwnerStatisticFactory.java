@@ -3,10 +3,10 @@ package com.hcmute.yourtours.factories.statistic.host;
 import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
+import com.hcmute.yourtours.models.statistic.common.RevenueStatistic;
 import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticFilter;
 import com.hcmute.yourtours.models.statistic.host.models.HomeBookingStatistic;
 import com.hcmute.yourtours.models.statistic.host.models.OwnerStatistic;
-import com.hcmute.yourtours.models.statistic.host.models.RevenueStatistic;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 

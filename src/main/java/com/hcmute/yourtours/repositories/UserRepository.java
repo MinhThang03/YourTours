@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.commands.UserCommand;
+import com.hcmute.yourtours.models.statistic.admin.projections.StatisticCountProjections;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,4 +36,20 @@ public interface UserRepository extends JpaRepository<UserCommand, Long> {
             countQuery = "select a.id from UserCommand  a order by a.createdDate desc "
     )
     Page<UserCommand> getAll(PageRequest pageRequest);
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.numberOfGuests  as numberOfGuests, " +
+                    "       b.numberOfOwner   as numberOfOwner, " +
+                    "       c.numberOfBooking as numberOfBooking, " +
+                    "       d.totalCost       as totalCost " +
+                    "from (select count(a.id) as numberOfGuests " +
+                    "      from user a) a, " +
+                    "     (select count(distinct a.user_id) as numberOfOwner from owner_of_home a) b, " +
+                    "     (select count(a.id) as numberOfBooking from book_home a) c, " +
+                    "     (select coalesce(sum(coalesce(a.cost_of_admin, 0)), 0) as totalCost " +
+                    "      from book_home a " +
+                    "      where a.status = 'CHECK_OUT') d "
+    )
+    StatisticCountProjections getAdminStatisticCount();
 }
