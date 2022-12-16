@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.controllers.cms;
 
 import com.hcmute.yourtours.controllers.cms.interfaces.ICmsStatisticController;
+import com.hcmute.yourtours.factories.booking.cms.ICmsBookHomeFactory;
 import com.hcmute.yourtours.factories.statistic.admin.IAdminStatisticFactory;
 import com.hcmute.yourtours.factories.statistic.host.IOwnerStatisticFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -8,7 +9,10 @@ import com.hcmute.yourtours.libs.exceptions.RestException;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
 import com.hcmute.yourtours.libs.logging.LogContext;
 import com.hcmute.yourtours.libs.logging.LogType;
+import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
+import com.hcmute.yourtours.models.booking.models.InfoUserBookingModel;
 import com.hcmute.yourtours.models.statistic.admin.filter.AdminHomeStatisticFilter;
 import com.hcmute.yourtours.models.statistic.admin.models.AdminStatistic;
 import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticFilter;
@@ -30,16 +34,19 @@ public class CmsStatisticController implements ICmsStatisticController {
     private final IOwnerStatisticFactory iOwnerStatisticFactory;
     private final IAdminStatisticFactory iAdminStatisticFactory;
     private final IResponseFactory iResponseFactory;
+    private final ICmsBookHomeFactory iCmsBookHomeFactory;
 
     public CmsStatisticController
             (
                     IOwnerStatisticFactory iOwnerStatisticFactory,
                     IAdminStatisticFactory iAdminStatisticFactory,
-                    IResponseFactory iResponseFactory
+                    IResponseFactory iResponseFactory,
+                    ICmsBookHomeFactory iCmsBookHomeFactory
             ) {
         this.iOwnerStatisticFactory = iOwnerStatisticFactory;
         this.iAdminStatisticFactory = iAdminStatisticFactory;
         this.iResponseFactory = iResponseFactory;
+        this.iCmsBookHomeFactory = iCmsBookHomeFactory;
     }
 
     @Override
@@ -64,5 +71,13 @@ public class CmsStatisticController implements ICmsStatisticController {
         } catch (InvalidException e) {
             throw new RestException(e);
         }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<BasePagingResponse<InfoUserBookingModel>>> getInfoGuestsBooking(BaseFilter filter, Integer number, Integer size) {
+        LogContext.push(LogType.REQUEST, filter);
+        BasePagingResponse<InfoUserBookingModel> response = iCmsBookHomeFactory.getStatisticInfoUserBooking(filter, number, size);
+        LogContext.push(LogType.RESPONSE, response);
+        return iResponseFactory.success(response);
     }
 }
