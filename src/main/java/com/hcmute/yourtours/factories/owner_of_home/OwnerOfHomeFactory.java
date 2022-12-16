@@ -4,14 +4,22 @@ import com.hcmute.yourtours.commands.OwnerOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.owner_of_home.OwnerOfHomeDetail;
 import com.hcmute.yourtours.models.owner_of_home.OwnerOfHomeInfo;
+import com.hcmute.yourtours.models.owner_of_home.models.StatisticInfoOwnerModel;
+import com.hcmute.yourtours.models.owner_of_home.projections.StatisticInfoOwnerProjection;
 import com.hcmute.yourtours.repositories.OwnerOfHomesRepository;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -94,5 +102,27 @@ public class OwnerOfHomeFactory
     @Override
     public String getMainOwnerOfHome(UUID homeId) {
         return ownerOfHomesRepository.getMainOwnerNameOfHome(homeId);
+    }
+
+    @Override
+    public BasePagingResponse<StatisticInfoOwnerModel> getStatisticInfoOwner(BaseFilter filter, Integer number, Integer size) {
+        Page<StatisticInfoOwnerProjection> projections = ownerOfHomesRepository.getStatisticInfoOwner(PageRequest.of(number, size));
+        List<StatisticInfoOwnerModel> result = projections.stream().map
+                (
+                        item -> StatisticInfoOwnerModel.builder()
+                                .numberOfHomes(item.getNumberOfHomes())
+                                .numberOfBooking(item.getNumberOfBooking())
+                                .totalCost(item.getTotalCost())
+                                .fullName(item.getFullName())
+                                .userId(item.getUserId())
+                                .build()
+                ).collect(Collectors.toList());
+
+        return new BasePagingResponse<>(
+                result,
+                number,
+                size,
+                projections.getTotalElements()
+        );
     }
 }

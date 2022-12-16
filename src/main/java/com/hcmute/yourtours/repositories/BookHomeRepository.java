@@ -158,7 +158,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
     @Query(
             nativeQuery = true,
             value = "select count(a.id)                      as numberOfBooking, " +
-                    "       coalesce(sum(a.cost_of_host), 0) as totalCost, " +
+                    "       coalesce(sum(a.total_cost), 0) as totalCost, " +
                     "       a.user_id                        as userId, " +
                     "       b.full_name                      as fullName " +
                     "from book_home a " +
@@ -166,7 +166,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "where a.user_id = b.userid " +
                     "group by a.user_id, b.full_name ",
             countQuery = "select count(a.id)                      as numberOfBooking, " +
-                    "       coalesce(sum(a.cost_of_host), 0) as totalCost, " +
+                    "       coalesce(sum(a.total_cost), 0) as totalCost, " +
                     "       a.user_id                        as userId, " +
                     "       b.full_name                      as fullName " +
                     "from book_home a " +
