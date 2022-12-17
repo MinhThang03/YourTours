@@ -4,6 +4,7 @@ import com.hcmute.yourtours.constant.FeeRateOfAdminConstant;
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
 import com.hcmute.yourtours.email.IEmailFactory;
 import com.hcmute.yourtours.entities.BookHomesCommand;
+import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.booking.BookHomeFactory;
@@ -45,8 +46,6 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
     private final ISurchargeOfHomeFactory iSurchargeOfHomeFactory;
     private final IPriceOfHomeFactory iPriceOfHomeFactory;
     private final IBookingSurchargeDetailFactory iBookingSurchargeDetailFactory;
-    private final IEmailFactory iEmailFactory;
-    private final ApplicationEventPublisher applicationEventPublisher;
 
     protected AppBookHomeFactory
             (
@@ -69,13 +68,13 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
                         iUserFactory,
                         iBookingGuestDetailFactory,
                         iOwnerOfHomeFactory,
-                        iGetUserFromTokenFactory
+                        iGetUserFromTokenFactory,
+                        iEmailFactory,
+                        applicationEventPublisher
                 );
         this.iSurchargeOfHomeFactory = iSurchargeOfHomeFactory;
         this.iPriceOfHomeFactory = iPriceOfHomeFactory;
         this.iBookingSurchargeDetailFactory = iBookingSurchargeDetailFactory;
-        this.iEmailFactory = iEmailFactory;
-        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Override
@@ -160,7 +159,12 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void sendMessageSocket(BookHomeDetail detail) {
         try {
-            String emailContent = iEmailFactory.getEmailSuccessBooking(detail);
+            String emailContent;
+            if (detail.getStatus().equals(BookRoomStatusEnum.WAITING)) {
+                emailContent = iEmailFactory.getEmailSuccessBooking(detail);
+            } else {
+                emailContent = iEmailFactory.getEmailCancelBooking(detail);
+            }
             iEmailFactory.sendSimpleMessage(detail.getEmail(), SubjectEmailConstant.BOOKING_SUCCESS, emailContent);
         } catch (Exception ignored) {
             // ignore

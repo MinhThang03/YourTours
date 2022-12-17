@@ -12,4 +12,6 @@ public interface IEmailFactory {
     String getEmailForgotPasswordContent(String userName, String expired, String otp);
 
     String getEmailSuccessBooking(BookHomeDetail detail);
+
+    String getEmailCancelBooking(BookHomeDetail detail);
 }

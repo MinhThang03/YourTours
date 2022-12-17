@@ -1,7 +1,8 @@
 package com.hcmute.yourtours.factories.booking;
 
-import com.hcmute.yourtours.entities.BookHomesCommand;
 import com.hcmute.yourtours.constant.CornConstant;
+import com.hcmute.yourtours.email.IEmailFactory;
+import com.hcmute.yourtours.entities.BookHomesCommand;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.MonthEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
@@ -13,11 +14,13 @@ import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.util.TimeUtil;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
+import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
 import com.hcmute.yourtours.models.statistic.common.RevenueStatistic;
 import com.hcmute.yourtours.models.statistic.host.models.HomeBookingStatistic;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
@@ -25,11 +28,13 @@ import com.hcmute.yourtours.repositories.BookHomeRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -51,6 +56,8 @@ public class BookHomeFactory
     protected final IBookingGuestDetailFactory iBookingGuestDetailFactory;
     protected final IOwnerOfHomeFactory iOwnerOfHomeFactory;
     protected final IGetUserFromTokenFactory iGetUserFromTokenFactory;
+    protected final IEmailFactory iEmailFactory;
+    protected final ApplicationEventPublisher applicationEventPublisher;
 
     protected BookHomeFactory
             (
@@ -59,7 +66,9 @@ public class BookHomeFactory
                     IUserFactory iUserFactory,
                     IBookingGuestDetailFactory iBookingGuestDetailFactory,
                     IOwnerOfHomeFactory iOwnerOfHomeFactory,
-                    IGetUserFromTokenFactory iGetUserFromTokenFactory
+                    IGetUserFromTokenFactory iGetUserFromTokenFactory,
+                    IEmailFactory iEmailFactory,
+                    ApplicationEventPublisher applicationEventPublisher
             ) {
         super(repository);
         this.bookHomeRepository = repository;
@@ -68,6 +77,8 @@ public class BookHomeFactory
         this.iBookingGuestDetailFactory = iBookingGuestDetailFactory;
         this.iOwnerOfHomeFactory = iOwnerOfHomeFactory;
         this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
+        this.iEmailFactory = iEmailFactory;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Override
@@ -267,7 +278,15 @@ public class BookHomeFactory
         }
 
         detail.setStatus(BookRoomStatusEnum.CANCELED);
-        updateModel(detail.getId(), detail);
+        detail = updateModel(detail.getId(), detail);
+
+        GetOwnerNameAndHomeNameProjection projection = iHomesFactory.getOwnerNameAndHomeNameProjection(detail.getHomeId());
+        detail.setOwnerName(projection.getOwnerName());
+        detail.setBaseCost(projection.getBaseCost());
+        detail.setHomeName(projection.getHomeName());
+        detail.setLastModifiedDate(TimeUtil.toStringDate(LocalDateTime.now()));
+
+        applicationEventPublisher.publishEvent(detail);
         return SuccessResponse.builder()
                 .success(true)
                 .build();
@@ -286,6 +305,7 @@ public class BookHomeFactory
         }
 
         detail.setStatus(BookRoomStatusEnum.CHECK_IN);
+        detail.setMoneyPayed(detail.getTotalCost());
         updateModel(detail.getId(), detail);
         return SuccessResponse.builder()
                 .success(true)

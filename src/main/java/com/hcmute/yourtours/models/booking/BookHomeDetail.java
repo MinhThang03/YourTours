@@ -27,6 +27,9 @@ public class BookHomeDetail extends BookHomeInfo {
     private String createdDate;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String lastModifiedDate;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Double surchargeCost;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

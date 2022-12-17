@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.factories.booking.cms;
 
+import com.hcmute.yourtours.email.IEmailFactory;
 import com.hcmute.yourtours.entities.BookHomesCommand;
 import com.hcmute.yourtours.factories.booking.BookHomeFactory;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
@@ -15,6 +16,7 @@ import com.hcmute.yourtours.models.booking.models.InfoUserBookingModel;
 import com.hcmute.yourtours.models.booking.projections.InfoUserBookingProjection;
 import com.hcmute.yourtours.repositories.BookHomeRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -34,9 +36,20 @@ public class CmsBookHomeFactory extends BookHomeFactory implements ICmsBookHomeF
                     IUserFactory iUserFactory,
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
                     IBookingGuestDetailFactory iBookingGuestDetailFactory,
-                    IOwnerOfHomeFactory iOwnerOfHomeFactory
+                    IOwnerOfHomeFactory iOwnerOfHomeFactory,
+                    IEmailFactory iEmailFactory,
+                    ApplicationEventPublisher applicationEventPublisher
             ) {
-        super(repository, iHomesFactory, iUserFactory, iBookingGuestDetailFactory, iOwnerOfHomeFactory, iGetUserFromTokenFactory);
+        super(
+                repository,
+                iHomesFactory,
+                iUserFactory,
+                iBookingGuestDetailFactory,
+                iOwnerOfHomeFactory,
+                iGetUserFromTokenFactory,
+                iEmailFactory,
+                applicationEventPublisher
+        );
     }
 
     @Override

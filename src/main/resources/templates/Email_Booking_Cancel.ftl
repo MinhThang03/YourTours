@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 >
@@ -151,10 +152,9 @@
                                 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 
                                     <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:22px;text-align:left;color:#555;">
-                                        Xin chào ${userName}!<br></br>
-                                        Cảm ơn bạn đã sử dụng dịch vụ của YourTours. Chúng tôi thật sự hạnh phúc
-                                        khi có bạn đồng hành!<br><br> Chúc bạn có một trải nghiệm tuyệt vời. Dưới đây là
-                                        thông tin đặt phòng của bạn:
+                                        Xin chào ${hehe}!<br></br>
+                                        Cảm ơn bạn đã sử dụng dịch vụ của YourTours. Chúng tôi thật sự rất tiếc khi bạn đã hủy sử dụng dịch vụ của chúng tôi!<br>
+                                        <br> Hi vọng có thể đồng hành cùng bạn trong tương lai. Dưới đây là thông tin hủy đặt phòng của bạn:
                                     </div>
 
                                 </td>
@@ -168,7 +168,7 @@
 
                                     <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
                                            style="border-collapse:separate;line-height:100%;">
-                                        <tr>
+                                        <tr >
                                             <td align="left" bgcolor="#2F67F6" role="presentation"
                                                 style="border:none;border-radius:3px;color:#ffffff;cursor:auto;padding:15px 25px;width:400px;margin:auto; height:100px;background:#eeeeee;"
                                                 valign="middle">
@@ -181,10 +181,9 @@
                                                                 <p style="margin:5px">Ngày đặt phòng</p>
                                                                 <p style="margin:5px">Ngày trả phòng</p>
                                                                 <p style="margin:5px">Giá nhà cơ bản</p>
-                                                                <p style="margin:5px">Giá phụ phí (nếu có)</p>
-                                                                <p style="margin:5px">Khuyến mãi (nếu có)</p>
                                                                 <p style="margin:5px">Tổng tiền thanh toán</p>
                                                                 <p style="margin:5px">Số tiền đã thanh toán</p>
+                                                                <p style="margin:5px">Trạng thái</p>
                                                             </div>
                                                             <div style="margin-left:10px">
                                                                 <p style="margin:5px">: ${homeName}</p>
@@ -192,13 +191,9 @@
                                                                 <p style="margin:5px">: ${dateStart}</p>
                                                                 <p style="margin:5px">: ${dateEnd}</p>
                                                                 <p style="margin:5px">: ${baseCost} đ</p>
-                                                                <p style="margin:5px">: ${surchargeCost} đ</p>
-                                                                <p style="margin:5px;font-weight: bold">: ${discount}
-                                                                    %</p>
-                                                                <p style="margin:5px;font-weight: bold;color:red">
-                                                                    : ${totalCost} đ</p>
-                                                                <p style="margin:5px;font-weight: bold;color:blue">
-                                                                    : ${moneyPay} đ</p>
+                                                                <p style="margin:5px;font-weight: bold;color:red">: ${totalCost} đ</p>
+                                                                <p style="margin:5px;font-weight: bold;color:blue">: ${moneyPay} đ</p>
+                                                                <p style="margin:5px">: ${status} đ</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -224,7 +219,7 @@
                                 <td align="left" style="font-size:0px;padding:5px 25px;word-break:break-word;">
 
                                     <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:22px;text-align:left;color:#555;">
-                                        Ngày in hóa đơn: ${createdDate}
+                                        Ngày hủy: ${cancelDate}
                                     </div>
 
                                 </td>

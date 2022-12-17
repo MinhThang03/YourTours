@@ -94,6 +94,31 @@ public class EmailFactory implements IEmailFactory {
         }
     }
 
+    @Override
+    public String getEmailCancelBooking(BookHomeDetail detail) {
+        try {
+            StringWriter stringWriter = new StringWriter();
+            Map<String, Object> model = new HashMap<>();
+            model.put("homeName", detail.getHomeName());
+            model.put("ownerName", detail.getOwnerName());
+            model.put("dateStart", detail.getDateStart());
+            model.put("dateEnd", detail.getDateEnd());
+            model.put("baseCost", detail.getBaseCost());
+            model.put("totalCost", detail.getTotalCost());
+            model.put("moneyPay", detail.getMoneyPayed());
+            model.put("status", detail.getStatus().getDescription());
+            model.put("billId", detail.getId());
+            model.put("cancelDate", detail.getLastModifiedDate());
+            model.put("userName", detail.getUserName());
+            freeMarkerConfiguration.getTemplate("Email_Booking_Cancel.ftl").process(model, stringWriter);
+            return stringWriter.getBuffer().toString();
+        } catch (Exception ignore) {
+            ignore.printStackTrace();
+            log.error("ERROR SEND EMAIL CANCEL BOOKING: {}  -- {}", ignore.getClass(), ignore.getMessage());
+            return null;
+        }
+    }
+
 
     private String getEmailOtp(String userName, String expired, String otp, String fileNameTemplate) {
         try {
