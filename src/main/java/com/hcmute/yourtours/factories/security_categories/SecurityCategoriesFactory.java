@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.security_categories;
 
-import com.hcmute.yourtours.commands.SecurityCategoriesCommand;
+import com.hcmute.yourtours.entities.SecurityCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;

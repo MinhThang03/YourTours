@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.homes.cms;
 
-import com.hcmute.yourtours.commands.HomesCommand;
+import com.hcmute.yourtours.entities.HomesCommand;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
 import com.hcmute.yourtours.factories.beds_of_home.IBedsOfHomeFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;

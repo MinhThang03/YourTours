@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.verification_token;
 
-import com.hcmute.yourtours.commands.VerificationOtpCommand;
+import com.hcmute.yourtours.entities.VerificationOtpCommand;
 import com.hcmute.yourtours.constant.CornConstant;
 import com.hcmute.yourtours.constant.TokenExpirationConstant;
 import com.hcmute.yourtours.enums.OtpTypeEnum;
@@ -174,7 +174,7 @@ public class VerificationOtpFactory
         return entity.get();
     }
 
-    private String autoGenerateOtp() throws InvalidException {
+    private String autoGenerateOtp() {
         SecureRandom random = new SecureRandom();
         String timeStrLocalDateTimeNow = TimeUtil.toStringDate(LocalDateTime.now());
         byte[] byteRandom = ("YourTour" + timeStrLocalDateTimeNow).getBytes();

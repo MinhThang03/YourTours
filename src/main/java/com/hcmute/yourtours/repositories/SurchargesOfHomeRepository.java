@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.commands.SurchargesOfHomeCommand;
+import com.hcmute.yourtours.entities.SurchargesOfHomeCommand;
 import com.hcmute.yourtours.models.surcharges_of_home.projections.SurchargeHomeViewProjection;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;

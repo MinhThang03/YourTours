@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.booking.cms;
 
-import com.hcmute.yourtours.commands.BookHomesCommand;
+import com.hcmute.yourtours.entities.BookHomesCommand;
 import com.hcmute.yourtours.factories.booking.BookHomeFactory;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;

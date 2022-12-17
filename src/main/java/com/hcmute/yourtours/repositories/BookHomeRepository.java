@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.commands.BookHomesCommand;
+import com.hcmute.yourtours.entities.BookHomesCommand;
 import com.hcmute.yourtours.models.booking.projections.InfoUserBookingProjection;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
 import org.springframework.data.domain.Page;

@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.bed_categories;
 
-import com.hcmute.yourtours.commands.BedCategoriesCommand;
+import com.hcmute.yourtours.entities.BedCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;

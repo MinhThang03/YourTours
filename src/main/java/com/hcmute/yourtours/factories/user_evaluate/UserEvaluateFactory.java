@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.user_evaluate;
 
-import com.hcmute.yourtours.commands.UserEvaluateCommand;
+import com.hcmute.yourtours.entities.UserEvaluateCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;

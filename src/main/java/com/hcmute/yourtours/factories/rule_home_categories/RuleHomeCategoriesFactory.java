@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.rule_home_categories;
 
-import com.hcmute.yourtours.commands.RuleHomeCategoriesCommand;
+import com.hcmute.yourtours.entities.RuleHomeCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;

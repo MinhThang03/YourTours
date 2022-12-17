@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.surcharge_home_categories;
 
-import com.hcmute.yourtours.commands.SurchargeHomeCategoriesCommand;
+import com.hcmute.yourtours.entities.SurchargeHomeCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;

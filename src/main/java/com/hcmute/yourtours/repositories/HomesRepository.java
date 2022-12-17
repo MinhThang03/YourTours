@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.commands.HomesCommand;
+import com.hcmute.yourtours.entities.HomesCommand;
 import com.hcmute.yourtours.models.province.ProvinceProjection;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;

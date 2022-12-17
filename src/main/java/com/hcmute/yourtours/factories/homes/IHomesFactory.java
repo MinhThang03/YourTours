@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.homes;
 
-import com.hcmute.yourtours.commands.HomesCommand;
+import com.hcmute.yourtours.entities.HomesCommand;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.IDataFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;

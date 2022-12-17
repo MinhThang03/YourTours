@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.commands.GuestCategoriesCommand;
+import com.hcmute.yourtours.entities.GuestCategoriesCommand;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.commands.RuleHomeCategoriesCommand;
+import com.hcmute.yourtours.entities.RuleHomeCategoriesCommand;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

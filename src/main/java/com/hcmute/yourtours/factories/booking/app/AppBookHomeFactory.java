@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.booking.app;
 
-import com.hcmute.yourtours.commands.BookHomesCommand;
+import com.hcmute.yourtours.entities.BookHomesCommand;
 import com.hcmute.yourtours.constant.FeeRateOfAdminConstant;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;

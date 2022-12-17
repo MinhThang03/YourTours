@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.discount_campaign.app;
 
-import com.hcmute.yourtours.commands.DiscountCampaignCommand;
+import com.hcmute.yourtours.entities.DiscountCampaignCommand;
 import com.hcmute.yourtours.factories.discount_campaign.DiscountCampaignFactory;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.repositories.DiscountCampaignRepository;

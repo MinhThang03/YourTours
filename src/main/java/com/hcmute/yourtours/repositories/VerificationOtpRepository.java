@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.commands.VerificationOtpCommand;
+import com.hcmute.yourtours.entities.VerificationOtpCommand;
 import com.hcmute.yourtours.enums.OtpTypeEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

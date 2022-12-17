@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.booking_guest_detail;
 
-import com.hcmute.yourtours.commands.BookingHomeGuestDetailCommand;
+import com.hcmute.yourtours.entities.BookingHomeGuestDetailCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;

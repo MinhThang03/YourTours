@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.discount_campaign;
 
-import com.hcmute.yourtours.commands.DiscountCampaignCommand;
+import com.hcmute.yourtours.entities.DiscountCampaignCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;

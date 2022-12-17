@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.images_room_home;
 
-import com.hcmute.yourtours.commands.ImagesRoomHomeCommand;
+import com.hcmute.yourtours.entities.ImagesRoomHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;

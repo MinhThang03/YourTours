@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.item_favorites;
 
-import com.hcmute.yourtours.commands.ItemFavoritesCommand;
+import com.hcmute.yourtours.entities.ItemFavoritesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;

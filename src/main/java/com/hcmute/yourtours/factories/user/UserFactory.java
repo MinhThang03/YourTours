@@ -1,7 +1,7 @@
 package com.hcmute.yourtours.factories.user;
 
 
-import com.hcmute.yourtours.commands.UserCommand;
+import com.hcmute.yourtours.entities.UserCommand;
 import com.hcmute.yourtours.constant.RoleConstant;
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
 import com.hcmute.yourtours.constant.TokenExpirationConstant;

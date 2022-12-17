@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.discount_of_home;
 
-import com.hcmute.yourtours.commands.DiscountOfHomeCommand;
+import com.hcmute.yourtours.entities.DiscountOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.discount_home_categories.IDiscountHomeCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;

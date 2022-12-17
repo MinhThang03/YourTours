@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.homes;
 
-import com.hcmute.yourtours.commands.HomesCommand;
+import com.hcmute.yourtours.entities.HomesCommand;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.enums.ProvinceEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;

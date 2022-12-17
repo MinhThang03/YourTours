@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.amenities_of_home;
 
-import com.hcmute.yourtours.commands.AmenitiesOfHomeCommand;
+import com.hcmute.yourtours.entities.AmenitiesOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.common.IAuthorizationOwnerHomeFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;

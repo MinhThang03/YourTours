@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.commands.RoomsOfHomeCommand;
+import com.hcmute.yourtours.entities.RoomsOfHomeCommand;
 import com.hcmute.yourtours.models.rooms_of_home.projections.NumberOfRoomsProjections;
 import com.hcmute.yourtours.models.rooms_of_home.projections.RoomOfHomeDetailWithBedProjections;
 import org.springframework.data.domain.Page;

@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.commands.UserCommand;
+import com.hcmute.yourtours.entities.UserCommand;
 import com.hcmute.yourtours.models.statistic.admin.projections.StatisticCountProjections;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

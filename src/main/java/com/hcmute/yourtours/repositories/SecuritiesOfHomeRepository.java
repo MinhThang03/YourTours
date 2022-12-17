@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.commands.SecuritiesOfHomeCommand;
+import com.hcmute.yourtours.entities.SecuritiesOfHomeCommand;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

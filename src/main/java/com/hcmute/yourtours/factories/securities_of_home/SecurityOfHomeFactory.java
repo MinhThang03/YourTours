@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.securities_of_home;
 
-import com.hcmute.yourtours.commands.SecuritiesOfHomeCommand;
+import com.hcmute.yourtours.entities.SecuritiesOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;

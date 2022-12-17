@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.discount_home_categories;
 
-import com.hcmute.yourtours.commands.DiscountHomeCategoriesCommand;
+import com.hcmute.yourtours.entities.DiscountHomeCategoriesCommand;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;

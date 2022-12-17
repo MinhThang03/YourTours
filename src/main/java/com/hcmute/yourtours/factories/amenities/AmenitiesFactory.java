@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.amenities;
 
-import com.hcmute.yourtours.commands.AmenitiesCommand;
+import com.hcmute.yourtours.entities.AmenitiesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenity_categories.IAmenityCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;

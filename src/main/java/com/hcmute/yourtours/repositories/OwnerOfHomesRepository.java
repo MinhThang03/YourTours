@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.commands.OwnerOfHomeCommand;
+import com.hcmute.yourtours.entities.OwnerOfHomeCommand;
 import com.hcmute.yourtours.models.owner_of_home.projections.StatisticInfoOwnerProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

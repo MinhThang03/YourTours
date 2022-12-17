@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.booking;
 
-import com.hcmute.yourtours.commands.BookHomesCommand;
+import com.hcmute.yourtours.entities.BookHomesCommand;
 import com.hcmute.yourtours.constant.CornConstant;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.MonthEnum;

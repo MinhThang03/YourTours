@@ -1,7 +1,7 @@
 package com.hcmute.yourtours.factories.amenity_categories;
 
 
-import com.hcmute.yourtours.commands.AmenityCategoriesCommand;
+import com.hcmute.yourtours.entities.AmenityCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;

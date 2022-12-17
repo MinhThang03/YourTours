@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.commands.DiscountHomeCategoriesCommand;
+import com.hcmute.yourtours.entities.DiscountHomeCategoriesCommand;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

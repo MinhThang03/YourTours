@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.rooms_of_home;
 
-import com.hcmute.yourtours.commands.RoomsOfHomeCommand;
+import com.hcmute.yourtours.entities.RoomsOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.beds_of_home.IBedsOfHomeFactory;
 import com.hcmute.yourtours.factories.common.IAuthorizationOwnerHomeFactory;

@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.commands.AmenitiesOfHomeCommand;
+import com.hcmute.yourtours.entities.AmenitiesOfHomeCommand;
 import com.hcmute.yourtours.models.amenities_of_home.projection.AmenityOfHomeProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.guest_categories;
 
-import com.hcmute.yourtours.commands.GuestCategoriesCommand;
+import com.hcmute.yourtours.entities.GuestCategoriesCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;

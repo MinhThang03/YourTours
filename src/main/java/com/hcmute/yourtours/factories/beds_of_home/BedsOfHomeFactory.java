@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.beds_of_home;
 
-import com.hcmute.yourtours.commands.BedsOfHomeCommand;
+import com.hcmute.yourtours.entities.BedsOfHomeCommand;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.bed_categories.IBedCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
