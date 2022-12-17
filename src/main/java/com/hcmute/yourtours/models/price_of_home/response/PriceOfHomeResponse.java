@@ -15,4 +15,5 @@ public class PriceOfHomeResponse {
     private List<ArrayPriceAndDayModels> detail;
     private double totalCostWithSurcharge;
     private double totalCostWithNoDiscount;
+    private double surchargeCost;
 }

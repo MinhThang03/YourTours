@@ -22,6 +22,7 @@ import com.hcmute.yourtours.models.booking_guest_detail.BookingGuestDetailInfo;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
+import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
 import com.hcmute.yourtours.models.images_home.ImageHomeDetail;
 import com.hcmute.yourtours.models.owner_of_home.OwnerOfHomeDetail;
 import com.hcmute.yourtours.models.user.UserDetail;
@@ -331,5 +332,10 @@ public class HomesFactory
                 size,
                 page.getTotalElements()
         );
+    }
+
+    @Override
+    public GetOwnerNameAndHomeNameProjection getOwnerNameAndHomeNameProjection(UUID homeId) {
+        return homesRepository.getOwnerNameAndHomeName(homeId);
     }
 }

@@ -7,6 +7,7 @@ import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.models.booking_guest_detail.BookingGuestDetailDetail;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
+import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,4 +22,6 @@ public interface IHomesFactory extends IDataFactory<UUID, HomeInfo, HomeDetail> 
     BasePagingResponse<HomeInfo> getFilterWithProvinceName(String search, Integer number, Integer size) throws InvalidException;
 
     BasePagingResponse<HomeInfo> getPageWithRoleAdmin(Integer number, Integer size) throws InvalidException;
+
+    GetOwnerNameAndHomeNameProjection getOwnerNameAndHomeNameProjection(UUID homeId);
 }

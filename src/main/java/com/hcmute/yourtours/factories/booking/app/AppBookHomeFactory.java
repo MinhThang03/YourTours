@@ -1,7 +1,9 @@
 package com.hcmute.yourtours.factories.booking.app;
 
-import com.hcmute.yourtours.entities.BookHomesCommand;
 import com.hcmute.yourtours.constant.FeeRateOfAdminConstant;
+import com.hcmute.yourtours.constant.SubjectEmailConstant;
+import com.hcmute.yourtours.email.IEmailFactory;
+import com.hcmute.yourtours.entities.BookHomesCommand;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.booking.BookHomeFactory;
@@ -15,17 +17,22 @@ import com.hcmute.yourtours.factories.surcharges_of_home.ISurchargeOfHomeFactory
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
+import com.hcmute.yourtours.libs.util.TimeUtil;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking_surcharge_detail.BookingSurchargeDetailDetail;
+import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
 import com.hcmute.yourtours.models.price_of_home.request.GetPriceOfHomeRequest;
 import com.hcmute.yourtours.models.price_of_home.response.PriceOfHomeResponse;
 import com.hcmute.yourtours.models.surcharges_of_home.models.SurchargeHomeViewModel;
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.repositories.BookHomeRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,6 +45,8 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
     private final ISurchargeOfHomeFactory iSurchargeOfHomeFactory;
     private final IPriceOfHomeFactory iPriceOfHomeFactory;
     private final IBookingSurchargeDetailFactory iBookingSurchargeDetailFactory;
+    private final IEmailFactory iEmailFactory;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     protected AppBookHomeFactory
             (
@@ -49,12 +58,24 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
                     IBookingSurchargeDetailFactory iBookingSurchargeDetailFactory,
                     IBookingGuestDetailFactory iBookingGuestDetailFactory,
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
-                    IOwnerOfHomeFactory iOwnerOfHomeFactory
+                    IOwnerOfHomeFactory iOwnerOfHomeFactory,
+                    IEmailFactory iEmailFactory,
+                    ApplicationEventPublisher applicationEventPublisher
             ) {
-        super(repository, iHomesFactory, iUserFactory, iBookingGuestDetailFactory, iOwnerOfHomeFactory, iGetUserFromTokenFactory);
+        super
+                (
+                        repository,
+                        iHomesFactory,
+                        iUserFactory,
+                        iBookingGuestDetailFactory,
+                        iOwnerOfHomeFactory,
+                        iGetUserFromTokenFactory
+                );
         this.iSurchargeOfHomeFactory = iSurchargeOfHomeFactory;
         this.iPriceOfHomeFactory = iPriceOfHomeFactory;
         this.iBookingSurchargeDetailFactory = iBookingSurchargeDetailFactory;
+        this.iEmailFactory = iEmailFactory;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Override
@@ -66,6 +87,7 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
             detail.setEmail(userDetail.getEmail());
             detail.setUserId(userId);
             detail.setPhoneNumber(userDetail.getPhoneNumber());
+            detail.setUserName(userDetail.getFullName());
 
             if (userDetail.getStatus() == null || !userDetail.getStatus().equals(UserStatusEnum.ACTIVE)) {
                 throw new InvalidException(YourToursErrorCode.ACCOUNT_NOT_ACTIVE);
@@ -109,6 +131,7 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
         double costOfAdmin = Math.round(detail.getTotalCost() * (FeeRateOfAdminConstant.FEE_RATE_OF_ADMIN / 100));
         detail.setCostOfAdmin(costOfAdmin);
         detail.setCostOfHost(detail.getTotalCost() - costOfAdmin);
+        detail.setSurchargeCost(priceOfHomeResponse.getSurchargeCost());
     }
 
 
@@ -116,6 +139,14 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
     protected void postCreate(BookHomesCommand entity, BookHomeDetail detail) throws InvalidException {
         iBookingGuestDetailFactory.createListModel(entity.getBookId(), detail.getGuests());
         iBookingSurchargeDetailFactory.createListModel(entity.getBookId(), detail.getSurcharges());
+
+        GetOwnerNameAndHomeNameProjection projection = iHomesFactory.getOwnerNameAndHomeNameProjection(entity.getHomeId());
+        detail.setId(entity.getBookId());
+        detail.setHomeName(projection.getHomeName());
+        detail.setOwnerName(projection.getOwnerName());
+        detail.setBaseCost(projection.getBaseCost());
+        detail.setCreatedDate(TimeUtil.toStringDate(entity.getCreatedDate()));
+        applicationEventPublisher.publishEvent(entity);
     }
 
     @Override
@@ -124,4 +155,16 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
 
         return bookHomeRepository.findBookingOfUser(customerId, PageRequest.of(number, size));
     }
+
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void sendMessageSocket(BookHomeDetail detail) {
+        try {
+            String emailContent = iEmailFactory.getEmailSuccessBooking(detail);
+            iEmailFactory.sendSimpleMessage(detail.getEmail(), SubjectEmailConstant.BOOKING_SUCCESS, emailContent);
+        } catch (Exception ignored) {
+            // ignore
+        }
+    }
+
 }

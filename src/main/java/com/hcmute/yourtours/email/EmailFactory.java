@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.email;
 
+import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import freemarker.template.Configuration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -47,7 +48,7 @@ public class EmailFactory implements IEmailFactory {
             emailSender.send(mimeMessage);
         } catch (Exception ignore) {
             ignore.printStackTrace();
-            log.error("ERROR SEND EMAIL: {}  -- {}", ignore.getClass(), ignore.getMessage());
+            log.error("ERROR SEND SIMPLE EMAIL: {}  -- {}", ignore.getClass(), ignore.getMessage());
         }
 
     }
@@ -67,6 +68,32 @@ public class EmailFactory implements IEmailFactory {
         return getEmailOtp(userName, expired, otp, "Email_Forgot_Password.ftl");
     }
 
+    @Override
+    public String getEmailSuccessBooking(BookHomeDetail detail) {
+        try {
+            StringWriter stringWriter = new StringWriter();
+            Map<String, Object> model = new HashMap<>();
+            model.put("homeName", detail.getHomeName());
+            model.put("ownerName", detail.getOwnerName());
+            model.put("dateStart", detail.getDateStart());
+            model.put("dateEnd", detail.getDateEnd());
+            model.put("baseCost", detail.getBaseCost());
+            model.put("surchargeCost", detail.getSurchargeCost());
+            model.put("discount", detail.getPercent());
+            model.put("totalCost", detail.getTotalCost());
+            model.put("moneyPay", detail.getMoneyPayed());
+            model.put("billId", detail.getId());
+            model.put("createdDate", detail.getCreatedDate());
+            model.put("userName", detail.getUserName());
+            freeMarkerConfiguration.getTemplate("Email_Booking_Success.ftl").process(model, stringWriter);
+            return stringWriter.getBuffer().toString();
+        } catch (Exception ignore) {
+            ignore.printStackTrace();
+            log.error("ERROR SEND EMAIL SUCCESS BOOKING: {}  -- {}", ignore.getClass(), ignore.getMessage());
+            return null;
+        }
+    }
+
 
     private String getEmailOtp(String userName, String expired, String otp, String fileNameTemplate) {
         try {
@@ -79,7 +106,7 @@ public class EmailFactory implements IEmailFactory {
             return stringWriter.getBuffer().toString();
         } catch (Exception ignore) {
             ignore.printStackTrace();
-            log.error("ERROR SEND EMAIL: {}  -- {}", ignore.getClass(), ignore.getMessage());
+            log.error("ERROR SEND EMAIL OTP: {}  -- {}", ignore.getClass(), ignore.getMessage());
             return null;
         }
     }

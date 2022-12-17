@@ -240,6 +240,7 @@ public class PriceOfHomeFactory
                 .totalCost(total)
                 .totalCostWithNoDiscount(total + surchargeFee)
                 .totalCostWithSurcharge(totalCost)
+                .surchargeCost(surchargeFee)
                 .discountName(discountOfName)
                 .percent(percent)
                 .detail(priceDetail)

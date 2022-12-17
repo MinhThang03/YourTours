@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.entities.HomesCommand;
+import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
 import com.hcmute.yourtours.models.province.ProvinceProjection;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
@@ -188,4 +189,20 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
     )
     Page<HomesCommand> getPageWithListProvinceCode(@Param("listProvinceCode") List<Integer> listProvinceCode,
                                                    Pageable pageable);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.name      as homeName, " +
+                    "       a.cost_per_night_default as baseCost " +
+                    "       c.full_name as ownerName " +
+                    "from homes a, " +
+                    "     owner_of_home b, " +
+                    "     user c " +
+                    "where a.home_id = b.home_id " +
+                    "  and b.user_id = c.userid " +
+                    "  and b.is_main_owner is true " +
+                    "  and a.home_id = :homeId "
+    )
+    GetOwnerNameAndHomeNameProjection getOwnerNameAndHomeName(UUID homeId);
 }
