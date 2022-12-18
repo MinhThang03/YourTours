@@ -19,7 +19,7 @@ public interface BedsOfHomeRepository extends JpaRepository<BedsOfHomeCommand, L
             value = "select COALESCE(sum(a.amount), 0) " +
                     "from beds_of_home a, " +
                     "     rooms_of_home b " +
-                    "where a.room_of_home_id = b.room_category_id " +
+                    "where a.room_of_home_id = b.room_of_home_id " +
                     "  and b.home_id = :homeId "
     )
     Integer countNumberOfBedByHomeId(@Param("homeId") UUID homeId);
