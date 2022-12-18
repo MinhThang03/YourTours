@@ -194,7 +194,7 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
     @Query(
             nativeQuery = true,
             value = "select a.name      as homeName, " +
-                    "       a.cost_per_night_default as baseCost " +
+                    "       a.cost_per_night_default as baseCost, " +
                     "       c.full_name as ownerName " +
                     "from homes a, " +
                     "     owner_of_home b, " +
