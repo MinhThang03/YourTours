@@ -145,7 +145,7 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
         detail.setOwnerName(projection.getOwnerName());
         detail.setBaseCost(projection.getBaseCost());
         detail.setCreatedDate(TimeUtil.toStringDate(entity.getCreatedDate()));
-        applicationEventPublisher.publishEvent(entity);
+        applicationEventPublisher.publishEvent(detail);
     }
 
     @Override
@@ -162,10 +162,11 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
             String emailContent;
             if (detail.getStatus().equals(BookRoomStatusEnum.WAITING)) {
                 emailContent = iEmailFactory.getEmailSuccessBooking(detail);
+                iEmailFactory.sendSimpleMessage(detail.getEmail(), SubjectEmailConstant.BOOKING_SUCCESS, emailContent);
             } else {
                 emailContent = iEmailFactory.getEmailCancelBooking(detail);
+                iEmailFactory.sendSimpleMessage(detail.getEmail(), SubjectEmailConstant.BOOKING_CANCEL, emailContent);
             }
-            iEmailFactory.sendSimpleMessage(detail.getEmail(), SubjectEmailConstant.BOOKING_SUCCESS, emailContent);
         } catch (Exception ignored) {
             // ignore
         }
