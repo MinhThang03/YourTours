@@ -78,8 +78,8 @@ public class EmailFactory implements IEmailFactory {
             model.put("dateStart", detail.getDateStart().toString());
             model.put("dateEnd", detail.getDateEnd().toString());
             model.put("baseCost", detail.getBaseCost().toString());
-            model.put("surchargeCost", detail.getSurchargeCost() == null ? "" : detail.getSurchargeCost().toString());
-            model.put("discount", detail.getPercent() == null ? "" : detail.getPercent().toString());
+            model.put("surchargeCost", detail.getSurchargeCost() == null ? "0" : detail.getSurchargeCost().toString());
+            model.put("discount", detail.getPercent() == null ? "0" : detail.getPercent().toString());
             model.put("totalCost", detail.getTotalCost().toString());
             model.put("moneyPay", detail.getMoneyPayed().toString());
             model.put("billId", detail.getId().toString());
