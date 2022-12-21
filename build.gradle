@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-group = 'vn.com.unicloud'
+group = 'vn.com.hcmute'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 

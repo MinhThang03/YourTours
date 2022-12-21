@@ -20,7 +20,7 @@ public class KeycloakConfig {
     }
 
     /**
-     * Keycloak config for car parking profile
+     * Keycloak config for your tours profile
      *
      * @return Keycloak
      */

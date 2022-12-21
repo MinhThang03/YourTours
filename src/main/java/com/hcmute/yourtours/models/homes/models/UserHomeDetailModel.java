@@ -3,6 +3,7 @@ package com.hcmute.yourtours.models.homes.models;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.models.amenities.AmenityInfo;
+import com.hcmute.yourtours.models.discount_of_home.models.DiscountOfHomeViewModel;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.models.RoomOfHomeDetailWithBedModel;
 import com.hcmute.yourtours.models.surcharges_of_home.models.SurchargeHomeViewModel;
@@ -30,4 +31,5 @@ public class UserHomeDetailModel implements Serializable {
     private String descriptionHomeDetail;
     private List<SurchargeHomeViewModel> surcharges;
     private Double totalCostBooking;
+    private List<DiscountOfHomeViewModel> discounts;
 }

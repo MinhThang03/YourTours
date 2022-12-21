@@ -7,6 +7,7 @@ import com.hcmute.yourtours.factories.amenities.IAmenitiesFactory;
 import com.hcmute.yourtours.factories.beds_of_home.IBedsOfHomeFactory;
 import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
+import com.hcmute.yourtours.factories.discount_of_home.IDiscountOfHomeFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
@@ -17,6 +18,7 @@ import com.hcmute.yourtours.factories.user_evaluate.IUserEvaluateFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
+import com.hcmute.yourtours.models.discount_of_home.models.DiscountOfHomeViewModel;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.models.UserHomeDetailModel;
 import com.hcmute.yourtours.models.price_of_home.request.GetPriceOfHomeRequest;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
@@ -46,6 +49,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
     private final IBedsOfHomeFactory iBedsOfHomeFactory;
     private final ISurchargeOfHomeFactory iSurchargeOfHomeFactory;
     private final IPriceOfHomeFactory iPriceOfHomeFactory;
+    private final IDiscountOfHomeFactory iDiscountOfHomeFactory;
 
     public AppHandleViewHomeFactory(
             @Qualifier("appHomesFactory") IHomesFactory iHomesFactory,
@@ -58,8 +62,8 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
             @Qualifier("appAmenitiesFactory") IAmenitiesFactory iAmenitiesFactory,
             IBedsOfHomeFactory iBedsOfHomeFactory,
             ISurchargeOfHomeFactory iSurchargeOfHomeFactory,
-            IPriceOfHomeFactory iPriceOfHomeFactory
-    ) {
+            IPriceOfHomeFactory iPriceOfHomeFactory,
+            IDiscountOfHomeFactory iDiscountOfHomeFactory) {
         this.iHomesFactory = iHomesFactory;
         this.iBookHomeFactory = iBookHomeFactory;
         this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
@@ -71,6 +75,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
         this.iBedsOfHomeFactory = iBedsOfHomeFactory;
         this.iSurchargeOfHomeFactory = iSurchargeOfHomeFactory;
         this.iPriceOfHomeFactory = iPriceOfHomeFactory;
+        this.iDiscountOfHomeFactory = iDiscountOfHomeFactory;
     }
 
     @Override
@@ -93,6 +98,9 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                     .homeId(homeId)
                     .build());
 
+            List<DiscountOfHomeViewModel> discounts = iDiscountOfHomeFactory.getDiscountsOfHomeView(homeId)
+                    .stream().filter(item -> item.getConfig() != null).collect(Collectors.toList());
+
             UserHomeDetailModel result = UserHomeDetailModel.builder()
                     .homeDetail(homeDetail)
                     .evaluates(evaluates)
@@ -103,6 +111,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                     .descriptionHomeDetail(getDescriptionHomeDetail(homeDetail))
                     .surcharges(iSurchargeOfHomeFactory.getListSurchargeOfHome(homeId))
                     .totalCostBooking(price.getTotalCostWithSurcharge())
+                    .discounts(discounts)
                     .build();
 
             Optional<String> userId = iGetUserFromTokenFactory.getCurrentUser();
