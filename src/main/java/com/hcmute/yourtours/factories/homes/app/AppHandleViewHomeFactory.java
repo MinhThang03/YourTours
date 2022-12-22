@@ -99,7 +99,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                     .build());
 
             List<DiscountOfHomeViewModel> discounts = iDiscountOfHomeFactory.getDiscountsOfHomeView(homeId)
-                    .stream().filter(item -> item.getConfig() != null).collect(Collectors.toList());
+                    .stream().filter(item -> !(item.getConfig() == null || item.getConfig().getPercent() == null) ).collect(Collectors.toList());
 
             UserHomeDetailModel result = UserHomeDetailModel.builder()
                     .homeDetail(homeDetail)
