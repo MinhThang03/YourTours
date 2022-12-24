@@ -12,7 +12,7 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.beds_of_home.BedOfHomeDetail;
 import com.hcmute.yourtours.models.beds_of_home.BedOfHomeInfo;
 import com.hcmute.yourtours.models.beds_of_home.models.CreateListBedOfHomeDetail;
-import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.beds_of_home.responses.CreateListBedOfHomeResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,10 +41,10 @@ public class CmsBedOfHomeController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<SuccessResponse>> createModelWithList(CreateListBedOfHomeDetail request) {
+    public ResponseEntity<BaseResponse<CreateListBedOfHomeResponse>> createModelWithList(CreateListBedOfHomeDetail request) {
         try {
             LogContext.push(LogType.REQUEST, request);
-            SuccessResponse response = iBedsOfHomeFactory.createListModel(request);
+            CreateListBedOfHomeResponse response = iBedsOfHomeFactory.createListModel(request);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {

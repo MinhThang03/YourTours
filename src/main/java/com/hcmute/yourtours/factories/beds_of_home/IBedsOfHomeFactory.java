@@ -5,7 +5,7 @@ import com.hcmute.yourtours.libs.factory.IDataFactory;
 import com.hcmute.yourtours.models.beds_of_home.BedOfHomeDetail;
 import com.hcmute.yourtours.models.beds_of_home.BedOfHomeInfo;
 import com.hcmute.yourtours.models.beds_of_home.models.CreateListBedOfHomeDetail;
-import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.beds_of_home.responses.CreateListBedOfHomeResponse;
 
 import java.util.UUID;
 
@@ -14,7 +14,7 @@ public interface IBedsOfHomeFactory extends IDataFactory<UUID, BedOfHomeInfo, Be
 
     Integer countByRoomHomeIdAndCategoryId(UUID roomHomeId, UUID categoryId);
 
-    SuccessResponse createListModel(CreateListBedOfHomeDetail request) throws InvalidException;
+    CreateListBedOfHomeResponse createListModel(CreateListBedOfHomeDetail request) throws InvalidException;
 
     String getDescriptionNumberBedOfRoom(UUID roomHomeId) throws InvalidException;
 

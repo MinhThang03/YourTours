@@ -1,10 +1,10 @@
 package com.hcmute.yourtours.models.common;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
 public class SuccessResponse {
     private boolean success;
 }

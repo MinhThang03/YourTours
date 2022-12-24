@@ -8,7 +8,7 @@ import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.beds_of_home.BedOfHomeDetail;
 import com.hcmute.yourtours.models.beds_of_home.BedOfHomeInfo;
 import com.hcmute.yourtours.models.beds_of_home.models.CreateListBedOfHomeDetail;
-import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.beds_of_home.responses.CreateListBedOfHomeResponse;
 import com.hcmute.yourtours.repositories.BedsOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -113,17 +113,25 @@ public class BedsOfHomeFactory
     }
 
     @Override
-    public SuccessResponse createListModel(CreateListBedOfHomeDetail request) throws InvalidException {
+    public CreateListBedOfHomeResponse createListModel(CreateListBedOfHomeDetail request) throws InvalidException {
         if (request == null || request.getListBedOfHomeDetail() == null) {
             return null;
         }
 
+        String description = "";
         for (BedOfHomeDetail item : request.getListBedOfHomeDetail()) {
             createModel(item);
+            String categoryName = iBedCategoriesFactory.getDetailModel(item.getCategoryId(), null).getName();
+            description = description
+                    .concat(item.getAmount().toString())
+                    .concat(" ")
+                    .concat(categoryName)
+                    .concat(" ");
         }
 
-        return SuccessResponse.builder()
+        return CreateListBedOfHomeResponse.builder()
                 .success(true)
+                .bedDescription(description)
                 .build();
     }
 
