@@ -118,20 +118,16 @@ public class BedsOfHomeFactory
             return null;
         }
 
-        String description = "";
+        UUID roomHomeId = null;
+
         for (BedOfHomeDetail item : request.getListBedOfHomeDetail()) {
             createModel(item);
-            String categoryName = iBedCategoriesFactory.getDetailModel(item.getCategoryId(), null).getName();
-            description = description
-                    .concat(item.getAmount().toString())
-                    .concat(" ")
-                    .concat(categoryName)
-                    .concat(" ");
+            roomHomeId = item.getRoomOfHomeId();
         }
 
         return CreateListBedOfHomeResponse.builder()
                 .success(true)
-                .bedDescription(description)
+                .bedDescription(getDescriptionNumberBedOfRoom(roomHomeId))
                 .build();
     }
 
