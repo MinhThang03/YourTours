@@ -410,17 +410,21 @@ public class BookHomeFactory
     protected void autoUpdateCheckOut() {
         for (int i = 0; i <= 3; i++) {
             try {
-                List<BookHomesCommand> bookHomes = bookHomeRepository.findAllCommandNeedUpdateCheckOut(LocalDate.now(), BookRoomStatusEnum.CHECK_OUT.name());
-                for (BookHomesCommand bookHome : bookHomes) {
-                    if (bookHome.getStatus().equals(BookRoomStatusEnum.CANCELED)) {
-                        bookHome.setStatus(BookRoomStatusEnum.CHECK_OUT);
-                        repository.save(bookHome);
-                    }
-                }
+                handleAutoUpdateCheckOut();
                 log.info("--- JOB SCHEDULE UPDATE STATUS BOOKING IS SUCCESSFUL !");
                 return;
             } catch (Exception e) {
                 log.error("--- JOB SCHEDULE UPDATE STATUS BOOKING IS ERROR !");
+            }
+        }
+    }
+
+    protected void handleAutoUpdateCheckOut() {
+        List<BookHomesCommand> bookHomes = bookHomeRepository.findAllCommandNeedUpdateCheckOut(LocalDate.now(), BookRoomStatusEnum.CHECK_OUT.name());
+        for (BookHomesCommand bookHome : bookHomes) {
+            if (bookHome.getStatus().equals(BookRoomStatusEnum.CANCELED)) {
+                bookHome.setStatus(BookRoomStatusEnum.CHECK_OUT);
+                repository.save(bookHome);
             }
         }
     }

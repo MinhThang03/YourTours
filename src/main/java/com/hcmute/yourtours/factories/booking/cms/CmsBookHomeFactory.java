@@ -11,6 +11,7 @@ import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
+import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.filter.CmsBookingFilter;
 import com.hcmute.yourtours.models.booking.models.InfoUserBookingModel;
 import com.hcmute.yourtours.models.booking.projections.InfoUserBookingProjection;
@@ -64,6 +65,12 @@ public class CmsBookHomeFactory extends BookHomeFactory implements ICmsBookHomeF
                         bookingFilter.getDataStart(),
                         PageRequest.of(number, size)
                 );
+    }
+
+    @Override
+    protected <F extends BaseFilter> BasePagingResponse<BookHomeInfo> aroundGetPage(F filter, Integer number, Integer size) throws InvalidException {
+        handleAutoUpdateCheckOut();
+        return super.aroundGetPage(filter, number, size);
     }
 
     @Override
