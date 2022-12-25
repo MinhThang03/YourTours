@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
+import javax.swing.*;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,11 +78,11 @@ public class EmailFactory implements IEmailFactory {
             model.put("ownerName", detail.getOwnerName());
             model.put("dateStart", detail.getDateStart().toString());
             model.put("dateEnd", detail.getDateEnd().toString());
-            model.put("baseCost", detail.getBaseCost().toString());
-            model.put("surchargeCost", detail.getSurchargeCost() == null ? "0" : detail.getSurchargeCost().toString());
+            model.put("baseCost", String.valueOf(detail.getBaseCost().longValue()));
+            model.put("surchargeCost", detail.getSurchargeCost() == null ? "0" : String.valueOf(detail.getSurchargeCost().longValue()) );
             model.put("discount", detail.getPercent() == null ? "0" : detail.getPercent().toString());
-            model.put("totalCost", detail.getTotalCost().toString());
-            model.put("moneyPay", detail.getMoneyPayed().toString());
+            model.put("totalCost", String.valueOf(detail.getTotalCost().longValue()) );
+            model.put("moneyPay", String.valueOf(detail.getMoneyPayed().longValue()) );
             model.put("billId", detail.getId().toString());
             model.put("createdDate", detail.getCreatedDate());
             model.put("userName", detail.getUserName());
@@ -103,9 +104,9 @@ public class EmailFactory implements IEmailFactory {
             model.put("ownerName", detail.getOwnerName());
             model.put("dateStart", detail.getDateStart().toString());
             model.put("dateEnd", detail.getDateEnd().toString());
-            model.put("baseCost", detail.getBaseCost().toString());
-            model.put("totalCost", detail.getTotalCost().toString());
-            model.put("moneyPay", detail.getMoneyPayed().toString());
+            model.put("baseCost", String.valueOf(detail.getBaseCost().longValue()));
+            model.put("totalCost", String.valueOf(detail.getTotalCost().longValue()) );
+            model.put("moneyPay", String.valueOf(detail.getMoneyPayed().longValue()) );
             model.put("status", detail.getStatus().getDescription());
             model.put("billId", detail.getId().toString());
             model.put("cancelDate", detail.getLastModifiedDate());

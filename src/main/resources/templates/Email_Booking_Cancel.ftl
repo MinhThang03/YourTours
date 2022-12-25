@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 >
@@ -152,9 +151,11 @@
                                 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 
                                     <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:22px;text-align:left;color:#555;">
-                                        Xin chào ${hehe}!<br></br>
-                                        Cảm ơn bạn đã sử dụng dịch vụ của YourTours. Chúng tôi thật sự rất tiếc khi bạn đã hủy sử dụng dịch vụ của chúng tôi!<br>
-                                        <br> Hi vọng có thể đồng hành cùng bạn trong tương lai. Dưới đây là thông tin hủy đặt phòng của bạn:
+                                        Xin chào ${userName}!<br></br>
+                                        Cảm ơn bạn đã sử dụng dịch vụ của YourTours. Chúng tôi thật sự rất tiếc khi bạn
+                                        đã hủy sử dụng dịch vụ của chúng tôi!<br>
+                                        <br> Hi vọng có thể đồng hành cùng bạn trong tương lai. Dưới đây là thông tin
+                                        hủy đặt phòng của bạn:
                                     </div>
 
                                 </td>
@@ -168,7 +169,7 @@
 
                                     <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
                                            style="border-collapse:separate;line-height:100%;">
-                                        <tr >
+                                        <tr>
                                             <td align="left" bgcolor="#2F67F6" role="presentation"
                                                 style="border:none;border-radius:3px;color:#ffffff;cursor:auto;padding:15px 25px;width:400px;margin:auto; height:100px;background:#eeeeee;"
                                                 valign="middle">
@@ -191,8 +192,10 @@
                                                                 <p style="margin:5px">: ${dateStart}</p>
                                                                 <p style="margin:5px">: ${dateEnd}</p>
                                                                 <p style="margin:5px">: ${baseCost} đ</p>
-                                                                <p style="margin:5px;font-weight: bold;color:red">: ${totalCost} đ</p>
-                                                                <p style="margin:5px;font-weight: bold;color:blue">: ${moneyPay} đ</p>
+                                                                <p style="margin:5px;font-weight: bold;color:red">
+                                                                    : ${totalCost} đ</p>
+                                                                <p style="margin:5px;font-weight: bold;color:blue">
+                                                                    : ${moneyPay} đ</p>
                                                                 <p style="margin:5px">: ${status} đ</p>
                                                             </div>
                                                         </div>
