@@ -51,7 +51,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "  and b.user_id = :userId  " +
                     "  and (a.status = :status or :status is null)  " +
                     "  and (DATE(a.date_start) = DATE(:dateStart) or :dateStart is null)  " +
-                    "order by a.date_start desc "
+                    "order by a.date_start asc "
     )
     Page<BookHomesCommand> findAllByCmsFilter(@Param("status") String status,
                                               @Param("userId") UUID userId,

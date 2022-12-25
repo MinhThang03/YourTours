@@ -15,6 +15,7 @@ import com.hcmute.yourtours.models.guest_categories.GuestCategoryDetail;
 import com.hcmute.yourtours.models.guest_categories.GuestCategoryInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,11 +35,13 @@ public class CmsGuestCategoriesController
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<GuestCategoryDetail>> createModel(FactoryCreateRequest<UUID, GuestCategoryDetail> request) {
         return super.factoryCreateModel(request);
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<FactoryDeleteResponse>> deleteModelById(UUID id) {
         return super.factoryDeleteWithFilter(id, null);
     }
@@ -54,6 +57,7 @@ public class CmsGuestCategoriesController
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<GuestCategoryDetail>> updateModel(FactoryUpdateRequest<UUID, GuestCategoryDetail> request) {
         return super.factoryUpdateModel(request);
     }

@@ -16,6 +16,7 @@ import com.hcmute.yourtours.models.discount_campaign.DiscountCampaignInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,11 +39,13 @@ public class CmsDiscountCampaignController
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<DiscountCampaignDetail>> createModel(FactoryCreateRequest<UUID, DiscountCampaignDetail> request) {
         return super.factoryCreateModel(request);
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<FactoryDeleteResponse>> deleteModelById(UUID id) {
         return super.factoryDeleteWithFilter(id, null);
     }
@@ -58,6 +61,7 @@ public class CmsDiscountCampaignController
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<DiscountCampaignDetail>> updateModel(FactoryUpdateRequest<UUID, DiscountCampaignDetail> request) {
         return super.factoryUpdateModel(request);
     }

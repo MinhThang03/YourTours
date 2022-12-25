@@ -15,6 +15,7 @@ import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCatego
 import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoryInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,11 +35,13 @@ public class CmsSurchargeCategoryController
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<SurchargeHomeCategoryDetail>> createModel(FactoryCreateRequest<UUID, SurchargeHomeCategoryDetail> request) {
         return super.factoryCreateModel(request);
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<FactoryDeleteResponse>> deleteModelById(UUID id) {
         return super.factoryDeleteWithFilter(id, null);
     }
@@ -54,6 +57,7 @@ public class CmsSurchargeCategoryController
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<SurchargeHomeCategoryDetail>> updateModel(FactoryUpdateRequest<UUID, SurchargeHomeCategoryDetail> request) {
         return super.factoryUpdateModel(request);
     }

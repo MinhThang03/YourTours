@@ -21,6 +21,7 @@ import com.hcmute.yourtours.models.amenity_categories.AmenityCategoryInfo;
 import com.hcmute.yourtours.models.amenity_categories.filter.AmenityCategoryFilter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,11 +46,13 @@ public class CmsAmenityCategoriesController
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<AmenityCategoryDetail>> createModel(FactoryCreateRequest<UUID, AmenityCategoryDetail> request) {
         return super.factoryCreateModel(request);
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<FactoryDeleteResponse>> deleteModelById(UUID id) {
         return super.factoryDeleteWithFilter(id, null);
     }
@@ -65,6 +68,7 @@ public class CmsAmenityCategoriesController
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<AmenityCategoryDetail>> updateModel(FactoryUpdateRequest<UUID, AmenityCategoryDetail> request) {
         return super.factoryUpdateModel(request);
     }

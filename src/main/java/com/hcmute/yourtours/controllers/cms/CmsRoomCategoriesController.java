@@ -22,6 +22,7 @@ import com.hcmute.yourtours.models.room_categories.filter.RoomCategoryFilter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,11 +50,13 @@ public class CmsRoomCategoriesController
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<RoomCategoryDetail>> createModel(FactoryCreateRequest<UUID, RoomCategoryDetail> request) {
         return super.factoryCreateModel(request);
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<FactoryDeleteResponse>> deleteModelById(UUID id) {
         return super.factoryDeleteWithFilter(id, null);
     }
@@ -69,6 +72,7 @@ public class CmsRoomCategoriesController
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<RoomCategoryDetail>> updateModel(FactoryUpdateRequest<UUID, RoomCategoryDetail> request) {
         return super.factoryUpdateModel(request);
     }
