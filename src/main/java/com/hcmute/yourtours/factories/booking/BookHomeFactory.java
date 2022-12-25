@@ -420,12 +420,10 @@ public class BookHomeFactory
     }
 
     protected void handleAutoUpdateCheckOut() {
-        List<BookHomesCommand> bookHomes = bookHomeRepository.findAllCommandNeedUpdateCheckOut(LocalDate.now(), BookRoomStatusEnum.CHECK_OUT.name());
+        List<BookHomesCommand> bookHomes = bookHomeRepository.findAllCommandNeedUpdateCheckOut(LocalDate.now(), BookRoomStatusEnum.WAITING.name());
         for (BookHomesCommand bookHome : bookHomes) {
-            if (!bookHome.getStatus().equals(BookRoomStatusEnum.CANCELED)) {
-                bookHome.setStatus(BookRoomStatusEnum.CHECK_OUT);
-                repository.save(bookHome);
-            }
+            bookHome.setStatus(BookRoomStatusEnum.CHECK_OUT);
+            repository.save(bookHome);
         }
     }
 }

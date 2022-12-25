@@ -83,7 +83,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
             value = "select a.* " +
                     "from book_home a " +
                     "where DATE(a.date_end) < DATE(:date) " +
-                    "  and a.status <> :status "
+                    "  and a.status = :status "
     )
     List<BookHomesCommand> findAllCommandNeedUpdateCheckOut(@Param("date") LocalDate date,
                                                             @Param("status") String status);
