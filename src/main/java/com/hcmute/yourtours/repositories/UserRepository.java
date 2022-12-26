@@ -51,7 +51,7 @@ public interface UserRepository extends JpaRepository<UserCommand, Long> {
                     "     (select count(a.id) as numberOfBooking from book_home a) c, " +
                     "     (select coalesce(sum(coalesce(a.cost_of_admin, 0)), 0) as totalCost " +
                     "      from book_home a " +
-                    "      where a.status = 'CHECK_IN') d "
+                    "      where a.status = 'CHECK_OUT') d "
     )
     StatisticCountProjections getAdminStatisticCount();
 }
