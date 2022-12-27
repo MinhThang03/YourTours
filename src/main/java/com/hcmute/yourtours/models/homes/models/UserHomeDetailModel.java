@@ -12,7 +12,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -25,7 +24,7 @@ public class UserHomeDetailModel implements Serializable {
     private Double userRate;
     private boolean isBooked;
     private boolean isFavorite;
-    private List<LocalDate> dateIsBooked;
+    private List<String> dateIsBooked;
     private String ownerName;
     private List<AmenityInfo> amenitiesView;
     private String descriptionHomeDetail;

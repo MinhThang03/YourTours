@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -99,7 +100,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                     .build());
 
             List<DiscountOfHomeViewModel> discounts = iDiscountOfHomeFactory.getDiscountsOfHomeView(homeId)
-                    .stream().filter(item -> !(item.getConfig() == null || item.getConfig().getPercent() == null) ).collect(Collectors.toList());
+                    .stream().filter(item -> !(item.getConfig() == null || item.getConfig().getPercent() == null)).collect(Collectors.toList());
 
             UserHomeDetailModel result = UserHomeDetailModel.builder()
                     .homeDetail(homeDetail)
@@ -132,7 +133,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
 
     }
 
-    private List<LocalDate> getDatesIdBooked(UUID homeId) {
+    private List<String> getDatesIdBooked(UUID homeId) {
         LocalDate now = LocalDate.now();
         LocalDate end = now.plusMonths(1);
         List<MonthAndYearModel> models = new ArrayList<>();
@@ -146,7 +147,13 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                 .year(end.getYear())
                 .build());
 
-        return iBookHomeFactory.getDatesIsBooked(models, homeId);
+        List<LocalDate> dates = iBookHomeFactory.getDatesIsBooked(models, homeId);
+        DateTimeFormatter formatters = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        List<String> result = new ArrayList<>();
+        for (LocalDate date : dates) {
+            result.add(date.format(formatters));
+        }
+        return result;
     }
 
     private String getDescriptionHomeDetail(HomeDetail detail) {
