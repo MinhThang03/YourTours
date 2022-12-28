@@ -40,7 +40,6 @@ public class UserInfo extends BaseData<UUID> {
     @Pattern(regexp = RegexUtils.EMAIL_REGEX, message = "Nhập không đúng định dạng email")
     private String email;
 
-    @Pattern(regexp = RegexUtils.PHONE_REGEX, message = "Nhập không đúng định dạng số điện thoại")
     private String phoneNumber;
 
     private LocalDate dateOfBirth;

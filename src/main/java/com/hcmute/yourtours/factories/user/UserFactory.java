@@ -1,11 +1,11 @@
 package com.hcmute.yourtours.factories.user;
 
 
-import com.hcmute.yourtours.entities.UserCommand;
 import com.hcmute.yourtours.constant.RoleConstant;
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
 import com.hcmute.yourtours.constant.TokenExpirationConstant;
 import com.hcmute.yourtours.email.IEmailFactory;
+import com.hcmute.yourtours.entities.UserCommand;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
@@ -16,6 +16,7 @@ import com.hcmute.yourtours.libs.exceptions.ErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
+import com.hcmute.yourtours.libs.util.constant.RegexUtils;
 import com.hcmute.yourtours.models.authentication.requests.UserChangePasswordRequest;
 import com.hcmute.yourtours.models.authentication.response.ChangePasswordResponse;
 import com.hcmute.yourtours.models.common.SuccessResponse;
@@ -146,11 +147,21 @@ public class UserFactory
                 .build();
     }
 
+    @Override
+    protected void preUpdate(UUID id, UserDetail detail) throws InvalidException {
+        if (detail.getPhoneNumber() != null && !detail.getPhoneNumber().matches(RegexUtils.PHONE_REGEX)) {
+            throw new InvalidException(YourToursErrorCode.PHONE_NUMBER_IS_UN_FORMAT);
+        }
+    }
 
     @Override
     protected void preCreate(UserDetail detail) throws InvalidException {
         if (checkEmailExist(detail.getEmail())) {
             throw new InvalidException(YourToursErrorCode.USERNAME_EXIST);
+        }
+
+        if (detail.getPhoneNumber() != null && !detail.getPhoneNumber().matches(RegexUtils.PHONE_REGEX)) {
+            throw new InvalidException(YourToursErrorCode.PHONE_NUMBER_IS_UN_FORMAT);
         }
     }
 

@@ -38,6 +38,8 @@ public enum YourToursErrorCode implements IErrorCode {
     DATE_CHECK_IN_IS_EXCEED(HttpStatus.BAD_REQUEST, "400000029", "Đã quá hạn check in"),
     BOOK_HOME_CHECK_IN_IS_IN_VALID(HttpStatus.BAD_REQUEST, "400000030", "Check in phòng đặt phòng không hợp lệ"),
     BOOK_HOME_CHECK_OUT_IS_IN_VALID(HttpStatus.BAD_REQUEST, "400000031", "Check out phòng đặt phòng không hợp lệ"),
+    PHONE_NUMBER_IS_UN_FORMAT(HttpStatus.BAD_REQUEST, "400000032", "Số điện thoại không đúng định dạng"),
+
 
     //403
     FORBIDDEN(HttpStatus.FORBIDDEN, "4030000", "Bạn không đủ quyền truy cập"),
