@@ -9,6 +9,7 @@ import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.request.UpdateStatusBookingRequest;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,5 +23,6 @@ public interface IAppBookHomeController extends
     @PutMapping("/cancel")
     ResponseEntity<BaseResponse<SuccessResponse>> cancelBooking(@RequestBody @Valid UpdateStatusBookingRequest request);
 
-
+    @PostMapping("/check")
+    ResponseEntity<BaseResponse<SuccessResponse>> checkBooking(@RequestBody @Valid BookHomeDetail request);
 }

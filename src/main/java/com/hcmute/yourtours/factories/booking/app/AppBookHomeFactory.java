@@ -21,6 +21,7 @@ import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.libs.util.TimeUtil;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking_surcharge_detail.BookingSurchargeDetailDetail;
+import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
 import com.hcmute.yourtours.models.price_of_home.request.GetPriceOfHomeRequest;
 import com.hcmute.yourtours.models.price_of_home.response.PriceOfHomeResponse;
@@ -172,4 +173,33 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
         }
     }
 
+    @Override
+    public SuccessResponse checkBooking(BookHomeDetail detail) throws InvalidException {
+        if (detail.getEmail() == null || detail.getPhoneNumber() == null) {
+            UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
+            UserDetail userDetail = iUserFactory.getDetailModel(userId, null);
+
+            if (userDetail.getStatus() == null || !userDetail.getStatus().equals(UserStatusEnum.ACTIVE)) {
+                throw new InvalidException(YourToursErrorCode.ACCOUNT_NOT_ACTIVE);
+            }
+        }
+
+
+        if (detail.getDateStart().isBefore(LocalDate.now())) {
+            throw new InvalidException(YourToursErrorCode.DATE_START_BOOKING_IN_VALID);
+        }
+
+        if (detail.getDateStart().isAfter(detail.getDateEnd())) {
+            throw new InvalidException(YourToursErrorCode.DATE_BOOKING_IN_VALID);
+        }
+
+        iHomesFactory.checkExistsByHomeId(detail.getHomeId());
+
+        super.checkDateBookingOfHomeValid(detail.getDateStart(), detail.getDateEnd(), detail.getHomeId());
+        iHomesFactory.checkNumberOfGuestOfHome(detail.getHomeId(), detail.getGuests());
+
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
+    }
 }

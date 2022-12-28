@@ -2,6 +2,7 @@ package com.hcmute.yourtours.controllers.app;
 
 import com.hcmute.yourtours.controllers.app.interfaces.IAppBookHomeController;
 import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
+import com.hcmute.yourtours.factories.booking.app.IAppBookHomeFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.exceptions.RestException;
@@ -35,14 +36,17 @@ public class AppBookHomeController
         implements IAppBookHomeController {
 
     private final IBookHomeFactory iBookHomeFactory;
+    private final IAppBookHomeFactory iAppBookHomeFactory;
 
     protected AppBookHomeController
             (
                     @Qualifier("appBookHomeFactory") IBookHomeFactory iDataFactory,
-                    IResponseFactory iResponseFactory
+                    IResponseFactory iResponseFactory,
+                    IAppBookHomeFactory iAppBookHomeFactory
             ) {
         super(iDataFactory, iResponseFactory);
         this.iBookHomeFactory = iDataFactory;
+        this.iAppBookHomeFactory = iAppBookHomeFactory;
     }
 
     @Override
@@ -56,6 +60,18 @@ public class AppBookHomeController
         LogContext.push(LogType.REQUEST, request);
         try {
             SuccessResponse response = iBookHomeFactory.handleCancelBooking(request.getBookingId());
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<SuccessResponse>> checkBooking(BookHomeDetail request) {
+        LogContext.push(LogType.REQUEST, request);
+        try {
+            SuccessResponse response = iAppBookHomeFactory.checkBooking(request);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {
