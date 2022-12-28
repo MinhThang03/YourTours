@@ -11,6 +11,7 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -80,12 +81,14 @@ public class ItemFavoritesFactory
 
     @Override
     public boolean handleFavorites(ItemFavoritesDetail detail) throws InvalidException {
-        Optional<ItemFavoritesCommand> optional = itemFavoritesRepository.findByUserIdAndHomeId(detail.getUserId(), detail.getHomeId());
-        if (optional.isEmpty()) {
+        List<ItemFavoritesCommand> optionals = itemFavoritesRepository.findAllByUserIdAndHomeId(detail.getUserId(), detail.getHomeId());
+        if (optionals.isEmpty()) {
             createModel(detail);
             return true;
         } else {
-            deleteModel(optional.get().getItemFavoritesId(), null);
+            for (ItemFavoritesCommand optional : optionals) {
+                deleteModel(optional.getItemFavoritesId(), null);
+            }
             return false;
         }
     }
