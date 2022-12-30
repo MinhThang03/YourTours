@@ -73,4 +73,13 @@ public interface AmenitiesRepository extends JpaRepository<AmenitiesCommand, Lon
                     "where a.set_filter = 'true'  "
     )
     Long countLimitSetFilter();
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.is_have " +
+                    "from amenities_of_home a " +
+                    "where a.home_id = :homeId " +
+                    "  and a.amenity_id = :amenityId "
+    )
+    Boolean getConfigByHomeIdAndCategoryId(UUID homeId, UUID amenityId);
 }

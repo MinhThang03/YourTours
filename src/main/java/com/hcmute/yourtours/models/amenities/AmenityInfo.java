@@ -31,4 +31,8 @@ public class AmenityInfo extends NameDataModel<UUID> {
     private AmenityCategoryDetail category;
 
     private Boolean setFilter;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Boolean isConfig;
+
 }

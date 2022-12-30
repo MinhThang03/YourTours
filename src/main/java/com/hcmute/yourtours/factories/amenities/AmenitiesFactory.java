@@ -17,6 +17,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -140,6 +141,15 @@ public class AmenitiesFactory
     @Override
     public List<AmenityInfo> getAllByHomeId(UUID homeId) throws InvalidException {
         List<AmenitiesCommand> commands = amenitiesRepository.getByByHomeId(homeId);
-        return convertList(commands);
+        List<AmenityInfo> result = new ArrayList<>();
+        for (AmenitiesCommand item : commands) {
+            AmenityInfo info = convertToInfo(item);
+            Boolean config = amenitiesRepository.getConfigByHomeIdAndCategoryId(homeId, item.getAmenityId());
+            if (config != null) {
+                info.setIsConfig(config);
+                result.add(info);
+            }
+        }
+        return result;
     }
 }
