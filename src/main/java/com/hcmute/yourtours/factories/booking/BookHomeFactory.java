@@ -161,6 +161,7 @@ public class BookHomeFactory
                 .costOfHost(entity.getCostOfHost())
                 .costOfAdmin(entity.getCostOfAdmin())
                 .moneyPayed(entity.getMoneyPayed())
+                .refundPolicy(homeDetail.getRefundPolicy())
                 .build();
 
     }
@@ -197,6 +198,7 @@ public class BookHomeFactory
                 .costOfHost(entity.getCostOfHost())
                 .costOfAdmin(entity.getCostOfAdmin())
                 .moneyPayed(entity.getMoneyPayed())
+                .refundPolicy(homeDetail.getRefundPolicy())
                 .build();
     }
 

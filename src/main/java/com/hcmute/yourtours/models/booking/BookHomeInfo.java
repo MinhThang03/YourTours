@@ -3,6 +3,7 @@ package com.hcmute.yourtours.models.booking;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.PaymentMethodMethodEnum;
+import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.libs.model.BaseData;
 import com.hcmute.yourtours.models.booking_guest_detail.BookingGuestDetailDetail;
 import com.hcmute.yourtours.models.booking_surcharge_detail.BookingSurchargeDetailDetail;
@@ -84,6 +85,9 @@ public class BookHomeInfo extends BaseData<UUID> {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Double costOfAdmin;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private RefundPolicyEnum refundPolicy;
 
     private Double moneyPayed;
 }
