@@ -1,10 +1,7 @@
 package com.hcmute.yourtours.entities;
 
 import com.hcmute.yourtours.entities.base.Persistence;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -40,6 +37,20 @@ public class BookingHomeSurchargeDetailCommand extends Persistence {
 
     @Column(name = "cost_of_surcharge")
     private Double costOfSurcharge;
+
+    @ManyToOne
+    @JoinColumn(name = "booking_relation_id") // thông qua khóa ngoại address_id
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private BookHomesCommand book;
+
+    @ManyToOne
+    @JoinColumn(name = "surcharge_relation_id") // thông qua khóa ngoại address_id
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private SurchargeHomeCategoriesCommand surcharge;
+
+
 
     @Override
     protected void preWrite() {

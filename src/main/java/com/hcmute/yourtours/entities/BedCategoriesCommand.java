@@ -2,14 +2,12 @@ package com.hcmute.yourtours.entities;
 
 import com.hcmute.yourtours.entities.base.NameData;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.UUID;
 
 @SuperBuilder
@@ -36,6 +34,11 @@ public class BedCategoriesCommand extends NameData {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private CommonStatusEnum status;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<BedsOfHomeCommand> bedsOfHomeCommands;
 
     @Override
     protected void preWrite() {

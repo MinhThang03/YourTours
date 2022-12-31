@@ -3,15 +3,13 @@ package com.hcmute.yourtours.entities;
 import com.hcmute.yourtours.entities.base.Persistence;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.PaymentMethodMethodEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.UUID;
 
 @SuperBuilder
@@ -81,6 +79,28 @@ public class BookHomesCommand extends Persistence {
 
     @Column(name = "money_payed")
     private Double moneyPayed;
+
+    @ManyToOne
+    @JoinColumn(name = "home_relation_id") // thông qua khóa ngoại address_id
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private HomesCommand home;
+
+    @ManyToOne
+    @JoinColumn(name = "user_relation_id") // thông qua khóa ngoại address_id
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private UserCommand user;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<BookingHomeGuestDetailCommand> bookGuests;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<BookingHomeSurchargeDetailCommand> bookSurcharge;
 
 
     @Override

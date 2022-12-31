@@ -3,10 +3,7 @@ package com.hcmute.yourtours.entities;
 
 import com.hcmute.yourtours.entities.base.Audit;
 import com.hcmute.yourtours.enums.OtpTypeEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -43,6 +40,11 @@ public class VerificationOtpCommand extends Audit<String> {
     @Column(name = "expiry_date")
     private LocalDateTime expiryDate;
 
+    @ManyToOne
+    @JoinColumn(name = "user_relation_id") // thông qua khóa ngoại address_id
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private UserCommand user;
     @Override
     protected void preWrite() {
         super.preWrite();

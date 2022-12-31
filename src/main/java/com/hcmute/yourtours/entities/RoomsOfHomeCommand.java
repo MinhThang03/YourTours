@@ -1,14 +1,12 @@
 package com.hcmute.yourtours.entities;
 
 import com.hcmute.yourtours.entities.base.NameData;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.UUID;
 
 @SuperBuilder
@@ -44,6 +42,17 @@ public class RoomsOfHomeCommand extends NameData {
 
     @Column(name = "order_flag")
     private Integer orderFlag;
+
+    @OneToMany(mappedBy = "rooms", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<BedsOfHomeCommand> bedsOfHomeCommands;
+
+    @ManyToOne
+    @JoinColumn(name = "category_relation_id") // thông qua khóa ngoại address_id
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private RoomCategoriesCommand category;
 
 
     @Override

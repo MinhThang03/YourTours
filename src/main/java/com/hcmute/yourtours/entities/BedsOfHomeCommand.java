@@ -1,10 +1,7 @@
 package com.hcmute.yourtours.entities;
 
 import com.hcmute.yourtours.entities.base.Persistence;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -42,6 +39,18 @@ public class BedsOfHomeCommand extends Persistence {
 
     @Column(name = "amount")
     private Integer amount;
+
+    @ManyToOne
+    @JoinColumn(name = "bed_category_relation_id") // thông qua khóa ngoại address_id
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private BedCategoriesCommand category;
+
+    @ManyToOne
+    @JoinColumn(name = "room_of_home_relation_id") // thông qua khóa ngoại address_id
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private RoomsOfHomeCommand rooms;
 
     @Override
     protected void preWrite() {

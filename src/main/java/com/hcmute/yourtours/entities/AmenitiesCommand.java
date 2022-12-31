@@ -2,14 +2,12 @@ package com.hcmute.yourtours.entities;
 
 import com.hcmute.yourtours.entities.base.NameData;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.UUID;
 
 @SuperBuilder
@@ -33,6 +31,7 @@ public class AmenitiesCommand extends NameData {
     @Column(name = "amenity_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
     private UUID amenityId;
 
+
     @Column(name = "category_id", columnDefinition = "BINARY(16)")
     private UUID categoryId;
 
@@ -46,6 +45,16 @@ public class AmenitiesCommand extends NameData {
     @Enumerated(EnumType.STRING)
     private CommonStatusEnum status;
 
+    @ManyToOne
+    @JoinColumn(name = "amenity_category_id") // thông qua khóa ngoại address_id
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private AmenityCategoriesCommand category;
+
+    @OneToMany(mappedBy = "amenity", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<AmenitiesOfHomeCommand> amenitiesOfHome;
 
     @Override
     protected void preWrite() {

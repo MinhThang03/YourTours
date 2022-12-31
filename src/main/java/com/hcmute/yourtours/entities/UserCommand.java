@@ -4,15 +4,13 @@ import com.hcmute.yourtours.entities.base.Persistence;
 import com.hcmute.yourtours.enums.GenderEnum;
 import com.hcmute.yourtours.enums.RoleEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.UUID;
 
 @SuperBuilder
@@ -66,6 +64,26 @@ public class UserCommand extends Persistence {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private UserStatusEnum status;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<BookHomesCommand> bookHomes;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<ItemFavoritesCommand> itemFavorites;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<OwnerOfHomeCommand> ownerOfHome;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<VerificationOtpCommand> otps;
 
     @Override
     protected void preWrite() {

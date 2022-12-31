@@ -1,10 +1,7 @@
 package com.hcmute.yourtours.entities;
 
 import com.hcmute.yourtours.entities.base.Persistence;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -41,6 +38,12 @@ public class PriceOfHomeCommand extends Persistence {
 
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
+
+    @ManyToOne
+    @JoinColumn(name = "home_relation_id") // thông qua khóa ngoại address_id
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private HomesCommand home;
 
     @Override
     protected void preWrite() {

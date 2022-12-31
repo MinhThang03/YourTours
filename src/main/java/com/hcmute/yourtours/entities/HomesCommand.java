@@ -3,15 +3,13 @@ package com.hcmute.yourtours.entities;
 import com.hcmute.yourtours.entities.base.NameData;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.UUID;
 
 @SuperBuilder
@@ -93,6 +91,46 @@ public class HomesCommand extends NameData {
 
     @Column(name = "number_of_reviews")
     private Long numberOfReviews;
+
+    @OneToMany(mappedBy = "home", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<AmenitiesOfHomeCommand> amenitiesOfHome;
+
+    @OneToMany(mappedBy = "home", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<BookHomesCommand> bookHomes;
+
+    @OneToMany(mappedBy = "home", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<DiscountOfHomeCommand> discountOfHome;
+
+    @OneToMany(mappedBy = "home", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<ImagesHomeCommand> imagesHome;
+
+    @OneToMany(mappedBy = "home", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<ItemFavoritesCommand> itemFavorites;
+
+    @OneToMany(mappedBy = "home", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<PriceOfHomeCommand> priceOfHome;
+
+    @OneToMany(mappedBy = "home", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<OwnerOfHomeCommand> ownerOfHome;
+
+    @OneToMany(mappedBy = "home", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<SurchargesOfHomeCommand> surchargesOfHome;
 
     @Override
     protected void preWrite() {

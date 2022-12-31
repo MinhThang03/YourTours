@@ -2,10 +2,7 @@ package com.hcmute.yourtours.entities;
 
 import com.hcmute.yourtours.entities.base.Persistence;
 import com.hcmute.yourtours.enums.GuestsCategoryEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -42,6 +39,12 @@ public class BookingHomeGuestDetailCommand extends Persistence {
 
     @Column(name = "booking", columnDefinition = "BINARY(16)")
     private UUID booking;
+
+    @ManyToOne
+    @JoinColumn(name = "booking_relation_id") // thông qua khóa ngoại address_id
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private BookHomesCommand book;
 
     @Override
     protected void preWrite() {
