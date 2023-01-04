@@ -194,6 +194,7 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
         }
 
         iHomesFactory.checkExistsByHomeId(detail.getHomeId());
+        iHomesFactory.checkNumberOfGuestOfHome(detail.getHomeId(), detail.getGuests());
 
         super.checkDateBookingOfHomeValid(detail.getDateStart(), detail.getDateEnd(), detail.getHomeId());
 
