@@ -2,7 +2,7 @@
 <configuration>
     <springProperty scope="context" name="APP_ENV" source="spring.profiles.active"/>
     <property name="CONSOLE_LOG_PATTERN"
-              value="%highlight([%-5level]):%green([${APP_ENV}]):%yellow([%d{yyyy-MM-dd HH:mm:ss.SSS}])[%t]%cyan([%c{1}]):%line:%boldMagenta(%X{path}):%boldYellow(transId [%.10(%X{sessionId})]):%boldGreen([%X{userId}-%X{phone}]) - %m %n"/>
+              value="%highlight([%-5level]):%green([${APP_ENV}]):%yellow([%d{yyyy-MM-dd HH:mm:ss.SSS}])[%t]%cyan([%c{1}]):[%green(%line)]:%boldMagenta(%X{path}) - %m %n"/>
     <property name="LOG_PATTERN"
               value="[%-5level][${APP_ENV}][%d{yyyy-MM-dd HH:mm:ss.SSS}][%t][%c{1}]:%L:[%.10(%X{sessionId})][%X{path}] - %m%n"/>
 
@@ -14,7 +14,7 @@
         </layout>
     </appender>
 
-    <root level="${DEBUG_LEVEL:-INFO}">
+    <root level="INFO">
         <appender-ref ref="Console"/>
     </root>
 
