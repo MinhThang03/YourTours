@@ -4,37 +4,30 @@ import com.hcmute.yourtours.entities.base.Persistence;
 import com.hcmute.yourtours.enums.GenderEnum;
 import com.hcmute.yourtours.enums.RoleEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
 @SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "user")
 public class User extends Persistence {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
-
-
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "userid", columnDefinition = "BINARY(16)", unique = true, nullable = false)
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2r")
+    @Column(name = "userid", columnDefinition = "varchar(36)")
+    @Type(type = "uuid-char")
     private UUID userId;
 
     @Column(name = "email")
@@ -66,12 +59,4 @@ public class User extends Persistence {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private UserStatusEnum status;
-
-    @Override
-    protected void preWrite() {
-        super.preWrite();
-        if (userId == null) {
-            userId = UUID.randomUUID();
-        }
-    }
 }

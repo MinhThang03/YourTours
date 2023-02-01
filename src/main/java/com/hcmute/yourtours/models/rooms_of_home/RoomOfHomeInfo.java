@@ -4,19 +4,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.yourtours.models.common.NameDataModel;
 import com.hcmute.yourtours.models.room_categories.RoomCategoryDetail;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-@NoArgsConstructor
-@SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(toBuilder = true)
 public class RoomOfHomeInfo extends NameDataModel<UUID> {
 
     @JsonIgnore

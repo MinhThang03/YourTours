@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.BookingHomeGuestDetail;
+import com.hcmute.yourtours.entities.BookingGuestDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -10,10 +10,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface BookingGuestDetailRepository extends JpaRepository<BookingHomeGuestDetail, Long> {
-    Optional<BookingHomeGuestDetail> findByBookingGuestDetailId(UUID bookingGuestDetailId);
+public interface BookingGuestDetailRepository extends JpaRepository<BookingGuestDetail, Long> {
+    Optional<BookingGuestDetail> findByBookingGuestDetailId(UUID bookingGuestDetailId);
 
-    List<BookingHomeGuestDetail> findAllByBooking(UUID bookingId);
+    List<BookingGuestDetail> findAllByBooking(UUID bookingId);
 
     @Query(
             nativeQuery = true,

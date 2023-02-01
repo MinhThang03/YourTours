@@ -7,10 +7,10 @@ import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.libs.model.BaseData;
 import com.hcmute.yourtours.models.booking_guest_detail.BookingGuestDetailDetail;
 import com.hcmute.yourtours.models.booking_surcharge_detail.BookingSurchargeDetailDetail;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotNull;
@@ -20,9 +20,8 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-@NoArgsConstructor
-@SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(toBuilder = true)
 public class BookHomeInfo extends BaseData<UUID> {
 
     @NotNull

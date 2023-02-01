@@ -5,19 +5,18 @@ import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.models.amenity_categories.AmenityCategoryDetail;
 import com.hcmute.yourtours.models.common.NameDataModel;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-@NoArgsConstructor
-@SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(toBuilder = true)
 public class AmenityInfo extends NameDataModel<UUID> {
 
     private CommonStatusEnum status;

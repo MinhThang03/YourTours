@@ -2,36 +2,29 @@ package com.hcmute.yourtours.entities;
 
 import com.hcmute.yourtours.entities.base.NameData;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "room_categories")
 public class RoomCategories extends NameData {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
-
-
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "room_category_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2r")
+    @Column(name = "room_category_id", columnDefinition = "varchar(36)")
+    @Type(type = "uuid-char")
     private UUID roomCategoryId;
 
     @Column(name = "important")
@@ -44,12 +37,4 @@ public class RoomCategories extends NameData {
     @Enumerated(EnumType.STRING)
     private CommonStatusEnum status;
 
-
-    @Override
-    protected void preWrite() {
-        super.preWrite();
-        if (roomCategoryId == null) {
-            roomCategoryId = UUID.randomUUID();
-        }
-    }
 }

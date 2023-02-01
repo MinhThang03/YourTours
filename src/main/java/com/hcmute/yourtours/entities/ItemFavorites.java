@@ -2,35 +2,30 @@ package com.hcmute.yourtours.entities;
 
 
 import com.hcmute.yourtours.entities.base.Persistence;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "item_favorites")
 public class ItemFavorites extends Persistence {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
 
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "item_favorites_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
+
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2r")
+    @Column(name = "item_favorites_id", columnDefinition = "varchar(36)")
+    @Type(type = "uuid-char")
     private UUID itemFavoritesId;
 
 
@@ -40,11 +35,4 @@ public class ItemFavorites extends Persistence {
     @Column(name = "user_id", columnDefinition = "BINARY(16)")
     private UUID userId;
 
-    @Override
-    protected void preWrite() {
-        super.preWrite();
-        if (itemFavoritesId == null) {
-            itemFavoritesId = UUID.randomUUID();
-        }
-    }
 }

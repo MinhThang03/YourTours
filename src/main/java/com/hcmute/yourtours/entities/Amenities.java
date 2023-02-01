@@ -5,14 +5,13 @@ import com.hcmute.yourtours.enums.CommonStatusEnum;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.envers.Audited;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 
 @Entity
-@Audited
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,16 +21,10 @@ import java.util.UUID;
 @Table(name = "amenities")
 public class Amenities extends NameData {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
-
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "amenity_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2r")
+    @Column(name = "amenity_id", columnDefinition = "varchar(36)")
+    @Type(type = "uuid-char")
     private UUID amenityId;
 
     @Column(name = "category_id", columnDefinition = "BINARY(16)")
@@ -46,13 +39,5 @@ public class Amenities extends NameData {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private CommonStatusEnum status;
-
-
-    @Override
-    protected void preWrite() {
-        if (amenityId == null) {
-            amenityId = UUID.randomUUID();
-        }
-    }
 }
 

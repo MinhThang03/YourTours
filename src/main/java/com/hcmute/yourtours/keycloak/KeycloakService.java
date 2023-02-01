@@ -33,13 +33,17 @@ import java.util.List;
 @Service
 @Slf4j
 public class KeycloakService implements IKeycloakService {
+    private static final String CLIENT_ID = "client_id";
+    private static final String CLIENT_SECRET = "client_secret";
+    private static final String REFRESH_TOKEN = "refresh_token";
+    private static final String GRANT_TYPE = "grant_type";
+    private static final String REVOKE_TOKENS_ON_LOGOUT = "revoke_tokens_on_logout";
     private final AuthzClient authzClient;
     private final Keycloak keycloak;
-
     private final RealmResource realmResource;
-
     private final String resourceId;
     private final KeycloakProperties securityProperties;
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public KeycloakService(Keycloak keycloak,
                            KeycloakProperties securityProperties
@@ -52,30 +56,44 @@ public class KeycloakService implements IKeycloakService {
                 null));
         this.keycloak = keycloak;
         this.realmResource = keycloak.realm(securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getRealmName());
-        this.resourceId = realmResource.clients().findByClientId(securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getClientId()).stream().findFirst().get().getId();
+        this.resourceId = realmResource.clients().findByClientId(
+                        securityProperties.getKeycloakRealms().get(
+                                RealmConstant.YOURTOUR.getRealmName()
+                        ).getClientId()
+                ).stream()
+                .findFirst()
+                .orElseThrow(
+                        () -> new NullPointerException("resource id not null")
+                ).getId();
         this.securityProperties = securityProperties;
     }
 
     @Override
     public String createUser(String userName, String firstName, String lastName, String email, String password) throws InvalidException {
-        try {
-            Response keycloakResponse = keycloak.realm(securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getRealmName())
-                    .users()
-                    .create(toUserRepresentation(userName, firstName, lastName, email, toCredentialRepresentation(password)));
+        try (
+                Response keycloakResponse = keycloak.realm(
+                                securityProperties
+                                        .getKeycloakRealms()
+                                        .get(
+                                                RealmConstant.YOURTOUR.getRealmName()).getRealmName()
+                        )
+                        .users()
+                        .create(
+                                toUserRepresentation(userName, firstName, lastName, email, toCredentialRepresentation(password))
+                        )
+        ) {
             if (keycloakResponse.getStatus() == HttpStatus.CONFLICT.value()) {
                 throw new InvalidException(YourToursErrorCode.USERNAME_EXIST);
-            } else if (keycloakResponse.getStatus() == HttpStatus.CREATED.value()) {
-                return CreatedResponseUtil.getCreatedId(keycloakResponse);
-            } else {
-                throw new InvalidException(YourToursErrorCode.CREATE_USER_FAIL);
             }
-        } catch (InvalidException e) {
-            throw e;
+            if (keycloakResponse.getStatus() == HttpStatus.CREATED.value()) {
+                return CreatedResponseUtil.getCreatedId(keycloakResponse);
+            }
+            log.warn("Create user keycloak fail! Response status: {}", keycloakResponse.getStatus());
+            throw new InvalidException(YourToursErrorCode.CREATE_USER_FAIL);
         } catch (Exception e) {
             throw new InvalidException(YourToursErrorCode.CREATE_USER_FAIL);
         }
     }
-
 
     @Override
     public boolean deleteUser(String userId) {
@@ -88,12 +106,8 @@ public class KeycloakService implements IKeycloakService {
     }
 
     @Override
-    public AccessTokenResponse getJwt(String userName, String password) throws InvalidException {
-        try {
-            return authzClient.obtainAccessToken(userName, password);
-        } catch (Exception e) {
-            throw new InvalidException(YourToursErrorCode.USER_OR_PASSWORD_NOT_CORRECT);
-        }
+    public AccessTokenResponse getJwt(String userName, String password) {
+        return authzClient.obtainAccessToken(userName, password);
     }
 
     @Override
@@ -101,15 +115,11 @@ public class KeycloakService implements IKeycloakService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("client_id", securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getClientId());
-        map.add("client_secret", securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getClientSecret());
-        map.add("grant_type", "refresh_token");
-        map.add("refresh_token", refreshToken);
+        MultiValueMap<String, String> map = requestParams();
+        map.add(GRANT_TYPE, REFRESH_TOKEN);
+        map.add(REFRESH_TOKEN, refreshToken);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, httpHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
 
         try {
             ResponseEntity<String> keycloakResponse = restTemplate.postForEntity(
@@ -123,8 +133,15 @@ public class KeycloakService implements IKeycloakService {
         }
     }
 
+    protected MultiValueMap<String, String> requestParams() {
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add(CLIENT_ID, securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getClientId());
+        map.add(CLIENT_SECRET, securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getClientSecret());
+        return map;
+    }
+
     @Override
-    public void addUserClientRoles(String userId, List<String> roles) {
+    public void addUserClientRoles(String userId, List<String> roles) throws InvalidException {
         List<RoleRepresentation> list = new ArrayList<>();
         for (String role : roles) {
             RoleRepresentation roleRepresentation = findClientRoleByName(role);
@@ -136,7 +153,7 @@ public class KeycloakService implements IKeycloakService {
     }
 
     @Override
-    public void addUserRealmRoles(String userId, List<String> roles) {
+    public void addUserRealmRoles(String userId, List<String> roles) throws InvalidException {
         List<RoleRepresentation> list = new ArrayList<>();
         for (String role : roles) {
             RoleRepresentation roleRepresentation = findRealmRoleByName(role);
@@ -157,17 +174,14 @@ public class KeycloakService implements IKeycloakService {
 
     @Override
     public void invalidateToken(String refreshToken) throws InvalidException {
-        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
-        requestParams.add("client_id", securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getClientId());
-        requestParams.add("client_secret", securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getClientSecret());
-        requestParams.add("refresh_token", refreshToken);
-        requestParams.add("revoke_tokens_on_logout ", "true");
+        MultiValueMap<String, String> requestParams = requestParams();
+        requestParams.add(REFRESH_TOKEN, refreshToken);
+        requestParams.add(REVOKE_TOKENS_ON_LOGOUT, "true");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(requestParams, headers);
-        RestTemplate restTemplate = new RestTemplate();
         try {
             restTemplate.postForEntity(securityProperties.getKeycloakRealms().get(RealmConstant.YOURTOUR.getRealmName()).getTokenInvalidateUri(), request, Object.class);
         } catch (Exception e) {
@@ -256,4 +270,6 @@ public class KeycloakService implements IKeycloakService {
         }
 
     }
+
+
 }

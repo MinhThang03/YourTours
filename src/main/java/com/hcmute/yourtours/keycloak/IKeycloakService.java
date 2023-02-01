@@ -32,4 +32,5 @@ public interface IKeycloakService {
     void logout() throws InvalidException;
 
     Boolean validUserPassword(String username, String password) throws InvalidException;
+
 }

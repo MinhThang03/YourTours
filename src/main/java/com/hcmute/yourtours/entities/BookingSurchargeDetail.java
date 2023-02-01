@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.entities;
 
-import com.hcmute.yourtours.entities.base.NameData;
-import com.hcmute.yourtours.enums.CommonStatusEnum;
+import com.hcmute.yourtours.entities.base.Persistence;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -17,19 +16,23 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "amenity_categories")
-public class AmenityCategories extends NameData {
+@Table(name = "book_home_surcharge_detail")
+public class BookingSurchargeDetail extends Persistence {
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2r")
-    @Column(name = "amenity_category_id", columnDefinition = "varchar(36)")
+    @Column(name = "booking_surcharge_detail", columnDefinition = "varchar(36)")
     @Type(type = "uuid-char")
-    private UUID amenityCategoryId;
+    private UUID bookingSurchargeDetailId;
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private CommonStatusEnum status;
+    @Column(name = "surcharge_id", columnDefinition = "BINARY(16)")
+    private UUID surchargeId;
 
-    @Column(name = "isDefault")
-    private Boolean isDefault;
+    @Column(name = "booking", columnDefinition = "BINARY(16)")
+    private UUID booking;
+
+    @Column(name = "cost_of_surcharge")
+    private Double costOfSurcharge;
+
 }
