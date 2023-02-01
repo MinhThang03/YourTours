@@ -5,7 +5,7 @@ import com.hcmute.yourtours.constant.RoleConstant;
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
 import com.hcmute.yourtours.constant.TokenExpirationConstant;
 import com.hcmute.yourtours.email.IEmailFactory;
-import com.hcmute.yourtours.entities.UserCommand;
+import com.hcmute.yourtours.entities.User;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
@@ -41,7 +41,7 @@ import java.util.UUID;
 @Slf4j
 @Transactional
 public class UserFactory
-        extends BasePersistDataFactory<UUID, UserInfo, UserDetail, Long, UserCommand>
+        extends BasePersistDataFactory<UUID, UserInfo, UserDetail, Long, User>
         implements IUserFactory {
 
     protected final IKeycloakService iKeycloakService;
@@ -76,11 +76,11 @@ public class UserFactory
     }
 
     @Override
-    public UserCommand createConvertToEntity(UserDetail detail) {
+    public User createConvertToEntity(UserDetail detail) {
         if (detail == null) {
             return null;
         }
-        return UserCommand.builder()
+        return User.builder()
                 .userId(detail.getId())
                 .email(detail.getEmail())
                 .phoneNumber(detail.getPhoneNumber())
@@ -96,7 +96,7 @@ public class UserFactory
     }
 
     @Override
-    public void updateConvertToEntity(UserCommand entity, UserDetail detail) {
+    public void updateConvertToEntity(User entity, UserDetail detail) {
         entity.setPhoneNumber(detail.getPhoneNumber());
         entity.setFullName(detail.getFullName());
         entity.setDateOfBirth(detail.getDateOfBirth());
@@ -108,7 +108,7 @@ public class UserFactory
     }
 
     @Override
-    public UserDetail convertToDetail(UserCommand entity) {
+    public UserDetail convertToDetail(User entity) {
         if (entity == null) {
             return null;
         }
@@ -128,7 +128,7 @@ public class UserFactory
     }
 
     @Override
-    public UserInfo convertToInfo(UserCommand entity) {
+    public UserInfo convertToInfo(User entity) {
         if (entity == null) {
             return null;
         }
@@ -190,7 +190,7 @@ public class UserFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        Optional<UserCommand> usersCommand = userRepository.findByUserId(id);
+        Optional<User> usersCommand = userRepository.findByUserId(id);
         if (usersCommand.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
         }
@@ -216,7 +216,7 @@ public class UserFactory
             }
 
             UUID userId = getCurrentUserId();
-            UserCommand entity = userRepository.findByUserId(userId).orElse(null);
+            User entity = userRepository.findByUserId(userId).orElse(null);
 
             if (entity != null) {
                 iKeycloakService.setPassword(userId.toString(), request.getNewPassword());
@@ -234,7 +234,7 @@ public class UserFactory
 
     @Override
     public UserDetail getDetailByEmail(String email) throws InvalidException {
-        UserCommand entity = userRepository.findByEmail(email).orElse(null);
+        User entity = userRepository.findByEmail(email).orElse(null);
         if (entity == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
         }
@@ -243,7 +243,7 @@ public class UserFactory
 
     @Override
     public UserInfo getInfoByEmail(String email) throws InvalidException {
-        UserCommand entity = userRepository.findByEmail(email).orElse(null);
+        User entity = userRepository.findByEmail(email).orElse(null);
         if (entity == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
         }
@@ -281,7 +281,7 @@ public class UserFactory
                 throw new InvalidException(YourToursErrorCode.CONFIRM_PASSWORD_IS_NOT_VALID);
             }
 
-            UserCommand entity = userRepository.findByUserId(userId).orElse(null);
+            User entity = userRepository.findByUserId(userId).orElse(null);
 
             if (entity != null) {
                 iKeycloakService.setPassword(userId.toString(), newPassword);
@@ -295,7 +295,7 @@ public class UserFactory
 
     @Override
     public SuccessResponse requestForgotPassword(ForgotPasswordRequest request) throws InvalidException {
-        Optional<UserCommand> optional = userRepository.findByEmail(request.getEmail());
+        Optional<User> optional = userRepository.findByEmail(request.getEmail());
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
         } else {
@@ -312,7 +312,7 @@ public class UserFactory
 
     @Override
     public void checkExistsByUserId(UUID userId) throws InvalidException {
-        Optional<UserCommand> optional = userRepository.findByUserId(userId);
+        Optional<User> optional = userRepository.findByUserId(userId);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
         }
@@ -335,7 +335,7 @@ public class UserFactory
 
 
     @Override
-    protected void postCreate(UserCommand entity, UserDetail detail) throws InvalidException {
+    protected void postCreate(User entity, UserDetail detail) throws InvalidException {
         requestActiveAccount(entity.getUserId(), entity.getFullName(), entity.getEmail());
     }
 
@@ -361,12 +361,12 @@ public class UserFactory
 
 
     private boolean isOwner(UUID userId) {
-        Optional<UserCommand> isOwner = userRepository.findByUserIdAndOwner(userId);
+        Optional<User> isOwner = userRepository.findByUserIdAndOwner(userId);
         return isOwner.isPresent();
     }
 
     @Override
-    protected <F extends BaseFilter> Page<UserCommand> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
+    protected <F extends BaseFilter> Page<User> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
         return userRepository.getAll(PageRequest.of(number, size));
     }
 

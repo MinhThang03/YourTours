@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.BookHomesCommand;
+import com.hcmute.yourtours.entities.BookHomes;
 import com.hcmute.yourtours.models.booking.projections.InfoUserBookingProjection;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
 import org.springframework.data.domain.Page;
@@ -16,8 +16,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long> {
-    Optional<BookHomesCommand> findByBookId(UUID bookId);
+public interface BookHomeRepository extends JpaRepository<BookHomes, Long> {
+    Optional<BookHomes> findByBookId(UUID bookId);
 
     boolean existsByUserIdAndHomeId(UUID userId, UUID homeId);
 
@@ -30,8 +30,8 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "  and a.status <> 'CANCELED'  " +
                     "limit 1 "
     )
-    Optional<BookHomesCommand> findOneByBetweenDate(@Param("date") LocalDate date,
-                                                    @Param("homeId") UUID homeId);
+    Optional<BookHomes> findOneByBetweenDate(@Param("date") LocalDate date,
+                                             @Param("homeId") UUID homeId);
 
 
     @Query(
@@ -53,10 +53,10 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "  and (DATE(a.date_start) = DATE(:dateStart) or :dateStart is null)  " +
                     "order by a.date_start asc "
     )
-    Page<BookHomesCommand> findAllByCmsFilter(@Param("status") String status,
-                                              @Param("userId") UUID userId,
-                                              @Param("dateStart") LocalDate dateStart,
-                                              Pageable pageable);
+    Page<BookHomes> findAllByCmsFilter(@Param("status") String status,
+                                       @Param("userId") UUID userId,
+                                       @Param("dateStart") LocalDate dateStart,
+                                       Pageable pageable);
 
 
     @Query(
@@ -74,8 +74,8 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "  and a.email = b.email  " +
                     "order by a.created_date desc "
     )
-    Page<BookHomesCommand> findBookingOfUser(@Param("customerId") UUID customerId,
-                                             Pageable pageable);
+    Page<BookHomes> findBookingOfUser(@Param("customerId") UUID customerId,
+                                      Pageable pageable);
 
 
     @Query(
@@ -85,8 +85,8 @@ public interface BookHomeRepository extends JpaRepository<BookHomesCommand, Long
                     "where DATE(a.date_end) < DATE(:date) " +
                     "  and a.status = :status "
     )
-    List<BookHomesCommand> findAllCommandNeedUpdateCheckOut(@Param("date") LocalDate date,
-                                                            @Param("status") String status);
+    List<BookHomes> findAllCommandNeedUpdateCheckOut(@Param("date") LocalDate date,
+                                                     @Param("status") String status);
 
 
     @Query(

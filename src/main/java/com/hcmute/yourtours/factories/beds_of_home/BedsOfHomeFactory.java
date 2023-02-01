@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.beds_of_home;
 
-import com.hcmute.yourtours.entities.BedsOfHomeCommand;
+import com.hcmute.yourtours.entities.BedsOfHome;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.bed_categories.IBedCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -22,7 +22,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class BedsOfHomeFactory
-        extends BasePersistDataFactory<UUID, BedOfHomeInfo, BedOfHomeDetail, Long, BedsOfHomeCommand>
+        extends BasePersistDataFactory<UUID, BedOfHomeInfo, BedOfHomeDetail, Long, BedsOfHome>
         implements IBedsOfHomeFactory {
 
     protected final IBedCategoriesFactory iBedCategoriesFactory;
@@ -42,12 +42,12 @@ public class BedsOfHomeFactory
     }
 
     @Override
-    public BedsOfHomeCommand createConvertToEntity(BedOfHomeDetail detail) throws InvalidException {
+    public BedsOfHome createConvertToEntity(BedOfHomeDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
 
-        return BedsOfHomeCommand.builder()
+        return BedsOfHome.builder()
                 .categoryId(detail.getCategoryId())
                 .roomOfHomeId(detail.getRoomOfHomeId())
                 .amount(detail.getAmount())
@@ -55,14 +55,14 @@ public class BedsOfHomeFactory
     }
 
     @Override
-    public void updateConvertToEntity(BedsOfHomeCommand entity, BedOfHomeDetail detail) throws InvalidException {
+    public void updateConvertToEntity(BedsOfHome entity, BedOfHomeDetail detail) throws InvalidException {
         entity.setCategoryId(detail.getCategoryId());
         entity.setRoomOfHomeId(detail.getRoomOfHomeId());
         entity.setAmount(detail.getAmount());
     }
 
     @Override
-    public BedOfHomeDetail convertToDetail(BedsOfHomeCommand entity) throws InvalidException {
+    public BedOfHomeDetail convertToDetail(BedsOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -76,7 +76,7 @@ public class BedsOfHomeFactory
     }
 
     @Override
-    public BedOfHomeInfo convertToInfo(BedsOfHomeCommand entity) throws InvalidException {
+    public BedOfHomeInfo convertToInfo(BedsOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -91,7 +91,7 @@ public class BedsOfHomeFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        BedsOfHomeCommand bedConfig = bedsOfHomeRepository.findByBedOfHomeId(id).orElse(null);
+        BedsOfHome bedConfig = bedsOfHomeRepository.findByBedOfHomeId(id).orElse(null);
         if (bedConfig == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_BEDS_OF_HOME);
         }
@@ -105,7 +105,7 @@ public class BedsOfHomeFactory
 
     @Override
     public Integer countByRoomHomeIdAndCategoryId(UUID roomHomeId, UUID categoryId) {
-        Optional<BedsOfHomeCommand> optional = bedsOfHomeRepository.findByRoomOfHomeIdAndCategoryId(roomHomeId, categoryId);
+        Optional<BedsOfHome> optional = bedsOfHomeRepository.findByRoomOfHomeIdAndCategoryId(roomHomeId, categoryId);
         if (optional.isPresent()) {
             return optional.get().getAmount();
         }
@@ -133,13 +133,13 @@ public class BedsOfHomeFactory
 
     @Override
     public String getDescriptionNumberBedOfRoom(UUID roomHomeId) throws InvalidException {
-        List<BedsOfHomeCommand> roomsOfHome = bedsOfHomeRepository.findAllByRoomOfHomeId(roomHomeId);
+        List<BedsOfHome> roomsOfHome = bedsOfHomeRepository.findAllByRoomOfHomeId(roomHomeId);
         if (roomsOfHome.isEmpty()) {
             return null;
         }
 
         StringBuilder builder = new StringBuilder();
-        for (BedsOfHomeCommand item : roomsOfHome) {
+        for (BedsOfHome item : roomsOfHome) {
             builder.append(item.getAmount());
             builder.append(" ");
             builder.append(iBedCategoriesFactory.getDetailModel(item.getCategoryId(), null).getName());
@@ -150,9 +150,9 @@ public class BedsOfHomeFactory
 
     @Override
     public void deleteAllByRoomHomeId(UUID roomHomeId) throws InvalidException {
-        List<BedsOfHomeCommand> roomsOfHome = bedsOfHomeRepository.findAllByRoomOfHomeId(roomHomeId);
+        List<BedsOfHome> roomsOfHome = bedsOfHomeRepository.findAllByRoomOfHomeId(roomHomeId);
         if (!roomsOfHome.isEmpty()) {
-            for (BedsOfHomeCommand item : roomsOfHome) {
+            for (BedsOfHome item : roomsOfHome) {
                 deleteModel(item.getBedOfHomeId(), null);
             }
         }
@@ -163,7 +163,7 @@ public class BedsOfHomeFactory
     protected void preCreate(BedOfHomeDetail detail) throws InvalidException {
         iBedCategoriesFactory.checkExistsByBedCategoryId(detail.getCategoryId());
 
-        Optional<BedsOfHomeCommand> optional = bedsOfHomeRepository.findByRoomOfHomeIdAndCategoryId(detail.getRoomOfHomeId(), detail.getCategoryId());
+        Optional<BedsOfHome> optional = bedsOfHomeRepository.findByRoomOfHomeIdAndCategoryId(detail.getRoomOfHomeId(), detail.getCategoryId());
         if (optional.isPresent()) {
             deleteModel(optional.get().getBedOfHomeId(), null);
         }

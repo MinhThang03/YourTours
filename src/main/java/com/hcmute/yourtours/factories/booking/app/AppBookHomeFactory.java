@@ -3,7 +3,7 @@ package com.hcmute.yourtours.factories.booking.app;
 import com.hcmute.yourtours.constant.FeeRateOfAdminConstant;
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
 import com.hcmute.yourtours.email.IEmailFactory;
-import com.hcmute.yourtours.entities.BookHomesCommand;
+import com.hcmute.yourtours.entities.BookHomes;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
@@ -136,7 +136,7 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
 
 
     @Override
-    protected void postCreate(BookHomesCommand entity, BookHomeDetail detail) throws InvalidException {
+    protected void postCreate(BookHomes entity, BookHomeDetail detail) throws InvalidException {
         iBookingGuestDetailFactory.createListModel(entity.getBookId(), detail.getGuests());
         iBookingSurchargeDetailFactory.createListModel(entity.getBookId(), detail.getSurcharges());
 
@@ -150,7 +150,7 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
     }
 
     @Override
-    protected <F extends BaseFilter> Page<BookHomesCommand> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
+    protected <F extends BaseFilter> Page<BookHomes> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
         UUID customerId = iGetUserFromTokenFactory.checkUnAuthorization();
 
         return bookHomeRepository.findBookingOfUser(customerId, PageRequest.of(number, size));

@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.OwnerOfHomeCommand;
+import com.hcmute.yourtours.entities.OwnerOfHome;
 import com.hcmute.yourtours.models.owner_of_home.projections.StatisticInfoOwnerProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,8 +12,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHomeCommand, Long> {
-    Optional<OwnerOfHomeCommand> findByOwnerOfHomeId(UUID ownerOfHomeId);
+public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHome, Long> {
+    Optional<OwnerOfHome> findByOwnerOfHomeId(UUID ownerOfHomeId);
 
     boolean existsByUserIdAndHomeId(UUID userId, UUID homeId);
 

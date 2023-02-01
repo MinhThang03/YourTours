@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.AmenityCategoriesCommand;
+import com.hcmute.yourtours.entities.AmenityCategories;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,8 +11,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface AmenityCategoriesRepository extends JpaRepository<AmenityCategoriesCommand, Long> {
-    Optional<AmenityCategoriesCommand> findByAmenityCategoryId(UUID amenityCategoryId);
+public interface AmenityCategoriesRepository extends JpaRepository<AmenityCategories, Long> {
+    Optional<AmenityCategories> findByAmenityCategoryId(UUID amenityCategoryId);
 
     Boolean existsByAmenityCategoryId(UUID amenityCategoryId);
 
@@ -25,5 +25,5 @@ public interface AmenityCategoriesRepository extends JpaRepository<AmenityCatego
                     "from amenity_categories a " +
                     "where a.is_default = :isDefault " +
                     "   or :isDefault is null ")
-    Page<AmenityCategoriesCommand> findPageWithFilter(Boolean isDefault, Pageable pageable);
+    Page<AmenityCategories> findPageWithFilter(Boolean isDefault, Pageable pageable);
 }

@@ -17,8 +17,8 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "user_evaluate")
-public class UserEvaluateCommand extends Persistence {
+@Table(name = "images_home")
+public class ImagesHome extends Persistence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -29,26 +29,21 @@ public class UserEvaluateCommand extends Persistence {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "user_evaluate_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
-    private UUID userEvaluateId;
+    @Column(name = "image_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
+    private UUID imageId;
+
+    @Column(name = "path")
+    private String path;
 
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
 
-    @Column(name = "user_id", columnDefinition = "BINARY(16)")
-    private UUID userId;
-
-    @Column(name = "point")
-    private Double point;
-
-    @Column(name = "comment")
-    private String comment;
 
     @Override
     protected void preWrite() {
         super.preWrite();
-        if (userEvaluateId == null) {
-            userEvaluateId = UUID.randomUUID();
+        if (imageId == null) {
+            imageId = UUID.randomUUID();
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.BookingHomeSurchargeDetailCommand;
+import com.hcmute.yourtours.entities.BookingHomeSurchargeDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,8 +9,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface BookingSurchargeDetailRepository extends JpaRepository<BookingHomeSurchargeDetailCommand, Long> {
-    Optional<BookingHomeSurchargeDetailCommand> findByBookingSurchargeDetailId(UUID bookingSurchargeDetailId);
+public interface BookingSurchargeDetailRepository extends JpaRepository<BookingHomeSurchargeDetail, Long> {
+    Optional<BookingHomeSurchargeDetail> findByBookingSurchargeDetailId(UUID bookingSurchargeDetailId);
 
-    List<BookingHomeSurchargeDetailCommand> findAllByBooking(UUID bookingId);
+    List<BookingHomeSurchargeDetail> findAllByBooking(UUID bookingId);
 }

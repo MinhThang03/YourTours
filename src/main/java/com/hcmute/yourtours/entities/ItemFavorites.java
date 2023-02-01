@@ -19,7 +19,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "item_favorites")
-public class ItemFavoritesCommand extends Persistence {
+public class ItemFavorites extends Persistence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)

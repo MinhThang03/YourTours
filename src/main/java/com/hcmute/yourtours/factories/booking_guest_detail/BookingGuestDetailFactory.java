@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.booking_guest_detail;
 
-import com.hcmute.yourtours.entities.BookingHomeGuestDetailCommand;
+import com.hcmute.yourtours.entities.BookingHomeGuestDetail;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 public class BookingGuestDetailFactory
-        extends BasePersistDataFactory<UUID, BookingGuestDetailInfo, BookingGuestDetailDetail, Long, BookingHomeGuestDetailCommand>
+        extends BasePersistDataFactory<UUID, BookingGuestDetailInfo, BookingGuestDetailDetail, Long, BookingHomeGuestDetail>
         implements IBookingGuestDetailFactory {
 
     private final BookingGuestDetailRepository bookingGuestDetailRepository;
@@ -34,12 +34,12 @@ public class BookingGuestDetailFactory
     }
 
     @Override
-    public BookingHomeGuestDetailCommand createConvertToEntity(BookingGuestDetailDetail detail) throws InvalidException {
+    public BookingHomeGuestDetail createConvertToEntity(BookingGuestDetailDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
 
-        return BookingHomeGuestDetailCommand.builder()
+        return BookingHomeGuestDetail.builder()
                 .booking(detail.getBooking())
                 .number(detail.getNumber())
                 .guestCategory(detail.getGuestCategory())
@@ -47,14 +47,14 @@ public class BookingGuestDetailFactory
     }
 
     @Override
-    public void updateConvertToEntity(BookingHomeGuestDetailCommand entity, BookingGuestDetailDetail detail) throws InvalidException {
+    public void updateConvertToEntity(BookingHomeGuestDetail entity, BookingGuestDetailDetail detail) throws InvalidException {
         entity.setBooking(detail.getBooking());
         entity.setGuestCategory(detail.getGuestCategory());
         entity.setNumber(detail.getNumber());
     }
 
     @Override
-    public BookingGuestDetailDetail convertToDetail(BookingHomeGuestDetailCommand entity) throws InvalidException {
+    public BookingGuestDetailDetail convertToDetail(BookingHomeGuestDetail entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -68,7 +68,7 @@ public class BookingGuestDetailFactory
     }
 
     @Override
-    public BookingGuestDetailInfo convertToInfo(BookingHomeGuestDetailCommand entity) throws InvalidException {
+    public BookingGuestDetailInfo convertToInfo(BookingHomeGuestDetail entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -83,7 +83,7 @@ public class BookingGuestDetailFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        Optional<BookingHomeGuestDetailCommand> optional = bookingGuestDetailRepository.findByBookingGuestDetailId(id);
+        Optional<BookingHomeGuestDetail> optional = bookingGuestDetailRepository.findByBookingGuestDetailId(id);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_BOOKING_GUEST_DETAIL);
         }
@@ -97,9 +97,9 @@ public class BookingGuestDetailFactory
             return;
         }
 
-        List<BookingHomeGuestDetailCommand> listDelete = bookingGuestDetailRepository.findAllByBooking(bookingId);
+        List<BookingHomeGuestDetail> listDelete = bookingGuestDetailRepository.findAllByBooking(bookingId);
 
-        for (BookingHomeGuestDetailCommand item : listDelete) {
+        for (BookingHomeGuestDetail item : listDelete) {
             deleteModel(item.getBookingGuestDetailId(), null);
         }
 

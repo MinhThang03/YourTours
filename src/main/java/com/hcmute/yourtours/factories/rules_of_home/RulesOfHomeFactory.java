@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.rules_of_home;
 
-import com.hcmute.yourtours.entities.RulesOfHomeCommand;
+import com.hcmute.yourtours.entities.RulesOfHome;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class RulesOfHomeFactory
-        extends BasePersistDataFactory<UUID, RuleOfHomeInfo, RuleOfHomeDetail, Long, RulesOfHomeCommand>
+        extends BasePersistDataFactory<UUID, RuleOfHomeInfo, RuleOfHomeDetail, Long, RulesOfHome>
         implements IRulesOfHomeFactory {
 
     private final RulesOfHomeRepository rulesOfHomeRepository;
@@ -33,11 +33,11 @@ public class RulesOfHomeFactory
     }
 
     @Override
-    public RulesOfHomeCommand createConvertToEntity(RuleOfHomeDetail detail) throws InvalidException {
+    public RulesOfHome createConvertToEntity(RuleOfHomeDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return RulesOfHomeCommand.builder()
+        return RulesOfHome.builder()
                 .isHave(detail.getIsHave())
                 .ruleHomeId(detail.getRuleHomeId())
                 .homeId(detail.getHomeId())
@@ -45,14 +45,14 @@ public class RulesOfHomeFactory
     }
 
     @Override
-    public void updateConvertToEntity(RulesOfHomeCommand entity, RuleOfHomeDetail detail) throws InvalidException {
+    public void updateConvertToEntity(RulesOfHome entity, RuleOfHomeDetail detail) throws InvalidException {
         entity.setHomeId(detail.getHomeId());
         entity.setRuleHomeId(detail.getRuleHomeId());
         entity.setIsHave(detail.getIsHave());
     }
 
     @Override
-    public RuleOfHomeDetail convertToDetail(RulesOfHomeCommand entity) throws InvalidException {
+    public RuleOfHomeDetail convertToDetail(RulesOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -64,7 +64,7 @@ public class RulesOfHomeFactory
     }
 
     @Override
-    public RuleOfHomeInfo convertToInfo(RulesOfHomeCommand entity) throws InvalidException {
+    public RuleOfHomeInfo convertToInfo(RulesOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -77,7 +77,7 @@ public class RulesOfHomeFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        RulesOfHomeCommand command = rulesOfHomeRepository.findByRuleHomeId(id).orElse(null);
+        RulesOfHome command = rulesOfHomeRepository.findByRuleHomeId(id).orElse(null);
         if (command == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_RULES_OF_HOME);
         }

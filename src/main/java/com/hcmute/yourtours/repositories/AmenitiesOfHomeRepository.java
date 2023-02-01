@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.AmenitiesOfHomeCommand;
+import com.hcmute.yourtours.entities.AmenitiesOfHome;
 import com.hcmute.yourtours.models.amenities_of_home.projection.AmenityOfHomeProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +12,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface AmenitiesOfHomeRepository extends JpaRepository<AmenitiesOfHomeCommand, Long> {
-    Optional<AmenitiesOfHomeCommand> findByAmenityOfHomeId(UUID amenityOfHomeId);
+public interface AmenitiesOfHomeRepository extends JpaRepository<AmenitiesOfHome, Long> {
+    Optional<AmenitiesOfHome> findByAmenityOfHomeId(UUID amenityOfHomeId);
 
     @Query(nativeQuery = true,
             value = "select b.amenity_id  as amenityId, " +
@@ -33,5 +33,5 @@ public interface AmenitiesOfHomeRepository extends JpaRepository<AmenitiesOfHome
                                                                       @Param("homeId") UUID homeId);
 
 
-    Optional<AmenitiesOfHomeCommand> findByHomeIdAndAmenityId(UUID homeId, UUID amenityId);
+    Optional<AmenitiesOfHome> findByHomeIdAndAmenityId(UUID homeId, UUID amenityId);
 }

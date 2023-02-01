@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.SurchargesOfHomeCommand;
+import com.hcmute.yourtours.entities.SurchargesOfHome;
 import com.hcmute.yourtours.models.surcharges_of_home.projections.SurchargeHomeViewProjection;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
@@ -14,8 +14,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHomeCommand, Long> {
-    Optional<SurchargesOfHomeCommand> findBySurchargeOfHomeId(UUID surchargeOfHomeId);
+public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHome, Long> {
+    Optional<SurchargesOfHome> findBySurchargeOfHomeId(UUID surchargeOfHomeId);
 
 
     @Query(
@@ -31,9 +31,9 @@ public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHo
     )
     List<SurchargeHomeViewProjection> getListCategoryWithHomeId(UUID homeId);
 
-    List<SurchargesOfHomeCommand> findAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
+    List<SurchargesOfHome> findAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
 
-    Optional<SurchargesOfHomeCommand> findByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
+    Optional<SurchargesOfHome> findByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
 
     @Query(
             nativeQuery = true,

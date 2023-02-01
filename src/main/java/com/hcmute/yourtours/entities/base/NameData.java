@@ -1,21 +1,19 @@
 package com.hcmute.yourtours.entities.base;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 
-@Data
-@MappedSuperclass
-@EqualsAndHashCode(callSuper = false)
+@Getter
+@Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
-@NoArgsConstructor
-@AllArgsConstructor
-public class NameData extends Persistence {
+@EqualsAndHashCode(callSuper = true)
+@MappedSuperclass
+public abstract class NameData extends Persistence {
 
     @Lob
     private String description;

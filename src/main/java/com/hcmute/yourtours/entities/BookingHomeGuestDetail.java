@@ -1,7 +1,7 @@
 package com.hcmute.yourtours.entities;
 
-import com.hcmute.yourtours.entities.base.NameData;
-import com.hcmute.yourtours.enums.CommonStatusEnum;
+import com.hcmute.yourtours.entities.base.Persistence;
+import com.hcmute.yourtours.enums.GuestsCategoryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,8 +18,8 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "surcharge_home_categories")
-public class SurchargeHomeCategoriesCommand extends NameData {
+@Table(name = "book_home_guest_detail")
+public class BookingHomeGuestDetail extends Persistence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -30,19 +30,24 @@ public class SurchargeHomeCategoriesCommand extends NameData {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "surcharge_category_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
-    private UUID surchargeCategoryId;
+    @Column(name = "booking_guest_detail", columnDefinition = "BINARY(16)", unique = true, nullable = false)
+    private UUID bookingGuestDetailId;
 
-    @Column(name = "status")
+    @Column(name = "guest_categories")
     @Enumerated(EnumType.STRING)
-    private CommonStatusEnum status;
+    private GuestsCategoryEnum guestCategory;
+
+    @Column(name = "number")
+    private Integer number;
+
+    @Column(name = "booking", columnDefinition = "BINARY(16)")
+    private UUID booking;
 
     @Override
     protected void preWrite() {
         super.preWrite();
-        if (surchargeCategoryId == null) {
-            surchargeCategoryId = UUID.randomUUID();
+        if (bookingGuestDetailId == null) {
+            bookingGuestDetailId = UUID.randomUUID();
         }
     }
 }
-

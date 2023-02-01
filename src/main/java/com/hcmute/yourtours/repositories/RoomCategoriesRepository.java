@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.RoomCategoriesCommand;
+import com.hcmute.yourtours.entities.RoomCategories;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,8 +12,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface RoomCategoriesRepository extends JpaRepository<RoomCategoriesCommand, Long> {
-    Optional<RoomCategoriesCommand> findByRoomCategoryId(UUID roomCategoryId);
+public interface RoomCategoriesRepository extends JpaRepository<RoomCategories, Long> {
+    Optional<RoomCategories> findByRoomCategoryId(UUID roomCategoryId);
 
 
     @Query(nativeQuery = true,
@@ -25,5 +25,5 @@ public interface RoomCategoriesRepository extends JpaRepository<RoomCategoriesCo
                     "from room_categories a  " +
                     "where a.important = :important  " +
                     "   or :important is null ")
-    Page<RoomCategoriesCommand> findPageWithFilter(@Param(":important") Boolean important, Pageable pageable);
+    Page<RoomCategories> findPageWithFilter(@Param(":important") Boolean important, Pageable pageable);
 }

@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.RuleHomeCategoriesCommand;
+import com.hcmute.yourtours.entities.RuleHomeCategories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface RuleHomeCategoriesRepository extends JpaRepository<RuleHomeCategoriesCommand, Long> {
-    Optional<RuleHomeCategoriesCommand> findByRuleCategoryId(UUID ruleCategoryId);
+public interface RuleHomeCategoriesRepository extends JpaRepository<RuleHomeCategories, Long> {
+    Optional<RuleHomeCategories> findByRuleCategoryId(UUID ruleCategoryId);
 }

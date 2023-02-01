@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.entities;
 
-import com.hcmute.yourtours.entities.base.NameData;
-import com.hcmute.yourtours.enums.CommonStatusEnum;
+import com.hcmute.yourtours.entities.base.Persistence;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,8 +17,8 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "amenities")
-public class AmenitiesCommand extends NameData {
+@Table(name = "rules_of_home")
+public class RulesOfHome extends Persistence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -30,29 +29,25 @@ public class AmenitiesCommand extends NameData {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "amenity_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
-    private UUID amenityId;
+    @Column(name = "rule_of_home_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
+    private UUID ruleOfHomeId;
 
-    @Column(name = "category_id", columnDefinition = "BINARY(16)")
-    private UUID categoryId;
+    @Column(name = "isHave")
+    private Boolean isHave;
 
-    @Column(name = "icon")
-    private String icon;
+    @Column(name = "home_id", columnDefinition = "BINARY(16)")
+    private UUID homeId;
 
-    @Column(name = "set_filter")
-    private Boolean setFilter;
-
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private CommonStatusEnum status;
-
+    @Column(name = "rule_home_id", columnDefinition = "BINARY(16)")
+    private UUID ruleHomeId;
 
     @Override
     protected void preWrite() {
         super.preWrite();
-        if (amenityId == null) {
-            amenityId = UUID.randomUUID();
+        if (ruleOfHomeId == null) {
+            ruleOfHomeId = UUID.randomUUID();
         }
     }
 }
+
 

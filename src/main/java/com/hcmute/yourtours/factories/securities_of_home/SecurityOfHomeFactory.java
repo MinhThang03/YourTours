@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.securities_of_home;
 
-import com.hcmute.yourtours.entities.SecuritiesOfHomeCommand;
+import com.hcmute.yourtours.entities.SecuritiesOfHome;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class SecurityOfHomeFactory
-        extends BasePersistDataFactory<UUID, SecurityOfHomeInfo, SecurityOfHomeDetail, Long, SecuritiesOfHomeCommand>
+        extends BasePersistDataFactory<UUID, SecurityOfHomeInfo, SecurityOfHomeDetail, Long, SecuritiesOfHome>
         implements ISecuritiesOfHomeFactory {
 
     private final SecuritiesOfHomeRepository securitiesOfHomeRepository;
@@ -34,11 +34,11 @@ public class SecurityOfHomeFactory
     }
 
     @Override
-    public SecuritiesOfHomeCommand createConvertToEntity(SecurityOfHomeDetail detail) throws InvalidException {
+    public SecuritiesOfHome createConvertToEntity(SecurityOfHomeDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return SecuritiesOfHomeCommand.builder()
+        return SecuritiesOfHome.builder()
                 .isHave(detail.getIsHave())
                 .categoryId(detail.getCategoryId())
                 .homeId(detail.getHomeId())
@@ -46,14 +46,14 @@ public class SecurityOfHomeFactory
     }
 
     @Override
-    public void updateConvertToEntity(SecuritiesOfHomeCommand entity, SecurityOfHomeDetail detail) throws InvalidException {
+    public void updateConvertToEntity(SecuritiesOfHome entity, SecurityOfHomeDetail detail) throws InvalidException {
         entity.setIsHave(detail.getIsHave());
         entity.setHomeId(detail.getHomeId());
         entity.setCategoryId(detail.getCategoryId());
     }
 
     @Override
-    public SecurityOfHomeDetail convertToDetail(SecuritiesOfHomeCommand entity) throws InvalidException {
+    public SecurityOfHomeDetail convertToDetail(SecuritiesOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -65,7 +65,7 @@ public class SecurityOfHomeFactory
     }
 
     @Override
-    public SecurityOfHomeInfo convertToInfo(SecuritiesOfHomeCommand entity) throws InvalidException {
+    public SecurityOfHomeInfo convertToInfo(SecuritiesOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -78,7 +78,7 @@ public class SecurityOfHomeFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        Optional<SecuritiesOfHomeCommand> optional = securitiesOfHomeRepository.findBySecurityOfHomeId(id);
+        Optional<SecuritiesOfHome> optional = securitiesOfHomeRepository.findBySecurityOfHomeId(id);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_SECURITY_OF_HOME);
         }

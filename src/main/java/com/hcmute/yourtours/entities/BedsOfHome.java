@@ -18,7 +18,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "beds_of_home")
-public class BedsOfHomeCommand extends Persistence {
+public class BedsOfHome extends Persistence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)

@@ -18,8 +18,8 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "amenity_categories")
-public class AmenityCategoriesCommand extends NameData {
+@Table(name = "guest_categories")
+public class GuestCategories extends NameData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -30,21 +30,18 @@ public class AmenityCategoriesCommand extends NameData {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "amenity_category_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
-    private UUID amenityCategoryId;
+    @Column(name = "guest_category_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
+    private UUID guestCategoryId;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private CommonStatusEnum status;
 
-    @Column(name = "isDefault")
-    private Boolean isDefault;
-
     @Override
     protected void preWrite() {
         super.preWrite();
-        if (amenityCategoryId == null) {
-            amenityCategoryId = UUID.randomUUID();
+        if (guestCategoryId == null) {
+            guestCategoryId = UUID.randomUUID();
         }
     }
 }

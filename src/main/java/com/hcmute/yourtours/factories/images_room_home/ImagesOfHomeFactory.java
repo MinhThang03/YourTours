@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.images_room_home;
 
-import com.hcmute.yourtours.entities.ImagesRoomHomeCommand;
+import com.hcmute.yourtours.entities.ImagesRoomHome;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class ImagesOfHomeFactory
-        extends BasePersistDataFactory<UUID, ImageRoomHomeInfo, ImageRoomHomeDetail, Long, ImagesRoomHomeCommand>
+        extends BasePersistDataFactory<UUID, ImageRoomHomeInfo, ImageRoomHomeDetail, Long, ImagesRoomHome>
         implements IImagesRoomHomeFactory {
 
     private final ImagesRoomHomeRepository imageRoomRepository;
@@ -33,24 +33,24 @@ public class ImagesOfHomeFactory
     }
 
     @Override
-    public ImagesRoomHomeCommand createConvertToEntity(ImageRoomHomeDetail detail) throws InvalidException {
+    public ImagesRoomHome createConvertToEntity(ImageRoomHomeDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return ImagesRoomHomeCommand.builder()
+        return ImagesRoomHome.builder()
                 .path(detail.getPath())
                 .roomOfHomeId(detail.getRoomOfHomeId())
                 .build();
     }
 
     @Override
-    public void updateConvertToEntity(ImagesRoomHomeCommand entity, ImageRoomHomeDetail detail) throws InvalidException {
+    public void updateConvertToEntity(ImagesRoomHome entity, ImageRoomHomeDetail detail) throws InvalidException {
         entity.setPath(detail.getPath());
         entity.setRoomOfHomeId(detail.getRoomOfHomeId());
     }
 
     @Override
-    public ImageRoomHomeDetail convertToDetail(ImagesRoomHomeCommand entity) throws InvalidException {
+    public ImageRoomHomeDetail convertToDetail(ImagesRoomHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -62,7 +62,7 @@ public class ImagesOfHomeFactory
     }
 
     @Override
-    public ImageRoomHomeInfo convertToInfo(ImagesRoomHomeCommand entity) throws InvalidException {
+    public ImageRoomHomeInfo convertToInfo(ImagesRoomHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -75,7 +75,7 @@ public class ImagesOfHomeFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        ImagesRoomHomeCommand image = imageRoomRepository.findByImageId(id).orElse(null);
+        ImagesRoomHome image = imageRoomRepository.findByImageId(id).orElse(null);
         if (image == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_IMAGE_ROOM_HOME);
         }

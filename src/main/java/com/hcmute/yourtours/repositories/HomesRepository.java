@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.HomesCommand;
+import com.hcmute.yourtours.entities.Homes;
 import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
 import com.hcmute.yourtours.models.province.ProvinceProjection;
 import io.lettuce.core.dynamic.annotation.Param;
@@ -16,8 +16,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
-    Optional<HomesCommand> findByHomeId(UUID homeID);
+public interface HomesRepository extends JpaRepository<Homes, Long> {
+    Optional<Homes> findByHomeId(UUID homeID);
 
     @Query
             (
@@ -41,10 +41,10 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                             "         case when :sortBy = 'FAVORITE' then a.favorite end desc,  " +
                             "         a.created_date desc  "
             )
-    Page<HomesCommand> findPageWithFilter(@Param("userId") UUID userId,
-                                          @Param("sortBy") String sortBy,
-                                          @Param("status") String status,
-                                          PageRequest pageRequest);
+    Page<Homes> findPageWithFilter(@Param("userId") UUID userId,
+                                   @Param("sortBy") String sortBy,
+                                   @Param("status") String status,
+                                   PageRequest pageRequest);
 
 
     @Query
@@ -81,9 +81,9 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                     "  and b.user_id = :userId  " +
                     "  and a.status = :status "
     )
-    Page<HomesCommand> getFavoritesListByUserId(@Param("userId") UUID userId,
-                                                @Param("status") String status,
-                                                Pageable pageable);
+    Page<Homes> getFavoritesListByUserId(@Param("userId") UUID userId,
+                                         @Param("status") String status,
+                                         Pageable pageable);
 
 
     @Query(
@@ -96,8 +96,8 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                     "  and a.home_id = b.home_id  " +
                     "limit 1 "
     )
-    Optional<HomesCommand> findIsFavoriteByHomeIdAndUserId(@Param("homeId") UUID homeId,
-                                                           @Param("userId") UUID userId);
+    Optional<Homes> findIsFavoriteByHomeIdAndUserId(@Param("homeId") UUID homeId,
+                                                    @Param("userId") UUID userId);
 
 
     @Query(
@@ -161,17 +161,17 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                     "  and a.status = 'ACTIVE'  " +
                     "order by a.created_date desc "
     )
-    Page<HomesCommand> getPageWithFullFilter(@Param("amenityId") UUID amenityId,
-                                             @Param("priceFrom") Double priceFrom,
-                                             @Param("priceTo") Double priceTo,
-                                             @Param("numberOfBed") Integer numberOfBed,
-                                             @Param("numberOfBedRoom") Integer numberOfBedRoom,
-                                             @Param("numberOfBathRoom") Integer numberOfBathRoom,
-                                             @Param("amenities") List<UUID> amenities,
-                                             @Param("size") Integer size,
-                                             @Param("bedRoomId") UUID bedRoomId,
-                                             @Param("bathRoomId") UUID bathRoomId,
-                                             Pageable pageable);
+    Page<Homes> getPageWithFullFilter(@Param("amenityId") UUID amenityId,
+                                      @Param("priceFrom") Double priceFrom,
+                                      @Param("priceTo") Double priceTo,
+                                      @Param("numberOfBed") Integer numberOfBed,
+                                      @Param("numberOfBedRoom") Integer numberOfBedRoom,
+                                      @Param("numberOfBathRoom") Integer numberOfBathRoom,
+                                      @Param("amenities") List<UUID> amenities,
+                                      @Param("size") Integer size,
+                                      @Param("bedRoomId") UUID bedRoomId,
+                                      @Param("bathRoomId") UUID bathRoomId,
+                                      Pageable pageable);
 
 
     @Query(
@@ -187,8 +187,8 @@ public interface HomesRepository extends JpaRepository<HomesCommand, Long> {
                     "  and a.status = 'ACTIVE'  " +
                     "order by a.view desc  "
     )
-    Page<HomesCommand> getPageWithListProvinceCode(@Param("listProvinceCode") List<Integer> listProvinceCode,
-                                                   Pageable pageable);
+    Page<Homes> getPageWithListProvinceCode(@Param("listProvinceCode") List<Integer> listProvinceCode,
+                                            Pageable pageable);
 
 
     @Query(

@@ -21,7 +21,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "homes")
-public class HomesCommand extends NameData {
+public class Homes extends NameData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)

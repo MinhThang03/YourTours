@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.homes;
 
-import com.hcmute.yourtours.entities.HomesCommand;
+import com.hcmute.yourtours.entities.Homes;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.IDataFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IHomesFactory extends IDataFactory<UUID, HomeInfo, HomeDetail> {
-    HomesCommand findByHomeId(UUID homeId) throws InvalidException;
+    Homes findByHomeId(UUID homeId) throws InvalidException;
 
     void checkExistsByHomeId(UUID homeId) throws InvalidException;
 

@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.security_categories;
 
-import com.hcmute.yourtours.entities.SecurityCategoriesCommand;
+import com.hcmute.yourtours.entities.SecurityCategories;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class SecurityCategoriesFactory
-        extends BasePersistDataFactory<UUID, SecurityCategoryInfo, SecurityCategoryDetail, Long, SecurityCategoriesCommand>
+        extends BasePersistDataFactory<UUID, SecurityCategoryInfo, SecurityCategoryDetail, Long, SecurityCategories>
         implements ISecurityCategoriesFactory {
 
     private final SecurityCategoriesRepository securityCategoriesRepository;
@@ -34,11 +34,11 @@ public class SecurityCategoriesFactory
     }
 
     @Override
-    public SecurityCategoriesCommand createConvertToEntity(SecurityCategoryDetail detail) {
+    public SecurityCategories createConvertToEntity(SecurityCategoryDetail detail) {
         if (detail == null) {
             return null;
         }
-        return SecurityCategoriesCommand.builder()
+        return SecurityCategories.builder()
                 .name(detail.getName())
                 .description(detail.getDescription())
                 .status(detail.getStatus())
@@ -46,14 +46,14 @@ public class SecurityCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(SecurityCategoriesCommand entity, SecurityCategoryDetail detail) {
+    public void updateConvertToEntity(SecurityCategories entity, SecurityCategoryDetail detail) {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
     }
 
     @Override
-    public SecurityCategoryDetail convertToDetail(SecurityCategoriesCommand entity) {
+    public SecurityCategoryDetail convertToDetail(SecurityCategories entity) {
         if (entity == null) {
             return null;
         }
@@ -66,7 +66,7 @@ public class SecurityCategoriesFactory
     }
 
     @Override
-    public SecurityCategoryInfo convertToInfo(SecurityCategoriesCommand entity) {
+    public SecurityCategoryInfo convertToInfo(SecurityCategories entity) {
         if (entity == null) {
             return null;
         }
@@ -80,7 +80,7 @@ public class SecurityCategoriesFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        Optional<SecurityCategoriesCommand> optional = securityCategoriesRepository.findBySecurityCategoryId(id);
+        Optional<SecurityCategories> optional = securityCategoriesRepository.findBySecurityCategoryId(id);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_SECURITY_CATEGORIES);
         }

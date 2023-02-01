@@ -1,7 +1,7 @@
 package com.hcmute.yourtours.factories.amenity_categories;
 
 
-import com.hcmute.yourtours.entities.AmenityCategoriesCommand;
+import com.hcmute.yourtours.entities.AmenityCategories;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -22,7 +22,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class AmenityCategoriesFactory
-        extends BasePersistDataFactory<UUID, AmenityCategoryInfo, AmenityCategoryDetail, Long, AmenityCategoriesCommand>
+        extends BasePersistDataFactory<UUID, AmenityCategoryInfo, AmenityCategoryDetail, Long, AmenityCategories>
         implements IAmenityCategoriesFactory {
 
     private final AmenityCategoriesRepository amenityCategoriesRepository;
@@ -39,11 +39,11 @@ public class AmenityCategoriesFactory
     }
 
     @Override
-    public AmenityCategoriesCommand createConvertToEntity(AmenityCategoryDetail detail) throws InvalidException {
+    public AmenityCategories createConvertToEntity(AmenityCategoryDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return AmenityCategoriesCommand.builder()
+        return AmenityCategories.builder()
                 .name(detail.getName())
                 .description(detail.getDescription())
                 .status(detail.getStatus())
@@ -52,7 +52,7 @@ public class AmenityCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(AmenityCategoriesCommand entity, AmenityCategoryDetail detail) throws InvalidException {
+    public void updateConvertToEntity(AmenityCategories entity, AmenityCategoryDetail detail) throws InvalidException {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
@@ -60,7 +60,7 @@ public class AmenityCategoriesFactory
     }
 
     @Override
-    public AmenityCategoryDetail convertToDetail(AmenityCategoriesCommand entity) throws InvalidException {
+    public AmenityCategoryDetail convertToDetail(AmenityCategories entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -74,7 +74,7 @@ public class AmenityCategoriesFactory
     }
 
     @Override
-    public AmenityCategoryInfo convertToInfo(AmenityCategoriesCommand entity) throws InvalidException {
+    public AmenityCategoryInfo convertToInfo(AmenityCategories entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -89,7 +89,7 @@ public class AmenityCategoriesFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        Optional<AmenityCategoriesCommand> optional = amenityCategoriesRepository.findByAmenityCategoryId(id);
+        Optional<AmenityCategories> optional = amenityCategoriesRepository.findByAmenityCategoryId(id);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_AMENITY_CATEGORIES);
         }
@@ -102,7 +102,7 @@ public class AmenityCategoriesFactory
     }
 
     @Override
-    protected <F extends BaseFilter> Page<AmenityCategoriesCommand> pageQuery(F filter, Integer number, Integer size) {
+    protected <F extends BaseFilter> Page<AmenityCategories> pageQuery(F filter, Integer number, Integer size) {
         AmenityCategoryFilter amenityCategoryFilter = (AmenityCategoryFilter) filter;
 
         return amenityCategoriesRepository.findPageWithFilter(

@@ -1,7 +1,7 @@
 package com.hcmute.yourtours.factories.booking.cms;
 
 import com.hcmute.yourtours.email.IEmailFactory;
-import com.hcmute.yourtours.entities.BookHomesCommand;
+import com.hcmute.yourtours.entities.BookHomes;
 import com.hcmute.yourtours.factories.booking.BookHomeFactory;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
@@ -54,7 +54,7 @@ public class CmsBookHomeFactory extends BookHomeFactory implements ICmsBookHomeF
     }
 
     @Override
-    protected <F extends BaseFilter> Page<BookHomesCommand> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
+    protected <F extends BaseFilter> Page<BookHomes> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
         CmsBookingFilter bookingFilter = (CmsBookingFilter) filter;
 
         UUID ownerId = iGetUserFromTokenFactory.checkUnAuthorization();

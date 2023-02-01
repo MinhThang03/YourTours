@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.price_of_home;
 
-import com.hcmute.yourtours.entities.PriceOfHomeCommand;
+import com.hcmute.yourtours.entities.PriceOfHome;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.common.IAuthorizationOwnerHomeFactory;
 import com.hcmute.yourtours.factories.discount_of_home.IDiscountOfHomeFactory;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Transactional
 public class PriceOfHomeFactory
-        extends BasePersistDataFactory<UUID, PriceOfHomeInfo, PriceOfHomeDetail, Long, PriceOfHomeCommand>
+        extends BasePersistDataFactory<UUID, PriceOfHomeInfo, PriceOfHomeDetail, Long, PriceOfHome>
         implements IPriceOfHomeFactory {
 
     private final PriceOfHomeRepository priceOfHomeRepository;
@@ -69,11 +69,11 @@ public class PriceOfHomeFactory
     }
 
     @Override
-    public PriceOfHomeCommand createConvertToEntity(PriceOfHomeDetail detail) throws InvalidException {
+    public PriceOfHome createConvertToEntity(PriceOfHomeDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return PriceOfHomeCommand.builder()
+        return PriceOfHome.builder()
                 .date(detail.getDate())
                 .price(detail.getPrice())
                 .homeId(detail.getHomeId())
@@ -81,14 +81,14 @@ public class PriceOfHomeFactory
     }
 
     @Override
-    public void updateConvertToEntity(PriceOfHomeCommand entity, PriceOfHomeDetail detail) throws InvalidException {
+    public void updateConvertToEntity(PriceOfHome entity, PriceOfHomeDetail detail) throws InvalidException {
         entity.setHomeId(detail.getHomeId());
         entity.setPrice(detail.getPrice());
         entity.setPrice(detail.getPrice());
     }
 
     @Override
-    public PriceOfHomeDetail convertToDetail(PriceOfHomeCommand entity) throws InvalidException {
+    public PriceOfHomeDetail convertToDetail(PriceOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -101,7 +101,7 @@ public class PriceOfHomeFactory
     }
 
     @Override
-    public PriceOfHomeInfo convertToInfo(PriceOfHomeCommand entity) throws InvalidException {
+    public PriceOfHomeInfo convertToInfo(PriceOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -115,7 +115,7 @@ public class PriceOfHomeFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        PriceOfHomeCommand command = priceOfHomeRepository.findByPriceOfHomeId(id).orElse(null);
+        PriceOfHome command = priceOfHomeRepository.findByPriceOfHomeId(id).orElse(null);
         if (command == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_PRICE_OF_HOME);
         }
@@ -129,7 +129,7 @@ public class PriceOfHomeFactory
             throw new InvalidException(YourToursErrorCode.INPUT_DAY_IS_BEFORE);
         }
 
-        List<PriceOfHomeCommand> listDelete = priceOfHomeRepository.findAllByHomeIdAndDate(detail.getHomeId(), detail.getDate());
+        List<PriceOfHome> listDelete = priceOfHomeRepository.findAllByHomeIdAndDate(detail.getHomeId(), detail.getDate());
         if (!listDelete.isEmpty()) {
             repository.deleteAll(listDelete);
         }
@@ -249,7 +249,7 @@ public class PriceOfHomeFactory
 
 
     private PriceOfHomeDetail findByHomeIdAndDate(UUID homeId, LocalDate date) throws InvalidException {
-        Optional<PriceOfHomeCommand> optional = priceOfHomeRepository.findByHomeIdAndDate(homeId, date);
+        Optional<PriceOfHome> optional = priceOfHomeRepository.findByHomeIdAndDate(homeId, date);
         if (optional.isPresent()) {
             PriceOfHomeDetail detail = convertToDetail(optional.get());
             detail.setEspecially(true);

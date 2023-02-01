@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.guest_categories;
 
-import com.hcmute.yourtours.entities.GuestCategoriesCommand;
+import com.hcmute.yourtours.entities.GuestCategories;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class GuestCategoriesFactory
-        extends BasePersistDataFactory<UUID, GuestCategoryInfo, GuestCategoryDetail, Long, GuestCategoriesCommand>
+        extends BasePersistDataFactory<UUID, GuestCategoryInfo, GuestCategoryDetail, Long, GuestCategories>
         implements IGuestCategoriesFactory {
 
     private final GuestCategoriesRepository guestCategoriesRepository;
@@ -34,11 +34,11 @@ public class GuestCategoriesFactory
     }
 
     @Override
-    public GuestCategoriesCommand createConvertToEntity(GuestCategoryDetail detail) {
+    public GuestCategories createConvertToEntity(GuestCategoryDetail detail) {
         if (detail == null) {
             return null;
         }
-        return GuestCategoriesCommand.builder()
+        return GuestCategories.builder()
                 .name(detail.getName())
                 .description(detail.getDescription())
                 .status(detail.getStatus())
@@ -46,14 +46,14 @@ public class GuestCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(GuestCategoriesCommand entity, GuestCategoryDetail detail) {
+    public void updateConvertToEntity(GuestCategories entity, GuestCategoryDetail detail) {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
     }
 
     @Override
-    public GuestCategoryDetail convertToDetail(GuestCategoriesCommand entity) {
+    public GuestCategoryDetail convertToDetail(GuestCategories entity) {
         if (entity == null) {
             return null;
         }
@@ -66,7 +66,7 @@ public class GuestCategoriesFactory
     }
 
     @Override
-    public GuestCategoryInfo convertToInfo(GuestCategoriesCommand entity) {
+    public GuestCategoryInfo convertToInfo(GuestCategories entity) {
         if (entity == null) {
             return null;
         }
@@ -80,7 +80,7 @@ public class GuestCategoriesFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        Optional<GuestCategoriesCommand> optional = guestCategoriesRepository.findByGuestCategoryId(id);
+        Optional<GuestCategories> optional = guestCategoriesRepository.findByGuestCategoryId(id);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_GUEST_CATEGORIES);
         }

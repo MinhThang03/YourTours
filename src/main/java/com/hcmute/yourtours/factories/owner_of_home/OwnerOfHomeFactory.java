@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.owner_of_home;
 
-import com.hcmute.yourtours.entities.OwnerOfHomeCommand;
+import com.hcmute.yourtours.entities.OwnerOfHome;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class OwnerOfHomeFactory
-        extends BasePersistDataFactory<UUID, OwnerOfHomeInfo, OwnerOfHomeDetail, Long, OwnerOfHomeCommand>
+        extends BasePersistDataFactory<UUID, OwnerOfHomeInfo, OwnerOfHomeDetail, Long, OwnerOfHome>
         implements IOwnerOfHomeFactory {
 
     private final OwnerOfHomesRepository ownerOfHomesRepository;
@@ -41,11 +41,11 @@ public class OwnerOfHomeFactory
     }
 
     @Override
-    public OwnerOfHomeCommand createConvertToEntity(OwnerOfHomeDetail detail) throws InvalidException {
+    public OwnerOfHome createConvertToEntity(OwnerOfHomeDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return OwnerOfHomeCommand.builder()
+        return OwnerOfHome.builder()
                 .isMainOwner(detail.getIsMainOwner())
                 .userId(detail.getUserId())
                 .homeId(detail.getHomeId())
@@ -53,14 +53,14 @@ public class OwnerOfHomeFactory
     }
 
     @Override
-    public void updateConvertToEntity(OwnerOfHomeCommand entity, OwnerOfHomeDetail detail) throws InvalidException {
+    public void updateConvertToEntity(OwnerOfHome entity, OwnerOfHomeDetail detail) throws InvalidException {
         entity.setHomeId(detail.getHomeId());
         entity.setIsMainOwner(detail.getIsMainOwner());
         entity.setHomeId(detail.getHomeId());
     }
 
     @Override
-    public OwnerOfHomeDetail convertToDetail(OwnerOfHomeCommand entity) throws InvalidException {
+    public OwnerOfHomeDetail convertToDetail(OwnerOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -73,7 +73,7 @@ public class OwnerOfHomeFactory
     }
 
     @Override
-    public OwnerOfHomeInfo convertToInfo(OwnerOfHomeCommand entity) throws InvalidException {
+    public OwnerOfHomeInfo convertToInfo(OwnerOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -87,7 +87,7 @@ public class OwnerOfHomeFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        OwnerOfHomeCommand command = ownerOfHomesRepository.findByOwnerOfHomeId(id).orElse(null);
+        OwnerOfHome command = ownerOfHomesRepository.findByOwnerOfHomeId(id).orElse(null);
         if (command == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_OWNER_OF_HOME);
         }

@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.entities;
 
-import com.hcmute.yourtours.entities.base.Persistence;
+import com.hcmute.yourtours.entities.base.NameData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @SuperBuilder
@@ -17,8 +18,8 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "rules_of_home")
-public class RulesOfHomeCommand extends Persistence {
+@Table(name = "discount_campaign_id")
+public class DiscountCampaign extends NameData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -29,25 +30,32 @@ public class RulesOfHomeCommand extends Persistence {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "rule_of_home_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
-    private UUID ruleOfHomeId;
+    @Column(name = "discount_campaign_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
+    private UUID discountCampaignId;
 
-    @Column(name = "isHave")
-    private Boolean isHave;
+    @Column(name = "code_name")
+    private String codeName;
+
+    @Column(name = "percent")
+    private Double percent;
+
+    @Column(name = "date_start")
+    private LocalDate dateStart;
+
+    @Column(name = "day_end")
+    private LocalDate dateEnd;
 
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
 
-    @Column(name = "rule_home_id", columnDefinition = "BINARY(16)")
-    private UUID ruleHomeId;
+    @Column(name = "banner")
+    private String banner;
 
     @Override
     protected void preWrite() {
         super.preWrite();
-        if (ruleOfHomeId == null) {
-            ruleOfHomeId = UUID.randomUUID();
+        if (discountCampaignId == null) {
+            discountCampaignId = UUID.randomUUID();
         }
     }
 }
-
-

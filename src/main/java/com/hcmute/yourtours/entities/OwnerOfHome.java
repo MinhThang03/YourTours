@@ -17,8 +17,8 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "amenities_of_home")
-public class AmenitiesOfHomeCommand extends Persistence {
+@Table(name = "owner_of_home")
+public class OwnerOfHome extends Persistence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -29,25 +29,24 @@ public class AmenitiesOfHomeCommand extends Persistence {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "amenity_of_home_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
-    private UUID amenityOfHomeId;
+    @Column(name = "owner_of_home_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
+    private UUID ownerOfHomeId;
 
-    @Column(name = "isHave")
-    private Boolean isHave;
+    @Column(name = "is_main_owner")
+    private Boolean isMainOwner;
 
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
 
-    @Column(name = "amenity_id", columnDefinition = "BINARY(16)")
-    private UUID amenityId;
+    @Column(name = "user_id", columnDefinition = "BINARY(16)")
+    private UUID userId;
 
     @Override
     protected void preWrite() {
         super.preWrite();
-        if (amenityOfHomeId == null) {
-            amenityOfHomeId = UUID.randomUUID();
+        if (ownerOfHomeId == null) {
+            ownerOfHomeId = UUID.randomUUID();
         }
     }
 }
-
 

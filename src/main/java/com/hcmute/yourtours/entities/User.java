@@ -22,7 +22,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "user")
-public class UserCommand extends Persistence {
+public class User extends Persistence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)

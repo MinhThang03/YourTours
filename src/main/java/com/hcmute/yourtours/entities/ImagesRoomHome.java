@@ -9,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @SuperBuilder
@@ -18,8 +17,8 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "price_of_home")
-public class PriceOfHomeCommand extends Persistence {
+@Table(name = "images_room_home")
+public class ImagesRoomHome extends Persistence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -30,23 +29,21 @@ public class PriceOfHomeCommand extends Persistence {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "price_of_home_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
-    private UUID priceOfHomeId;
+    @Column(name = "image_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
+    private UUID imageId;
 
-    @Column(name = "date")
-    private LocalDate date;
+    @Column(name = "path")
+    private String path;
 
-    @Column(name = "price")
-    private Double price;
+    @Column(name = "room_of_home_id", columnDefinition = "BINARY(16)")
+    private UUID roomOfHomeId;
 
-    @Column(name = "home_id", columnDefinition = "BINARY(16)")
-    private UUID homeId;
 
     @Override
     protected void preWrite() {
         super.preWrite();
-        if (priceOfHomeId == null) {
-            priceOfHomeId = UUID.randomUUID();
+        if (imageId == null) {
+            imageId = UUID.randomUUID();
         }
     }
 }

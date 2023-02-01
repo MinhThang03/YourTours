@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.discount_campaign;
 
-import com.hcmute.yourtours.entities.DiscountCampaignCommand;
+import com.hcmute.yourtours.entities.DiscountCampaign;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class DiscountCampaignFactory
-        extends BasePersistDataFactory<UUID, DiscountCampaignInfo, DiscountCampaignDetail, Long, DiscountCampaignCommand>
+        extends BasePersistDataFactory<UUID, DiscountCampaignInfo, DiscountCampaignDetail, Long, DiscountCampaign>
         implements IDiscountCampaignFactory {
 
     protected final DiscountCampaignRepository discountCampaignRepository;
@@ -33,11 +33,11 @@ public class DiscountCampaignFactory
     }
 
     @Override
-    public DiscountCampaignCommand createConvertToEntity(DiscountCampaignDetail detail) throws InvalidException {
+    public DiscountCampaign createConvertToEntity(DiscountCampaignDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return DiscountCampaignCommand.builder()
+        return DiscountCampaign.builder()
                 .codeName(detail.getCodeName())
                 .name(detail.getName())
                 .description(detail.getDescription())
@@ -50,7 +50,7 @@ public class DiscountCampaignFactory
     }
 
     @Override
-    public void updateConvertToEntity(DiscountCampaignCommand entity, DiscountCampaignDetail detail) throws InvalidException {
+    public void updateConvertToEntity(DiscountCampaign entity, DiscountCampaignDetail detail) throws InvalidException {
         entity.setCodeName(detail.getCodeName());
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
@@ -63,7 +63,7 @@ public class DiscountCampaignFactory
     }
 
     @Override
-    public DiscountCampaignDetail convertToDetail(DiscountCampaignCommand entity) throws InvalidException {
+    public DiscountCampaignDetail convertToDetail(DiscountCampaign entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -81,7 +81,7 @@ public class DiscountCampaignFactory
     }
 
     @Override
-    public DiscountCampaignInfo convertToInfo(DiscountCampaignCommand entity) throws InvalidException {
+    public DiscountCampaignInfo convertToInfo(DiscountCampaign entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -100,7 +100,7 @@ public class DiscountCampaignFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        DiscountCampaignCommand command = discountCampaignRepository.findByDiscountCampaignId(id).orElse(null);
+        DiscountCampaign command = discountCampaignRepository.findByDiscountCampaignId(id).orElse(null);
         if (command == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_DISCOUNT_CAMPAIGN);
         }

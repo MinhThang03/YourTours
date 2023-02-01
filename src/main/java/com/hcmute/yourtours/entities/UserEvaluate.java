@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.entities;
 
-import com.hcmute.yourtours.entities.base.NameData;
-import com.hcmute.yourtours.enums.CommonStatusEnum;
+import com.hcmute.yourtours.entities.base.Persistence;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,8 +17,8 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "rule_home_categories")
-public class RuleHomeCategoriesCommand extends NameData {
+@Table(name = "user_evaluate")
+public class UserEvaluate extends Persistence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -30,18 +29,26 @@ public class RuleHomeCategoriesCommand extends NameData {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "rule_category_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
-    private UUID ruleCategoryId;
+    @Column(name = "user_evaluate_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
+    private UUID userEvaluateId;
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private CommonStatusEnum status;
+    @Column(name = "home_id", columnDefinition = "BINARY(16)")
+    private UUID homeId;
+
+    @Column(name = "user_id", columnDefinition = "BINARY(16)")
+    private UUID userId;
+
+    @Column(name = "point")
+    private Double point;
+
+    @Column(name = "comment")
+    private String comment;
 
     @Override
     protected void preWrite() {
         super.preWrite();
-        if (ruleCategoryId == null) {
-            ruleCategoryId = UUID.randomUUID();
+        if (userEvaluateId == null) {
+            userEvaluateId = UUID.randomUUID();
         }
     }
 }

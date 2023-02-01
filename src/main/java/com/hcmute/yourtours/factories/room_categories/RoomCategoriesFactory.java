@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.room_categories;
 
-import com.hcmute.yourtours.entities.RoomCategoriesCommand;
+import com.hcmute.yourtours.entities.RoomCategories;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -21,7 +21,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class RoomCategoriesFactory
-        extends BasePersistDataFactory<UUID, RoomCategoryInfo, RoomCategoryDetail, Long, RoomCategoriesCommand>
+        extends BasePersistDataFactory<UUID, RoomCategoryInfo, RoomCategoryDetail, Long, RoomCategories>
         implements IRoomCategoriesFactory {
 
     protected final RoomCategoriesRepository roomCategoriesRepository;
@@ -38,11 +38,11 @@ public class RoomCategoriesFactory
     }
 
     @Override
-    public RoomCategoriesCommand createConvertToEntity(RoomCategoryDetail detail) {
+    public RoomCategories createConvertToEntity(RoomCategoryDetail detail) {
         if (detail == null) {
             return null;
         }
-        return RoomCategoriesCommand.builder()
+        return RoomCategories.builder()
                 .name(detail.getName())
                 .description(detail.getDescription())
                 .important(detail.getImportant())
@@ -52,7 +52,7 @@ public class RoomCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(RoomCategoriesCommand entity, RoomCategoryDetail detail) {
+    public void updateConvertToEntity(RoomCategories entity, RoomCategoryDetail detail) {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setConfigBed(detail.getConfigBed());
@@ -61,7 +61,7 @@ public class RoomCategoriesFactory
     }
 
     @Override
-    public RoomCategoryDetail convertToDetail(RoomCategoriesCommand entity) {
+    public RoomCategoryDetail convertToDetail(RoomCategories entity) {
         if (entity == null) {
             return null;
         }
@@ -77,7 +77,7 @@ public class RoomCategoriesFactory
     }
 
     @Override
-    public RoomCategoryInfo convertToInfo(RoomCategoriesCommand entity) {
+    public RoomCategoryInfo convertToInfo(RoomCategories entity) {
         if (entity == null) {
             return null;
         }
@@ -94,7 +94,7 @@ public class RoomCategoriesFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        Optional<RoomCategoriesCommand> optional = roomCategoriesRepository.findByRoomCategoryId(id);
+        Optional<RoomCategories> optional = roomCategoriesRepository.findByRoomCategoryId(id);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_ROOM_CATEGORIES);
         }
@@ -102,7 +102,7 @@ public class RoomCategoriesFactory
     }
 
     @Override
-    protected <F extends BaseFilter> Page<RoomCategoriesCommand> pageQuery(F filter, Integer number, Integer size) {
+    protected <F extends BaseFilter> Page<RoomCategories> pageQuery(F filter, Integer number, Integer size) {
         RoomCategoryFilter roomCategoryFilter = (RoomCategoryFilter) filter;
         return roomCategoriesRepository.findPageWithFilter(roomCategoryFilter.getImportant(), PageRequest.of(number, size));
 
@@ -110,7 +110,7 @@ public class RoomCategoriesFactory
 
     @Override
     public void checkExistByRoomCategoryId(UUID roomCategoryId) throws InvalidException {
-        Optional<RoomCategoriesCommand> optional = roomCategoriesRepository.findByRoomCategoryId(roomCategoryId);
+        Optional<RoomCategories> optional = roomCategoriesRepository.findByRoomCategoryId(roomCategoryId);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_ROOM_CATEGORIES);
         }

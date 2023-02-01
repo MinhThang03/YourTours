@@ -1,8 +1,7 @@
 package com.hcmute.yourtours.entities;
 
-import com.hcmute.yourtours.entities.base.NameData;
-import com.hcmute.yourtours.enums.CommonStatusEnum;
-import com.hcmute.yourtours.enums.DiscountHomeEnum;
+
+import com.hcmute.yourtours.entities.base.Persistence;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,14 +12,15 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.UUID;
 
+
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "discount_home_categories")
-public class DiscountHomeCategoriesCommand extends NameData {
+@Table(name = "guests_of_home")
+public class GuestsOfHome extends Persistence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -31,25 +31,23 @@ public class DiscountHomeCategoriesCommand extends NameData {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "discount_category_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
-    private UUID discountCategoryId;
+    @Column(name = "guest_of_home_id", columnDefinition = "BINARY(16)", unique = true, nullable = false)
+    private UUID guestOfHomeId;
 
-    @Column(name = "type")
-    @Enumerated(EnumType.STRING)
-    private DiscountHomeEnum type;
+    @Column(name = "home_id", columnDefinition = "BINARY(16)")
+    private UUID homeId;
 
-    @Column(name = "num_date_default")
-    private Integer numDateDefault;
+    @Column(name = "guest_category_id", columnDefinition = "BINARY(16)")
+    private UUID categoryId;
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private CommonStatusEnum status;
+    @Column(name = "amount")
+    private Integer amount;
 
     @Override
     protected void preWrite() {
         super.preWrite();
-        if (discountCategoryId == null) {
-            discountCategoryId = UUID.randomUUID();
+        if (guestOfHomeId == null) {
+            guestOfHomeId = UUID.randomUUID();
         }
     }
 }

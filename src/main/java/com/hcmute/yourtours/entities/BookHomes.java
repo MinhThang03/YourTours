@@ -21,7 +21,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "book_home")
-public class BookHomesCommand extends Persistence {
+public class BookHomes extends Persistence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)

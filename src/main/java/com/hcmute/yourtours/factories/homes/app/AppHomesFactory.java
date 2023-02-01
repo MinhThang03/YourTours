@@ -1,7 +1,7 @@
 package com.hcmute.yourtours.factories.homes.app;
 
-import com.hcmute.yourtours.entities.HomesCommand;
 import com.hcmute.yourtours.constant.RoomCategoryIdConstant;
+import com.hcmute.yourtours.entities.Homes;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
@@ -68,7 +68,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
 
 
     @Override
-    public HomeInfo convertToInfo(HomesCommand entity) throws InvalidException {
+    public HomeInfo convertToInfo(Homes entity) throws InvalidException {
         HomeInfo info = super.convertToInfo(entity);
         return info.toBuilder()
                 .isFavorite(checkIsFavorite(entity.getHomeId()))
@@ -76,7 +76,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
     }
 
     @Override
-    public HomeDetail convertToDetail(HomesCommand entity) throws InvalidException {
+    public HomeDetail convertToDetail(Homes entity) throws InvalidException {
         HomeDetail detail = super.convertToDetail(entity);
         return detail.toBuilder()
                 .isFavorite(checkIsFavorite(entity.getHomeId()))
@@ -106,7 +106,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
     public BasePagingResponse<HomeInfo> getFavoritesListOfCurrentUser(Integer number, Integer size) throws InvalidException {
         UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
 
-        Page<HomesCommand> page = homesRepository.getFavoritesListByUserId
+        Page<Homes> page = homesRepository.getFavoritesListByUserId
                 (
                         userId,
                         CommonStatusEnum.ACTIVE.name(),
@@ -154,7 +154,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
             filter.setAmenities(List.of(UUID.randomUUID()));
         }
 
-        Page<HomesCommand> pageEntity = homesRepository.getPageWithFullFilter
+        Page<Homes> pageEntity = homesRepository.getPageWithFullFilter
                 (
                         filter.getAmenityId(),
                         filter.getPriceFrom(),
@@ -184,13 +184,13 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
             return false;
         }
 
-        Optional<HomesCommand> home = homesRepository.findIsFavoriteByHomeIdAndUserId(homeId, UUID.fromString(userId.get()));
+        Optional<Homes> home = homesRepository.findIsFavoriteByHomeIdAndUserId(homeId, UUID.fromString(userId.get()));
         return home.isPresent();
     }
 
 
     @Override
-    protected <F extends BaseFilter> Page<HomesCommand> pageQuery(F filter, Integer number, Integer size) {
+    protected <F extends BaseFilter> Page<Homes> pageQuery(F filter, Integer number, Integer size) {
         HomeFilter homeFilter = (HomeFilter) filter;
         return homesRepository.findPageWithFilter
                 (

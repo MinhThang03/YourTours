@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.amenities;
 
-import com.hcmute.yourtours.entities.AmenitiesCommand;
+import com.hcmute.yourtours.entities.Amenities;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenity_categories.IAmenityCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -25,7 +25,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class AmenitiesFactory
-        extends BasePersistDataFactory<UUID, AmenityInfo, AmenityDetail, Long, AmenitiesCommand>
+        extends BasePersistDataFactory<UUID, AmenityInfo, AmenityDetail, Long, Amenities>
         implements IAmenitiesFactory {
 
     protected final AmenitiesRepository amenitiesRepository;
@@ -52,11 +52,11 @@ public class AmenitiesFactory
     }
 
     @Override
-    public AmenitiesCommand createConvertToEntity(AmenityDetail detail) throws InvalidException {
+    public Amenities createConvertToEntity(AmenityDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return AmenitiesCommand.builder()
+        return Amenities.builder()
                 .name(detail.getName())
                 .description(detail.getDescription())
                 .status(detail.getStatus())
@@ -74,7 +74,7 @@ public class AmenitiesFactory
     }
 
     @Override
-    public void updateConvertToEntity(AmenitiesCommand entity, AmenityDetail detail) throws InvalidException {
+    public void updateConvertToEntity(Amenities entity, AmenityDetail detail) throws InvalidException {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
@@ -84,7 +84,7 @@ public class AmenitiesFactory
     }
 
     @Override
-    public AmenityDetail convertToDetail(AmenitiesCommand entity) throws InvalidException {
+    public AmenityDetail convertToDetail(Amenities entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -101,7 +101,7 @@ public class AmenitiesFactory
     }
 
     @Override
-    public AmenityInfo convertToInfo(AmenitiesCommand entity) throws InvalidException {
+    public AmenityInfo convertToInfo(Amenities entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -119,7 +119,7 @@ public class AmenitiesFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        Optional<AmenitiesCommand> optional = amenitiesRepository.findByAmenityId(id);
+        Optional<Amenities> optional = amenitiesRepository.findByAmenityId(id);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_AMENITY);
         }
@@ -127,22 +127,22 @@ public class AmenitiesFactory
     }
 
     @Override
-    protected <F extends BaseFilter> Page<AmenitiesCommand> pageQuery(F filter, Integer number, Integer size) {
+    protected <F extends BaseFilter> Page<Amenities> pageQuery(F filter, Integer number, Integer size) {
         AmenityFilter amenityFilter = (AmenityFilter) filter;
         return amenitiesRepository.getPageWithAmenityFilter(amenityFilter.getCategoryId(), PageRequest.of(number, size));
     }
 
     @Override
     public List<AmenityInfo> getLimitTrueByHomeId(UUID homeId) throws InvalidException {
-        List<AmenitiesCommand> commands = amenitiesRepository.getLimitByHomeId(homeId, 2);
+        List<Amenities> commands = amenitiesRepository.getLimitByHomeId(homeId, 2);
         return convertList(commands);
     }
 
     @Override
     public List<AmenityInfo> getAllByHomeId(UUID homeId) throws InvalidException {
-        List<AmenitiesCommand> commands = amenitiesRepository.getByByHomeId(homeId);
+        List<Amenities> commands = amenitiesRepository.getByByHomeId(homeId);
         List<AmenityInfo> result = new ArrayList<>();
-        for (AmenitiesCommand item : commands) {
+        for (Amenities item : commands) {
             AmenityInfo info = convertToInfo(item);
             Boolean config = amenitiesRepository.getConfigByHomeIdAndCategoryId(homeId, item.getAmenityId());
             if (config != null) {

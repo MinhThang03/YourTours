@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.rule_home_categories;
 
-import com.hcmute.yourtours.entities.RuleHomeCategoriesCommand;
+import com.hcmute.yourtours.entities.RuleHomeCategories;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class RuleHomeCategoriesFactory
-        extends BasePersistDataFactory<UUID, RuleHomeCategoryInfo, RuleHomeCategoryDetail, Long, RuleHomeCategoriesCommand>
+        extends BasePersistDataFactory<UUID, RuleHomeCategoryInfo, RuleHomeCategoryDetail, Long, RuleHomeCategories>
         implements IRuleHomeCategoriesFactory {
 
     private final RuleHomeCategoriesRepository ruleHomeCategoriesRepository;
@@ -34,11 +34,11 @@ public class RuleHomeCategoriesFactory
     }
 
     @Override
-    public RuleHomeCategoriesCommand createConvertToEntity(RuleHomeCategoryDetail detail) {
+    public RuleHomeCategories createConvertToEntity(RuleHomeCategoryDetail detail) {
         if (detail == null) {
             return null;
         }
-        return RuleHomeCategoriesCommand.builder()
+        return RuleHomeCategories.builder()
                 .name(detail.getName())
                 .description(detail.getDescription())
                 .status(detail.getStatus())
@@ -46,14 +46,14 @@ public class RuleHomeCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(RuleHomeCategoriesCommand entity, RuleHomeCategoryDetail detail) {
+    public void updateConvertToEntity(RuleHomeCategories entity, RuleHomeCategoryDetail detail) {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
     }
 
     @Override
-    public RuleHomeCategoryDetail convertToDetail(RuleHomeCategoriesCommand entity) {
+    public RuleHomeCategoryDetail convertToDetail(RuleHomeCategories entity) {
         if (entity == null) {
             return null;
         }
@@ -66,7 +66,7 @@ public class RuleHomeCategoriesFactory
     }
 
     @Override
-    public RuleHomeCategoryInfo convertToInfo(RuleHomeCategoriesCommand entity) {
+    public RuleHomeCategoryInfo convertToInfo(RuleHomeCategories entity) {
         if (entity == null) {
             return null;
         }
@@ -80,7 +80,7 @@ public class RuleHomeCategoriesFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        Optional<RuleHomeCategoriesCommand> optional = ruleHomeCategoriesRepository.findByRuleCategoryId(id);
+        Optional<RuleHomeCategories> optional = ruleHomeCategoriesRepository.findByRuleCategoryId(id);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_RULE_CATEGORIES);
         }

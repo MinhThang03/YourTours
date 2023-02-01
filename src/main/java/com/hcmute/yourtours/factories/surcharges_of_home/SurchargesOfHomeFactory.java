@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.surcharges_of_home;
 
-import com.hcmute.yourtours.entities.SurchargesOfHomeCommand;
+import com.hcmute.yourtours.entities.SurchargesOfHome;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class SurchargesOfHomeFactory
-        extends BasePersistDataFactory<UUID, SurchargeOfHomeInfo, SurchargeOfHomeDetail, Long, SurchargesOfHomeCommand>
+        extends BasePersistDataFactory<UUID, SurchargeOfHomeInfo, SurchargeOfHomeDetail, Long, SurchargesOfHome>
         implements ISurchargeOfHomeFactory {
 
     private final SurchargesOfHomeRepository surchargesOfHomeRepository;
@@ -43,11 +43,11 @@ public class SurchargesOfHomeFactory
     }
 
     @Override
-    public SurchargesOfHomeCommand createConvertToEntity(SurchargeOfHomeDetail detail) throws InvalidException {
+    public SurchargesOfHome createConvertToEntity(SurchargeOfHomeDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return SurchargesOfHomeCommand.builder()
+        return SurchargesOfHome.builder()
                 .cost(detail.getCost())
                 .categoryId(detail.getCategoryId())
                 .homeId(detail.getHomeId())
@@ -55,14 +55,14 @@ public class SurchargesOfHomeFactory
     }
 
     @Override
-    public void updateConvertToEntity(SurchargesOfHomeCommand entity, SurchargeOfHomeDetail detail) throws InvalidException {
+    public void updateConvertToEntity(SurchargesOfHome entity, SurchargeOfHomeDetail detail) throws InvalidException {
         entity.setHomeId(detail.getHomeId());
         entity.setCost(detail.getCost());
         entity.setCategoryId(detail.getCategoryId());
     }
 
     @Override
-    public SurchargeOfHomeDetail convertToDetail(SurchargesOfHomeCommand entity) throws InvalidException {
+    public SurchargeOfHomeDetail convertToDetail(SurchargesOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -75,7 +75,7 @@ public class SurchargesOfHomeFactory
     }
 
     @Override
-    public SurchargeOfHomeInfo convertToInfo(SurchargesOfHomeCommand entity) throws InvalidException {
+    public SurchargeOfHomeInfo convertToInfo(SurchargesOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -89,7 +89,7 @@ public class SurchargesOfHomeFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        SurchargesOfHomeCommand command = surchargesOfHomeRepository.findBySurchargeOfHomeId(id).orElse(null);
+        SurchargesOfHome command = surchargesOfHomeRepository.findBySurchargeOfHomeId(id).orElse(null);
         if (command == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_SURCHARGES_OF_HOME);
         }
@@ -164,7 +164,7 @@ public class SurchargesOfHomeFactory
 
     @Override
     public SurchargeOfHomeDetail getByHomeIdAndCategoryId(UUID homeId, UUID categoryId) throws InvalidException {
-        Optional<SurchargesOfHomeCommand> optional = surchargesOfHomeRepository.findByHomeIdAndCategoryId(homeId, categoryId);
+        Optional<SurchargesOfHome> optional = surchargesOfHomeRepository.findByHomeIdAndCategoryId(homeId, categoryId);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_SURCHARGES_OF_HOME);
         }
@@ -174,7 +174,7 @@ public class SurchargesOfHomeFactory
 
     @Override
     protected void preCreate(SurchargeOfHomeDetail detail) throws InvalidException {
-        List<SurchargesOfHomeCommand> listDelete =
+        List<SurchargesOfHome> listDelete =
                 surchargesOfHomeRepository.findAllByHomeIdAndCategoryId(detail.getHomeId(), detail.getCategoryId());
         repository.deleteAll(listDelete);
     }

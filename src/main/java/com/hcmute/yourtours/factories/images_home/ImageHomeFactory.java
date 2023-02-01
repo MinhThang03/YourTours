@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.images_home;
 
-import com.hcmute.yourtours.entities.ImagesHomeCommand;
+import com.hcmute.yourtours.entities.ImagesHome;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class ImageHomeFactory
-        extends BasePersistDataFactory<UUID, ImageHomeInfo, ImageHomeDetail, Long, ImagesHomeCommand>
+        extends BasePersistDataFactory<UUID, ImageHomeInfo, ImageHomeDetail, Long, ImagesHome>
         implements IImagesHomeFactory {
 
     private final ImagesHomeRepository imagesHomeRepository;
@@ -35,24 +35,24 @@ public class ImageHomeFactory
     }
 
     @Override
-    public ImagesHomeCommand createConvertToEntity(ImageHomeDetail detail) throws InvalidException {
+    public ImagesHome createConvertToEntity(ImageHomeDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return ImagesHomeCommand.builder()
+        return ImagesHome.builder()
                 .path(detail.getPath())
                 .homeId(detail.getHomeId())
                 .build();
     }
 
     @Override
-    public void updateConvertToEntity(ImagesHomeCommand entity, ImageHomeDetail detail) throws InvalidException {
+    public void updateConvertToEntity(ImagesHome entity, ImageHomeDetail detail) throws InvalidException {
         entity.setPath(detail.getPath());
         entity.setHomeId(detail.getHomeId());
     }
 
     @Override
-    public ImageHomeDetail convertToDetail(ImagesHomeCommand entity) throws InvalidException {
+    public ImageHomeDetail convertToDetail(ImagesHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -64,7 +64,7 @@ public class ImageHomeFactory
     }
 
     @Override
-    public ImageHomeInfo convertToInfo(ImagesHomeCommand entity) throws InvalidException {
+    public ImageHomeInfo convertToInfo(ImagesHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -77,7 +77,7 @@ public class ImageHomeFactory
 
     @Override
     protected Long convertId(UUID id) throws InvalidException {
-        ImagesHomeCommand image = imagesHomeRepository.findByImageId(id).orElse(null);
+        ImagesHome image = imagesHomeRepository.findByImageId(id).orElse(null);
         if (image == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_IMAGES_OF_HOME);
         }
@@ -95,9 +95,9 @@ public class ImageHomeFactory
 
     @Override
     public List<ImageHomeDetail> getListByHomeId(UUID homeId, String pathThumbnail) throws InvalidException {
-        List<ImagesHomeCommand> commands = imagesHomeRepository.findAllByHomeId(homeId);
+        List<ImagesHome> commands = imagesHomeRepository.findAllByHomeId(homeId);
         List<ImageHomeDetail> result = new ArrayList<>();
-        for (ImagesHomeCommand command : commands) {
+        for (ImagesHome command : commands) {
             if (!command.getPath().equals(pathThumbnail)) {
                 result.add(convertToDetail(command));
             }
@@ -107,9 +107,9 @@ public class ImageHomeFactory
 
     @Override
     public List<ImageHomeDetail> getFullListByHomeId(UUID homeId, String pathThumbnail) throws InvalidException {
-        List<ImagesHomeCommand> commands = imagesHomeRepository.findAllByHomeId(homeId);
+        List<ImagesHome> commands = imagesHomeRepository.findAllByHomeId(homeId);
         List<ImageHomeDetail> result = new ArrayList<>();
-        for (ImagesHomeCommand command : commands) {
+        for (ImagesHome command : commands) {
             result.add(convertToDetail(command));
         }
         return result;
