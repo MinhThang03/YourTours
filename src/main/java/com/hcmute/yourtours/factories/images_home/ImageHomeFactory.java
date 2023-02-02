@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.images_home;
 
 import com.hcmute.yourtours.entities.ImagesHome;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.images_home.ImageHomeDetail;
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class ImageHomeFactory
-        extends BasePersistDataFactory<UUID, ImageHomeInfo, ImageHomeDetail, Long, ImagesHome>
+        extends BasePersistDataFactory<UUID, ImageHomeInfo, ImageHomeDetail, UUID, ImagesHome>
         implements IImagesHomeFactory {
 
     private final ImagesHomeRepository imagesHomeRepository;
@@ -75,14 +74,6 @@ public class ImageHomeFactory
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        ImagesHome image = imagesHomeRepository.findByImageId(id).orElse(null);
-        if (image == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_IMAGES_OF_HOME);
-        }
-        return image.getId();
-    }
 
     @Override
     public void createListWithHomeId(UUID homeId, List<ImageHomeDetail> listCreate) throws InvalidException {

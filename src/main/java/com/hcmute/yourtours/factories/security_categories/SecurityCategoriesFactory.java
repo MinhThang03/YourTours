@@ -1,8 +1,6 @@
 package com.hcmute.yourtours.factories.security_categories;
 
 import com.hcmute.yourtours.entities.SecurityCategories;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
-import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.security_categories.SecurityCategoryDetail;
 import com.hcmute.yourtours.models.security_categories.SecurityCategoryInfo;
@@ -11,20 +9,17 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @Transactional
 public class SecurityCategoriesFactory
-        extends BasePersistDataFactory<UUID, SecurityCategoryInfo, SecurityCategoryDetail, Long, SecurityCategories>
+        extends BasePersistDataFactory<UUID, SecurityCategoryInfo, SecurityCategoryDetail, UUID, SecurityCategories>
         implements ISecurityCategoriesFactory {
 
-    private final SecurityCategoriesRepository securityCategoriesRepository;
 
     protected SecurityCategoriesFactory(SecurityCategoriesRepository repository) {
         super(repository);
-        this.securityCategoriesRepository = repository;
     }
 
     @Override
@@ -58,7 +53,7 @@ public class SecurityCategoriesFactory
             return null;
         }
         return SecurityCategoryDetail.builder()
-                .id(entity.getSecurityCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -71,19 +66,11 @@ public class SecurityCategoriesFactory
             return null;
         }
         return SecurityCategoryInfo.builder()
-                .id(entity.getSecurityCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        Optional<SecurityCategories> optional = securityCategoriesRepository.findBySecurityCategoryId(id);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_SECURITY_CATEGORIES);
-        }
-        return optional.get().getId();
-    }
 }

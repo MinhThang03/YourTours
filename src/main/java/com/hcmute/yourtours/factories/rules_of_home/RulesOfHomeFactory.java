@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.rules_of_home;
 
 import com.hcmute.yourtours.entities.RulesOfHome;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.rules_of_home.RuleOfHomeDetail;
@@ -16,14 +15,11 @@ import java.util.UUID;
 @Service
 @Transactional
 public class RulesOfHomeFactory
-        extends BasePersistDataFactory<UUID, RuleOfHomeInfo, RuleOfHomeDetail, Long, RulesOfHome>
+        extends BasePersistDataFactory<UUID, RuleOfHomeInfo, RuleOfHomeDetail, UUID, RulesOfHome>
         implements IRulesOfHomeFactory {
-
-    private final RulesOfHomeRepository rulesOfHomeRepository;
 
     protected RulesOfHomeFactory(RulesOfHomeRepository repository) {
         super(repository);
-        this.rulesOfHomeRepository = repository;
     }
 
     @Override
@@ -58,7 +54,7 @@ public class RulesOfHomeFactory
         }
         return RuleOfHomeDetail.builder()
                 .isHave(entity.getIsHave())
-                .ruleHomeId(entity.getRuleOfHomeId())
+                .ruleHomeId(entity.getId())
                 .homeId(entity.getHomeId())
                 .build();
     }
@@ -70,17 +66,9 @@ public class RulesOfHomeFactory
         }
         return RuleOfHomeInfo.builder()
                 .isHave(entity.getIsHave())
-                .ruleHomeId(entity.getRuleOfHomeId())
+                .ruleHomeId(entity.getId())
                 .homeId(entity.getHomeId())
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        RulesOfHome command = rulesOfHomeRepository.findByRuleHomeId(id).orElse(null);
-        if (command == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_RULES_OF_HOME);
-        }
-        return command.getId();
-    }
 }

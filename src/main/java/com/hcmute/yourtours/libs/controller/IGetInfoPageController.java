@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.io.Serializable;
 
 /**
  * IGetInfoPageController interface
@@ -20,7 +21,7 @@ import javax.validation.Valid;
  * @param <F> extends {@link BaseFilter}
  */
 @RequestMapping("/")
-public interface IGetInfoPageController<I, T extends BaseData<I>, F extends BaseFilter> {
+public interface IGetInfoPageController<I extends Serializable, T extends BaseData<I>, F extends BaseFilter> {
 
     /**
      * getPaging method

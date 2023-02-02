@@ -7,14 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface AmenityCategoriesRepository extends JpaRepository<AmenityCategories, Long> {
-    Optional<AmenityCategories> findByAmenityCategoryId(UUID amenityCategoryId);
+public interface AmenityCategoriesRepository extends JpaRepository<AmenityCategories, UUID> {
 
-    Boolean existsByAmenityCategoryId(UUID amenityCategoryId);
 
     @Query(nativeQuery = true,
             value = "select a.* " +

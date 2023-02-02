@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.discount_campaign;
 
 import com.hcmute.yourtours.entities.DiscountCampaign;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.discount_campaign.DiscountCampaignDetail;
@@ -16,7 +15,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class DiscountCampaignFactory
-        extends BasePersistDataFactory<UUID, DiscountCampaignInfo, DiscountCampaignDetail, Long, DiscountCampaign>
+        extends BasePersistDataFactory<UUID, DiscountCampaignInfo, DiscountCampaignDetail, UUID, DiscountCampaign>
         implements IDiscountCampaignFactory {
 
     protected final DiscountCampaignRepository discountCampaignRepository;
@@ -68,7 +67,7 @@ public class DiscountCampaignFactory
             return null;
         }
         return DiscountCampaignDetail.builder()
-                .id(entity.getDiscountCampaignId())
+                .id(entity.getId())
                 .codeName(entity.getCodeName())
                 .name(entity.getName())
                 .description(entity.getDescription())
@@ -86,7 +85,7 @@ public class DiscountCampaignFactory
             return null;
         }
         return DiscountCampaignInfo.builder()
-                .id(entity.getDiscountCampaignId())
+                .id(entity.getId())
                 .codeName(entity.getCodeName())
                 .name(entity.getName())
                 .description(entity.getDescription())
@@ -98,12 +97,4 @@ public class DiscountCampaignFactory
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        DiscountCampaign command = discountCampaignRepository.findByDiscountCampaignId(id).orElse(null);
-        if (command == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_DISCOUNT_CAMPAIGN);
-        }
-        return command.getId();
-    }
 }

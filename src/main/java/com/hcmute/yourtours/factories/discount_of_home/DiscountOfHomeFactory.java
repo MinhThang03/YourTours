@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.discount_of_home;
 
 import com.hcmute.yourtours.entities.DiscountOfHome;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.discount_home_categories.IDiscountHomeCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -24,7 +23,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class DiscountOfHomeFactory
-        extends BasePersistDataFactory<UUID, DiscountOfHomeInfo, DiscountOfHomeDetail, Long, DiscountOfHome>
+        extends BasePersistDataFactory<UUID, DiscountOfHomeInfo, DiscountOfHomeDetail, UUID, DiscountOfHome>
         implements IDiscountOfHomeFactory {
 
     protected final DiscountOfHomeRepository discountOfHomeRepository;
@@ -72,7 +71,7 @@ public class DiscountOfHomeFactory
             return null;
         }
         return DiscountOfHomeDetail.builder()
-                .id(entity.getDiscountOfHomeId())
+                .id(entity.getId())
                 .percent(entity.getPercent())
                 .numberDateStay(entity.getNumberDateStay())
                 .numberMonthAdvance(entity.getNumberMonthAdvance())
@@ -87,7 +86,7 @@ public class DiscountOfHomeFactory
             return null;
         }
         return DiscountOfHomeInfo.builder()
-                .id(entity.getDiscountOfHomeId())
+                .id(entity.getId())
                 .percent(entity.getPercent())
                 .numberDateStay(entity.getNumberDateStay())
                 .numberMonthAdvance(entity.getNumberMonthAdvance())
@@ -96,14 +95,6 @@ public class DiscountOfHomeFactory
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        DiscountOfHome command = discountOfHomeRepository.findByDiscountOfHomeId(id).orElse(null);
-        if (command == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_DISCOUNTS_OF_HOME);
-        }
-        return command.getId();
-    }
 
     @Override
     protected void preCreate(DiscountOfHomeDetail detail) throws InvalidException {

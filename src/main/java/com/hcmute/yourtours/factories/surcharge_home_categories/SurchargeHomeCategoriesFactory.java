@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.surcharge_home_categories;
 
 import com.hcmute.yourtours.entities.SurchargeHomeCategories;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoryDetail;
@@ -11,20 +10,17 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @Transactional
 public class SurchargeHomeCategoriesFactory
-        extends BasePersistDataFactory<UUID, SurchargeHomeCategoryInfo, SurchargeHomeCategoryDetail, Long, SurchargeHomeCategories>
+        extends BasePersistDataFactory<UUID, SurchargeHomeCategoryInfo, SurchargeHomeCategoryDetail, UUID, SurchargeHomeCategories>
         implements ISurchargeHomeCategoriesFactory {
 
-    private final SurchargeHomeCategoriesRepository surchargeRepository;
 
     protected SurchargeHomeCategoriesFactory(SurchargeHomeCategoriesRepository repository) {
         super(repository);
-        this.surchargeRepository = repository;
     }
 
     @Override
@@ -58,7 +54,7 @@ public class SurchargeHomeCategoriesFactory
             return null;
         }
         return SurchargeHomeCategoryDetail.builder()
-                .id(entity.getSurchargeCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -71,19 +67,11 @@ public class SurchargeHomeCategoriesFactory
             return null;
         }
         return SurchargeHomeCategoryInfo.builder()
-                .id(entity.getSurchargeCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        Optional<SurchargeHomeCategories> optional = surchargeRepository.findBySurchargeCategoryId(id);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_SURCHARGE_CATEGORIES);
-        }
-        return optional.get().getId();
-    }
 }

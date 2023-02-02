@@ -9,12 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface AmenitiesRepository extends JpaRepository<Amenities, Long> {
-    Optional<Amenities> findByAmenityId(UUID amenityId);
+public interface AmenitiesRepository extends JpaRepository<Amenities, UUID> {
 
     @Query(nativeQuery = true,
             value = "select a.*  " +

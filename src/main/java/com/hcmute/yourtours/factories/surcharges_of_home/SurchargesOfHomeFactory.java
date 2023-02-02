@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class SurchargesOfHomeFactory
-        extends BasePersistDataFactory<UUID, SurchargeOfHomeInfo, SurchargeOfHomeDetail, Long, SurchargesOfHome>
+        extends BasePersistDataFactory<UUID, SurchargeOfHomeInfo, SurchargeOfHomeDetail, UUID, SurchargesOfHome>
         implements ISurchargeOfHomeFactory {
 
     private final SurchargesOfHomeRepository surchargesOfHomeRepository;
@@ -67,7 +67,7 @@ public class SurchargesOfHomeFactory
             return null;
         }
         return SurchargeOfHomeDetail.builder()
-                .id(entity.getSurchargeOfHomeId())
+                .id(entity.getId())
                 .cost(entity.getCost())
                 .categoryId(entity.getCategoryId())
                 .homeId(entity.getHomeId())
@@ -80,20 +80,11 @@ public class SurchargesOfHomeFactory
             return null;
         }
         return SurchargeOfHomeInfo.builder()
-                .id(entity.getSurchargeOfHomeId())
+                .id(entity.getId())
                 .cost(entity.getCost())
                 .categoryId(entity.getCategoryId())
                 .homeId(entity.getHomeId())
                 .build();
-    }
-
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        SurchargesOfHome command = surchargesOfHomeRepository.findBySurchargeOfHomeId(id).orElse(null);
-        if (command == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_SURCHARGES_OF_HOME);
-        }
-        return command.getId();
     }
 
     @Override

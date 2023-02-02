@@ -4,7 +4,6 @@ import com.hcmute.yourtours.entities.base.NameData;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -19,11 +18,13 @@ import java.util.UUID;
 @Table(name = "rooms_of_home")
 public class RoomsOfHome extends NameData {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2r")
-    @Column(name = "room_of_home_id", columnDefinition = "varchar(36)")
-    @Type(type = "uuid-char")
-    private UUID roomOfHomeId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", columnDefinition = "BINARY(16)")
+    private UUID id;
 
     @Column(name = "description")
     private String description;

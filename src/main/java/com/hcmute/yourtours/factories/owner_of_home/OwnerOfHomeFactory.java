@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.owner_of_home;
 
 import com.hcmute.yourtours.entities.OwnerOfHome;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class OwnerOfHomeFactory
-        extends BasePersistDataFactory<UUID, OwnerOfHomeInfo, OwnerOfHomeDetail, Long, OwnerOfHome>
+        extends BasePersistDataFactory<UUID, OwnerOfHomeInfo, OwnerOfHomeDetail, UUID, OwnerOfHome>
         implements IOwnerOfHomeFactory {
 
     private final OwnerOfHomesRepository ownerOfHomesRepository;
@@ -65,7 +64,7 @@ public class OwnerOfHomeFactory
             return null;
         }
         return OwnerOfHomeDetail.builder()
-                .id(entity.getOwnerOfHomeId())
+                .id(entity.getId())
                 .isMainOwner(entity.getIsMainOwner())
                 .homeId(entity.getHomeId())
                 .userId(entity.getUserId())
@@ -78,21 +77,13 @@ public class OwnerOfHomeFactory
             return null;
         }
         return OwnerOfHomeInfo.builder()
-                .id(entity.getOwnerOfHomeId())
+                .id(entity.getId())
                 .isMainOwner(entity.getIsMainOwner())
                 .homeId(entity.getHomeId())
                 .userId(entity.getUserId())
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        OwnerOfHome command = ownerOfHomesRepository.findByOwnerOfHomeId(id).orElse(null);
-        if (command == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_OWNER_OF_HOME);
-        }
-        return command.getId();
-    }
 
     @Override
     public boolean existByOwnerIdAndHomeId(UUID ownerId, UUID homeId) {

@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.io.Serializable;
 
 /**
  * @param <I> id of model
  * @param <U> detail model extends {@link BaseData}
  */
 @RequestMapping("/")
-public interface ICreateModelController<I, U extends BaseData<I>> {
+public interface ICreateModelController<I extends Serializable, U extends BaseData<I>> {
     /**
      * Post method create model
      *

@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class BedCategoriesFactory
-        extends BasePersistDataFactory<UUID, BedCategoryInfo, BedCategoryDetail, Long, BedCategories>
+        extends BasePersistDataFactory<UUID, BedCategoryInfo, BedCategoryDetail, UUID, BedCategories>
         implements IBedCategoriesFactory {
 
     private final BedCategoriesRepository bedCategoriesRepository;
@@ -58,7 +58,7 @@ public class BedCategoriesFactory
             return null;
         }
         return BedCategoryDetail.builder()
-                .id(entity.getBedCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -71,7 +71,7 @@ public class BedCategoriesFactory
             return null;
         }
         return BedCategoryInfo.builder()
-                .id(entity.getBedCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -79,17 +79,8 @@ public class BedCategoriesFactory
     }
 
     @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        Optional<BedCategories> optional = bedCategoriesRepository.findByBedCategoryId(id);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_BED_CATEGORIES);
-        }
-        return optional.get().getId();
-    }
-
-    @Override
     public void checkExistsByBedCategoryId(UUID bedCategoryId) throws InvalidException {
-        Optional<BedCategories> optional = bedCategoriesRepository.findByBedCategoryId(bedCategoryId);
+        Optional<BedCategories> optional = bedCategoriesRepository.findById(bedCategoryId);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_BED_CATEGORIES);
         }

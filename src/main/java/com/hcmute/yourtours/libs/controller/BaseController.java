@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ import java.util.Map;
  * @see LogContext
  */
 @Slf4j
-public abstract class BaseController<I, T extends BaseData<I>, U extends T> {
+public abstract class BaseController<I extends Serializable, T extends BaseData<I>, U extends T> {
     protected final IDataFactory<I, T, U> iDataFactory;
     protected final IResponseFactory iResponseFactory;
 
@@ -169,7 +170,6 @@ public abstract class BaseController<I, T extends BaseData<I>, U extends T> {
 
 
     /**
-     *
      * @param ids
      * @return
      */

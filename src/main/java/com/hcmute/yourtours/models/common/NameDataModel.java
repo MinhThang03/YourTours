@@ -9,12 +9,13 @@ import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
-public class NameDataModel<T> extends BaseData<T> {
+public class NameDataModel<T extends Serializable> extends BaseData<T> {
 
     @NotNull
     @NotBlank

@@ -8,12 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHome, Long> {
-    Optional<OwnerOfHome> findByOwnerOfHomeId(UUID ownerOfHomeId);
+public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHome, UUID> {
 
     boolean existsByUserIdAndHomeId(UUID userId, UUID homeId);
 

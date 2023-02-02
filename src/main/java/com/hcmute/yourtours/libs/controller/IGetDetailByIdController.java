@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.Serializable;
+
 /**
  * IGetDetailByIdController interface
  *
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @param <U> detail model
  */
 @RequestMapping("/")
-public interface IGetDetailByIdController<I, U extends BaseData<I>> {
+public interface IGetDetailByIdController<I extends Serializable, U extends BaseData<I>> {
 
     /**
      * getDetail method

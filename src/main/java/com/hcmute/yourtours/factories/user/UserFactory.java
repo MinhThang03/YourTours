@@ -41,7 +41,7 @@ import java.util.UUID;
 @Slf4j
 @Transactional
 public class UserFactory
-        extends BasePersistDataFactory<UUID, UserInfo, UserDetail, Long, User>
+        extends BasePersistDataFactory<UUID, UserInfo, UserDetail, UUID, User>
         implements IUserFactory {
 
     protected final IKeycloakService iKeycloakService;
@@ -81,7 +81,7 @@ public class UserFactory
             return null;
         }
         return User.builder()
-                .userId(detail.getId())
+                .id(detail.getId())
                 .email(detail.getEmail())
                 .phoneNumber(detail.getPhoneNumber())
                 .fullName(detail.getFullName())
@@ -113,7 +113,7 @@ public class UserFactory
             return null;
         }
         return UserDetail.builder()
-                .id(entity.getUserId())
+                .id(entity.getId())
                 .email(entity.getEmail())
                 .phoneNumber(entity.getPhoneNumber())
                 .fullName(entity.getFullName())
@@ -123,7 +123,7 @@ public class UserFactory
                 .avatar(entity.getAvatar())
                 .status(entity.getStatus())
                 .role(entity.getRole())
-                .isOwner(isOwner(entity.getUserId()))
+                .isOwner(isOwner(entity.getId()))
                 .build();
     }
 
@@ -133,7 +133,7 @@ public class UserFactory
             return null;
         }
         return UserInfo.builder()
-                .id(entity.getUserId())
+                .id(entity.getId())
                 .email(entity.getEmail())
                 .phoneNumber(entity.getPhoneNumber())
                 .fullName(entity.getFullName())
@@ -143,7 +143,7 @@ public class UserFactory
                 .avatar(entity.getAvatar())
                 .status(entity.getStatus())
                 .role(entity.getRole())
-                .isOwner(isOwner(entity.getUserId()))
+                .isOwner(isOwner(entity.getId()))
                 .build();
     }
 
@@ -188,15 +188,6 @@ public class UserFactory
     }
 
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        Optional<User> usersCommand = userRepository.findByUserId(id);
-        if (usersCommand.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
-        }
-        return usersCommand.get().getId();
-    }
-
     private String createUser(UserDetail detail) throws InvalidException {
         return iKeycloakService.createUser(
                 detail.getEmail(),
@@ -216,7 +207,7 @@ public class UserFactory
             }
 
             UUID userId = getCurrentUserId();
-            User entity = userRepository.findByUserId(userId).orElse(null);
+            User entity = userRepository.findById(userId).orElse(null);
 
             if (entity != null) {
                 iKeycloakService.setPassword(userId.toString(), request.getNewPassword());
@@ -281,7 +272,7 @@ public class UserFactory
                 throw new InvalidException(YourToursErrorCode.CONFIRM_PASSWORD_IS_NOT_VALID);
             }
 
-            User entity = userRepository.findByUserId(userId).orElse(null);
+            User entity = userRepository.findById(userId).orElse(null);
 
             if (entity != null) {
                 iKeycloakService.setPassword(userId.toString(), newPassword);
@@ -302,7 +293,7 @@ public class UserFactory
             if (optional.get().getStatus().equals(UserStatusEnum.LOCK)) {
                 throw new InvalidException(YourToursErrorCode.ACCOUNT_IS_LOCKED);
             } else {
-                iVerificationOtpFactory.createVerificationForgotPasswordOtp(optional.get().getUserId());
+                iVerificationOtpFactory.createVerificationForgotPasswordOtp(optional.get().getId());
                 return SuccessResponse.builder()
                         .success(true)
                         .build();
@@ -312,7 +303,7 @@ public class UserFactory
 
     @Override
     public void checkExistsByUserId(UUID userId) throws InvalidException {
-        Optional<User> optional = userRepository.findByUserId(userId);
+        Optional<User> optional = userRepository.findById(userId);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_USER);
         }
@@ -336,7 +327,7 @@ public class UserFactory
 
     @Override
     protected void postCreate(User entity, UserDetail detail) throws InvalidException {
-        requestActiveAccount(entity.getUserId(), entity.getFullName(), entity.getEmail());
+        requestActiveAccount(entity.getId(), entity.getFullName(), entity.getEmail());
     }
 
     private UUID getCurrentUserId() throws InvalidException {

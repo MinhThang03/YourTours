@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.images_room_home;
 
 import com.hcmute.yourtours.entities.ImagesRoomHome;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.images_room_home.ImageRoomHomeDetail;
@@ -16,14 +15,12 @@ import java.util.UUID;
 @Service
 @Transactional
 public class ImagesOfHomeFactory
-        extends BasePersistDataFactory<UUID, ImageRoomHomeInfo, ImageRoomHomeDetail, Long, ImagesRoomHome>
+        extends BasePersistDataFactory<UUID, ImageRoomHomeInfo, ImageRoomHomeDetail, UUID, ImagesRoomHome>
         implements IImagesRoomHomeFactory {
 
-    private final ImagesRoomHomeRepository imageRoomRepository;
 
     protected ImagesOfHomeFactory(ImagesRoomHomeRepository repository) {
         super(repository);
-        this.imageRoomRepository = repository;
     }
 
     @Override
@@ -55,7 +52,7 @@ public class ImagesOfHomeFactory
             return null;
         }
         return ImageRoomHomeDetail.builder()
-                .id(entity.getImageId())
+                .id(entity.getId())
                 .path(entity.getPath())
                 .roomOfHomeId(entity.getRoomOfHomeId())
                 .build();
@@ -67,18 +64,10 @@ public class ImagesOfHomeFactory
             return null;
         }
         return ImageRoomHomeInfo.builder()
-                .id(entity.getImageId())
+                .id(entity.getId())
                 .path(entity.getPath())
                 .roomOfHomeId(entity.getRoomOfHomeId())
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        ImagesRoomHome image = imageRoomRepository.findByImageId(id).orElse(null);
-        if (image == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_IMAGE_ROOM_HOME);
-        }
-        return image.getId();
-    }
 }

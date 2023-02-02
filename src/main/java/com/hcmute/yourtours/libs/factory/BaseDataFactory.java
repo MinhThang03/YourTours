@@ -12,13 +12,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
-public abstract class BaseDataFactory<I, IF extends BaseData<I>, DT extends IF> implements IDataFactory<I, IF, DT> {
+public abstract class BaseDataFactory<I extends Serializable, IF extends BaseData<I>, DT extends IF> implements IDataFactory<I, IF, DT> {
 
     @Autowired(required = false)
     protected TimeRedisCacheManager cacheManager;

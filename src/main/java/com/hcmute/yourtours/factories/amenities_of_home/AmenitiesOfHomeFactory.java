@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.amenities_of_home;
 
 import com.hcmute.yourtours.entities.AmenitiesOfHome;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.common.IAuthorizationOwnerHomeFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class AmenitiesOfHomeFactory
-        extends BasePersistDataFactory<UUID, AmenityOfHomeInfo, AmenityOfHomeDetail, Long, AmenitiesOfHome>
+        extends BasePersistDataFactory<UUID, AmenityOfHomeInfo, AmenityOfHomeDetail, UUID, AmenitiesOfHome>
         implements IAmenitiesOfHomeFactory {
 
     private final AmenitiesOfHomeRepository amenitiesOfHomeRepository;
@@ -66,7 +65,7 @@ public class AmenitiesOfHomeFactory
             return null;
         }
         return AmenityOfHomeDetail.builder()
-                .id(entity.getAmenityOfHomeId())
+                .id(entity.getId())
                 .isHave(entity.getIsHave())
                 .amenityId(entity.getAmenityId())
                 .homeId(entity.getHomeId())
@@ -79,21 +78,13 @@ public class AmenitiesOfHomeFactory
             return null;
         }
         return AmenityOfHomeInfo.builder()
-                .id(entity.getAmenityOfHomeId())
+                .id(entity.getId())
                 .isHave(entity.getIsHave())
                 .amenityId(entity.getAmenityId())
                 .homeId(entity.getHomeId())
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        AmenitiesOfHome command = amenitiesOfHomeRepository.findByAmenityOfHomeId(id).orElse(null);
-        if (command == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_AMENITIES_OF_HOME);
-        }
-        return command.getId();
-    }
 
     @Override
     public List<AmenityOfHomeModel> getAllByCategoryIdAndHomeId(UUID categoryId, UUID homeId) {
@@ -137,7 +128,7 @@ public class AmenitiesOfHomeFactory
             if (isHave != null && isHave.equals(detail.getIsHave())) {
                 detail.setIsHave(null);
             }
-            return updateModel(optional.get().getAmenityOfHomeId(), detail);
+            return updateModel(optional.get().getId(), detail);
         }
 
         return super.aroundCreate(detail);

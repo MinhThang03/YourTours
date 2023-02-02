@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.booking_guest_detail;
 
 import com.hcmute.yourtours.entities.BookingGuestDetail;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.booking_guest_detail.BookingGuestDetailDetail;
@@ -11,12 +10,11 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class BookingGuestDetailFactory
-        extends BasePersistDataFactory<UUID, BookingGuestDetailInfo, BookingGuestDetailDetail, Long, BookingGuestDetail>
+        extends BasePersistDataFactory<UUID, BookingGuestDetailInfo, BookingGuestDetailDetail, UUID, BookingGuestDetail>
         implements IBookingGuestDetailFactory {
 
     private final BookingGuestDetailRepository bookingGuestDetailRepository;
@@ -63,7 +61,7 @@ public class BookingGuestDetailFactory
                 .number(entity.getNumber())
                 .booking(entity.getBooking())
                 .guestCategory(entity.getGuestCategory())
-                .id(entity.getBookingGuestDetailId())
+                .id(entity.getId())
                 .build();
     }
 
@@ -77,17 +75,8 @@ public class BookingGuestDetailFactory
                 .number(entity.getNumber())
                 .booking(entity.getBooking())
                 .guestCategory(entity.getGuestCategory())
-                .id(entity.getBookingGuestDetailId())
+                .id(entity.getId())
                 .build();
-    }
-
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        Optional<BookingGuestDetail> optional = bookingGuestDetailRepository.findByBookingGuestDetailId(id);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_BOOKING_GUEST_DETAIL);
-        }
-        return optional.get().getId();
     }
 
 
@@ -100,7 +89,7 @@ public class BookingGuestDetailFactory
         List<BookingGuestDetail> listDelete = bookingGuestDetailRepository.findAllByBooking(bookingId);
 
         for (BookingGuestDetail item : listDelete) {
-            deleteModel(item.getBookingGuestDetailId(), null);
+            deleteModel(item.getId(), null);
         }
 
         for (BookingGuestDetailDetail item : listDetail) {

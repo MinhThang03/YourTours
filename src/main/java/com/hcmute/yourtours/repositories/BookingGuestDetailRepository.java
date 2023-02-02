@@ -6,12 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface BookingGuestDetailRepository extends JpaRepository<BookingGuestDetail, Long> {
-    Optional<BookingGuestDetail> findByBookingGuestDetailId(UUID bookingGuestDetailId);
+public interface BookingGuestDetailRepository extends JpaRepository<BookingGuestDetail, UUID> {
 
     List<BookingGuestDetail> findAllByBooking(UUID bookingId);
 

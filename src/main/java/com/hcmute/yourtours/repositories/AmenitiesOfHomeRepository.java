@@ -12,8 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface AmenitiesOfHomeRepository extends JpaRepository<AmenitiesOfHome, Long> {
-    Optional<AmenitiesOfHome> findByAmenityOfHomeId(UUID amenityOfHomeId);
+public interface AmenitiesOfHomeRepository extends JpaRepository<AmenitiesOfHome, UUID> {
 
     @Query(nativeQuery = true,
             value = "select b.amenity_id  as amenityId, " +

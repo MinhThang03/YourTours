@@ -5,7 +5,6 @@ import com.hcmute.yourtours.enums.GuestsCategoryEnum;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -20,11 +19,13 @@ import java.util.UUID;
 @Table(name = "book_home_guest_detail")
 public class BookingGuestDetail extends Persistence {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2r")
-    @Column(name = "booking_guest_detail_id", columnDefinition = "varchar(36)")
-    @Type(type = "uuid-char")
-    private UUID bookingGuestDetailId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", columnDefinition = "BINARY(16)")
+    private UUID id;
 
     @Column(name = "guest_categories")
     @Enumerated(EnumType.STRING)

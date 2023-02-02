@@ -2,7 +2,6 @@ package com.hcmute.yourtours.factories.amenity_categories;
 
 
 import com.hcmute.yourtours.entities.AmenityCategories;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
@@ -16,13 +15,12 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @Transactional
 public class AmenityCategoriesFactory
-        extends BasePersistDataFactory<UUID, AmenityCategoryInfo, AmenityCategoryDetail, Long, AmenityCategories>
+        extends BasePersistDataFactory<UUID, AmenityCategoryInfo, AmenityCategoryDetail, UUID, AmenityCategories>
         implements IAmenityCategoriesFactory {
 
     private final AmenityCategoriesRepository amenityCategoriesRepository;
@@ -65,7 +63,7 @@ public class AmenityCategoriesFactory
             return null;
         }
         return AmenityCategoryDetail.builder()
-                .id(entity.getAmenityCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -79,7 +77,7 @@ public class AmenityCategoriesFactory
             return null;
         }
         return AmenityCategoryInfo.builder()
-                .id(entity.getAmenityCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -88,17 +86,8 @@ public class AmenityCategoriesFactory
     }
 
     @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        Optional<AmenityCategories> optional = amenityCategoriesRepository.findByAmenityCategoryId(id);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_AMENITY_CATEGORIES);
-        }
-        return optional.get().getId();
-    }
-
-    @Override
     public Boolean existByAmenityCategoryId(UUID amenityCategoryId) {
-        return amenityCategoriesRepository.existsByAmenityCategoryId(amenityCategoryId);
+        return amenityCategoriesRepository.existsById(amenityCategoryId);
     }
 
     @Override

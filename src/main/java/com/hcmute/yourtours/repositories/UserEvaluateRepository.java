@@ -13,8 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface UserEvaluateRepository extends JpaRepository<UserEvaluate, Long> {
-    Optional<UserEvaluate> findByUserEvaluateId(UUID userEvaluateId);
+public interface UserEvaluateRepository extends JpaRepository<UserEvaluate, UUID> {
 
     Optional<UserEvaluate> findByUserIdAndHomeId(UUID userId, UUID homeId);
 

@@ -137,11 +137,11 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
 
     @Override
     protected void postCreate(BookHomes entity, BookHomeDetail detail) throws InvalidException {
-        iBookingGuestDetailFactory.createListModel(entity.getBookId(), detail.getGuests());
-        iBookingSurchargeDetailFactory.createListModel(entity.getBookId(), detail.getSurcharges());
+        iBookingGuestDetailFactory.createListModel(entity.getId(), detail.getGuests());
+        iBookingSurchargeDetailFactory.createListModel(entity.getId(), detail.getSurcharges());
 
         GetOwnerNameAndHomeNameProjection projection = iHomesFactory.getOwnerNameAndHomeNameProjection(entity.getHomeId());
-        detail.setId(entity.getBookId());
+        detail.setId(entity.getId());
         detail.setHomeName(projection.getHomeName());
         detail.setOwnerName(projection.getOwnerName());
         detail.setBaseCost(projection.getBaseCost());

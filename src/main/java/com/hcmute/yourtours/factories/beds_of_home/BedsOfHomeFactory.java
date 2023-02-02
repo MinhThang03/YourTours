@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.beds_of_home;
 
 import com.hcmute.yourtours.entities.BedsOfHome;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.bed_categories.IBedCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -22,7 +21,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class BedsOfHomeFactory
-        extends BasePersistDataFactory<UUID, BedOfHomeInfo, BedOfHomeDetail, Long, BedsOfHome>
+        extends BasePersistDataFactory<UUID, BedOfHomeInfo, BedOfHomeDetail, UUID, BedsOfHome>
         implements IBedsOfHomeFactory {
 
     protected final IBedCategoriesFactory iBedCategoriesFactory;
@@ -68,7 +67,7 @@ public class BedsOfHomeFactory
         }
 
         return BedOfHomeDetail.builder()
-                .id(entity.getBedOfHomeId())
+                .id(entity.getId())
                 .categoryId(entity.getCategoryId())
                 .roomOfHomeId(entity.getRoomOfHomeId())
                 .amount(entity.getAmount())
@@ -82,20 +81,11 @@ public class BedsOfHomeFactory
         }
 
         return BedOfHomeInfo.builder()
-                .id(entity.getBedOfHomeId())
+                .id(entity.getId())
                 .categoryId(entity.getCategoryId())
                 .roomOfHomeId(entity.getRoomOfHomeId())
                 .amount(entity.getAmount())
                 .build();
-    }
-
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        BedsOfHome bedConfig = bedsOfHomeRepository.findByBedOfHomeId(id).orElse(null);
-        if (bedConfig == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_BEDS_OF_HOME);
-        }
-        return bedConfig.getId();
     }
 
     @Override
@@ -153,7 +143,7 @@ public class BedsOfHomeFactory
         List<BedsOfHome> roomsOfHome = bedsOfHomeRepository.findAllByRoomOfHomeId(roomHomeId);
         if (!roomsOfHome.isEmpty()) {
             for (BedsOfHome item : roomsOfHome) {
-                deleteModel(item.getBedOfHomeId(), null);
+                deleteModel(item.getId(), null);
             }
         }
     }
@@ -165,7 +155,7 @@ public class BedsOfHomeFactory
 
         Optional<BedsOfHome> optional = bedsOfHomeRepository.findByRoomOfHomeIdAndCategoryId(detail.getRoomOfHomeId(), detail.getCategoryId());
         if (optional.isPresent()) {
-            deleteModel(optional.get().getBedOfHomeId(), null);
+            deleteModel(optional.get().getId(), null);
         }
     }
 

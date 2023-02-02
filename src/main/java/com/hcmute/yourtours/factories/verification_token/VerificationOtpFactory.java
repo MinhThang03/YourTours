@@ -24,7 +24,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class VerificationOtpFactory
-        extends BasePersistDataFactory<UUID, VerificationOtpInfo, VerificationOtpDetail, Long, VerificationOtp>
+        extends BasePersistDataFactory<UUID, VerificationOtpInfo, VerificationOtpDetail, UUID, VerificationOtp>
         implements IVerificationOtpFactory {
 
     private final VerificationOtpRepository verificationOtpRepository;
@@ -71,7 +71,7 @@ public class VerificationOtpFactory
                 .token(entity.getToken())
                 .userId(entity.getUserId())
                 .expiryDate(entity.getExpiryDate())
-                .id(entity.getVerificationId())
+                .id(entity.getId())
                 .type(entity.getType())
                 .build();
     }
@@ -85,14 +85,9 @@ public class VerificationOtpFactory
                 .token(entity.getToken())
                 .userId(entity.getUserId())
                 .expiryDate(entity.getExpiryDate())
-                .id(entity.getVerificationId())
+                .id(entity.getId())
                 .type(entity.getType())
                 .build();
-    }
-
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        return findByVerificationId(id).getId();
     }
 
 
@@ -166,13 +161,6 @@ public class VerificationOtpFactory
         return LocalDateTime.now().plusMinutes(expiryTimeInMinutes);
     }
 
-    private VerificationOtp findByVerificationId(UUID verificationId) throws InvalidException {
-        Optional<VerificationOtp> entity = verificationOtpRepository.findByVerificationId(verificationId);
-        if (entity.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_VERIFICATION_TOKEN);
-        }
-        return entity.get();
-    }
 
     private String autoGenerateOtp() {
         SecureRandom random = new SecureRandom();

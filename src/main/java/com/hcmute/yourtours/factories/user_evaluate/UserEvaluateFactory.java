@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.user_evaluate;
 
 import com.hcmute.yourtours.entities.UserEvaluate;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -23,7 +22,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class UserEvaluateFactory
-        extends BasePersistDataFactory<UUID, UserEvaluateInfo, UserEvaluateDetail, Long, UserEvaluate>
+        extends BasePersistDataFactory<UUID, UserEvaluateInfo, UserEvaluateDetail, UUID, UserEvaluate>
         implements IUserEvaluateFactory {
 
     private final UserEvaluateRepository userEvaluateRepository;
@@ -71,7 +70,7 @@ public class UserEvaluateFactory
         }
 
         return UserEvaluateDetail.builder()
-                .id(entity.getUserEvaluateId())
+                .id(entity.getId())
                 .homeId(entity.getHomeId())
                 .userId(entity.getUserId())
                 .point(entity.getPoint())
@@ -87,18 +86,13 @@ public class UserEvaluateFactory
         }
 
         return UserEvaluateInfo.builder()
-                .id(entity.getUserEvaluateId())
+                .id(entity.getId())
                 .homeId(entity.getHomeId())
                 .userId(entity.getUserId())
                 .point(entity.getPoint())
                 .userFullName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .comment(entity.getComment())
                 .build();
-    }
-
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        return findByUserRateHomeId(id).getId();
     }
 
     @Override
@@ -110,16 +104,9 @@ public class UserEvaluateFactory
             return super.aroundCreate(detail);
         }
 
-        return updateModel(optional.get().getUserEvaluateId(), detail);
+        return updateModel(optional.get().getId(), detail);
     }
 
-    private UserEvaluate findByUserRateHomeId(UUID id) throws InvalidException {
-        Optional<UserEvaluate> optional = userEvaluateRepository.findByUserEvaluateId(id);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_EVALUATE);
-        }
-        return optional.get();
-    }
 
     @Override
     public Double getAverageRateOfHome(UUID homeId) {

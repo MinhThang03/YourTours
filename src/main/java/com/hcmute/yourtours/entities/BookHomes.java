@@ -6,7 +6,6 @@ import com.hcmute.yourtours.enums.PaymentMethodMethodEnum;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -23,11 +22,13 @@ import java.util.UUID;
 public class BookHomes extends Persistence {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2r")
-    @Column(name = "book_id", columnDefinition = "varchar(36)")
-    @Type(type = "uuid-char")
-    private UUID bookId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", columnDefinition = "BINARY(16)")
+    private UUID id;
 
     @Column(name = "date_start")
     private LocalDate dateStart;

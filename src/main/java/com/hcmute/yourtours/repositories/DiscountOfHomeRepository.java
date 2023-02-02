@@ -10,8 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface DiscountOfHomeRepository extends JpaRepository<DiscountOfHome, Long> {
-    Optional<DiscountOfHome> findByDiscountOfHomeId(UUID discountOfHomeId);
+public interface DiscountOfHomeRepository extends JpaRepository<DiscountOfHome, UUID> {
 
     Optional<DiscountOfHome> findByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
 

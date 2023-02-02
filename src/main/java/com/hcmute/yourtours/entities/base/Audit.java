@@ -27,7 +27,7 @@ public abstract class Audit<U> implements Serializable {
     @CreatedBy
     @Column(name = "created_by", nullable = false, length = 50, updatable = false)
     @JsonIgnore
-    private transient U createdBy;
+    private U createdBy;
 
     @CreatedDate
     @Column(name = "created_date", updatable = false)
@@ -38,7 +38,7 @@ public abstract class Audit<U> implements Serializable {
     @LastModifiedBy
     @Column(name = "last_modified_by", length = 50)
     @JsonIgnore
-    private transient U lastModifiedBy;
+    private U lastModifiedBy;
 
     @LastModifiedDate
     @Column(name = "last_modified_date")

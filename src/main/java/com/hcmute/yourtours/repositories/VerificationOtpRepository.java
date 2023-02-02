@@ -14,12 +14,9 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 @Repository
-public interface VerificationOtpRepository extends JpaRepository<VerificationOtp, Long> {
+public interface VerificationOtpRepository extends JpaRepository<VerificationOtp, UUID> {
     Optional<VerificationOtp> findByToken(String token);
 
-    Optional<VerificationOtp> findByUserId(UUID userId);
-
-    Optional<VerificationOtp> findByVerificationId(UUID verificationId);
 
     Stream<VerificationOtp> findAllByExpiryDateLessThan(LocalDateTime now);
 

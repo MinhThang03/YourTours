@@ -20,7 +20,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class DiscountHomeCategoriesFactory
-        extends BasePersistDataFactory<UUID, DiscountHomeCategoryInfo, DiscountHomeCategoryDetail, Long, DiscountHomeCategories>
+        extends BasePersistDataFactory<UUID, DiscountHomeCategoryInfo, DiscountHomeCategoryDetail, UUID, DiscountHomeCategories>
         implements IDiscountHomeCategoriesFactory {
 
     private final DiscountHomeCategoriesRepository discountHomeCategoriesRepository;
@@ -65,7 +65,7 @@ public class DiscountHomeCategoriesFactory
             return null;
         }
         return DiscountHomeCategoryDetail.builder()
-                .id(entity.getDiscountCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -80,7 +80,7 @@ public class DiscountHomeCategoriesFactory
             return null;
         }
         return DiscountHomeCategoryInfo.builder()
-                .id(entity.getDiscountCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -89,18 +89,10 @@ public class DiscountHomeCategoriesFactory
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        Optional<DiscountHomeCategories> optional = discountHomeCategoriesRepository.findByDiscountCategoryId(id);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_DISCOUNT_CATEGORIES);
-        }
-        return optional.get().getId();
-    }
 
     @Override
     public void checkExistsByDiscountCategoryId(UUID categoryId) throws InvalidException {
-        Optional<DiscountHomeCategories> optional = discountHomeCategoriesRepository.findByDiscountCategoryId(categoryId);
+        Optional<DiscountHomeCategories> optional = discountHomeCategoriesRepository.findById(categoryId);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_DISCOUNT_CATEGORIES);
         }

@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.guests_of_home;
 
 import com.hcmute.yourtours.entities.GuestsOfHome;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.guests_of_home.GuestOfHomeDetail;
@@ -16,14 +15,12 @@ import java.util.UUID;
 @Service
 @Transactional
 public class GuestsOfHomeFactory
-        extends BasePersistDataFactory<UUID, GuestOfHomeInfo, GuestOfHomeDetail, Long, GuestsOfHome>
+        extends BasePersistDataFactory<UUID, GuestOfHomeInfo, GuestOfHomeDetail, UUID, GuestsOfHome>
         implements IGuestsOfHomeFactory {
 
-    private final GuestsOfHomeRepository guestsOfHomeRepository;
 
     protected GuestsOfHomeFactory(GuestsOfHomeRepository repository) {
         super(repository);
-        this.guestsOfHomeRepository = repository;
     }
 
     @Override
@@ -57,7 +54,7 @@ public class GuestsOfHomeFactory
             return null;
         }
         return GuestOfHomeDetail.builder()
-                .id(entity.getGuestOfHomeId())
+                .id(entity.getId())
                 .categoryId(entity.getCategoryId())
                 .homeId(entity.getHomeId())
                 .amount(entity.getAmount())
@@ -70,19 +67,11 @@ public class GuestsOfHomeFactory
             return null;
         }
         return GuestOfHomeInfo.builder()
-                .id(entity.getGuestOfHomeId())
+                .id(entity.getId())
                 .categoryId(entity.getCategoryId())
                 .homeId(entity.getHomeId())
                 .amount(entity.getAmount())
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        GuestsOfHome guest = guestsOfHomeRepository.findByGuestOfHomeId(id).orElse(null);
-        if (guest == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_GUESTS_OF_HOME);
-        }
-        return guest.getId();
-    }
 }

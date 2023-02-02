@@ -8,12 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface RoomCategoriesRepository extends JpaRepository<RoomCategories, Long> {
-    Optional<RoomCategories> findByRoomCategoryId(UUID roomCategoryId);
+public interface RoomCategoriesRepository extends JpaRepository<RoomCategories, UUID> {
 
 
     @Query(nativeQuery = true,

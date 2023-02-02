@@ -4,7 +4,6 @@ import com.hcmute.yourtours.entities.base.Persistence;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -19,11 +18,13 @@ import java.util.UUID;
 @Table(name = "rules_of_home")
 public class RulesOfHome extends Persistence {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2r")
-    @Column(name = "rule_of_home_id", columnDefinition = "varchar(36)")
-    @Type(type = "uuid-char")
-    private UUID ruleOfHomeId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", columnDefinition = "BINARY(16)")
+    private UUID id;
 
     @Column(name = "isHave")
     private Boolean isHave;

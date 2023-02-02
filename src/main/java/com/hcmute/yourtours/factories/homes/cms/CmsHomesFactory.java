@@ -59,16 +59,16 @@ public class CmsHomesFactory extends HomesFactory {
     @Override
     public HomeDetail convertToDetail(Homes entity) throws InvalidException {
         return super.convertToDetail(entity).toBuilder()
-                .numberOfBed(iBedsOfHomeFactory.getNumberOfBedWithHomeId(entity.getHomeId()))
-                .roomsImportant(iRoomsOfHomeFactory.getNumberOfRoomCategoryByHomeId(entity.getHomeId(), true))
+                .numberOfBed(iBedsOfHomeFactory.getNumberOfBedWithHomeId(entity.getId()))
+                .roomsImportant(iRoomsOfHomeFactory.getNumberOfRoomCategoryByHomeId(entity.getId(), true))
                 .build();
     }
 
     @Override
     public HomeInfo convertToInfo(Homes entity) throws InvalidException {
         return super.convertToInfo(entity).toBuilder()
-                .numberOfBed(iBedsOfHomeFactory.getNumberOfBedWithHomeId(entity.getHomeId()))
-                .roomsImportant(iRoomsOfHomeFactory.getNumberOfRoomCategoryByHomeId(entity.getHomeId(), true))
+                .numberOfBed(iBedsOfHomeFactory.getNumberOfBedWithHomeId(entity.getId()))
+                .roomsImportant(iRoomsOfHomeFactory.getNumberOfRoomCategoryByHomeId(entity.getId(), true))
                 .build();
     }
 }

@@ -82,7 +82,9 @@ public class AuthFactory implements IAuthFactory {
     @Override
     public RefreshTokenResponse refreshToken(RefreshTokenRequest request) throws InvalidException {
         try {
-            return new RefreshTokenResponse().setAccessTokenResponse(iKeycloakService.getRefreshToken(request.getRefreshToken()));
+            return RefreshTokenResponse.builder()
+                    .accessTokenResponse(iKeycloakService.getRefreshToken(request.getRefreshToken()))
+                    .build();
         } catch (Exception e) {
             throw new InvalidException(YourToursErrorCode.REFRESH_TOKEN_FAIL);
         }

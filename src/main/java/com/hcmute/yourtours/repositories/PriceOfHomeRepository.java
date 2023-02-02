@@ -11,8 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface PriceOfHomeRepository extends JpaRepository<PriceOfHome, Long> {
-    Optional<PriceOfHome> findByPriceOfHomeId(UUID priceOfHomeId);
+public interface PriceOfHomeRepository extends JpaRepository<PriceOfHome, UUID> {
 
     @Modifying
     void deleteByHomeIdAndDate(UUID homeId, LocalDate date);

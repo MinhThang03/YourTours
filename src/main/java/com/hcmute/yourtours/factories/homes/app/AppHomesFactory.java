@@ -71,7 +71,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
     public HomeInfo convertToInfo(Homes entity) throws InvalidException {
         HomeInfo info = super.convertToInfo(entity);
         return info.toBuilder()
-                .isFavorite(checkIsFavorite(entity.getHomeId()))
+                .isFavorite(checkIsFavorite(entity.getId()))
                 .build();
     }
 
@@ -79,7 +79,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
     public HomeDetail convertToDetail(Homes entity) throws InvalidException {
         HomeDetail detail = super.convertToDetail(entity);
         return detail.toBuilder()
-                .isFavorite(checkIsFavorite(entity.getHomeId()))
+                .isFavorite(checkIsFavorite(entity.getId()))
                 .build();
     }
 

@@ -15,9 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHome, Long> {
-    Optional<RoomsOfHome> findByRoomOfHomeId(UUID roomOfHomeId);
-
+public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHome, UUID> {
 
     @Query(
             nativeQuery = true,

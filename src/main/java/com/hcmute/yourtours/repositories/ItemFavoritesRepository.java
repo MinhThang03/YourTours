@@ -6,12 +6,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ItemFavoritesRepository extends JpaRepository<ItemFavorites, Long> {
-    Optional<ItemFavorites> findByItemFavoritesId(UUID itemFavoritesId);
+public interface ItemFavoritesRepository extends JpaRepository<ItemFavorites, UUID> {
 
     boolean existsByUserIdAndHomeId(UUID userId, UUID homeId);
 

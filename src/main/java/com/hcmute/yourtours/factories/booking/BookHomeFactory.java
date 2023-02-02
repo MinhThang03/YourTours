@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 @Transactional
 @Slf4j
 public class BookHomeFactory
-        extends BasePersistDataFactory<UUID, BookHomeInfo, BookHomeDetail, Long, BookHomes>
+        extends BasePersistDataFactory<UUID, BookHomeInfo, BookHomeDetail, UUID, BookHomes>
         implements IBookHomeFactory {
 
     protected final BookHomeRepository bookHomeRepository;
@@ -151,10 +151,10 @@ public class BookHomeFactory
                 .customerName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .status(entity.getStatus())
                 .totalCost(entity.getTotalCost())
-                .id(entity.getBookId())
+                .id(entity.getId())
                 .thumbnail(homeDetail.getThumbnail())
                 .owner(iOwnerOfHomeFactory.getMainOwnerOfHome(entity.getHomeId()))
-                .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getBookId()))
+                .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getId()))
                 .homeAddressDetail(homeDetail.getAddressDetail())
                 .homeProvinceCode(homeDetail.getProvinceCode())
                 .percent(entity.getPercent())
@@ -190,8 +190,8 @@ public class BookHomeFactory
                 .owner(iOwnerOfHomeFactory.getMainOwnerOfHome(entity.getHomeId()))
                 .customerName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .totalCost(entity.getTotalCost())
-                .id(entity.getBookId())
-                .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getBookId()))
+                .id(entity.getId())
+                .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getId()))
                 .homeAddressDetail(homeDetail.getAddressDetail())
                 .homeProvinceCode(homeDetail.getProvinceCode())
                 .percent(entity.getPercent())
@@ -202,19 +202,6 @@ public class BookHomeFactory
                 .build();
     }
 
-
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        return findByBookId(id).getId();
-    }
-
-    private BookHomes findByBookId(UUID bookId) throws InvalidException {
-        Optional<BookHomes> optional = bookHomeRepository.findByBookId(bookId);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_BOOKING);
-        }
-        return optional.get();
-    }
 
     @Override
     public boolean existByUserIdAndHomeId(UUID userId, UUID homeId) {

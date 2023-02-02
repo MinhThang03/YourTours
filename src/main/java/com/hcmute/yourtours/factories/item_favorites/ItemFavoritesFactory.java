@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.item_favorites;
 
 import com.hcmute.yourtours.entities.ItemFavorites;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.item_favorties.ItemFavoritesDetail;
@@ -12,13 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @Transactional
 public class ItemFavoritesFactory
-        extends BasePersistDataFactory<UUID, ItemFavoritesInfo, ItemFavoritesDetail, Long, ItemFavorites>
+        extends BasePersistDataFactory<UUID, ItemFavoritesInfo, ItemFavoritesDetail, UUID, ItemFavorites>
         implements IItemFavoritesFactory {
 
     private final ItemFavoritesRepository itemFavoritesRepository;
@@ -53,7 +51,7 @@ public class ItemFavoritesFactory
         if (entity == null) {
             return null;
         }
-        return ItemFavoritesDetail.builder().id(entity.getItemFavoritesId()).homeId(entity.getHomeId()).userId(entity.getUserId()).build();
+        return ItemFavoritesDetail.builder().id(entity.getId()).homeId(entity.getHomeId()).userId(entity.getUserId()).build();
     }
 
     @Override
@@ -61,21 +59,7 @@ public class ItemFavoritesFactory
         if (entity == null) {
             return null;
         }
-        return ItemFavoritesInfo.builder().id(entity.getItemFavoritesId()).homeId(entity.getHomeId()).userId(entity.getUserId()).build();
-    }
-
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        return findByItemFavoritesId(id).getId();
-    }
-
-
-    private ItemFavorites findByItemFavoritesId(UUID id) throws InvalidException {
-        Optional<ItemFavorites> optional = itemFavoritesRepository.findByItemFavoritesId(id);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_ITEM_FAVORITES);
-        }
-        return optional.get();
+        return ItemFavoritesInfo.builder().id(entity.getId()).homeId(entity.getHomeId()).userId(entity.getUserId()).build();
     }
 
 
@@ -87,7 +71,7 @@ public class ItemFavoritesFactory
             return true;
         } else {
             for (ItemFavorites optional : optionals) {
-                deleteModel(optional.getItemFavoritesId(), null);
+                deleteModel(optional.getId(), null);
             }
             return false;
         }

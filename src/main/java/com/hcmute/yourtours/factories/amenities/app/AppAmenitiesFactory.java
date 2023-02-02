@@ -26,7 +26,7 @@ public class AppAmenitiesFactory extends AmenitiesFactory implements IAppAmeniti
         }
 
         return AmenityInfo.builder()
-                .id(entity.getAmenityId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())

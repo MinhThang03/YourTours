@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Transactional
 public class PriceOfHomeFactory
-        extends BasePersistDataFactory<UUID, PriceOfHomeInfo, PriceOfHomeDetail, Long, PriceOfHome>
+        extends BasePersistDataFactory<UUID, PriceOfHomeInfo, PriceOfHomeDetail, UUID, PriceOfHome>
         implements IPriceOfHomeFactory {
 
     private final PriceOfHomeRepository priceOfHomeRepository;
@@ -93,7 +93,7 @@ public class PriceOfHomeFactory
             return null;
         }
         return PriceOfHomeDetail.builder()
-                .id(entity.getPriceOfHomeId())
+                .id(entity.getId())
                 .date(entity.getDate())
                 .price(entity.getPrice())
                 .homeId(entity.getHomeId())
@@ -106,20 +106,11 @@ public class PriceOfHomeFactory
             return null;
         }
         return PriceOfHomeInfo.builder()
-                .id(entity.getPriceOfHomeId())
+                .id(entity.getId())
                 .date(entity.getDate())
                 .price(entity.getPrice())
                 .homeId(entity.getHomeId())
                 .build();
-    }
-
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        PriceOfHome command = priceOfHomeRepository.findByPriceOfHomeId(id).orElse(null);
-        if (command == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_PRICE_OF_HOME);
-        }
-        return command.getId();
     }
 
     @Override

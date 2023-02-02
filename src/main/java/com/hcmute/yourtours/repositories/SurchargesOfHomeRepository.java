@@ -14,8 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHome, Long> {
-    Optional<SurchargesOfHome> findBySurchargeOfHomeId(UUID surchargeOfHomeId);
+public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHome, UUID> {
 
 
     @Query(

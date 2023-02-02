@@ -16,8 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface HomesRepository extends JpaRepository<Homes, Long> {
-    Optional<Homes> findByHomeId(UUID homeID);
+public interface HomesRepository extends JpaRepository<Homes, UUID> {
 
     @Query
             (

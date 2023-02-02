@@ -19,13 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @Transactional
 public class AmenitiesFactory
-        extends BasePersistDataFactory<UUID, AmenityInfo, AmenityDetail, Long, Amenities>
+        extends BasePersistDataFactory<UUID, AmenityInfo, AmenityDetail, UUID, Amenities>
         implements IAmenitiesFactory {
 
     protected final AmenitiesRepository amenitiesRepository;
@@ -90,7 +89,7 @@ public class AmenitiesFactory
         }
         AmenityCategoryDetail category = iAmenityCategoriesFactory.getDetailModel(entity.getCategoryId(), null);
         return AmenityDetail.builder()
-                .id(entity.getAmenityId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -107,7 +106,7 @@ public class AmenitiesFactory
         }
         AmenityCategoryDetail category = iAmenityCategoriesFactory.getDetailModel(entity.getCategoryId(), null);
         return AmenityInfo.builder()
-                .id(entity.getAmenityId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -115,15 +114,6 @@ public class AmenitiesFactory
                 .icon(entity.getIcon())
                 .setFilter(entity.getSetFilter())
                 .build();
-    }
-
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        Optional<Amenities> optional = amenitiesRepository.findByAmenityId(id);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_AMENITY);
-        }
-        return optional.get().getId();
     }
 
     @Override
@@ -144,7 +134,7 @@ public class AmenitiesFactory
         List<AmenityInfo> result = new ArrayList<>();
         for (Amenities item : commands) {
             AmenityInfo info = convertToInfo(item);
-            Boolean config = amenitiesRepository.getConfigByHomeIdAndCategoryId(homeId, item.getAmenityId());
+            Boolean config = amenitiesRepository.getConfigByHomeIdAndCategoryId(homeId, item.getId());
             if (config != null) {
                 info.setIsConfig(config);
                 result.add(info);

@@ -21,7 +21,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class RoomCategoriesFactory
-        extends BasePersistDataFactory<UUID, RoomCategoryInfo, RoomCategoryDetail, Long, RoomCategories>
+        extends BasePersistDataFactory<UUID, RoomCategoryInfo, RoomCategoryDetail, UUID, RoomCategories>
         implements IRoomCategoriesFactory {
 
     protected final RoomCategoriesRepository roomCategoriesRepository;
@@ -67,7 +67,7 @@ public class RoomCategoriesFactory
         }
 
         return RoomCategoryDetail.builder()
-                .id(entity.getRoomCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .important(entity.getImportant())
@@ -83,22 +83,13 @@ public class RoomCategoriesFactory
         }
 
         return RoomCategoryInfo.builder()
-                .id(entity.getRoomCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .important(entity.getImportant())
                 .configBed(entity.getConfigBed())
                 .status(entity.getStatus())
                 .build();
-    }
-
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        Optional<RoomCategories> optional = roomCategoriesRepository.findByRoomCategoryId(id);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_ROOM_CATEGORIES);
-        }
-        return optional.get().getId();
     }
 
     @Override
@@ -110,7 +101,7 @@ public class RoomCategoriesFactory
 
     @Override
     public void checkExistByRoomCategoryId(UUID roomCategoryId) throws InvalidException {
-        Optional<RoomCategories> optional = roomCategoriesRepository.findByRoomCategoryId(roomCategoryId);
+        Optional<RoomCategories> optional = roomCategoriesRepository.findById(roomCategoryId);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_ROOM_CATEGORIES);
         }
