@@ -5,10 +5,13 @@ import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.PaymentMethodMethodEnum;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @SuperBuilder
@@ -52,8 +55,34 @@ public class BookHomes extends Persistence {
     @Column(name = "visa_account")
     private String visaAccount;
 
+
+    @ManyToOne
+    @JoinColumn(
+            name = "home_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_home"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private Homes home;
+
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
+
+
+    @ManyToOne
+    @JoinColumn(
+            name = "user_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_user"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private User user;
 
     @Column(name = "user_id", columnDefinition = "BINARY(16)")
     private UUID userId;
@@ -76,4 +105,12 @@ public class BookHomes extends Persistence {
 
     @Column(name = "money_payed")
     private Double moneyPayed;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookHome")
+    @Fetch(FetchMode.SUBSELECT)
+    List<BookingGuestDetail> guestList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookHome")
+    @Fetch(FetchMode.SUBSELECT)
+    List<BookingSurchargeDetail> surchargeList;
 }

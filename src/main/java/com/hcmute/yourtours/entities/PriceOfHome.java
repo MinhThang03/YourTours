@@ -34,6 +34,19 @@ public class PriceOfHome extends Persistence {
     @Column(name = "price")
     private Double price;
 
+
+    @ManyToOne
+    @JoinColumn(
+            name = "home_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_home"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private Homes home;
+
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
 

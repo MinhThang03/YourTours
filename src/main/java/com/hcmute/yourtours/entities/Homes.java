@@ -5,10 +5,13 @@ import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 @SuperBuilder
@@ -88,5 +91,45 @@ public class Homes extends NameData {
 
     @Column(name = "number_of_reviews")
     private Long numberOfReviews;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "home")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<AmenitiesOfHome> amenities;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "home")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<BookHomes> bookingList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "home")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<DiscountOfHome> discountList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "home")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<ImagesHome> imageList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "home")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<ItemFavorites> itemFavoriteList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "home")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<OwnerOfHome> ownerList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "home")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<PriceOfHome> priceList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "home")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<RoomsOfHome> roomList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "home")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<SurchargesOfHome> surchargeList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "home")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<UserEvaluate> evaluateList;
 
 }

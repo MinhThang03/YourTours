@@ -31,9 +31,32 @@ public class SurchargesOfHome extends Persistence {
     @Column(name = "cost")
     private Double cost;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "home_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_home"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private Homes home;
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
 
+
+    @ManyToOne
+    @JoinColumn(
+            name = "surcharge_category_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_category"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private SurchargeHomeCategories category;
     @Column(name = "surcharge_category_id", columnDefinition = "BINARY(16)")
     private UUID categoryId;
 

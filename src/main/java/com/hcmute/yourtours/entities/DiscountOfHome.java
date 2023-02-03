@@ -36,8 +36,32 @@ public class DiscountOfHome extends Persistence {
     @Column(name = "number_month_advance")
     private Integer numberMonthAdvance;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "home_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_home"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private Homes home;
+
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "discount_category_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_category"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private DiscountHomeCategories category;
 
     @Column(name = "discount_category_id", columnDefinition = "BINARY(16)")
     private UUID categoryId;

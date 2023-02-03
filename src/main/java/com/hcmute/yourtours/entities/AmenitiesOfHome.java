@@ -31,8 +31,34 @@ public class AmenitiesOfHome extends Persistence {
     @Column(name = "is_have")
     private Boolean isHave;
 
+
+    @ManyToOne
+    @JoinColumn(
+            name = "home_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_home"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private Homes home;
+
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
+
+
+    @ManyToOne
+    @JoinColumn(
+            name = "amenity_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_amenity"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private Amenities amenity;
 
     @Column(name = "amenity_id", columnDefinition = "BINARY(16)")
     private UUID amenityId;

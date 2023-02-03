@@ -30,6 +30,18 @@ public class BookingSurchargeDetail extends Persistence {
     @Column(name = "surcharge_id", columnDefinition = "BINARY(16)")
     private UUID surchargeId;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "booking",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_booking"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private BookHomes bookHome;
+
     @Column(name = "booking", columnDefinition = "BINARY(16)")
     private UUID booking;
 

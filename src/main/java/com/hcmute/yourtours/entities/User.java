@@ -6,10 +6,13 @@ import com.hcmute.yourtours.enums.RoleEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @SuperBuilder
@@ -60,4 +63,24 @@ public class User extends Persistence {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private UserStatusEnum status;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<BookHomes> bookingList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<ItemFavorites> itemFavoriteList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<OwnerOfHome> ownerList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<UserEvaluate> evaluateList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<VerificationOtp> otpList;
 }

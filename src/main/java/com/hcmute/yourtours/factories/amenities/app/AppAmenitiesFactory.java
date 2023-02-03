@@ -35,7 +35,6 @@ public class AppAmenitiesFactory extends AmenitiesFactory implements IAppAmeniti
                 .build();
     }
 
-
     @Override
     public BasePagingResponse<AmenityInfo> getPageAmenitiesHaveSetFilter(Integer number, Integer size) throws InvalidException {
         int offset = number * size - 1;

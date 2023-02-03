@@ -28,9 +28,33 @@ public class BedsOfHome extends Persistence {
     private UUID id;
 
 
+    @ManyToOne
+    @JoinColumn(
+            name = "bed_category_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_category"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private BedCategories category;
+
     @Column(name = "bed_category_id", columnDefinition = "BINARY(16)")
     private UUID categoryId;
 
+
+    @ManyToOne
+    @JoinColumn(
+            name = "room_of_home_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_room"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private RoomsOfHome room;
 
     @Column(name = "room_of_home_id", columnDefinition = "BINARY(16)")
     private UUID roomOfHomeId;

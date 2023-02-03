@@ -28,9 +28,33 @@ public class UserEvaluate extends Persistence {
     @Column(name = "id", columnDefinition = "BINARY(16)")
     private UUID id;
 
+
+    @ManyToOne
+    @JoinColumn(
+            name = "home_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_home"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private Homes home;
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
 
+
+    @ManyToOne
+    @JoinColumn(
+            name = "user_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_association_user"),
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BINARY(16)"
+    )
+    private User user;
     @Column(name = "user_id", columnDefinition = "BINARY(16)")
     private UUID userId;
 
