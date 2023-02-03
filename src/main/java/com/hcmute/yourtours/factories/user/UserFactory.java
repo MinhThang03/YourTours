@@ -331,11 +331,11 @@ public class UserFactory
     }
 
     private UUID getCurrentUserId() throws InvalidException {
-        Optional<UUID> userId = configFactory.auditorAware().getCurrentAuditor();
+        Optional<String> userId = configFactory.auditorAware().getCurrentAuditor();
         if (userId.isEmpty()) {
             throw new InvalidException(ErrorCode.UNAUTHORIZED);
         }
-        return userId.get();
+        return UUID.fromString(userId.get());
     }
 
     private void addRoleToUser(String userId, String role) throws InvalidException {

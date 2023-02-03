@@ -27,7 +27,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/app/homes")
-@Tag(name = "APP API: homes", description = "API lấy danh sách nhà")
+@Tag(name = "APP API: HOMES", description = "API lấy danh sách nhà")
 @Transactional
 public class AppHomeController
         extends BaseController<UUID, HomeInfo, HomeDetail>

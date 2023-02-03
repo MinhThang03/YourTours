@@ -24,8 +24,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             value = "select a.* " +
                     "from user a, " +
                     "     owner_of_home b " +
-                    "where a.userid = b.user_id " +
-                    "  and a.userid = :userId " +
+                    "where a.id = b.user_id " +
+                    "  and a.id = :userId " +
                     "limit 1 "
     )
     Optional<User> findByUserIdAndOwner(UUID userId);

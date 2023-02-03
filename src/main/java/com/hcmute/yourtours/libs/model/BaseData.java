@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.libs.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -15,6 +16,7 @@ import java.util.Objects;
 public abstract class BaseData<T extends Serializable> implements Serializable {
 
     @Valid
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     protected T id;
 
     @Override
