@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public abstract class Audit<U> implements Serializable {
+public abstract class Audit<U extends Serializable> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @CreatedBy
