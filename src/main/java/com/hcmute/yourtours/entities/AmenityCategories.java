@@ -34,7 +34,7 @@ public class AmenityCategories extends NameData {
     @Enumerated(EnumType.STRING)
     private CommonStatusEnum status;
 
-    @Column(name = "isDefault")
+    @Column(name = "is_default")
     private Boolean isDefault;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")

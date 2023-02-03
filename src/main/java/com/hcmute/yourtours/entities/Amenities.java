@@ -35,7 +35,7 @@ public class Amenities extends NameData {
     @JoinColumn(
             name = "category_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_category"),
+            foreignKey = @ForeignKey(name = "fk_association_amenity_category"),
             nullable = false,
             insertable = false,
             updatable = false,

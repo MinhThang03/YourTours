@@ -41,7 +41,7 @@ public class VerificationOtp extends Audit<String> {
     @JoinColumn(
             name = "user_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_user"),
+            foreignKey = @ForeignKey(name = "fk_association_otp_user"),
             nullable = false,
             insertable = false,
             updatable = false,

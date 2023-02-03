@@ -40,7 +40,7 @@ public class DiscountOfHome extends Persistence {
     @JoinColumn(
             name = "home_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_home"),
+            foreignKey = @ForeignKey(name = "fk_association_discount_of_home_home"),
             nullable = false,
             insertable = false,
             updatable = false,
@@ -55,7 +55,7 @@ public class DiscountOfHome extends Persistence {
     @JoinColumn(
             name = "discount_category_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_category"),
+            foreignKey = @ForeignKey(name = "fk_association_discount_of_home_category"),
             nullable = false,
             insertable = false,
             updatable = false,

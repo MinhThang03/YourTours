@@ -34,7 +34,7 @@ public class ItemFavorites extends Persistence {
     @JoinColumn(
             name = "home_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_home"),
+            foreignKey = @ForeignKey(name = "fk_association_item_favorite_home"),
             nullable = false,
             insertable = false,
             updatable = false,
@@ -50,7 +50,7 @@ public class ItemFavorites extends Persistence {
     @JoinColumn(
             name = "user_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_user"),
+            foreignKey = @ForeignKey(name = "fk_association_item_favorite_user"),
             nullable = false,
             insertable = false,
             updatable = false,

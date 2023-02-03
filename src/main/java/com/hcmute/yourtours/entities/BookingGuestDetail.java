@@ -39,7 +39,7 @@ public class BookingGuestDetail extends Persistence {
     @JoinColumn(
             name = "booking",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_booking"),
+            foreignKey = @ForeignKey(name = "fk_association_booking_guest_booking"),
             nullable = false,
             insertable = false,
             updatable = false,

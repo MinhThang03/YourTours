@@ -37,7 +37,7 @@ public class RoomsOfHome extends NameData {
     @JoinColumn(
             name = "home_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_home"),
+            foreignKey = @ForeignKey(name = "fk_association_room_of_home_home"),
             nullable = false,
             insertable = false,
             updatable = false,
@@ -53,7 +53,7 @@ public class RoomsOfHome extends NameData {
     @JoinColumn(
             name = "room_category_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_category"),
+            foreignKey = @ForeignKey(name = "fk_association_room_of_home_category"),
             nullable = false,
             insertable = false,
             updatable = false,

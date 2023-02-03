@@ -32,7 +32,7 @@ public class BedsOfHome extends Persistence {
     @JoinColumn(
             name = "bed_category_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_category"),
+            foreignKey = @ForeignKey(name = "fk_association_bed_of_home_category"),
             nullable = false,
             insertable = false,
             updatable = false,
@@ -48,7 +48,7 @@ public class BedsOfHome extends Persistence {
     @JoinColumn(
             name = "room_of_home_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_room"),
+            foreignKey = @ForeignKey(name = "fk_association_bed_of_home_room"),
             nullable = false,
             insertable = false,
             updatable = false,

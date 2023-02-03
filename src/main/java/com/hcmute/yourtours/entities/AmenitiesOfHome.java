@@ -36,7 +36,7 @@ public class AmenitiesOfHome extends Persistence {
     @JoinColumn(
             name = "home_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_home"),
+            foreignKey = @ForeignKey(name = "fk_association_amenities_of_home_home"),
             nullable = false,
             insertable = false,
             updatable = false,
@@ -52,7 +52,7 @@ public class AmenitiesOfHome extends Persistence {
     @JoinColumn(
             name = "amenity_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_amenity"),
+            foreignKey = @ForeignKey(name = "fk_association_amenities_of_home_amenity"),
             nullable = false,
             insertable = false,
             updatable = false,

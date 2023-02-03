@@ -35,7 +35,7 @@ public class ImagesHome extends Persistence {
     @JoinColumn(
             name = "home_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_home"),
+            foreignKey = @ForeignKey(name = "fk_association_image_home_home"),
             nullable = false,
             insertable = false,
             updatable = false,

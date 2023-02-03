@@ -33,7 +33,7 @@ public class UserEvaluate extends Persistence {
     @JoinColumn(
             name = "home_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_home"),
+            foreignKey = @ForeignKey(name = "fk_association_evaluate_home"),
             nullable = false,
             insertable = false,
             updatable = false,
@@ -48,7 +48,7 @@ public class UserEvaluate extends Persistence {
     @JoinColumn(
             name = "user_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_user"),
+            foreignKey = @ForeignKey(name = "fk_association_evaluate_user"),
             nullable = false,
             insertable = false,
             updatable = false,
