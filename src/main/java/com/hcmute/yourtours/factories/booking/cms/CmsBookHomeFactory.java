@@ -1,7 +1,7 @@
 package com.hcmute.yourtours.factories.booking.cms;
 
-import com.hcmute.yourtours.email.IEmailFactory;
 import com.hcmute.yourtours.entities.BookHomes;
+import com.hcmute.yourtours.external_modules.email.IEmailFactory;
 import com.hcmute.yourtours.factories.booking.BookHomeFactory;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;

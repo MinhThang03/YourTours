@@ -1,4 +1,4 @@
-package com.hcmute.yourtours.config;
+package com.hcmute.yourtours.external_modules.keycloak.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

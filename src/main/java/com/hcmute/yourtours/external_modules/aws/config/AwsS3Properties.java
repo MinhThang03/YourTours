@@ -1,4 +1,4 @@
-package com.hcmute.yourtours.aws.config;
+package com.hcmute.yourtours.external_modules.aws.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

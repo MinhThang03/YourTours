@@ -1,12 +1,12 @@
 package com.hcmute.yourtours.factories.booking;
 
 import com.hcmute.yourtours.constant.CornConstant;
-import com.hcmute.yourtours.email.IEmailFactory;
 import com.hcmute.yourtours.entities.BookHomes;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.MonthEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.external_modules.email.IEmailFactory;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;

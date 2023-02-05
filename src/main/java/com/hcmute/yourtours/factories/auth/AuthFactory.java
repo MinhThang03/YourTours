@@ -3,13 +3,13 @@ package com.hcmute.yourtours.factories.auth;
 
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
 import com.hcmute.yourtours.constant.TokenExpirationConstant;
-import com.hcmute.yourtours.email.IEmailFactory;
 import com.hcmute.yourtours.enums.RoleEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.external_modules.email.IEmailFactory;
+import com.hcmute.yourtours.external_modules.keycloak.service.IKeycloakService;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.factories.verification_token.IVerificationOtpFactory;
-import com.hcmute.yourtours.keycloak.IKeycloakService;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.models.authentication.requests.LoginRequest;
 import com.hcmute.yourtours.models.authentication.requests.RefreshTokenRequest;

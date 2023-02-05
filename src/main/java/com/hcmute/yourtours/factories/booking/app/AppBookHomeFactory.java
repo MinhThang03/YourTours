@@ -2,11 +2,11 @@ package com.hcmute.yourtours.factories.booking.app;
 
 import com.hcmute.yourtours.constant.FeeRateOfAdminConstant;
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
-import com.hcmute.yourtours.email.IEmailFactory;
 import com.hcmute.yourtours.entities.BookHomes;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.external_modules.email.IEmailFactory;
 import com.hcmute.yourtours.factories.booking.BookHomeFactory;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
 import com.hcmute.yourtours.factories.booking_surcharge_detail.IBookingSurchargeDetailFactory;

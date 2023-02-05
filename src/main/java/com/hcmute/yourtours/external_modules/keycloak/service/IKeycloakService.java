@@ -1,4 +1,4 @@
-package com.hcmute.yourtours.keycloak;
+package com.hcmute.yourtours.external_modules.keycloak.service;
 
 
 import com.hcmute.yourtours.libs.exceptions.InvalidException;

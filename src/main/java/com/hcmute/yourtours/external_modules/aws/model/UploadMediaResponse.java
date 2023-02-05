@@ -1,4 +1,4 @@
-package com.hcmute.yourtours.aws.model;
+package com.hcmute.yourtours.external_modules.aws.model;
 
 import lombok.Builder;
 import lombok.Data;

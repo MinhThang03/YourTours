@@ -1,4 +1,4 @@
-package com.hcmute.yourtours.config;
+package com.hcmute.yourtours.external_modules.keycloak.config;
 
 import com.hcmute.yourtours.constant.RealmConstant;
 import lombok.extern.slf4j.Slf4j;

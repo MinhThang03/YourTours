@@ -1,4 +1,4 @@
-package com.hcmute.yourtours.uuid_projection;
+package com.hcmute.yourtours.utils.uuid_projection;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;

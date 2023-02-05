@@ -1,10 +1,10 @@
-package com.hcmute.yourtours.keycloak;
+package com.hcmute.yourtours.external_modules.keycloak.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmute.yourtours.config.KeycloakProperties;
 import com.hcmute.yourtours.constant.RealmConstant;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.external_modules.keycloak.config.KeycloakProperties;
 import com.hcmute.yourtours.libs.exceptions.ErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.utils.GetInfoToken;

@@ -1,11 +1,11 @@
-package com.hcmute.yourtours.aws.service;
+package com.hcmute.yourtours.external_modules.aws.service;
 
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.hcmute.yourtours.aws.config.AwsS3ClientConfig;
-import com.hcmute.yourtours.aws.config.AwsS3Properties;
-import com.hcmute.yourtours.aws.model.UploadMediaResponse;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.external_modules.aws.config.AwsS3ClientConfig;
+import com.hcmute.yourtours.external_modules.aws.config.AwsS3Properties;
+import com.hcmute.yourtours.external_modules.aws.model.UploadMediaResponse;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

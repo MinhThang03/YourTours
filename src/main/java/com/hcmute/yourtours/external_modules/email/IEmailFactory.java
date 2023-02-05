@@ -1,4 +1,4 @@
-package com.hcmute.yourtours.email;
+package com.hcmute.yourtours.external_modules.email;
 
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 
