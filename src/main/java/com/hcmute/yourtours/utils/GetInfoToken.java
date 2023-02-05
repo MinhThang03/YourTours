@@ -7,19 +7,23 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class GetInfoToken {
 
+    private GetInfoToken(){}
+
     public static String getCurrentSessionId() {
-        if (getInfoUser() == null) {
+        DefaultUserDetail user = getInfoUser();
+        if (user == null) {
             return null;
         }
-        return getInfoUser().getSessionState();
+        return user.getSessionState();
     }
 
 
     public static String getUsername() {
-        if (getInfoUser() == null) {
+        DefaultUserDetail user = getInfoUser();
+        if (user == null) {
             return null;
         }
-        return getInfoUser().getPreferredUsername();
+        return user.getPreferredUsername();
     }
 
     public static DefaultUserDetail getInfoUser() {

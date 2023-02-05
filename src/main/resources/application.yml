@@ -2,7 +2,7 @@ server:
   port: ${PORT:8080}
 spring:
   application:
-    name: Parking
+    name: Yourtours
   profiles:
     active: ${ENV:dev}
   datasource:
@@ -11,7 +11,7 @@ spring:
     password: ${DATABASE_PWD:3112001}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
-      pool-name: hikari-parking
+      pool-name: hikari-yourtours
       auto-commit: true
       data-source-properties:
         cachePrepStmts: true
@@ -89,7 +89,6 @@ common:
           - ${CORS_ORIGINS:http://localhost:8080}
           - http://localhost:8000
           - http://localhost:3000
-          - https://api-parking-dev.hcm.unicloud.ai/swagger-ui/
           - https://your-tours-client.vercel.app/
         allowed-methods: ${CORS_METHODS:*}
         allowed-headers: ${CORS_HEADERS:*}

@@ -84,10 +84,6 @@ dependencies {
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
 
-    /*
-    Envers
-     */
-    implementation group: 'org.springframework.data', name: 'spring-data-envers', version: '2.5.4'
 
     /*
      common-io
