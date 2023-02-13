@@ -77,13 +77,6 @@ common:
             - /api/v1/languages-support/**
             - /api/v1/translator/**
             - /api/v1/languages/**
-      x-api:
-        services:
-          ai:
-            prefixes:
-            keys:
-              - value: ${AI_X_API_KEY:7d9ed96e-2a7d-11ed-a261-0242ac120002}
-              - enable: ${AI_X_API_KEY_ENABLE:true}
       cors:
         allowed-origins:
           - ${CORS_ORIGINS:http://localhost:8080}
@@ -97,13 +90,6 @@ common:
         auth:
           jwk-set-uri: ${KEYCLOAK_URI:https://keycloak-ute.herokuapp.com}/auth/realms/${PROFILE_REALM:your-tour}/protocol/openid-connect/certs
           issuer-uri: ${KEYCLOAK_URI:https://keycloak-ute.herokuapp.com}/auth/realms/${PROFILE_REALM:your-tour}
-    client:
-      external:
-        ai:
-          uri: ${AI_API_URI:http://10.30.1.207:30500}
-          properties:
-            license-plate: ${LICENSE_PLATE:/v1.1.0/license-plate/recognition}
-            key: ${KEY:unicloudALPR123654789}
 
 your-tour-profile:
   security:
@@ -119,15 +105,6 @@ your-tour-profile:
         credentials:
           secret: ${PROFILE_CLIENT_SECRET:mnct1QhwqPjN7kzPNoiNfyLiN7O9iKlo}
           grant_type: password
-
-keycloak:
-  auth-server-url: ${KEYCLOAK_URI:https://keycloak-ute.herokuapp.com}/auth
-  ssl-required: external
-  realm: ${PROFILE_REALM:your-tour}
-  resource: ${PROFILE_CLIENT_ID:your-tour-client}
-  credentials:
-    secret: ${PROFILE_CLIENT_SECRET:mnct1QhwqPjN7kzPNoiNfyLiN7O9iKlo}
-  use-resource-role-mappings: true
 
 
 aws-s3:
