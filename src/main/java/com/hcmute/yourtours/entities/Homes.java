@@ -67,8 +67,20 @@ public class Homes extends NameData {
     @Column(name = "address_detail")
     private String addressDetail;
 
+
+    @ManyToOne
+    @JoinColumn(
+            name = "province_code",
+            referencedColumnName = "code_name",
+            foreignKey = @ForeignKey(name = "fk_association_home_province"),
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
+    private Province province;
+
     @Column(name = "province_code")
-    private Integer provinceCode;
+    private String provinceCode;
 
     @Column(name = "ranking")
     private Integer rank;

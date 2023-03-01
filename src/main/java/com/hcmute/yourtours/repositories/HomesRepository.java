@@ -2,7 +2,6 @@ package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.entities.Homes;
 import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
-import com.hcmute.yourtours.models.province.ProvinceProjection;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,25 +43,6 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                                    @Param("sortBy") String sortBy,
                                    @Param("status") String status,
                                    PageRequest pageRequest);
-
-
-    @Query
-            (
-                    nativeQuery = true,
-                    value = "select count(a.id) as numberBooking, a.province_code as provinceCode " +
-                            "from homes a, " +
-                            "     book_home b " +
-                            "where a.home_id = b.home_id " +
-                            "group by a.province_code " +
-                            "order by count(a.id) desc ",
-                    countQuery = "select count(a.id) as numberBooking, a.province_code as provinceCode " +
-                            "from homes a, " +
-                            "     book_home b " +
-                            "where a.home_id = b.home_id " +
-                            "group by a.province_code " +
-                            "order by count(a.id) desc "
-            )
-    Page<ProvinceProjection> getProvinceWithFilter(Pageable pageable);
 
 
     @Query(
@@ -175,18 +155,19 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
 
     @Query(
             nativeQuery = true,
-            value = "select a.*  " +
-                    "from homes a  " +
-                    "where a.province_code in :listProvinceCode  " +
-                    "  and a.status = 'ACTIVE'  " +
+            value = "select a.*   " +
+                    "from homes a,   " +
+                    "     province b   " +
+                    "where a.province_code = b.code_name   " +
+                    "  and upper(b.name) like upper(Concat('%', :keyword, '%'))   " +
                     "order by a.view desc ",
-            countQuery = "select a.id  " +
-                    "from homes a  " +
-                    "where a.province_code in :listProvinceCode  " +
-                    "  and a.status = 'ACTIVE'  " +
-                    "order by a.view desc  "
+            countQuery = "select a.id   " +
+                    "from homes a,   " +
+                    "     province b   " +
+                    "where a.province_code = b.code_name   " +
+                    "  and upper(b.name) like upper(Concat('%', :keyword, '%'))   "
     )
-    Page<Homes> getPageWithListProvinceCode(@Param("listProvinceCode") List<Integer> listProvinceCode,
+    Page<Homes> getPageWithListProvinceCode(@Param("keyword") String keyword,
                                             Pageable pageable);
 
 

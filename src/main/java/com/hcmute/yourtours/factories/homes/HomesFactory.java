@@ -2,7 +2,6 @@ package com.hcmute.yourtours.factories.homes;
 
 import com.hcmute.yourtours.entities.Homes;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
-import com.hcmute.yourtours.enums.ProvinceEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
@@ -276,26 +275,10 @@ public class HomesFactory
 
     @Override
     public BasePagingResponse<HomeInfo> getFilterWithProvinceName(String search, Integer number, Integer size) throws InvalidException {
-        List<Integer> provinceCode = new ArrayList<>();
-
-        for (ProvinceEnum province : ProvinceEnum.values()) {
-            if (province.getProvinceName().toUpperCase().contains(search.toUpperCase())) {
-                provinceCode.add(province.getProvinceCode());
-            }
-        }
-
-        if (provinceCode.isEmpty()) {
-            return new BasePagingResponse<>(
-                    new ArrayList<>(),
-                    number,
-                    size,
-                    0
-            );
-        }
 
         List<HomeInfo> result = new ArrayList<>();
 
-        Page<Homes> page = homesRepository.getPageWithListProvinceCode(provinceCode, PageRequest.of(number, size));
+        Page<Homes> page = homesRepository.getPageWithListProvinceCode(search, PageRequest.of(number, size));
         for (Homes homes : page.getContent()) {
             result.add(HomeInfo.builder()
                     .id(homes.getId())

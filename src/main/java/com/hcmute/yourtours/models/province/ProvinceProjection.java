@@ -1,7 +1,12 @@
 package com.hcmute.yourtours.models.province;
 
 public interface ProvinceProjection {
-    Integer getProvinceCode();
+
+    String getCodeName();
+
+    String getName();
+
+    String getThumbnail();
 
     Long getNumberBooking();
 }

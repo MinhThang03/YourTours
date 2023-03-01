@@ -11,6 +11,6 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Builder
 public class UpdateAddressHomeModel extends BaseData<UUID> {
-    private Integer provinceCode;
+    private String provinceCode;
     private String address;
 }

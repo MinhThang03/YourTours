@@ -41,7 +41,7 @@ public class HomeInfo extends NameDataModel<UUID> {
 
     private String addressDetail;
 
-    private Integer provinceCode;
+    private String provinceCode;
 
     private Integer rank;
 

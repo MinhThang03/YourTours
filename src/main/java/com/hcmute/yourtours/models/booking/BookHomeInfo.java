@@ -70,7 +70,7 @@ public class BookHomeInfo extends BaseData<UUID> {
     private String homeAddressDetail;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Integer homeProvinceCode;
+    private String homeProvinceCode;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Double percent;

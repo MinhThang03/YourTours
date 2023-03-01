@@ -1,11 +1,20 @@
 package com.hcmute.yourtours.models.province;
 
-import lombok.Builder;
+import com.hcmute.yourtours.libs.model.BaseData;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
-public class ProvinceModel {
-    private Integer provinceCode;
-    private Long numberBooking;
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder(toBuilder = true)
+public class ProvinceModel extends BaseData<Long> {
+
+    private String codeName;
+
+    private String name;
+
+    private String divisionType;
+
+    private String thumbnail;
 }
