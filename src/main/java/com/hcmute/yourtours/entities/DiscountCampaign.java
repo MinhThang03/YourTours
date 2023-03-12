@@ -16,7 +16,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "discount_campaign_id")
+@Table(name = "discount_campaign")
 public class DiscountCampaign extends NameData {
     @Id
     @GeneratedValue(generator = "UUID")
