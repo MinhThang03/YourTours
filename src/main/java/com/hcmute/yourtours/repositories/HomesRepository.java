@@ -70,9 +70,9 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
             value = "select a.*  " +
                     "from homes a,  " +
                     "     item_favorites b  " +
-                    "where a.home_id = :homeId  " +
+                    "where a.id = :homeId  " +
                     "  and b.user_id = :userId  " +
-                    "  and a.home_id = b.home_id  " +
+                    "  and a.id = b.home_id  " +
                     "limit 1 "
     )
     Optional<Homes> findIsFavoriteByHomeIdAndUserId(@Param("homeId") UUID homeId,
