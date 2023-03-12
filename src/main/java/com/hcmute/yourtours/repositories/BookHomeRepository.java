@@ -64,13 +64,13 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
             value = "select a.*  " +
                     "from book_home a,  " +
                     "     user b  " +
-                    "where b.userid = :customerId  " +
+                    "where b.id = :customerId  " +
                     "  and a.email = b.email  " +
                     "order by a.created_date desc ",
             countQuery = "select a.id  " +
                     "from book_home a,  " +
                     "     user b  " +
-                    "where b.userid = :customerId  " +
+                    "where b.id = :customerId  " +
                     "  and a.email = b.email  " +
                     "order by a.created_date desc "
     )

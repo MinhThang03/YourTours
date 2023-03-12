@@ -50,13 +50,13 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
             value = "select a.*  " +
                     "from homes a,  " +
                     "     item_favorites b  " +
-                    "where a.home_id = b.home_id  " +
+                    "where a.id = b.home_id  " +
                     "  and b.user_id = :userId  " +
                     "  and a.status = :status ",
             countQuery = "select a.id  " +
                     "from homes a,  " +
                     "     item_favorites b  " +
-                    "where a.home_id = b.home_id  " +
+                    "where a.id = b.home_id  " +
                     "  and b.user_id = :userId  " +
                     "  and a.status = :status "
     )
