@@ -82,6 +82,9 @@ public class HomeInfo extends NameDataModel<UUID> {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Boolean isFavorite;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String provinceName;
+
     @NotNull
     private List<ImageHomeDetail> imagesOfHome;
 

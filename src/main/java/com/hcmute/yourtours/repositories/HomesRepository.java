@@ -84,23 +84,23 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
             value = "select distinct a.*  " +
                     "from homes a  " +
                     "         left join  " +
-                    "     amenities_of_home b on a.home_id = b.home_id  " +
+                    "     amenities_of_home b on a.id = b.home_id  " +
                     "         left join (select count(a.id) as numberOfBed,  " +
                     "                           b.home_id  " +
                     "                    from beds_of_home a,  " +
                     "                         rooms_of_home b  " +
-                    "                    where a.room_of_home_id = b.room_of_home_id  " +
+                    "                    where a.room_of_home_id = b.id  " +
                     "                    group by b.home_id) c on b.home_id = c.home_id  " +
                     "         left join (select count(a.id) as numberOfBedRoom,  " +
                     "                           a.home_id  " +
                     "                    from rooms_of_home a  " +
                     "                    where a.room_category_id = :bedRoomId  " +
-                    "                    group by a.home_id) d on a.home_id = d.home_id  " +
+                    "                    group by a.home_id) d on a.id = d.home_id  " +
                     "         left join (select count(a.id) as numberOfBathRoom,  " +
                     "                           a.home_id  " +
                     "                    from rooms_of_home a  " +
                     "                    where a.room_category_id = :bathRoomId  " +
-                    "                    group by a.home_id) e on e.home_id = a.home_id  " +
+                    "                    group by a.home_id) e on e.home_id = a.id  " +
                     "where (:amenityId is null or b.amenity_id = :amenityId)  " +
                     "  and (:priceFrom is null or :priceTo is null or  " +
                     "       (a.cost_per_night_default >= :priceFrom and a.cost_per_night_default <= :priceTo))  " +
@@ -113,23 +113,23 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
             countQuery = "select distinct a.id  " +
                     "from homes a  " +
                     "         left join  " +
-                    "     amenities_of_home b on a.home_id = b.home_id  " +
+                    "     amenities_of_home b on a.id = b.home_id  " +
                     "         left join (select count(a.id) as numberOfBed,  " +
                     "                           b.home_id  " +
                     "                    from beds_of_home a,  " +
                     "                         rooms_of_home b  " +
-                    "                    where a.room_of_home_id = b.room_of_home_id  " +
+                    "                    where a.room_of_home_id = b.id  " +
                     "                    group by b.home_id) c on b.home_id = c.home_id  " +
                     "         left join (select count(a.id) as numberOfBedRoom,  " +
                     "                           a.home_id  " +
                     "                    from rooms_of_home a  " +
                     "                    where a.room_category_id = :bedRoomId  " +
-                    "                    group by a.home_id) d on a.home_id = d.home_id  " +
+                    "                    group by a.home_id) d on a.id = d.home_id  " +
                     "         left join (select count(a.id) as numberOfBathRoom,  " +
                     "                           a.home_id  " +
                     "                    from rooms_of_home a  " +
                     "                    where a.room_category_id = :bathRoomId  " +
-                    "                    group by a.home_id) e on e.home_id = a.home_id  " +
+                    "                    group by a.home_id) e on e.home_id = a.id  " +
                     "where (:amenityId is null or b.amenity_id = :amenityId)  " +
                     "  and (:priceFrom is null or :priceTo is null or  " +
                     "       (a.cost_per_night_default >= :priceFrom and a.cost_per_night_default <= :priceTo))  " +
