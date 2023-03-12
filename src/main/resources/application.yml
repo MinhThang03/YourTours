@@ -84,6 +84,7 @@ common:
           - http://localhost:3000
           - https://your-tours-client.vercel.app/
           - https://your-tours-client-git-develop-thaihaidev.vercel.app/
+          - https://your-tours-client-git-development-thaihaidev.vercel.app/
         allowed-methods: ${CORS_METHODS:*}
         allowed-headers: ${CORS_HEADERS:*}
 
