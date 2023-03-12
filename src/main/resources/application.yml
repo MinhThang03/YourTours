@@ -6,9 +6,9 @@ spring:
   profiles:
     active: ${ENV:dev}
   datasource:
-    url: ${DATABASE_URL:jdbc:mysql://database-1.cchbuon8bjxv.us-east-1.rds.amazonaws.com:3306/yourtours?reconnect=true}
-    username: ${DATABASE_USER:admin}
-    password: ${DATABASE_PWD:12345678}
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3306:3306/your_tours}
+    username: ${DATABASE_USER:root}
+    password: ${DATABASE_PWD:2001}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       pool-name: hikari-yourtours
@@ -47,8 +47,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USER:yourtour.666@gmail.com}
-    password: ${MAIL_PASSWORD:gjzkurhytytuczll}
+    username: ${MAIL_USER:user@gmail.com}
+    password: ${MAIL_PASSWORD:ttttt}
     properties:
       mail:
         smtp:
@@ -83,6 +83,7 @@ common:
           - http://localhost:8000
           - http://localhost:3000
           - https://your-tours-client.vercel.app/
+          - https://your-tours-client-git-develop-thaihaidev.vercel.app/
         allowed-methods: ${CORS_METHODS:*}
         allowed-headers: ${CORS_HEADERS:*}
 
@@ -109,8 +110,8 @@ your-tour-profile:
 
 aws-s3:
   endpoint: ${AWS_ENDPOINT:https://s3.ap-northeast-1.amazonaws.com}
-  accessKey: ${AWS_ACCESS_KEY:AKIAQZYOAOMN7FRKELWJ}
-  secretKey: ${AWS_SECRET_KEY:8ytoSzMuTn2WCcRuUEZ/52iCcsGh9b2PN7a5BZBQ}
+  accessKey: ${AWS_ACCESS_KEY:TEST}
+  secretKey: ${AWS_SECRET_KEY:test}
   bucketName: ${AWS_S3_BUCKET:your-tours}
   region: ${AWS_S3_REGION:ap-northeast-1}
   endpoint-s3: ${AWS-S3-ENDPOINT:https://${AWS_S3_BUCKET:your-tours}.s3.${AWS_S3_REGION:ap-northeast-1}.amazonaws.com}

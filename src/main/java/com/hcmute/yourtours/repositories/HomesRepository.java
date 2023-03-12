@@ -22,7 +22,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     nativeQuery = true,
                     value = "select a.*  " +
                             "from homes a  " +
-                            "         inner join owner_of_home b on a.home_id = b.home_id  " +
+                            "         inner join owner_of_home b on a.id = b.home_id  " +
                             "where a.deleted = false  " +
                             "  and (b.user_id = :userId or :userId is null)  " +
                             "  and (a.status = :status or :status is null)  " +
@@ -31,7 +31,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                             "         a.created_date desc  ",
                     countQuery = "select a.id  " +
                             "from homes a  " +
-                            "         inner join owner_of_home b on a.home_id = b.home_id  " +
+                            "         inner join owner_of_home b on a.id = b.home_id  " +
                             "where a.deleted = false  " +
                             "  and (b.user_id = :userId or :userId is null)  " +
                             "  and (a.status = :status or :status is null)  " +
