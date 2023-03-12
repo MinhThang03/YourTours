@@ -20,7 +20,7 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHome, UUID>
             value = "select b.full_name as ownerName   " +
                     "from owner_of_home a,   " +
                     "     user b   " +
-                    "where a.user_id = b.userid   " +
+                    "where a.user_id = b.id   " +
                     "  and a.is_main_owner is true   " +
                     "  and a.home_id = :homeId  "
     )

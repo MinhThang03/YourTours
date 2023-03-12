@@ -77,14 +77,14 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHome, UUID> 
     @Query(
             nativeQuery = true,
             value = "select a.name            as roomName,   " +
-                    "       a.room_of_home_id as roomHomeId,   " +
+                    "       a.id as roomHomeId,   " +
                     "       b.amount          as numberOfBed,   " +
                     "       c.name            as nameOfBed   " +
                     "from rooms_of_home a,   " +
                     "     beds_of_home b,   " +
                     "     bed_categories c   " +
                     "where a.id = b.room_of_home_id   " +
-                    "  and b.bed_category_id = c.bed_category_id   " +
+                    "  and b.bed_category_id = c.id   " +
                     "  and a.home_id = :homeId   " +
                     "  and b.amount is not null"
     )

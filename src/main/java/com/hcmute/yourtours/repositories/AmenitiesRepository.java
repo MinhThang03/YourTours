@@ -47,7 +47,7 @@ public interface AmenitiesRepository extends JpaRepository<Amenities, UUID> {
             value = "select a.* " +
                     "from amenities a, " +
                     "     amenities_of_home b " +
-                    "where a.amenity_id = b.amenity_id " +
+                    "where a.id = b.amenity_id " +
                     "  and b.home_id = :homeId "
     )
     List<Amenities> getByByHomeId(@Param("homeId") UUID homeId);
