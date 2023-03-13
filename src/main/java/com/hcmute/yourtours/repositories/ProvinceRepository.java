@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProvinceRepository extends JpaRepository<Province, Long> {
@@ -46,4 +47,7 @@ public interface ProvinceRepository extends JpaRepository<Province, Long> {
                             "order by coalesce(b.numberBooking, 0) desc  "
             )
     Page<ProvinceProjection> getProvinceSortByNumberBooking(Pageable pageable);
+
+
+    Optional<Province> findByCodeName(String codeName);
 }

@@ -11,6 +11,7 @@ import com.hcmute.yourtours.factories.homes.HomesFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
+import com.hcmute.yourtours.factories.province.IProvinceFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.factories.user_evaluate.IUserEvaluateFactory;
@@ -51,7 +52,8 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
                     IUserEvaluateFactory iUserEvaluateFactory,
                     @Qualifier("bookHomeFactory") IBookHomeFactory iBookHomeFactory,
-                    IUserFactory iUserFactory
+                    IUserFactory iUserFactory,
+                    IProvinceFactory iProvinceFactory
             ) {
         super(
                 repository,
@@ -61,7 +63,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                 iOwnerOfHomeFactory,
                 iGetUserFromTokenFactory,
                 iItemFavoritesFactory,
-                iUserFactory);
+                iUserFactory, iProvinceFactory);
         this.iUserEvaluateFactory = iUserEvaluateFactory;
         this.iBookHomeFactory = iBookHomeFactory;
     }

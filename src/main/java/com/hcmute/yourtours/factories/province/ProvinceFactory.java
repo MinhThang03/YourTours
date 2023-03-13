@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.province;
 
 import com.hcmute.yourtours.entities.Province;
+import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ProvinceFactory extends BasePersistDataFactory<Long, ProvinceModel, ProvinceModel, Long, Province> implements IProvinceFactory {
@@ -34,6 +37,15 @@ public class ProvinceFactory extends BasePersistDataFactory<Long, ProvinceModel,
                 size,
                 page.getTotalElements()
         );
+    }
+
+    @Override
+    public ProvinceModel getProvinceByCodeName(String provinceCode) throws InvalidException {
+        Optional<Province> province = provinceRepository.findByCodeName(provinceCode);
+        if (province.isEmpty()) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_PROVINCE);
+        }
+        return convertToDetail(province.get());
     }
 
     @Override

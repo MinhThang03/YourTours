@@ -10,6 +10,7 @@ import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
+import com.hcmute.yourtours.factories.province.IProvinceFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -51,6 +52,7 @@ public class HomesFactory
     protected final IGetUserFromTokenFactory iGetUserFromTokenFactory;
     protected final IItemFavoritesFactory iItemFavoritesFactory;
     protected final IUserFactory iUserFactory;
+    protected final IProvinceFactory iProvinceFactory;
 
     protected HomesFactory
             (
@@ -61,7 +63,8 @@ public class HomesFactory
                     IOwnerOfHomeFactory iOwnerOfHomeFactory,
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
                     IItemFavoritesFactory iItemFavoritesFactory,
-                    IUserFactory iUserFactory
+                    IUserFactory iUserFactory,
+                    IProvinceFactory iProvinceFactory
             ) {
         super(repository);
         this.homesRepository = repository;
@@ -72,6 +75,7 @@ public class HomesFactory
         this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
         this.iItemFavoritesFactory = iItemFavoritesFactory;
         this.iUserFactory = iUserFactory;
+        this.iProvinceFactory = iProvinceFactory;
     }
 
     @Override
@@ -165,7 +169,7 @@ public class HomesFactory
                 .thumbnail(entity.getThumbnail())
                 .averageRate(entity.getAverageRate())
                 .numberOfReviews(entity.getNumberOfReviews())
-                .provinceName(entity.getProvince().getName())
+                .provinceName(iProvinceFactory.getProvinceByCodeName(entity.getProvinceCode()).getName())
                 .lastModifiedDate(entity.getLastModifiedDate())
                 .build();
     }
@@ -200,7 +204,7 @@ public class HomesFactory
                 .thumbnail(entity.getThumbnail())
                 .numberOfReviews(entity.getNumberOfReviews())
                 .lastModifiedDate(entity.getLastModifiedDate())
-                .provinceName(entity.getProvince().getName())
+                .provinceName(iProvinceFactory.getProvinceByCodeName(entity.getProvinceCode()).getName())
                 .build();
     }
 

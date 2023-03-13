@@ -8,6 +8,7 @@ import com.hcmute.yourtours.factories.homes.HomesFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
+import com.hcmute.yourtours.factories.province.IProvinceFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -36,7 +37,8 @@ public class CmsHomesFactory extends HomesFactory {
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
                     IItemFavoritesFactory iItemFavoritesFactory,
                     IBedsOfHomeFactory iBedsOfHomeFactory,
-                    IUserFactory iUserFactory
+                    IUserFactory iUserFactory,
+                    IProvinceFactory iProvinceFactory
             ) {
         super(repository,
                 iImagesHomeFactory,
@@ -45,7 +47,7 @@ public class CmsHomesFactory extends HomesFactory {
                 iOwnerOfHomeFactory,
                 iGetUserFromTokenFactory,
                 iItemFavoritesFactory,
-                iUserFactory);
+                iUserFactory, iProvinceFactory);
         this.iBedsOfHomeFactory = iBedsOfHomeFactory;
     }
 
