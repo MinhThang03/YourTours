@@ -19,13 +19,13 @@ public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHo
 
     @Query(
             nativeQuery = true,
-            value = "select a.surcharge_category_id as surchargeCategoryId,  " +
+            value = "select a.id as surchargeCategoryId,  " +
                     "       a.name                  as surchargeCategoryName,  " +
                     "       a.description           as description,  " +
                     "       b.cost                  as cost  " +
                     "from surcharge_home_categories a  " +
                     "         left join (select a.* from surcharges_of_home a where a.home_id = :homeId) b  " +
-                    "                   on a.surcharge_category_id = b.surcharge_category_id  " +
+                    "                   on a.id = b.surcharge_category_id  " +
                     "where a.status = 'ACTIVE' "
     )
     List<SurchargeHomeViewProjection> getListCategoryWithHomeId(UUID homeId);
@@ -36,21 +36,21 @@ public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHo
 
     @Query(
             nativeQuery = true,
-            value = "select b.surcharge_category_id as surchargeCategoryId,   " +
+            value = "select b.id as surchargeCategoryId,   " +
                     "       b.name                  as surchargeCategoryName,   " +
                     "       b.description           as description,   " +
                     "       a.cost                  as cost   " +
                     "from surcharges_of_home a,   " +
                     "     surcharge_home_categories b   " +
                     "where b.status = 'ACTIVE'   " +
-                    "  and a.surcharge_category_id = b.surcharge_category_id   " +
+                    "  and a.surcharge_category_id = b.id   " +
                     "  and a.cost is not null  " +
                     "  and a.home_id = :homeId ",
             countQuery = "select b.id    " +
                     "from surcharges_of_home a,    " +
                     "     surcharge_home_categories b    " +
                     "where b.status = 'ACTIVE'    " +
-                    "  and a.surcharge_category_id = b.surcharge_category_id    " +
+                    "  and a.surcharge_category_id = b.id    " +
                     "  and a.cost is not null  " +
                     "  and a.home_id = :homeId "
     )

@@ -39,7 +39,7 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHome, UUID>
                     "      from owner_of_home a " +
                     "      group by a.user_id) a, " +
                     " " +
-                    "     (select c.userid                         as userId, " +
+                    "     (select c.id                         as userId, " +
                     "             c.full_name                      as fullName, " +
                     "             count(a.id)                      as numberOfBooking, " +
                     "             coalesce(sum(a.cost_of_host), 0) as totalCost " +
@@ -47,8 +47,8 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHome, UUID>
                     "           owner_of_home b, " +
                     "           user c " +
                     "      where a.home_id = b.home_id " +
-                    "        and c.userid = b.user_id " +
-                    "      group by c.userid, c.full_name) b " +
+                    "        and c.id = b.user_id " +
+                    "      group by c.id, c.full_name) b " +
                     "where a.userId = b.userId ",
             countQuery = "select a.numberOfHomes as numberOfHomes, " +
                     "       a.userId as userId, " +
@@ -60,7 +60,7 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHome, UUID>
                     "      from owner_of_home a " +
                     "      group by a.user_id) a, " +
                     " " +
-                    "     (select c.userid                         as userId, " +
+                    "     (select c.id                         as userId, " +
                     "             c.full_name                      as fullName, " +
                     "             count(a.id)                      as numberOfBooking, " +
                     "             coalesce(sum(a.cost_of_host), 0) as totalCost " +
@@ -68,8 +68,8 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHome, UUID>
                     "           owner_of_home b, " +
                     "           user c " +
                     "      where a.home_id = b.home_id " +
-                    "        and c.userid = b.user_id " +
-                    "      group by c.userid, c.full_name) b " +
+                    "        and c.id = b.user_id " +
+                    "      group by c.id, c.full_name) b " +
                     "where a.userId = b.userId "
     )
     Page<StatisticInfoOwnerProjection> getStatisticInfoOwner(Pageable pageable);

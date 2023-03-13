@@ -179,10 +179,10 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "from homes a, " +
                     "     owner_of_home b, " +
                     "     user c " +
-                    "where a.home_id = b.home_id " +
-                    "  and b.user_id = c.userid " +
+                    "where a.id = b.home_id " +
+                    "  and b.user_id = c.id " +
                     "  and b.is_main_owner is true " +
-                    "  and a.home_id = :homeId "
+                    "  and a.id = :homeId "
     )
     GetOwnerNameAndHomeNameProjection getOwnerNameAndHomeName(UUID homeId);
 }

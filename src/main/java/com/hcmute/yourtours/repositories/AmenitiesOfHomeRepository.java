@@ -15,18 +15,18 @@ import java.util.UUID;
 public interface AmenitiesOfHomeRepository extends JpaRepository<AmenitiesOfHome, UUID> {
 
     @Query(nativeQuery = true,
-            value = "select b.amenity_id  as amenityId, " +
+            value = "select b.id  as amenityId, " +
                     "       c.home_id     as homeId, " +
                     "       b.name        as name, " +
                     "       b.description as description, " +
                     "       b.status      as status, " +
                     "       c.is_have     as isHave " +
                     "from amenity_categories a " +
-                    "         inner join amenities b on a.amenity_category_id = b.category_id " +
+                    "         inner join amenities b on a.id = b.category_id " +
                     "         left join (select a.* " +
                     "                    from amenities_of_home a " +
-                    "                    where a.home_id = :homeId) c on b.amenity_id = c.amenity_id " +
-                    "where a.amenity_category_id = :categoryId " +
+                    "                    where a.home_id = :homeId) c on b.id = c.amenity_id " +
+                    "where a.id = :categoryId " +
                     "order by b.name ")
     List<AmenityOfHomeProjection> findAllByAmenityCategoryIdAndHomeId(@Param("categoryId") UUID categoryId,
                                                                       @Param("homeId") UUID homeId);

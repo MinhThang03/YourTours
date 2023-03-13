@@ -122,7 +122,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
                     "     homes c   " +
                     "where a.home_id = b.home_id   " +
                     "  and b.user_id = :ownerId   " +
-                    "  and a.home_id = c.home_id   " +
+                    "  and a.home_id = c.id   " +
                     "  and YEAR(a.date_start) = :year " +
                     "group by c.name, a.home_id "
     )
@@ -163,7 +163,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
                     "       b.full_name                      as fullName " +
                     "from book_home a " +
                     "         inner join user b " +
-                    "where a.user_id = b.userid " +
+                    "where a.user_id = b.id " +
                     "group by a.user_id, b.full_name ",
             countQuery = "select count(a.id)                      as numberOfBooking, " +
                     "       coalesce(sum(a.total_cost), 0) as totalCost, " +
@@ -171,7 +171,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
                     "       b.full_name                      as fullName " +
                     "from book_home a " +
                     "         inner join user b " +
-                    "where a.user_id = b.userid " +
+                    "where a.user_id = b.id " +
                     "group by a.user_id, b.full_name "
     )
     Page<InfoUserBookingProjection> getPageStatisticInfoUserBooking(Pageable pageable);

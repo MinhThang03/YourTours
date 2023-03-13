@@ -17,13 +17,13 @@ public interface AmenitiesRepository extends JpaRepository<Amenities, UUID> {
     @Query(nativeQuery = true,
             value = "select a.*  " +
                     "from amenities a  " +
-                    "         inner join amenity_categories b on a.category_id = b.amenity_category_id  " +
-                    "where b.amenity_category_id = :categoryId  " +
+                    "         inner join amenity_categories b on a.category_id = b.id  " +
+                    "where b.id = :categoryId  " +
                     "   or :categoryId is null",
             countQuery = "select a.id  " +
                     "from amenities a  " +
-                    "         inner join amenity_categories b on a.category_id = b.amenity_category_id  " +
-                    "where b.amenity_category_id = :categoryId  " +
+                    "         inner join amenity_categories b on a.category_id = b.id  " +
+                    "where b.id = :categoryId  " +
                     "   or :categoryId is null ")
     Page<Amenities> getPageWithAmenityFilter(@Param("categoryId") UUID categoryId,
                                              Pageable pageable);
@@ -34,7 +34,7 @@ public interface AmenitiesRepository extends JpaRepository<Amenities, UUID> {
             value = "select a.* " +
                     "from amenities a, " +
                     "     amenities_of_home b " +
-                    "where a.amenity_id = b.amenity_id " +
+                    "where a.id = b.amenity_id " +
                     "  and b.home_id = :homeId " +
                     "limit :limit "
     )
