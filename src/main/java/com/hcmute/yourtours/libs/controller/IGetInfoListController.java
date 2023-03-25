@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
  * @see IGetInfoListWithFilterController
  */
 @RequestMapping("/")
-public interface IGetInfoListController<I, T extends BaseData<I>> {
+public interface IGetInfoListController<I extends Serializable, T extends BaseData<I>> {
 
     /**
      * getList method

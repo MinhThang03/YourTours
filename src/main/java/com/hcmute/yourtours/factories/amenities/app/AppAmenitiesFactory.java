@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.amenities.app;
 
-import com.hcmute.yourtours.entities.AmenitiesCommand;
+import com.hcmute.yourtours.entities.Amenities;
 import com.hcmute.yourtours.factories.amenities.AmenitiesFactory;
 import com.hcmute.yourtours.factories.amenity_categories.IAmenityCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -20,13 +20,13 @@ public class AppAmenitiesFactory extends AmenitiesFactory implements IAppAmeniti
     }
 
     @Override
-    public AmenityInfo convertToInfo(AmenitiesCommand entity) throws InvalidException {
+    public AmenityInfo convertToInfo(Amenities entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
 
         return AmenityInfo.builder()
-                .id(entity.getAmenityId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -35,7 +35,6 @@ public class AppAmenitiesFactory extends AmenitiesFactory implements IAppAmeniti
                 .build();
     }
 
-
     @Override
     public BasePagingResponse<AmenityInfo> getPageAmenitiesHaveSetFilter(Integer number, Integer size) throws InvalidException {
         int offset = number * size - 1;
@@ -43,16 +42,16 @@ public class AppAmenitiesFactory extends AmenitiesFactory implements IAppAmeniti
             offset = 0;
         }
 
-        List<AmenitiesCommand> contents = new ArrayList<>();
+        List<Amenities> contents = new ArrayList<>();
 
         if (number == 0) {
-            contents.add(AmenitiesCommand.builder()
+            contents.add(Amenities.builder()
                     .name("Mới nhất")
                     .icon("https://img.icons8.com/ios-filled/25/null/new.png")
                     .build());
         }
 
-        List<AmenitiesCommand> queryResult = amenitiesRepository.getLimitSetFilter(offset, size);
+        List<Amenities> queryResult = amenitiesRepository.getLimitSetFilter(offset, size);
 
         if (number == 0 && !queryResult.isEmpty()) {
             queryResult.remove(queryResult.size() - 1);

@@ -1,8 +1,7 @@
 package com.hcmute.yourtours.factories.homes;
 
-import com.hcmute.yourtours.entities.HomesCommand;
+import com.hcmute.yourtours.entities.Homes;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
-import com.hcmute.yourtours.enums.ProvinceEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
@@ -11,6 +10,7 @@ import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
+import com.hcmute.yourtours.factories.province.IProvinceFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -41,7 +41,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class HomesFactory
-        extends BasePersistDataFactory<UUID, HomeInfo, HomeDetail, Long, HomesCommand>
+        extends BasePersistDataFactory<UUID, HomeInfo, HomeDetail, UUID, Homes>
         implements IHomesFactory {
 
     protected final HomesRepository homesRepository;
@@ -52,6 +52,7 @@ public class HomesFactory
     protected final IGetUserFromTokenFactory iGetUserFromTokenFactory;
     protected final IItemFavoritesFactory iItemFavoritesFactory;
     protected final IUserFactory iUserFactory;
+    protected final IProvinceFactory iProvinceFactory;
 
     protected HomesFactory
             (
@@ -62,7 +63,8 @@ public class HomesFactory
                     IOwnerOfHomeFactory iOwnerOfHomeFactory,
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
                     IItemFavoritesFactory iItemFavoritesFactory,
-                    IUserFactory iUserFactory
+                    IUserFactory iUserFactory,
+                    IProvinceFactory iProvinceFactory
             ) {
         super(repository);
         this.homesRepository = repository;
@@ -73,6 +75,7 @@ public class HomesFactory
         this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
         this.iItemFavoritesFactory = iItemFavoritesFactory;
         this.iUserFactory = iUserFactory;
+        this.iProvinceFactory = iProvinceFactory;
     }
 
     @Override
@@ -82,11 +85,11 @@ public class HomesFactory
     }
 
     @Override
-    public HomesCommand createConvertToEntity(HomeDetail detail) throws InvalidException {
+    public Homes createConvertToEntity(HomeDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return HomesCommand.builder()
+        return Homes.builder()
                 .name(detail.getName())
                 .description(detail.getDescription())
                 .wifi(detail.getWifi())
@@ -113,7 +116,7 @@ public class HomesFactory
     }
 
     @Override
-    public void updateConvertToEntity(HomesCommand entity, HomeDetail detail) throws InvalidException {
+    public void updateConvertToEntity(Homes entity, HomeDetail detail) throws InvalidException {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setWifi(detail.getWifi());
@@ -138,12 +141,12 @@ public class HomesFactory
     }
 
     @Override
-    public HomeDetail convertToDetail(HomesCommand entity) throws InvalidException {
+    public HomeDetail convertToDetail(Homes entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
         return HomeDetail.builder()
-                .id(entity.getHomeId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .wifi(entity.getWifi())
@@ -157,7 +160,7 @@ public class HomesFactory
                 .refundPolicy(entity.getRefundPolicy())
                 .status(entity.getStatus())
                 .numberOfGuests(entity.getNumberOfGuests())
-                .imagesOfHome(iImagesHomeFactory.getListByHomeId(entity.getHomeId(), entity.getThumbnail()))
+                .imagesOfHome(iImagesHomeFactory.getListByHomeId(entity.getId(), entity.getThumbnail()))
                 .provinceCode(entity.getProvinceCode())
                 .addressDetail(entity.getAddressDetail())
                 .rank(entity.getRank())
@@ -166,17 +169,18 @@ public class HomesFactory
                 .thumbnail(entity.getThumbnail())
                 .averageRate(entity.getAverageRate())
                 .numberOfReviews(entity.getNumberOfReviews())
+                .provinceName(iProvinceFactory.getProvinceByCodeName(entity.getProvinceCode()).getName())
                 .lastModifiedDate(entity.getLastModifiedDate())
                 .build();
     }
 
     @Override
-    public HomeInfo convertToInfo(HomesCommand entity) throws InvalidException {
+    public HomeInfo convertToInfo(Homes entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
         return HomeInfo.builder()
-                .id(entity.getHomeId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .wifi(entity.getWifi())
@@ -194,19 +198,16 @@ public class HomesFactory
                 .addressDetail(entity.getAddressDetail())
                 .rank(entity.getRank())
                 .view(entity.getView())
-                .imagesOfHome(iImagesHomeFactory.getFullListByHomeId(entity.getHomeId(), entity.getThumbnail()))
+                .imagesOfHome(iImagesHomeFactory.getFullListByHomeId(entity.getId(), entity.getThumbnail()))
                 .favorite(entity.getFavorite())
                 .averageRate(entity.getAverageRate())
                 .thumbnail(entity.getThumbnail())
                 .numberOfReviews(entity.getNumberOfReviews())
                 .lastModifiedDate(entity.getLastModifiedDate())
+                .provinceName(iProvinceFactory.getProvinceByCodeName(entity.getProvinceCode()).getName())
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        return findByHomeId(id).getId();
-    }
 
     @Override
     protected void preCreate(HomeDetail detail) throws InvalidException {
@@ -225,23 +226,23 @@ public class HomesFactory
     }
 
     @Override
-    protected void postCreate(HomesCommand entity, HomeDetail detail) throws InvalidException {
+    protected void postCreate(Homes entity, HomeDetail detail) throws InvalidException {
         OwnerOfHomeDetail ownerOfHomeDetail = OwnerOfHomeDetail.builder()
-                .homeId(entity.getHomeId())
+                .homeId(entity.getId())
                 .isMainOwner(true)
                 .userId(UUID.fromString(entity.getCreatedBy()))
                 .build();
 
         iOwnerOfHomeFactory.createModel(ownerOfHomeDetail);
 
-        iImagesHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getImagesOfHome());
-        iRoomsOfHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getRoomsOfHome());
-        iAmenitiesOfHomeFactory.createListWithHomeId(entity.getHomeId(), detail.getAmenitiesOfHome());
+        iImagesHomeFactory.createListWithHomeId(entity.getId(), detail.getImagesOfHome());
+        iRoomsOfHomeFactory.createListWithHomeId(entity.getId(), detail.getRoomsOfHome());
+        iAmenitiesOfHomeFactory.createListWithHomeId(entity.getId(), detail.getAmenitiesOfHome());
     }
 
 
     @Override
-    protected <F extends BaseFilter> Page<HomesCommand> pageQuery(F filter, Integer number, Integer size) {
+    protected <F extends BaseFilter> Page<Homes> pageQuery(F filter, Integer number, Integer size) {
         HomeFilter homeFilter = (HomeFilter) filter;
         return homesRepository.findPageWithFilter
                 (
@@ -253,8 +254,8 @@ public class HomesFactory
     }
 
     @Override
-    public HomesCommand findByHomeId(UUID homeId) throws InvalidException {
-        HomesCommand home = homesRepository.findByHomeId(homeId).orElse(null);
+    public Homes findByHomeId(UUID homeId) throws InvalidException {
+        Homes home = homesRepository.findById(homeId).orElse(null);
         if (home == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_HOME);
         }
@@ -263,7 +264,7 @@ public class HomesFactory
 
     @Override
     public void checkExistsByHomeId(UUID homeId) throws InvalidException {
-        HomesCommand home = homesRepository.findByHomeId(homeId).orElse(null);
+        Homes home = homesRepository.findById(homeId).orElse(null);
         if (home == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_HOME);
         }
@@ -280,32 +281,16 @@ public class HomesFactory
 
     @Override
     public BasePagingResponse<HomeInfo> getFilterWithProvinceName(String search, Integer number, Integer size) throws InvalidException {
-        List<Integer> provinceCode = new ArrayList<>();
-
-        for (ProvinceEnum province : ProvinceEnum.values()) {
-            if (province.getProvinceName().toUpperCase().contains(search.toUpperCase())) {
-                provinceCode.add(province.getProvinceCode());
-            }
-        }
-
-        if (provinceCode.isEmpty()) {
-            return new BasePagingResponse<>(
-                    new ArrayList<>(),
-                    number,
-                    size,
-                    0
-            );
-        }
 
         List<HomeInfo> result = new ArrayList<>();
 
-        Page<HomesCommand> page = homesRepository.getPageWithListProvinceCode(provinceCode, PageRequest.of(number, size));
-        for (HomesCommand homesCommand : page.getContent()) {
+        Page<Homes> page = homesRepository.getPageWithListProvinceCode(search, PageRequest.of(number, size));
+        for (Homes homes : page.getContent()) {
             result.add(HomeInfo.builder()
-                    .id(homesCommand.getHomeId())
-                    .thumbnail(homesCommand.getThumbnail())
-                    .name(homesCommand.getName())
-                    .costPerNightDefault(homesCommand.getCostPerNightDefault())
+                    .id(homes.getId())
+                    .thumbnail(homes.getThumbnail())
+                    .name(homes.getName())
+                    .costPerNightDefault(homes.getCostPerNightDefault())
                     .build());
         }
 
@@ -319,7 +304,7 @@ public class HomesFactory
 
     @Override
     public BasePagingResponse<HomeInfo> getPageWithRoleAdmin(Integer number, Integer size) throws InvalidException {
-        Page<HomesCommand> page = homesRepository.findPageWithFilter
+        Page<Homes> page = homesRepository.findPageWithFilter
                 (
                         null,
                         null,

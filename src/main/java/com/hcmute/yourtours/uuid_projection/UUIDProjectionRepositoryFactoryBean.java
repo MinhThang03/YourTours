@@ -6,7 +6,7 @@ import org.springframework.data.repository.core.support.RepositoryFactorySupport
 
 import javax.persistence.EntityManager;
 
-public class UUIDProjectionRepositoryFactoryBean<T extends Repository<S, ID>, S, ID> extends JpaRepositoryFactoryBean<T, S, ID> {
+public class UUIDProjectionRepositoryFactoryBean<T extends Repository<S, I>, S, I> extends JpaRepositoryFactoryBean<T, S, I> {
 
     public UUIDProjectionRepositoryFactoryBean(Class<? extends T> repositoryInterface) {
         super(repositoryInterface);

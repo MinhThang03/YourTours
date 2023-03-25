@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.discount_of_home;
 
-import com.hcmute.yourtours.entities.DiscountOfHomeCommand;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.entities.DiscountOfHome;
 import com.hcmute.yourtours.factories.discount_home_categories.IDiscountHomeCategoriesFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -24,7 +23,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class DiscountOfHomeFactory
-        extends BasePersistDataFactory<UUID, DiscountOfHomeInfo, DiscountOfHomeDetail, Long, DiscountOfHomeCommand>
+        extends BasePersistDataFactory<UUID, DiscountOfHomeInfo, DiscountOfHomeDetail, UUID, DiscountOfHome>
         implements IDiscountOfHomeFactory {
 
     protected final DiscountOfHomeRepository discountOfHomeRepository;
@@ -44,11 +43,11 @@ public class DiscountOfHomeFactory
     }
 
     @Override
-    public DiscountOfHomeCommand createConvertToEntity(DiscountOfHomeDetail detail) throws InvalidException {
+    public DiscountOfHome createConvertToEntity(DiscountOfHomeDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return DiscountOfHomeCommand.builder()
+        return DiscountOfHome.builder()
                 .percent(detail.getPercent())
                 .numberDateStay(detail.getNumberDateStay())
                 .numberMonthAdvance(detail.getNumberMonthAdvance())
@@ -58,7 +57,7 @@ public class DiscountOfHomeFactory
     }
 
     @Override
-    public void updateConvertToEntity(DiscountOfHomeCommand entity, DiscountOfHomeDetail detail) throws InvalidException {
+    public void updateConvertToEntity(DiscountOfHome entity, DiscountOfHomeDetail detail) throws InvalidException {
         entity.setPercent(detail.getPercent());
         entity.setNumberDateStay(detail.getNumberDateStay());
         entity.setNumberMonthAdvance(detail.getNumberMonthAdvance());
@@ -67,12 +66,12 @@ public class DiscountOfHomeFactory
     }
 
     @Override
-    public DiscountOfHomeDetail convertToDetail(DiscountOfHomeCommand entity) throws InvalidException {
+    public DiscountOfHomeDetail convertToDetail(DiscountOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
         return DiscountOfHomeDetail.builder()
-                .id(entity.getDiscountOfHomeId())
+                .id(entity.getId())
                 .percent(entity.getPercent())
                 .numberDateStay(entity.getNumberDateStay())
                 .numberMonthAdvance(entity.getNumberMonthAdvance())
@@ -82,12 +81,12 @@ public class DiscountOfHomeFactory
     }
 
     @Override
-    public DiscountOfHomeInfo convertToInfo(DiscountOfHomeCommand entity) throws InvalidException {
+    public DiscountOfHomeInfo convertToInfo(DiscountOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
         return DiscountOfHomeInfo.builder()
-                .id(entity.getDiscountOfHomeId())
+                .id(entity.getId())
                 .percent(entity.getPercent())
                 .numberDateStay(entity.getNumberDateStay())
                 .numberMonthAdvance(entity.getNumberMonthAdvance())
@@ -96,20 +95,12 @@ public class DiscountOfHomeFactory
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        DiscountOfHomeCommand command = discountOfHomeRepository.findByDiscountOfHomeId(id).orElse(null);
-        if (command == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_DISCOUNTS_OF_HOME);
-        }
-        return command.getId();
-    }
 
     @Override
     protected void preCreate(DiscountOfHomeDetail detail) throws InvalidException {
         iDiscountHomeCategoriesFactory.checkExistsByDiscountCategoryId(detail.getCategoryId());
 
-        List<DiscountOfHomeCommand> listDelete = discountOfHomeRepository.findAllByHomeIdAndCategoryId(detail.getHomeId(), detail.getCategoryId());
+        List<DiscountOfHome> listDelete = discountOfHomeRepository.findAllByHomeIdAndCategoryId(detail.getHomeId(), detail.getCategoryId());
         repository.deleteAll(listDelete);
     }
 
@@ -118,7 +109,7 @@ public class DiscountOfHomeFactory
         List<DiscountHomeCategoryDetail> categories = iDiscountHomeCategoriesFactory.getDiscountCategoriesActive();
         List<DiscountOfHomeViewModel> result = new ArrayList<>();
         for (DiscountHomeCategoryDetail category : categories) {
-            Optional<DiscountOfHomeCommand> optional = discountOfHomeRepository.findByHomeIdAndCategoryId(homeId, category.getId());
+            Optional<DiscountOfHome> optional = discountOfHomeRepository.findByHomeIdAndCategoryId(homeId, category.getId());
             result.add
                     (
                             DiscountOfHomeViewModel

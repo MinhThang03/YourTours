@@ -1,7 +1,7 @@
 package com.hcmute.yourtours.controllers.media;
 
 
-import com.hcmute.yourtours.aws.model.UploadMediaResponse;
+import com.hcmute.yourtours.external_modules.aws.model.UploadMediaResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;

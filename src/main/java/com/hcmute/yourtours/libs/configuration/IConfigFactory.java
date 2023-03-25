@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.libs.configuration;
 
-import com.hcmute.yourtours.libs.audit.DefaultAuditorAware;
+import com.hcmute.yourtours.libs.audit.AuditorAwareImpl;
 import com.hcmute.yourtours.libs.configuration.intercepter.InitInterceptor;
 import com.hcmute.yourtours.libs.configuration.intercepter.InterceptorConfigurer;
 import com.hcmute.yourtours.libs.configuration.intercepter.LogInterceptor;
@@ -14,8 +14,6 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.UUID;
 
 public interface IConfigFactory {
     /**
@@ -61,7 +59,7 @@ public interface IConfigFactory {
      * <br>
      * {@link org.springframework.data.annotation.LastModifiedBy}
      */
-    default AuditorAware<UUID> auditorAware() {
-        return new DefaultAuditorAware();
+    default AuditorAware<String> auditorAware() {
+        return new AuditorAwareImpl();
     }
 }

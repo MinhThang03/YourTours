@@ -1,0 +1,381 @@
+{
+  "data": [
+    {
+      "name": "Thành phố Hà Nội",
+      "divisionType": "thành phố trung ương",
+      "codeName": "thanh_pho_ha_noi",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/hanoi.jpg"
+    },
+    {
+      "name": "Tỉnh Hà Giang",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_ha_giang",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/hagiang.jpg"
+    },
+    {
+      "name": "Tỉnh Cao Bằng",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_cao_bang",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/caobang.jpg"
+    },
+    {
+      "name": "Tỉnh Bắc Kạn",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_bac_kan",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/backan.jpg"
+    },
+    {
+      "name": "Tỉnh Tuyên Quang",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_tuyen_quang",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/tuyenquang.jpg"
+    },
+    {
+      "name": "Tỉnh Lào Cai",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_lao_cai",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/laocai.jpg"
+    },
+    {
+      "name": "Tỉnh Điện Biên",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_dien_bien",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/dienbien.jpg"
+    },
+    {
+      "name": "Tỉnh Lai Châu",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_lai_chau",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/laichau.jpg"
+    },
+    {
+      "name": "Tỉnh Sơn La",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_son_la",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/sonla.jpg"
+    },
+    {
+      "name": "Tỉnh Yên Bái",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_yen_bai",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/yenbai.jpg"
+    },
+    {
+      "name": "Tỉnh Hoà Bình",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_hoa_binh",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/hoabinh.jpg"
+    },
+    {
+      "name": "Tỉnh Thái Nguyên",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_thai_nguyen",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/thainguyen.jpg"
+    },
+    {
+      "name": "Tỉnh Lạng Sơn",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_lang_son",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/langson.jpg"
+    },
+    {
+      "name": "Tỉnh Quảng Ninh",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_quang_ninh",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/quangninh.jpg"
+    },
+    {
+      "name": "Tỉnh Bắc Giang",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_bac_giang",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/bacgiang.jpg"
+    },
+    {
+      "name": "Tỉnh Phú Thọ",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_phu_tho",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/phutho.jpg"
+    },
+    {
+      "name": "Tỉnh Vĩnh Phúc",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_vinh_phuc",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/vinhphuc.jpg"
+    },
+    {
+      "name": "Tỉnh Bắc Ninh",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_bac_ninh",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/bacninh.jpg"
+    },
+    {
+      "name": "Tỉnh Hải Dương",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_hai_duong"
+    },
+    {
+      "name": "Thành phố Hải Phòng",
+      "divisionType": "thành phố trung ương",
+      "codeName": "thanh_pho_hai_phong",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/haiphong.jpg"
+    },
+    {
+      "name": "Tỉnh Hưng Yên",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_hung_yen",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/hungyen.jpg"
+    },
+    {
+      "name": "Tỉnh Thái Bình",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_thai_binh",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/thaibinh.jpg"
+    },
+    {
+      "name": "Tỉnh Hà Nam",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_ha_nam",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/hanam.jpg"
+    },
+    {
+      "name": "Tỉnh Nam Định",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_nam_dinh",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/namdinh.jpg"
+    },
+    {
+      "name": "Tỉnh Ninh Bình",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_ninh_binh",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/ninhbinh.jpg"
+    },
+    {
+      "name": "Tỉnh Thanh Hóa",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_thanh_hoa",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/thanhhoa.jpg"
+    },
+    {
+      "name": "Tỉnh Nghệ An",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_nghe_an",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/nghean.jpg"
+    },
+    {
+      "name": "Tỉnh Hà Tĩnh",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_ha_tinh",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/hatinh.jpg"
+    },
+    {
+      "name": "Tỉnh Quảng Bình",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_quang_binh",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/quangbinh.jpg"
+    },
+    {
+      "name": "Tỉnh Quảng Trị",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_quang_tri",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/quangtri.jpg"
+    },
+    {
+      "name": "Tỉnh Thừa Thiên Huế",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_thua_thien_hue",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/hue.jpg"
+    },
+    {
+      "name": "Thành phố Đà Nẵng",
+      "divisionType": "thành phố trung ương",
+      "codeName": "thanh_pho_da_nang",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/danang.jpg"
+    },
+    {
+      "name": "Tỉnh Quảng Nam",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_quang_nam",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/quangnam.jpg"
+    },
+    {
+      "name": "Tỉnh Quảng Ngãi",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_quang_ngai",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/quangngai.jpg"
+    },
+    {
+      "name": "Tỉnh Bình Định",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_binh_dinh",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/binhdinh.jpg"
+    },
+    {
+      "name": "Tỉnh Phú Yên",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_phu_yen",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/phuyen.jpg"
+    },
+    {
+      "name": "Tỉnh Khánh Hòa",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_khanh_hoa",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/khanhhoa.jpg"
+    },
+    {
+      "name": "Tỉnh Ninh Thuận",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_ninh_thuan",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/ninhthuan.jpg"
+    },
+    {
+      "name": "Tỉnh Bình Thuận",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_binh_thuan",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/binhthuan.jpg"
+    },
+    {
+      "name": "Tỉnh Kon Tum",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_kon_tum",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/kontum.jpg"
+    },
+    {
+      "name": "Tỉnh Gia Lai",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_gia_lai",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/gialai.jpg"
+    },
+    {
+      "name": "Tỉnh Đắk Lắk",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_dak_lak",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/daklak.jpg"
+    },
+    {
+      "name": "Tỉnh Đắk Nông",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_dak_nong",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/daknong.jpg"
+    },
+    {
+      "name": "Tỉnh Lâm Đồng",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_lam_dong",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/lamdong.jpg"
+    },
+    {
+      "name": "Tỉnh Bình Phước",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_binh_phuoc",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/binhphuoc.jpg"
+    },
+    {
+      "name": "Tỉnh Tây Ninh",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_tay_ninh",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/tayninh.jpg"
+    },
+    {
+      "name": "Tỉnh Bình Dương",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_binh_duong",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/binhduong.jpg"
+    },
+    {
+      "name": "Tỉnh Đồng Nai",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_dong_nai",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/dongnai.jpg"
+    },
+    {
+      "name": "Tỉnh Bà Rịa - Vũng Tàu",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_ba_ria_vung_tau",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/vungtau.jpg"
+    },
+    {
+      "name": "Thành phố Hồ Chí Minh",
+      "divisionType": "thành phố trung ương",
+      "codeName": "thanh_pho_ho_chi_minh",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/hcm.jpg"
+    },
+    {
+      "name": "Tỉnh Long An",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_long_an",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/longan.jpg"
+    },
+    {
+      "name": "Tỉnh Tiền Giang",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_tien_giang",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/tiengiang.jpg"
+    },
+    {
+      "name": "Tỉnh Bến Tre",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_ben_tre",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/bentre.jpg"
+    },
+    {
+      "name": "Tỉnh Trà Vinh",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_tra_vinh",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/travinh.jpg"
+    },
+    {
+      "name": "Tỉnh Vĩnh Long",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_vinh_long",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/vinhlong.jpg"
+    },
+    {
+      "name": "Tỉnh Đồng Tháp",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_dong_thap",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/dongthap.jpg"
+    },
+    {
+      "name": "Tỉnh An Giang",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_an_giang",
+      "thumbnail": "angiang"
+    },
+    {
+      "name": "Tỉnh Kiên Giang",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_kien_giang",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/kiengiang.jpg"
+    },
+    {
+      "name": "Thành phố Cần Thơ",
+      "divisionType": "thành phố trung ương",
+      "codeName": "thanh_pho_can_tho",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/cantho.jpg"
+    },
+    {
+      "name": "Tỉnh Hậu Giang",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_hau_giang",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/haugiang.jpg"
+    },
+    {
+      "name": "Tỉnh Sóc Trăng",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_soc_trang",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/soctrang.jpg"
+    },
+    {
+      "name": "Tỉnh Bạc Liêu",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_bac_lieu",
+      "thumbnail": "baclieu"
+    },
+    {
+      "name": "Tỉnh Cà Mau",
+      "divisionType": "tỉnh",
+      "codeName": "tinh_ca_mau",
+      "thumbnail": "https://raw.githubusercontent.com/ThaiHaiDev/StoreImage/main/province/camau.jpg"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.OwnerOfHomeCommand;
+import com.hcmute.yourtours.entities.OwnerOfHome;
 import com.hcmute.yourtours.models.owner_of_home.projections.StatisticInfoOwnerProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,12 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHomeCommand, Long> {
-    Optional<OwnerOfHomeCommand> findByOwnerOfHomeId(UUID ownerOfHomeId);
+public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHome, UUID> {
 
     boolean existsByUserIdAndHomeId(UUID userId, UUID homeId);
 
@@ -22,7 +20,7 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHomeCommand
             value = "select b.full_name as ownerName   " +
                     "from owner_of_home a,   " +
                     "     user b   " +
-                    "where a.user_id = b.userid   " +
+                    "where a.user_id = b.id   " +
                     "  and a.is_main_owner is true   " +
                     "  and a.home_id = :homeId  "
     )
@@ -41,7 +39,7 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHomeCommand
                     "      from owner_of_home a " +
                     "      group by a.user_id) a, " +
                     " " +
-                    "     (select c.userid                         as userId, " +
+                    "     (select c.id                         as userId, " +
                     "             c.full_name                      as fullName, " +
                     "             count(a.id)                      as numberOfBooking, " +
                     "             coalesce(sum(a.cost_of_host), 0) as totalCost " +
@@ -49,8 +47,8 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHomeCommand
                     "           owner_of_home b, " +
                     "           user c " +
                     "      where a.home_id = b.home_id " +
-                    "        and c.userid = b.user_id " +
-                    "      group by c.userid, c.full_name) b " +
+                    "        and c.id = b.user_id " +
+                    "      group by c.id, c.full_name) b " +
                     "where a.userId = b.userId ",
             countQuery = "select a.numberOfHomes as numberOfHomes, " +
                     "       a.userId as userId, " +
@@ -62,7 +60,7 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHomeCommand
                     "      from owner_of_home a " +
                     "      group by a.user_id) a, " +
                     " " +
-                    "     (select c.userid                         as userId, " +
+                    "     (select c.id                         as userId, " +
                     "             c.full_name                      as fullName, " +
                     "             count(a.id)                      as numberOfBooking, " +
                     "             coalesce(sum(a.cost_of_host), 0) as totalCost " +
@@ -70,8 +68,8 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHomeCommand
                     "           owner_of_home b, " +
                     "           user c " +
                     "      where a.home_id = b.home_id " +
-                    "        and c.userid = b.user_id " +
-                    "      group by c.userid, c.full_name) b " +
+                    "        and c.id = b.user_id " +
+                    "      group by c.id, c.full_name) b " +
                     "where a.userId = b.userId "
     )
     Page<StatisticInfoOwnerProjection> getStatisticInfoOwner(Pageable pageable);

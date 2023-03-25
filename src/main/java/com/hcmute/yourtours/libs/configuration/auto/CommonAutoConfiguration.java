@@ -23,8 +23,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.UUID;
-
 @EnableConfigurationProperties({CommonConfigurationProperties.class, CacheProperties.class})
 public class CommonAutoConfiguration {
     @Bean
@@ -71,7 +69,7 @@ public class CommonAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AuditorAware<UUID> auditorAware(IConfigFactory factory) {
+    public AuditorAware<String> auditorAware(IConfigFactory factory) {
         return factory.auditorAware();
     }
 

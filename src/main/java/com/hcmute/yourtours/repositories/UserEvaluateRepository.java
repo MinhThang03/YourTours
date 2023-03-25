@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.UserEvaluateCommand;
+import com.hcmute.yourtours.entities.UserEvaluate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,12 +13,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface UserEvaluateRepository extends JpaRepository<UserEvaluateCommand, Long> {
-    Optional<UserEvaluateCommand> findByUserEvaluateId(UUID userEvaluateId);
+public interface UserEvaluateRepository extends JpaRepository<UserEvaluate, UUID> {
 
-    Optional<UserEvaluateCommand> findByUserIdAndHomeId(UUID userId, UUID homeId);
+    Optional<UserEvaluate> findByUserIdAndHomeId(UUID userId, UUID homeId);
 
-    List<UserEvaluateCommand> findAllByHomeIdAndPointIsNotNull(UUID homeId);
+    List<UserEvaluate> findAllByHomeIdAndPointIsNotNull(UUID homeId);
 
     @Query(
             nativeQuery = true,
@@ -37,7 +36,7 @@ public interface UserEvaluateRepository extends JpaRepository<UserEvaluateComman
                     "          else '1' = '1' end  " +
                     "  and (:homeId is null or :homeId = a.home_id) "
     )
-    Page<UserEvaluateCommand> findPageWithEvaluateFilter(@Param("typeFilter") String typeFilter,
-                                                         @Param("homeId") UUID homeId,
-                                                         Pageable pageable);
+    Page<UserEvaluate> findPageWithEvaluateFilter(@Param("typeFilter") String typeFilter,
+                                                  @Param("homeId") UUID homeId,
+                                                  Pageable pageable);
 }

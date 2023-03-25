@@ -6,10 +6,10 @@ import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.models.common.NameDataModel;
 import com.hcmute.yourtours.models.images_home.ImageHomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.models.NumberOfRoomsModel;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.Min;
@@ -21,8 +21,7 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
 public class HomeInfo extends NameDataModel<UUID> {
 
@@ -42,7 +41,7 @@ public class HomeInfo extends NameDataModel<UUID> {
 
     private String addressDetail;
 
-    private Integer provinceCode;
+    private String provinceCode;
 
     private Integer rank;
 
@@ -82,6 +81,9 @@ public class HomeInfo extends NameDataModel<UUID> {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Boolean isFavorite;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String provinceName;
 
     @NotNull
     private List<ImageHomeDetail> imagesOfHome;

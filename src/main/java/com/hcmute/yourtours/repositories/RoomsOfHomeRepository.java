@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.RoomsOfHomeCommand;
+import com.hcmute.yourtours.entities.RoomsOfHome;
 import com.hcmute.yourtours.models.rooms_of_home.projections.NumberOfRoomsProjections;
 import com.hcmute.yourtours.models.rooms_of_home.projections.RoomOfHomeDetailWithBedProjections;
 import org.springframework.data.domain.Page;
@@ -15,9 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand, Long> {
-    Optional<RoomsOfHomeCommand> findByRoomOfHomeId(UUID roomOfHomeId);
-
+public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHome, UUID> {
 
     @Query(
             nativeQuery = true,
@@ -27,7 +25,7 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand,
                     "from rooms_of_home a,   " +
                     "     room_categories b   " +
                     "where a.home_id = :homeId   " +
-                    "  and a.room_category_id = b.room_category_id   " +
+                    "  and a.room_category_id = b.id   " +
                     "  and (b.important = :important or :important is null)   " +
                     "group by a.room_category_id "
     )
@@ -47,8 +45,8 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand,
                     "where a.home_id = :homeId " +
                     "   or :homeId is null "
     )
-    Page<RoomsOfHomeCommand> getPageWithFilter(@Param("homeId") UUID homeId,
-                                               Pageable pageable);
+    Page<RoomsOfHome> getPageWithFilter(@Param("homeId") UUID homeId,
+                                        Pageable pageable);
 
     @Query(
             nativeQuery = true,
@@ -58,7 +56,7 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand,
                     "   or :homeId is null " +
                     "order by a.name "
     )
-    List<RoomsOfHomeCommand> getListWithFilter(@Param("homeId") UUID homeId);
+    List<RoomsOfHome> getListWithFilter(@Param("homeId") UUID homeId);
 
 
     @Query(
@@ -70,8 +68,8 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand,
                     "order by a.order_flag desc " +
                     "limit 1 "
     )
-    Optional<RoomsOfHomeCommand> findByHomeIdAndCategoryIdWithMaxOrder(@Param("homeId") UUID homeId,
-                                                                       @Param("categoryId") UUID categoryId);
+    Optional<RoomsOfHome> findByHomeIdAndCategoryIdWithMaxOrder(@Param("homeId") UUID homeId,
+                                                                @Param("categoryId") UUID categoryId);
 
     Long countAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
 
@@ -79,18 +77,18 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHomeCommand,
     @Query(
             nativeQuery = true,
             value = "select a.name            as roomName,   " +
-                    "       a.room_of_home_id as roomHomeId,   " +
+                    "       a.id as roomHomeId,   " +
                     "       b.amount          as numberOfBed,   " +
                     "       c.name            as nameOfBed   " +
                     "from rooms_of_home a,   " +
                     "     beds_of_home b,   " +
                     "     bed_categories c   " +
-                    "where a.room_of_home_id = b.room_of_home_id   " +
-                    "  and b.bed_category_id = c.bed_category_id   " +
+                    "where a.id = b.room_of_home_id   " +
+                    "  and b.bed_category_id = c.id   " +
                     "  and a.home_id = :homeId   " +
                     "  and b.amount is not null"
     )
     List<RoomOfHomeDetailWithBedProjections> getRoomHaveConfigBed(@Param("homeId") UUID homeId);
 
-    List<RoomsOfHomeCommand> findAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
+    List<RoomsOfHome> findAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
 }

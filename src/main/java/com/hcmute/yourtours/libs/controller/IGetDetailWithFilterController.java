@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.Serializable;
+
 /**
  * IGetDetailWithFilterController
  * <p>
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @see IGetDetailByIdController
  */
 @RequestMapping("/")
-public interface IGetDetailWithFilterController<I, U extends BaseData<I>, R extends BaseFilter> {
+public interface IGetDetailWithFilterController<I extends Serializable, U extends BaseData<I>, R extends BaseFilter> {
 
     /**
      * getDetailByFilter method

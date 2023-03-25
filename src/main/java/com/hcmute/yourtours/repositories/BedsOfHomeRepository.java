@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.BedsOfHomeCommand;
+import com.hcmute.yourtours.entities.BedsOfHome;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,20 +11,19 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface BedsOfHomeRepository extends JpaRepository<BedsOfHomeCommand, Long> {
-    Optional<BedsOfHomeCommand> findByBedOfHomeId(UUID bedOfHomeId);
+public interface BedsOfHomeRepository extends JpaRepository<BedsOfHome, UUID> {
 
     @Query(
             nativeQuery = true,
             value = "select COALESCE(sum(a.amount), 0) " +
                     "from beds_of_home a, " +
                     "     rooms_of_home b " +
-                    "where a.room_of_home_id = b.room_of_home_id " +
+                    "where a.room_of_home_id = b.id " +
                     "  and b.home_id = :homeId "
     )
     Integer countNumberOfBedByHomeId(@Param("homeId") UUID homeId);
 
-    Optional<BedsOfHomeCommand> findByRoomOfHomeIdAndCategoryId(UUID roomHomeId, UUID categoryId);
+    Optional<BedsOfHome> findByRoomOfHomeIdAndCategoryId(UUID roomHomeId, UUID categoryId);
 
-    List<BedsOfHomeCommand> findAllByRoomOfHomeId(UUID roomHomeId);
+    List<BedsOfHome> findAllByRoomOfHomeId(UUID roomHomeId);
 }

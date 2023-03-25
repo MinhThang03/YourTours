@@ -1,7 +1,7 @@
 package com.hcmute.yourtours.factories.homes.app;
 
-import com.hcmute.yourtours.entities.HomesCommand;
 import com.hcmute.yourtours.constant.RoomCategoryIdConstant;
+import com.hcmute.yourtours.entities.Homes;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
@@ -11,6 +11,7 @@ import com.hcmute.yourtours.factories.homes.HomesFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
+import com.hcmute.yourtours.factories.province.IProvinceFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.factories.user_evaluate.IUserEvaluateFactory;
@@ -22,6 +23,7 @@ import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeDetailFilter;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
+import com.hcmute.yourtours.models.homes.filter.HomeMobileFilter;
 import com.hcmute.yourtours.models.item_favorties.ItemFavoritesDetail;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateDetail;
 import com.hcmute.yourtours.repositories.HomesRepository;
@@ -51,7 +53,8 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
                     IUserEvaluateFactory iUserEvaluateFactory,
                     @Qualifier("bookHomeFactory") IBookHomeFactory iBookHomeFactory,
-                    IUserFactory iUserFactory
+                    IUserFactory iUserFactory,
+                    IProvinceFactory iProvinceFactory
             ) {
         super(
                 repository,
@@ -61,25 +64,25 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                 iOwnerOfHomeFactory,
                 iGetUserFromTokenFactory,
                 iItemFavoritesFactory,
-                iUserFactory);
+                iUserFactory, iProvinceFactory);
         this.iUserEvaluateFactory = iUserEvaluateFactory;
         this.iBookHomeFactory = iBookHomeFactory;
     }
 
 
     @Override
-    public HomeInfo convertToInfo(HomesCommand entity) throws InvalidException {
+    public HomeInfo convertToInfo(Homes entity) throws InvalidException {
         HomeInfo info = super.convertToInfo(entity);
         return info.toBuilder()
-                .isFavorite(checkIsFavorite(entity.getHomeId()))
+                .isFavorite(checkIsFavorite(entity.getId()))
                 .build();
     }
 
     @Override
-    public HomeDetail convertToDetail(HomesCommand entity) throws InvalidException {
+    public HomeDetail convertToDetail(Homes entity) throws InvalidException {
         HomeDetail detail = super.convertToDetail(entity);
         return detail.toBuilder()
-                .isFavorite(checkIsFavorite(entity.getHomeId()))
+                .isFavorite(checkIsFavorite(entity.getId()))
                 .build();
     }
 
@@ -106,7 +109,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
     public BasePagingResponse<HomeInfo> getFavoritesListOfCurrentUser(Integer number, Integer size) throws InvalidException {
         UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
 
-        Page<HomesCommand> page = homesRepository.getFavoritesListByUserId
+        Page<Homes> page = homesRepository.getFavoritesListByUserId
                 (
                         userId,
                         CommonStatusEnum.ACTIVE.name(),
@@ -154,7 +157,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
             filter.setAmenities(List.of(UUID.randomUUID()));
         }
 
-        Page<HomesCommand> pageEntity = homesRepository.getPageWithFullFilter
+        Page<Homes> pageEntity = homesRepository.getPageWithFullFilter
                 (
                         filter.getAmenityId(),
                         filter.getPriceFrom(),
@@ -177,6 +180,23 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
         );
     }
 
+    @Override
+    public BasePagingResponse<HomeInfo> getPageWithProvinceAndAmenity(HomeMobileFilter filter, Integer number, Integer size) throws InvalidException {
+        Page<Homes> pageEntity = homesRepository.getPageWithProvinceAndAmenity
+                (
+                        filter.getProvince(),
+                        filter.getAmenityId(),
+                        PageRequest.of(number, size)
+                );
+
+        return new BasePagingResponse<>(
+                convertList(pageEntity.getContent()),
+                pageEntity.getNumber(),
+                pageEntity.getSize(),
+                pageEntity.getTotalElements()
+        );
+    }
+
 
     private boolean checkIsFavorite(UUID homeId) {
         Optional<String> userId = iGetUserFromTokenFactory.getCurrentUser();
@@ -184,13 +204,13 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
             return false;
         }
 
-        Optional<HomesCommand> home = homesRepository.findIsFavoriteByHomeIdAndUserId(homeId, UUID.fromString(userId.get()));
+        Optional<Homes> home = homesRepository.findIsFavoriteByHomeIdAndUserId(homeId, UUID.fromString(userId.get()));
         return home.isPresent();
     }
 
 
     @Override
-    protected <F extends BaseFilter> Page<HomesCommand> pageQuery(F filter, Integer number, Integer size) {
+    protected <F extends BaseFilter> Page<Homes> pageQuery(F filter, Integer number, Integer size) {
         HomeFilter homeFilter = (HomeFilter) filter;
         return homesRepository.findPageWithFilter
                 (

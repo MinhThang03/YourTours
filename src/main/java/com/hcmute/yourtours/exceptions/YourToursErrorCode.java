@@ -76,6 +76,7 @@ public enum YourToursErrorCode implements IErrorCode {
     NOT_EVALUATE(HttpStatus.NOT_FOUND, "40400027", "Không tìm thấy đánh giá của người dùng đối với ngôi nhà"),
     NOT_FOUND_BOOKING_GUEST_DETAIL(HttpStatus.NOT_FOUND, "40400028", "Không tìm thấy thông tin chi tiết về loại khách trong của lượt đặt"),
     NOT_FOUND_BOOKING_SURCHARGE_DETAIL(HttpStatus.NOT_FOUND, "40400029", "Không tìm thấy thông tin chi tiết về phụ phí trong của lượt đặt"),
+    NOT_FOUND_PROVINCE(HttpStatus.NOT_FOUND, "40400030", "Không tìm tỉnh thành"),
 
 
     //409

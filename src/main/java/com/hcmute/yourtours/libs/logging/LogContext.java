@@ -20,6 +20,9 @@ public class LogContext {
     private static final ObjectMapper mapper = new ObjectMapper()
             .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
             .registerModule(new JavaTimeModule().addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))));
+    private LogContext() {
+
+    }
 
     public static void push(LogType logType, Object data) {
         try {

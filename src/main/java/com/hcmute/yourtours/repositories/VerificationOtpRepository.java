@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.VerificationOtpCommand;
+import com.hcmute.yourtours.entities.VerificationOtp;
 import com.hcmute.yourtours.enums.OtpTypeEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,14 +14,11 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 @Repository
-public interface VerificationOtpRepository extends JpaRepository<VerificationOtpCommand, Long> {
-    Optional<VerificationOtpCommand> findByToken(String token);
+public interface VerificationOtpRepository extends JpaRepository<VerificationOtp, UUID> {
+    Optional<VerificationOtp> findByToken(String token);
 
-    Optional<VerificationOtpCommand> findByUserId(UUID userId);
 
-    Optional<VerificationOtpCommand> findByVerificationId(UUID verificationId);
-
-    Stream<VerificationOtpCommand> findAllByExpiryDateLessThan(LocalDateTime now);
+    Stream<VerificationOtp> findAllByExpiryDateLessThan(LocalDateTime now);
 
     void deleteByExpiryDateLessThan(LocalDateTime now);
 

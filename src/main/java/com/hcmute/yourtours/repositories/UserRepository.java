@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.UserCommand;
+import com.hcmute.yourtours.entities.User;
 import com.hcmute.yourtours.models.statistic.admin.projections.StatisticCountProjections;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,30 +12,29 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserCommand, Long> {
+public interface UserRepository extends JpaRepository<User, UUID> {
 
-    Optional<UserCommand> findByUserId(UUID userId);
 
     Boolean existsByEmail(String email);
 
-    Optional<UserCommand> findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
     @Query(
             nativeQuery = true,
             value = "select a.* " +
                     "from user a, " +
                     "     owner_of_home b " +
-                    "where a.userid = b.user_id " +
-                    "  and a.userid = :userId " +
+                    "where a.id = b.user_id " +
+                    "  and a.id = :userId " +
                     "limit 1 "
     )
-    Optional<UserCommand> findByUserIdAndOwner(UUID userId);
+    Optional<User> findByUserIdAndOwner(UUID userId);
 
     @Query(
-            value = "select a from UserCommand  a order by a.createdDate desc ",
-            countQuery = "select a.id from UserCommand  a order by a.createdDate desc "
+            value = "select a from User  a order by a.createdDate desc ",
+            countQuery = "select a.id from User  a order by a.createdDate desc "
     )
-    Page<UserCommand> getAll(PageRequest pageRequest);
+    Page<User> getAll(PageRequest pageRequest);
 
     @Query(
             nativeQuery = true,

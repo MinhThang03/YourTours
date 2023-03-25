@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
-import com.hcmute.yourtours.entities.AmenitiesCommand;
+import com.hcmute.yourtours.entities.Amenities;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,26 +9,24 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface AmenitiesRepository extends JpaRepository<AmenitiesCommand, Long> {
-    Optional<AmenitiesCommand> findByAmenityId(UUID amenityId);
+public interface AmenitiesRepository extends JpaRepository<Amenities, UUID> {
 
     @Query(nativeQuery = true,
             value = "select a.*  " +
                     "from amenities a  " +
-                    "         inner join amenity_categories b on a.category_id = b.amenity_category_id  " +
-                    "where b.amenity_category_id = :categoryId  " +
+                    "         inner join amenity_categories b on a.category_id = b.id  " +
+                    "where b.id = :categoryId  " +
                     "   or :categoryId is null",
             countQuery = "select a.id  " +
                     "from amenities a  " +
-                    "         inner join amenity_categories b on a.category_id = b.amenity_category_id  " +
-                    "where b.amenity_category_id = :categoryId  " +
+                    "         inner join amenity_categories b on a.category_id = b.id  " +
+                    "where b.id = :categoryId  " +
                     "   or :categoryId is null ")
-    Page<AmenitiesCommand> getPageWithAmenityFilter(@Param("categoryId") UUID categoryId,
-                                                    Pageable pageable);
+    Page<Amenities> getPageWithAmenityFilter(@Param("categoryId") UUID categoryId,
+                                             Pageable pageable);
 
 
     @Query(
@@ -36,12 +34,12 @@ public interface AmenitiesRepository extends JpaRepository<AmenitiesCommand, Lon
             value = "select a.* " +
                     "from amenities a, " +
                     "     amenities_of_home b " +
-                    "where a.amenity_id = b.amenity_id " +
+                    "where a.id = b.amenity_id " +
                     "  and b.home_id = :homeId " +
                     "limit :limit "
     )
-    List<AmenitiesCommand> getLimitByHomeId(@Param("homeId") UUID homeId,
-                                            @Param("limit") Integer limit);
+    List<Amenities> getLimitByHomeId(@Param("homeId") UUID homeId,
+                                     @Param("limit") Integer limit);
 
 
     @Query(
@@ -49,10 +47,10 @@ public interface AmenitiesRepository extends JpaRepository<AmenitiesCommand, Lon
             value = "select a.* " +
                     "from amenities a, " +
                     "     amenities_of_home b " +
-                    "where a.amenity_id = b.amenity_id " +
+                    "where a.id = b.amenity_id " +
                     "  and b.home_id = :homeId "
     )
-    List<AmenitiesCommand> getByByHomeId(@Param("homeId") UUID homeId);
+    List<Amenities> getByByHomeId(@Param("homeId") UUID homeId);
 
 
     @Query(
@@ -62,8 +60,8 @@ public interface AmenitiesRepository extends JpaRepository<AmenitiesCommand, Lon
                     "where a.set_filter is true  " +
                     "limit :offset , :limit "
     )
-    List<AmenitiesCommand> getLimitSetFilter(@Param("offset") Integer offset,
-                                             @Param("limit") Integer limit);
+    List<Amenities> getLimitSetFilter(@Param("offset") Integer offset,
+                                      @Param("limit") Integer limit);
 
 
     @Query(

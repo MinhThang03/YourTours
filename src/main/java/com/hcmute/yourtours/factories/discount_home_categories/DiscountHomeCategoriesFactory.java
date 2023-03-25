@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.discount_home_categories;
 
-import com.hcmute.yourtours.entities.DiscountHomeCategoriesCommand;
+import com.hcmute.yourtours.entities.DiscountHomeCategories;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class DiscountHomeCategoriesFactory
-        extends BasePersistDataFactory<UUID, DiscountHomeCategoryInfo, DiscountHomeCategoryDetail, Long, DiscountHomeCategoriesCommand>
+        extends BasePersistDataFactory<UUID, DiscountHomeCategoryInfo, DiscountHomeCategoryDetail, UUID, DiscountHomeCategories>
         implements IDiscountHomeCategoriesFactory {
 
     private final DiscountHomeCategoriesRepository discountHomeCategoriesRepository;
@@ -37,11 +37,11 @@ public class DiscountHomeCategoriesFactory
     }
 
     @Override
-    public DiscountHomeCategoriesCommand createConvertToEntity(DiscountHomeCategoryDetail detail) throws InvalidException {
+    public DiscountHomeCategories createConvertToEntity(DiscountHomeCategoryDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return DiscountHomeCategoriesCommand.builder()
+        return DiscountHomeCategories.builder()
                 .name(detail.getName())
                 .description(detail.getDescription())
                 .status(detail.getStatus())
@@ -51,7 +51,7 @@ public class DiscountHomeCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(DiscountHomeCategoriesCommand entity, DiscountHomeCategoryDetail detail) throws InvalidException {
+    public void updateConvertToEntity(DiscountHomeCategories entity, DiscountHomeCategoryDetail detail) throws InvalidException {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
@@ -60,12 +60,12 @@ public class DiscountHomeCategoriesFactory
     }
 
     @Override
-    public DiscountHomeCategoryDetail convertToDetail(DiscountHomeCategoriesCommand entity) throws InvalidException {
+    public DiscountHomeCategoryDetail convertToDetail(DiscountHomeCategories entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
         return DiscountHomeCategoryDetail.builder()
-                .id(entity.getDiscountCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -75,12 +75,12 @@ public class DiscountHomeCategoriesFactory
     }
 
     @Override
-    public DiscountHomeCategoryInfo convertToInfo(DiscountHomeCategoriesCommand entity) throws InvalidException {
+    public DiscountHomeCategoryInfo convertToInfo(DiscountHomeCategories entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
         return DiscountHomeCategoryInfo.builder()
-                .id(entity.getDiscountCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -89,18 +89,10 @@ public class DiscountHomeCategoriesFactory
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        Optional<DiscountHomeCategoriesCommand> optional = discountHomeCategoriesRepository.findByDiscountCategoryId(id);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_DISCOUNT_CATEGORIES);
-        }
-        return optional.get().getId();
-    }
 
     @Override
     public void checkExistsByDiscountCategoryId(UUID categoryId) throws InvalidException {
-        Optional<DiscountHomeCategoriesCommand> optional = discountHomeCategoriesRepository.findByDiscountCategoryId(categoryId);
+        Optional<DiscountHomeCategories> optional = discountHomeCategoriesRepository.findById(categoryId);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_DISCOUNT_CATEGORIES);
         }
@@ -108,9 +100,9 @@ public class DiscountHomeCategoriesFactory
 
     @Override
     public List<DiscountHomeCategoryDetail> getDiscountCategoriesActive() throws InvalidException {
-        List<DiscountHomeCategoriesCommand> commands = discountHomeCategoriesRepository.findAllByStatus(CommonStatusEnum.ACTIVE);
+        List<DiscountHomeCategories> commands = discountHomeCategoriesRepository.findAllByStatus(CommonStatusEnum.ACTIVE);
         List<DiscountHomeCategoryDetail> result = new ArrayList<>();
-        for (DiscountHomeCategoriesCommand command : commands) {
+        for (DiscountHomeCategories command : commands) {
             result.add(convertToDetail(command));
         }
         return result;

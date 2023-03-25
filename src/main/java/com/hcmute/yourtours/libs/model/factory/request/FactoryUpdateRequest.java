@@ -6,10 +6,11 @@ import lombok.experimental.Accessors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Data
 @Accessors(chain = true)
-public class FactoryUpdateRequest<I, T extends BaseData<I>> {
+public class FactoryUpdateRequest<I extends Serializable, T extends BaseData<I>> {
     @NotNull
     private I id;
 

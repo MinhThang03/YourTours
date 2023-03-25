@@ -11,12 +11,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.lang.NonNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-public abstract class BasePersistDataFactory<I, IF extends BaseData<I>, DT extends IF, ID, ET>
+public abstract class BasePersistDataFactory<I extends Serializable, IF extends BaseData<I>, DT extends IF, ID, ET>
         extends BaseDataFactory<I, IF, DT>
         implements IPersistDataFactory<IF, DT, ET> {
 

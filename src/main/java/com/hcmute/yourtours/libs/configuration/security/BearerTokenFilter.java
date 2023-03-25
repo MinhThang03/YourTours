@@ -3,7 +3,6 @@ package com.hcmute.yourtours.libs.configuration.security;
 import com.hcmute.yourtours.libs.exceptions.ErrorCode;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
@@ -12,7 +11,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -30,12 +28,7 @@ public class BearerTokenFilter extends OncePerRequestFilter {
     private final AuthenticationProvider provider;
     private final BearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
     private final RequestMatcher pathMatcher;
-    private final AuthenticationFailureHandler authenticationFailureHandler = (request, response, exception) -> {
-        if (exception instanceof AuthenticationServiceException) {
-            throw exception;
-        }
-        this.authenticationEntryPoint.commence(request, response, exception);
-    };
+
 
     public BearerTokenFilter(AuthenticationProvider provider) {
         this(provider, "/**");

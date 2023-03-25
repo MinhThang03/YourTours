@@ -2,16 +2,16 @@ server:
   port: ${PORT:8080}
 spring:
   application:
-    name: Parking
+    name: yourtours
   profiles:
     active: ${ENV:dev}
   datasource:
-    url: ${DATABASE_URL:jdbc:mysql://bcda2c13bd582d:f43eed5d@us-cdbr-east-06.cleardb.net/heroku_57a72dd7e131b3d?reconnect=true}
-    username: ${DATABASE_USER:bcda2c13bd582d}
-    password: ${DATABASE_PWD:f43eed5d}
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/your_tours}
+    username: ${DATABASE_USER:root}
+    password: ${DATABASE_PWD:2001}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
-      pool-name: hikari-parking
+      pool-name: hikari-yourtours
       auto-commit: true
       data-source-properties:
         cachePrepStmts: true
@@ -47,8 +47,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USER:yourtour.666@gmail.com}
-    password: ${MAIL_PASSWORD:gjzkurhytytuczll}
+    username: ${MAIL_USER:user@gmail.com}
+    password: ${MAIL_PASSWORD:ttttt}
     properties:
       mail:
         smtp:
@@ -77,20 +77,14 @@ common:
             - /api/v1/languages-support/**
             - /api/v1/translator/**
             - /api/v1/languages/**
-      x-api:
-        services:
-          ai:
-            prefixes:
-            keys:
-              - value: ${AI_X_API_KEY:7d9ed96e-2a7d-11ed-a261-0242ac120002}
-              - enable: ${AI_X_API_KEY_ENABLE:true}
       cors:
         allowed-origins:
           - ${CORS_ORIGINS:http://localhost:8080}
           - http://localhost:8000
           - http://localhost:3000
-          - https://api-parking-dev.hcm.unicloud.ai/swagger-ui/
           - https://your-tours-client.vercel.app/
+          - https://your-tours-client-git-develop-thaihaidev.vercel.app/
+          - https://your-tours-client-git-development-thaihaidev.vercel.app/
         allowed-methods: ${CORS_METHODS:*}
         allowed-headers: ${CORS_HEADERS:*}
 
@@ -98,13 +92,6 @@ common:
         auth:
           jwk-set-uri: ${KEYCLOAK_URI:https://keycloak-ute.herokuapp.com}/auth/realms/${PROFILE_REALM:your-tour}/protocol/openid-connect/certs
           issuer-uri: ${KEYCLOAK_URI:https://keycloak-ute.herokuapp.com}/auth/realms/${PROFILE_REALM:your-tour}
-    client:
-      external:
-        ai:
-          uri: ${AI_API_URI:http://10.30.1.207:30500}
-          properties:
-            license-plate: ${LICENSE_PLATE:/v1.1.0/license-plate/recognition}
-            key: ${KEY:unicloudALPR123654789}
 
 your-tour-profile:
   security:
@@ -121,20 +108,11 @@ your-tour-profile:
           secret: ${PROFILE_CLIENT_SECRET:mnct1QhwqPjN7kzPNoiNfyLiN7O9iKlo}
           grant_type: password
 
-keycloak:
-  auth-server-url: ${KEYCLOAK_URI:https://keycloak-ute.herokuapp.com}/auth
-  ssl-required: external
-  realm: ${PROFILE_REALM:your-tour}
-  resource: ${PROFILE_CLIENT_ID:your-tour-client}
-  credentials:
-    secret: ${PROFILE_CLIENT_SECRET:mnct1QhwqPjN7kzPNoiNfyLiN7O9iKlo}
-  use-resource-role-mappings: true
-
 
 aws-s3:
   endpoint: ${AWS_ENDPOINT:https://s3.ap-northeast-1.amazonaws.com}
-  accessKey: ${AWS_ACCESS_KEY:AKIAQZYOAOMN7FRKELWJ}
-  secretKey: ${AWS_SECRET_KEY:8ytoSzMuTn2WCcRuUEZ/52iCcsGh9b2PN7a5BZBQ}
+  accessKey: ${AWS_ACCESS_KEY:TEST}
+  secretKey: ${AWS_SECRET_KEY:test}
   bucketName: ${AWS_S3_BUCKET:your-tours}
   region: ${AWS_S3_REGION:ap-northeast-1}
   endpoint-s3: ${AWS-S3-ENDPOINT:https://${AWS_S3_BUCKET:your-tours}.s3.${AWS_S3_REGION:ap-northeast-1}.amazonaws.com}

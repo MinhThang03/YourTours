@@ -7,10 +7,10 @@ import com.hcmute.yourtours.enums.RoleEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.libs.model.BaseData;
 import com.hcmute.yourtours.libs.util.constant.RegexUtils;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotBlank;
@@ -21,9 +21,8 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-@SuperBuilder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(toBuilder = true)
 public class UserInfo extends BaseData<UUID> {
 
     @JsonIgnore

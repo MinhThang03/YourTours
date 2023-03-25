@@ -2,11 +2,11 @@ package com.hcmute.yourtours.factories.booking.app;
 
 import com.hcmute.yourtours.constant.FeeRateOfAdminConstant;
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
-import com.hcmute.yourtours.email.IEmailFactory;
-import com.hcmute.yourtours.entities.BookHomesCommand;
+import com.hcmute.yourtours.entities.BookHomes;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.external_modules.email.IEmailFactory;
 import com.hcmute.yourtours.factories.booking.BookHomeFactory;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
 import com.hcmute.yourtours.factories.booking_surcharge_detail.IBookingSurchargeDetailFactory;
@@ -136,12 +136,12 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
 
 
     @Override
-    protected void postCreate(BookHomesCommand entity, BookHomeDetail detail) throws InvalidException {
-        iBookingGuestDetailFactory.createListModel(entity.getBookId(), detail.getGuests());
-        iBookingSurchargeDetailFactory.createListModel(entity.getBookId(), detail.getSurcharges());
+    protected void postCreate(BookHomes entity, BookHomeDetail detail) throws InvalidException {
+        iBookingGuestDetailFactory.createListModel(entity.getId(), detail.getGuests());
+        iBookingSurchargeDetailFactory.createListModel(entity.getId(), detail.getSurcharges());
 
         GetOwnerNameAndHomeNameProjection projection = iHomesFactory.getOwnerNameAndHomeNameProjection(entity.getHomeId());
-        detail.setId(entity.getBookId());
+        detail.setId(entity.getId());
         detail.setHomeName(projection.getHomeName());
         detail.setOwnerName(projection.getOwnerName());
         detail.setBaseCost(projection.getBaseCost());
@@ -150,7 +150,7 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
     }
 
     @Override
-    protected <F extends BaseFilter> Page<BookHomesCommand> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
+    protected <F extends BaseFilter> Page<BookHomes> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
         UUID customerId = iGetUserFromTokenFactory.checkUnAuthorization();
 
         return bookHomeRepository.findBookingOfUser(customerId, PageRequest.of(number, size));

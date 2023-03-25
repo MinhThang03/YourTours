@@ -1,12 +1,12 @@
 package com.hcmute.yourtours.factories.booking;
 
 import com.hcmute.yourtours.constant.CornConstant;
-import com.hcmute.yourtours.email.IEmailFactory;
-import com.hcmute.yourtours.entities.BookHomesCommand;
+import com.hcmute.yourtours.entities.BookHomes;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.MonthEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.external_modules.email.IEmailFactory;
 import com.hcmute.yourtours.factories.booking_guest_detail.IBookingGuestDetailFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 @Transactional
 @Slf4j
 public class BookHomeFactory
-        extends BasePersistDataFactory<UUID, BookHomeInfo, BookHomeDetail, Long, BookHomesCommand>
+        extends BasePersistDataFactory<UUID, BookHomeInfo, BookHomeDetail, UUID, BookHomes>
         implements IBookHomeFactory {
 
     protected final BookHomeRepository bookHomeRepository;
@@ -88,11 +88,11 @@ public class BookHomeFactory
     }
 
     @Override
-    public BookHomesCommand createConvertToEntity(BookHomeDetail detail) throws InvalidException {
+    public BookHomes createConvertToEntity(BookHomeDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return BookHomesCommand.builder()
+        return BookHomes.builder()
                 .dateStart(detail.getDateStart())
                 .dateEnd(detail.getDateEnd())
                 .phoneNumber(detail.getPhoneNumber())
@@ -113,7 +113,7 @@ public class BookHomeFactory
     }
 
     @Override
-    public void updateConvertToEntity(BookHomesCommand entity, BookHomeDetail detail) throws InvalidException {
+    public void updateConvertToEntity(BookHomes entity, BookHomeDetail detail) throws InvalidException {
         entity.setDateStart(detail.getDateStart());
         entity.setDateEnd(detail.getDateEnd());
         entity.setPhoneNumber(detail.getPhoneNumber());
@@ -130,7 +130,7 @@ public class BookHomeFactory
     }
 
     @Override
-    public BookHomeDetail convertToDetail(BookHomesCommand entity) throws InvalidException {
+    public BookHomeDetail convertToDetail(BookHomes entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -151,10 +151,10 @@ public class BookHomeFactory
                 .customerName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .status(entity.getStatus())
                 .totalCost(entity.getTotalCost())
-                .id(entity.getBookId())
+                .id(entity.getId())
                 .thumbnail(homeDetail.getThumbnail())
                 .owner(iOwnerOfHomeFactory.getMainOwnerOfHome(entity.getHomeId()))
-                .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getBookId()))
+                .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getId()))
                 .homeAddressDetail(homeDetail.getAddressDetail())
                 .homeProvinceCode(homeDetail.getProvinceCode())
                 .percent(entity.getPercent())
@@ -167,7 +167,7 @@ public class BookHomeFactory
     }
 
     @Override
-    public BookHomeInfo convertToInfo(BookHomesCommand entity) throws InvalidException {
+    public BookHomeInfo convertToInfo(BookHomes entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -190,8 +190,8 @@ public class BookHomeFactory
                 .owner(iOwnerOfHomeFactory.getMainOwnerOfHome(entity.getHomeId()))
                 .customerName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
                 .totalCost(entity.getTotalCost())
-                .id(entity.getBookId())
-                .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getBookId()))
+                .id(entity.getId())
+                .numberOfGuests(iBookingGuestDetailFactory.getNumberGuestsOfBooking(entity.getId()))
                 .homeAddressDetail(homeDetail.getAddressDetail())
                 .homeProvinceCode(homeDetail.getProvinceCode())
                 .percent(entity.getPercent())
@@ -204,19 +204,6 @@ public class BookHomeFactory
 
 
     @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        return findByBookId(id).getId();
-    }
-
-    private BookHomesCommand findByBookId(UUID bookId) throws InvalidException {
-        Optional<BookHomesCommand> optional = bookHomeRepository.findByBookId(bookId);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_BOOKING);
-        }
-        return optional.get();
-    }
-
-    @Override
     public boolean existByUserIdAndHomeId(UUID userId, UUID homeId) {
         return bookHomeRepository.existsByUserIdAndHomeId(userId, homeId);
     }
@@ -227,7 +214,7 @@ public class BookHomeFactory
         for (MonthAndYearModel month : months) {
             List<LocalDate> dates = getListDayOfMonth(month.getMonth(), month.getYear());
             for (LocalDate date : dates) {
-                Optional<BookHomesCommand> optional = bookHomeRepository.findOneByBetweenDate(date, homeId);
+                Optional<BookHomes> optional = bookHomeRepository.findOneByBetweenDate(date, homeId);
                 if (optional.isPresent()) {
                     result.add(date);
                 }
@@ -239,7 +226,7 @@ public class BookHomeFactory
     @Override
     public void checkDateBookingOfHomeValid(LocalDate dateStart, LocalDate dateEnd, UUID homeId) throws InvalidException {
         while (!dateStart.isAfter(dateEnd)) {
-            Optional<BookHomesCommand> optional = bookHomeRepository.findOneByBetweenDate(dateStart, homeId);
+            Optional<BookHomes> optional = bookHomeRepository.findOneByBetweenDate(dateStart, homeId);
             if (optional.isPresent()) {
                 throw new InvalidException(YourToursErrorCode.DATE_BOOKING_IS_INVALID);
             }
@@ -422,8 +409,8 @@ public class BookHomeFactory
     }
 
     protected void handleAutoUpdateCheckOut() {
-        List<BookHomesCommand> bookHomes = bookHomeRepository.findAllCommandNeedUpdateCheckOut(LocalDate.now(), BookRoomStatusEnum.WAITING.name());
-        for (BookHomesCommand bookHome : bookHomes) {
+        List<BookHomes> bookHomes = bookHomeRepository.findAllCommandNeedUpdateCheckOut(LocalDate.now(), BookRoomStatusEnum.WAITING.name());
+        for (BookHomes bookHome : bookHomes) {
             bookHome.setStatus(BookRoomStatusEnum.CHECK_OUT);
             repository.save(bookHome);
         }

@@ -5,10 +5,11 @@ import com.hcmute.yourtours.libs.model.BaseData;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public interface IDataFactory<I, T extends BaseData<I>, U extends T> {
+public interface IDataFactory<I extends Serializable, T extends BaseData<I>, U extends T> {
 
     U createModel(U detail) throws InvalidException;
 

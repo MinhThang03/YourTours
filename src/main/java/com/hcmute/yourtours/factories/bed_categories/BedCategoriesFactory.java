@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.bed_categories;
 
-import com.hcmute.yourtours.entities.BedCategoriesCommand;
+import com.hcmute.yourtours.entities.BedCategories;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class BedCategoriesFactory
-        extends BasePersistDataFactory<UUID, BedCategoryInfo, BedCategoryDetail, Long, BedCategoriesCommand>
+        extends BasePersistDataFactory<UUID, BedCategoryInfo, BedCategoryDetail, UUID, BedCategories>
         implements IBedCategoriesFactory {
 
     private final BedCategoriesRepository bedCategoriesRepository;
@@ -34,11 +34,11 @@ public class BedCategoriesFactory
     }
 
     @Override
-    public BedCategoriesCommand createConvertToEntity(BedCategoryDetail detail) {
+    public BedCategories createConvertToEntity(BedCategoryDetail detail) {
         if (detail == null) {
             return null;
         }
-        return BedCategoriesCommand.builder()
+        return BedCategories.builder()
                 .name(detail.getName())
                 .description(detail.getDescription())
                 .status(detail.getStatus())
@@ -46,19 +46,19 @@ public class BedCategoriesFactory
     }
 
     @Override
-    public void updateConvertToEntity(BedCategoriesCommand entity, BedCategoryDetail detail) {
+    public void updateConvertToEntity(BedCategories entity, BedCategoryDetail detail) {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
         entity.setStatus(detail.getStatus());
     }
 
     @Override
-    public BedCategoryDetail convertToDetail(BedCategoriesCommand entity) {
+    public BedCategoryDetail convertToDetail(BedCategories entity) {
         if (entity == null) {
             return null;
         }
         return BedCategoryDetail.builder()
-                .id(entity.getBedCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -66,12 +66,12 @@ public class BedCategoriesFactory
     }
 
     @Override
-    public BedCategoryInfo convertToInfo(BedCategoriesCommand entity) {
+    public BedCategoryInfo convertToInfo(BedCategories entity) {
         if (entity == null) {
             return null;
         }
         return BedCategoryInfo.builder()
-                .id(entity.getBedCategoryId())
+                .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .status(entity.getStatus())
@@ -79,17 +79,8 @@ public class BedCategoriesFactory
     }
 
     @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        Optional<BedCategoriesCommand> optional = bedCategoriesRepository.findByBedCategoryId(id);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_BED_CATEGORIES);
-        }
-        return optional.get().getId();
-    }
-
-    @Override
     public void checkExistsByBedCategoryId(UUID bedCategoryId) throws InvalidException {
-        Optional<BedCategoriesCommand> optional = bedCategoriesRepository.findByBedCategoryId(bedCategoryId);
+        Optional<BedCategories> optional = bedCategoriesRepository.findById(bedCategoryId);
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_BED_CATEGORIES);
         }

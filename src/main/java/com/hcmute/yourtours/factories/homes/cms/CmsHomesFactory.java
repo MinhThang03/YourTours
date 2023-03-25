@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.homes.cms;
 
-import com.hcmute.yourtours.entities.HomesCommand;
+import com.hcmute.yourtours.entities.Homes;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
 import com.hcmute.yourtours.factories.beds_of_home.IBedsOfHomeFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
@@ -8,6 +8,7 @@ import com.hcmute.yourtours.factories.homes.HomesFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
+import com.hcmute.yourtours.factories.province.IProvinceFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -36,7 +37,8 @@ public class CmsHomesFactory extends HomesFactory {
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
                     IItemFavoritesFactory iItemFavoritesFactory,
                     IBedsOfHomeFactory iBedsOfHomeFactory,
-                    IUserFactory iUserFactory
+                    IUserFactory iUserFactory,
+                    IProvinceFactory iProvinceFactory
             ) {
         super(repository,
                 iImagesHomeFactory,
@@ -45,30 +47,30 @@ public class CmsHomesFactory extends HomesFactory {
                 iOwnerOfHomeFactory,
                 iGetUserFromTokenFactory,
                 iItemFavoritesFactory,
-                iUserFactory);
+                iUserFactory, iProvinceFactory);
         this.iBedsOfHomeFactory = iBedsOfHomeFactory;
     }
 
     @Override
-    protected <F extends BaseFilter> Page<HomesCommand> pageQuery(F filter, Integer number, Integer size) {
+    protected <F extends BaseFilter> Page<Homes> pageQuery(F filter, Integer number, Integer size) {
         HomeFilter homeFilter = (HomeFilter) filter;
         iGetUserFromTokenFactory.getCurrentUser().ifPresent(userId -> homeFilter.setUserId(UUID.fromString(userId)));
         return super.pageQuery(homeFilter, number, size);
     }
 
     @Override
-    public HomeDetail convertToDetail(HomesCommand entity) throws InvalidException {
+    public HomeDetail convertToDetail(Homes entity) throws InvalidException {
         return super.convertToDetail(entity).toBuilder()
-                .numberOfBed(iBedsOfHomeFactory.getNumberOfBedWithHomeId(entity.getHomeId()))
-                .roomsImportant(iRoomsOfHomeFactory.getNumberOfRoomCategoryByHomeId(entity.getHomeId(), true))
+                .numberOfBed(iBedsOfHomeFactory.getNumberOfBedWithHomeId(entity.getId()))
+                .roomsImportant(iRoomsOfHomeFactory.getNumberOfRoomCategoryByHomeId(entity.getId(), true))
                 .build();
     }
 
     @Override
-    public HomeInfo convertToInfo(HomesCommand entity) throws InvalidException {
+    public HomeInfo convertToInfo(Homes entity) throws InvalidException {
         return super.convertToInfo(entity).toBuilder()
-                .numberOfBed(iBedsOfHomeFactory.getNumberOfBedWithHomeId(entity.getHomeId()))
-                .roomsImportant(iRoomsOfHomeFactory.getNumberOfRoomCategoryByHomeId(entity.getHomeId(), true))
+                .numberOfBed(iBedsOfHomeFactory.getNumberOfBedWithHomeId(entity.getId()))
+                .roomsImportant(iRoomsOfHomeFactory.getNumberOfRoomCategoryByHomeId(entity.getId(), true))
                 .build();
     }
 }

@@ -1,22 +1,34 @@
 package com.hcmute.yourtours.libs.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.Id;
 
+import javax.validation.Valid;
 import java.io.Serializable;
+import java.util.Objects;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
-@Accessors(chain = true)
-public abstract class BaseData<T> implements Serializable {
+public abstract class BaseData<T extends Serializable> implements Serializable {
+
+    @Valid
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Id
-    private T id;
+    protected T id;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseData<?> baseData = (BaseData<?>) o;
+        return Objects.equals(id, baseData.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

@@ -7,6 +7,11 @@ import java.util.UUID;
 
 @Component
 public class ByteToUUIDConvert {
+
+    private ByteToUUIDConvert() {
+
+    }
+
     public static UUID asUuid(byte[] bytes) {
         ByteBuffer bb = ByteBuffer.wrap(bytes);
         long firstLong = bb.getLong();

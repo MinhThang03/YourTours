@@ -72,10 +72,8 @@ dependencies {
     /**
      * Keycloak
      */
-    implementation group: 'org.keycloak', name: 'keycloak-spring-boot-starter', version: '19.0.1'
-    implementation group: 'org.keycloak', name: 'keycloak-spring-security-adapter', version: '19.0.1'
     implementation group: 'org.keycloak', name: 'keycloak-admin-client', version: '19.0.1'
-    implementation group: 'org.keycloak.bom', name: 'keycloak-adapter-bom', version: '19.0.1', ext: 'pom'
+    implementation group: 'org.keycloak', name: 'keycloak-authz-client', version: '19.0.1'
 
 
     /**
@@ -83,11 +81,6 @@ dependencies {
      */
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
-
-    /*
-    Envers
-     */
-    implementation group: 'org.springframework.data', name: 'spring-data-envers', version: '2.5.4'
 
     /*
      common-io
@@ -110,6 +103,11 @@ dependencies {
     * Freemarker
     */
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.31'
+
+    /*
+Envers
+ */
+    implementation group: 'org.springframework.data', name: 'spring-data-envers', version: '2.5.4'
 
 
 }

@@ -6,6 +6,7 @@ import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeDetailFilter;
+import com.hcmute.yourtours.models.homes.filter.HomeMobileFilter;
 import com.hcmute.yourtours.models.item_favorties.ItemFavoritesDetail;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateDetail;
 
@@ -17,4 +18,6 @@ public interface IAppHomesFactory {
     HomeDetail createUserEvaluate(UserEvaluateDetail evaluateDetail) throws InvalidException;
 
     BasePagingResponse<HomeInfo> getPageWithFullFilter(HomeDetailFilter filter, Integer number, Integer size) throws InvalidException;
+
+    BasePagingResponse<HomeInfo> getPageWithProvinceAndAmenity(HomeMobileFilter filter, Integer number, Integer size) throws InvalidException;
 }

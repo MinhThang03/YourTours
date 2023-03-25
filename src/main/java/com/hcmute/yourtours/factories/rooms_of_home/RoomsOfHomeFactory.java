@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.rooms_of_home;
 
-import com.hcmute.yourtours.entities.RoomsOfHomeCommand;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.entities.RoomsOfHome;
 import com.hcmute.yourtours.factories.beds_of_home.IBedsOfHomeFactory;
 import com.hcmute.yourtours.factories.common.IAuthorizationOwnerHomeFactory;
 import com.hcmute.yourtours.factories.room_categories.IRoomCategoriesFactory;
@@ -34,7 +33,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class RoomsOfHomeFactory
-        extends BasePersistDataFactory<UUID, RoomOfHomeInfo, RoomOfHomeDetail, Long, RoomsOfHomeCommand>
+        extends BasePersistDataFactory<UUID, RoomOfHomeInfo, RoomOfHomeDetail, UUID, RoomsOfHome>
         implements IRoomsOfHomeFactory {
 
     private final RoomsOfHomeRepository roomsOfHomeRepository;
@@ -63,11 +62,11 @@ public class RoomsOfHomeFactory
     }
 
     @Override
-    public RoomsOfHomeCommand createConvertToEntity(RoomOfHomeDetail detail) throws InvalidException {
+    public RoomsOfHome createConvertToEntity(RoomOfHomeDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
-        return RoomsOfHomeCommand.builder()
+        return RoomsOfHome.builder()
                 .description(detail.getDescription())
                 .homeId(detail.getHomeId())
                 .categoryId(detail.getCategoryId())
@@ -77,7 +76,7 @@ public class RoomsOfHomeFactory
     }
 
     @Override
-    public void updateConvertToEntity(RoomsOfHomeCommand entity, RoomOfHomeDetail detail) throws InvalidException {
+    public void updateConvertToEntity(RoomsOfHome entity, RoomOfHomeDetail detail) throws InvalidException {
         entity.setDescription(detail.getDescription());
         entity.setHomeId(detail.getHomeId());
         entity.setCategoryId(detail.getCategoryId());
@@ -85,46 +84,37 @@ public class RoomsOfHomeFactory
     }
 
     @Override
-    public RoomOfHomeDetail convertToDetail(RoomsOfHomeCommand entity) throws InvalidException {
+    public RoomOfHomeDetail convertToDetail(RoomsOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
         return RoomOfHomeDetail.builder()
-                .id(entity.getRoomOfHomeId())
+                .id(entity.getId())
                 .description(entity.getDescription())
                 .homeId(entity.getHomeId())
                 .categoryId(entity.getCategoryId())
                 .name(entity.getName())
                 .orderFlag(entity.getOrderFlag())
                 .categoryDetail(iRoomCategoriesFactory.getDetailModel(entity.getCategoryId(), null))
-                .descriptionOfBed(iBedsOfHomeFactory.getDescriptionNumberBedOfRoom(entity.getRoomOfHomeId()))
+                .descriptionOfBed(iBedsOfHomeFactory.getDescriptionNumberBedOfRoom(entity.getId()))
                 .build();
     }
 
     @Override
-    public RoomOfHomeInfo convertToInfo(RoomsOfHomeCommand entity) throws InvalidException {
+    public RoomOfHomeInfo convertToInfo(RoomsOfHome entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
         return RoomOfHomeInfo.builder()
-                .id(entity.getRoomOfHomeId())
+                .id(entity.getId())
                 .description(entity.getDescription())
                 .homeId(entity.getHomeId())
                 .categoryId(entity.getCategoryId())
                 .name(entity.getName())
                 .orderFlag(entity.getOrderFlag())
                 .categoryDetail(iRoomCategoriesFactory.getDetailModel(entity.getCategoryId(), null))
-                .descriptionOfBed(iBedsOfHomeFactory.getDescriptionNumberBedOfRoom(entity.getRoomOfHomeId()))
+                .descriptionOfBed(iBedsOfHomeFactory.getDescriptionNumberBedOfRoom(entity.getId()))
                 .build();
-    }
-
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        RoomsOfHomeCommand room = roomsOfHomeRepository.findByRoomOfHomeId(id).orElse(null);
-        if (room == null) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_ROOMS_OF_HOME);
-        }
-        return room.getId();
     }
 
     @Override
@@ -137,7 +127,7 @@ public class RoomsOfHomeFactory
             if (item.getNumber() != null) {
 
                 int number = 1;
-                Optional<RoomsOfHomeCommand> optional = roomsOfHomeRepository.findByHomeIdAndCategoryIdWithMaxOrder(homeId, item.getCategoryId());
+                Optional<RoomsOfHome> optional = roomsOfHomeRepository.findByHomeIdAndCategoryIdWithMaxOrder(homeId, item.getCategoryId());
                 if (optional.isPresent()) {
                     number += optional.get().getOrderFlag();
                 }
@@ -193,7 +183,7 @@ public class RoomsOfHomeFactory
         iAuthorizationOwnerHomeFactory.checkOwnerOfHome(request.getHomeId());
         createListWithHomeId(request.getHomeId(), request.getListCreate());
 
-        List<RoomsOfHomeCommand> commands = roomsOfHomeRepository.getListWithFilter(request.getHomeId());
+        List<RoomsOfHome> commands = roomsOfHomeRepository.getListWithFilter(request.getHomeId());
         return convertList(commands);
     }
 
@@ -217,7 +207,7 @@ public class RoomsOfHomeFactory
 
     @Override
     public List<RoomOfHomeInfo> getAllByHomeIdAndCategoryId(UUID homeId, UUID categoryId) throws InvalidException {
-        List<RoomsOfHomeCommand> commands = roomsOfHomeRepository.findAllByHomeIdAndCategoryId(homeId, categoryId);
+        List<RoomsOfHome> commands = roomsOfHomeRepository.findAllByHomeIdAndCategoryId(homeId, categoryId);
         return convertList(commands);
     }
 
@@ -227,7 +217,7 @@ public class RoomsOfHomeFactory
     }
 
     @Override
-    protected <F extends BaseFilter> Page<RoomsOfHomeCommand> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
+    protected <F extends BaseFilter> Page<RoomsOfHome> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
         RoomOfHomeFilter roomOfHomeFilter = (RoomOfHomeFilter) filter;
         return roomsOfHomeRepository.getPageWithFilter(roomOfHomeFilter.getHomeId(), PageRequest.of(number, size));
     }

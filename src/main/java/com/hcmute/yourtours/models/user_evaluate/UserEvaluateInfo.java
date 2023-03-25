@@ -2,10 +2,10 @@ package com.hcmute.yourtours.models.user_evaluate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.yourtours.libs.model.BaseData;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.Max;
@@ -15,9 +15,8 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-@SuperBuilder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(toBuilder = true)
 public class UserEvaluateInfo extends BaseData<UUID> {
     @NotNull
     private UUID homeId;

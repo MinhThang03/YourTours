@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ import java.util.List;
  * @see IGetInfoListController
  */
 @RequestMapping("/")
-public interface IGetInfoListWithFilterController<I, T extends BaseData<I>, F extends BaseFilter> {
+public interface IGetInfoListWithFilterController<I extends Serializable, T extends BaseData<I>, F extends BaseFilter> {
 
     /**
      * getListWithFilter  method

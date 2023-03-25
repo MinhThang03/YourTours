@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.booking_surcharge_detail;
 
-import com.hcmute.yourtours.entities.BookingHomeSurchargeDetailCommand;
-import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.entities.BookingSurchargeDetail;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.booking_surcharge_detail.BookingSurchargeDetailDetail;
@@ -11,12 +10,11 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class BookingSurchargeDetailFactory
-        extends BasePersistDataFactory<UUID, BookingSurchargeDetailInfo, BookingSurchargeDetailDetail, Long, BookingHomeSurchargeDetailCommand>
+        extends BasePersistDataFactory<UUID, BookingSurchargeDetailInfo, BookingSurchargeDetailDetail, UUID, BookingSurchargeDetail>
         implements IBookingSurchargeDetailFactory {
 
     private final BookingSurchargeDetailRepository bookingSurchargeDetailRepository;
@@ -33,12 +31,12 @@ public class BookingSurchargeDetailFactory
     }
 
     @Override
-    public BookingHomeSurchargeDetailCommand createConvertToEntity(BookingSurchargeDetailDetail detail) throws InvalidException {
+    public BookingSurchargeDetail createConvertToEntity(BookingSurchargeDetailDetail detail) throws InvalidException {
         if (detail == null) {
             return null;
         }
 
-        return BookingHomeSurchargeDetailCommand.builder()
+        return BookingSurchargeDetail.builder()
                 .booking(detail.getBooking())
                 .costOfSurcharge(detail.getCostOfSurcharge())
                 .surchargeId(detail.getSurchargeId())
@@ -46,14 +44,14 @@ public class BookingSurchargeDetailFactory
     }
 
     @Override
-    public void updateConvertToEntity(BookingHomeSurchargeDetailCommand entity, BookingSurchargeDetailDetail detail) throws InvalidException {
+    public void updateConvertToEntity(BookingSurchargeDetail entity, BookingSurchargeDetailDetail detail) throws InvalidException {
         entity.setBooking(detail.getBooking());
         entity.setCostOfSurcharge(detail.getCostOfSurcharge());
         entity.setSurchargeId(detail.getSurchargeId());
     }
 
     @Override
-    public BookingSurchargeDetailDetail convertToDetail(BookingHomeSurchargeDetailCommand entity) throws InvalidException {
+    public BookingSurchargeDetailDetail convertToDetail(BookingSurchargeDetail entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -62,12 +60,12 @@ public class BookingSurchargeDetailFactory
                 .booking(entity.getBooking())
                 .costOfSurcharge(entity.getCostOfSurcharge())
                 .surchargeId(entity.getSurchargeId())
-                .id(entity.getBookingSurchargeDetailId())
+                .id(entity.getId())
                 .build();
     }
 
     @Override
-    public BookingSurchargeDetailInfo convertToInfo(BookingHomeSurchargeDetailCommand entity) throws InvalidException {
+    public BookingSurchargeDetailInfo convertToInfo(BookingSurchargeDetail entity) throws InvalidException {
         if (entity == null) {
             return null;
         }
@@ -76,18 +74,10 @@ public class BookingSurchargeDetailFactory
                 .booking(entity.getBooking())
                 .costOfSurcharge(entity.getCostOfSurcharge())
                 .surchargeId(entity.getSurchargeId())
-                .id(entity.getBookingSurchargeDetailId())
+                .id(entity.getId())
                 .build();
     }
 
-    @Override
-    protected Long convertId(UUID id) throws InvalidException {
-        Optional<BookingHomeSurchargeDetailCommand> optional = bookingSurchargeDetailRepository.findByBookingSurchargeDetailId(id);
-        if (optional.isEmpty()) {
-            throw new InvalidException(YourToursErrorCode.NOT_FOUND_BOOKING_SURCHARGE_DETAIL);
-        }
-        return optional.get().getId();
-    }
 
     @Override
     public void createListModel(UUID bookingId, List<BookingSurchargeDetailDetail> listDetail) throws InvalidException {
@@ -95,9 +85,9 @@ public class BookingSurchargeDetailFactory
             return;
         }
 
-        List<BookingHomeSurchargeDetailCommand> listDelete = bookingSurchargeDetailRepository.findAllByBooking(bookingId);
-        for (BookingHomeSurchargeDetailCommand item : listDelete) {
-            deleteModel(item.getBookingSurchargeDetailId(), null);
+        List<BookingSurchargeDetail> listDelete = bookingSurchargeDetailRepository.findAllByBooking(bookingId);
+        for (BookingSurchargeDetail item : listDelete) {
+            deleteModel(item.getId(), null);
         }
 
         for (BookingSurchargeDetailDetail item : listDetail) {

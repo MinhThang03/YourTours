@@ -1,6 +1,6 @@
 package com.hcmute.yourtours.factories.discount_campaign.app;
 
-import com.hcmute.yourtours.entities.DiscountCampaignCommand;
+import com.hcmute.yourtours.entities.DiscountCampaign;
 import com.hcmute.yourtours.factories.discount_campaign.DiscountCampaignFactory;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.repositories.DiscountCampaignRepository;
@@ -18,7 +18,7 @@ public class AppDiscountCampaignFactory extends DiscountCampaignFactory {
     }
 
     @Override
-    protected <F extends BaseFilter> Page<DiscountCampaignCommand> pageQuery(F filter, Integer number, Integer size) {
+    protected <F extends BaseFilter> Page<DiscountCampaign> pageQuery(F filter, Integer number, Integer size) {
         return discountCampaignRepository.findAllByDateEndAfter(LocalDate.now(), PageRequest.of(number, size));
     }
 }

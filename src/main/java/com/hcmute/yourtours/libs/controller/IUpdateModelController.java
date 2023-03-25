@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.io.Serializable;
 
 /**
  * IUpdateModelController interface
@@ -17,7 +18,7 @@ import javax.validation.Valid;
  * @param <U> detail model
  */
 @RequestMapping("/")
-public interface IUpdateModelController<I, U extends BaseData<I>> {
+public interface IUpdateModelController<I extends Serializable, U extends BaseData<I>> {
 
     /**
      * updateModel

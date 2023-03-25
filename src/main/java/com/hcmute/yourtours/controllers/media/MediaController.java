@@ -1,8 +1,8 @@
 package com.hcmute.yourtours.controllers.media;
 
 
-import com.hcmute.yourtours.aws.model.UploadMediaResponse;
-import com.hcmute.yourtours.aws.service.MediaService;
+import com.hcmute.yourtours.external_modules.aws.model.UploadMediaResponse;
+import com.hcmute.yourtours.external_modules.aws.service.MediaService;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.exceptions.RestException;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;

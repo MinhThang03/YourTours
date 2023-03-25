@@ -14,6 +14,7 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
+import com.hcmute.yourtours.models.homes.filter.HomeMobileFilter;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateDetail;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +28,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/app/homes")
-@Tag(name = "APP API: homes", description = "API lấy danh sách nhà")
+@Tag(name = "APP API: HOMES", description = "API lấy danh sách nhà")
 @Transactional
 public class AppHomeController
         extends BaseController<UUID, HomeInfo, HomeDetail>
@@ -71,5 +72,15 @@ public class AppHomeController
         }
     }
 
-
+    @Override
+    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFullFilter(HomeMobileFilter filter, Integer number, Integer size) {
+        try {
+            LogContext.push(LogType.REQUEST, filter);
+            BasePagingResponse<HomeInfo> response = iAppHomesFactory.getPageWithProvinceAndAmenity(filter, number, size);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
+    }
 }

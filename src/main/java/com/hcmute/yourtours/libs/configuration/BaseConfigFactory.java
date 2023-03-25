@@ -37,7 +37,7 @@ public abstract class BaseConfigFactory implements IConfigFactory {
     protected final SecurityConfigurationProperties securityProperties;
     protected JwtDecoderFactory<SecurityConfigurationProperties.Jwt> jwtDecoderFactory = new DefaultJwtDecoderFactory();
 
-    public BaseConfigFactory(
+    protected BaseConfigFactory(
             OpenApiConfigurationProperties openApiServersConfig,
             SecurityConfigurationProperties securityProperties
     ) {
@@ -45,7 +45,7 @@ public abstract class BaseConfigFactory implements IConfigFactory {
         this.securityProperties = securityProperties;
     }
 
-    public BaseConfigFactory(
+    protected BaseConfigFactory(
             CommonConfigurationProperties properties
     ) {
         this(properties.getOpenApi(), properties.getSecurity());
