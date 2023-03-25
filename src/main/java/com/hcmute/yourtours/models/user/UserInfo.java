@@ -25,7 +25,6 @@ import java.util.UUID;
 @SuperBuilder
 @NoArgsConstructor
 public class UserInfo extends BaseData<UUID> {
-
     @JsonIgnore
     @Pattern(regexp = RegexUtils.PASSWORD_REGEX, message = "Nhập không đúng định dạng mật khẩu")
     private String password;
