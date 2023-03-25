@@ -155,6 +155,32 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
 
     @Query(
             nativeQuery = true,
+            value = "select a.* " +
+                    "from homes a, " +
+                    "     amenities_of_home b, " +
+                    "     province c " +
+                    "where a.id = b.home_id " +
+                    "  and a.province_code = c.code_name " +
+                    "  and (:amenityId is null or b.amenity_id = :amenityId) " +
+                    "  and (:province is null or upper(c.name) like upper(Concat('%', :province, '%'))) " +
+                    "order by a.created_date desc ",
+            countQuery = "select a.id " +
+                    "from homes a, " +
+                    "     amenities_of_home b, " +
+                    "     province c " +
+                    "where a.id = b.home_id " +
+                    "  and a.province_code = c.code_name " +
+                    "  and (:amenityId is null or b.amenity_id = :amenityId) " +
+                    "  and (:province is null or upper(c.name) like upper(Concat('%', :province, '%'))) " +
+                    "order by a.created_date desc "
+    )
+    Page<Homes> getPageWithProvinceAndAmenity(@Param("province") String province,
+                                              @Param("amenityId") UUID amenityId,
+                                              Pageable pageable);
+
+
+    @Query(
+            nativeQuery = true,
             value = "select a.*   " +
                     "from homes a,   " +
                     "     province b   " +

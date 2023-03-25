@@ -23,6 +23,7 @@ import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeDetailFilter;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
+import com.hcmute.yourtours.models.homes.filter.HomeMobileFilter;
 import com.hcmute.yourtours.models.item_favorties.ItemFavoritesDetail;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateDetail;
 import com.hcmute.yourtours.repositories.HomesRepository;
@@ -168,6 +169,23 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                         lenght,
                         RoomCategoryIdConstant.BED_ROOM_CATEGORY_ID,
                         RoomCategoryIdConstant.BATH_ROOM_CATEGORY_ID,
+                        PageRequest.of(number, size)
+                );
+
+        return new BasePagingResponse<>(
+                convertList(pageEntity.getContent()),
+                pageEntity.getNumber(),
+                pageEntity.getSize(),
+                pageEntity.getTotalElements()
+        );
+    }
+
+    @Override
+    public BasePagingResponse<HomeInfo> getPageWithProvinceAndAmenity(HomeMobileFilter filter, Integer number, Integer size) throws InvalidException {
+        Page<Homes> pageEntity = homesRepository.getPageWithProvinceAndAmenity
+                (
+                        filter.getProvince(),
+                        filter.getAmenityId(),
                         PageRequest.of(number, size)
                 );
 
