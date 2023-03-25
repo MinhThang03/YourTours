@@ -155,7 +155,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
 
     @Query(
             nativeQuery = true,
-            value = "select a.* " +
+            value = "select distinct a.* " +
                     "from homes a, " +
                     "     amenities_of_home b, " +
                     "     province c " +
@@ -164,7 +164,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "  and (:amenityId is null or b.amenity_id = :amenityId) " +
                     "  and (:province is null or upper(c.name) like upper(Concat('%', :province, '%'))) " +
                     "order by a.created_date desc ",
-            countQuery = "select a.id " +
+            countQuery = "select distinct a.id " +
                     "from homes a, " +
                     "     amenities_of_home b, " +
                     "     province c " +
