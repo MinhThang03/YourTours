@@ -1,6 +1,8 @@
 package com.hcmute.yourtours.factories.user_evaluate;
 
 import com.hcmute.yourtours.entities.UserEvaluate;
+import com.hcmute.yourtours.exceptions.YourToursErrorCode;
+import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -10,6 +12,7 @@ import com.hcmute.yourtours.models.user_evaluate.UserEvaluateInfo;
 import com.hcmute.yourtours.models.user_evaluate.filter.EvaluateFilter;
 import com.hcmute.yourtours.repositories.UserEvaluateRepository;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -27,13 +30,17 @@ public class UserEvaluateFactory
 
     private final UserEvaluateRepository userEvaluateRepository;
     private final IUserFactory iUserFactory;
+    private final IBookHomeFactory iBookHomeFactory;
 
     protected UserEvaluateFactory(
             UserEvaluateRepository repository,
-            IUserFactory iUserFactory) {
+            IUserFactory iUserFactory,
+            @Qualifier("bookHomeFactory") IBookHomeFactory iBookHomeFactory
+    ) {
         super(repository);
         this.userEvaluateRepository = repository;
         this.iUserFactory = iUserFactory;
+        this.iBookHomeFactory = iBookHomeFactory;
     }
 
     @Override
@@ -124,6 +131,11 @@ public class UserEvaluateFactory
     @Override
     protected void preCreate(UserEvaluateDetail detail) throws InvalidException {
         iUserFactory.checkExistsByUserId(detail.getUserId());
+
+        if (!iBookHomeFactory.existByUserIdAndHomeId(detail.getUserId(), detail.getHomeId())) {
+            throw new InvalidException(YourToursErrorCode.USER_NOT_USE_SERVICE);
+        }
+
     }
 
     @Override

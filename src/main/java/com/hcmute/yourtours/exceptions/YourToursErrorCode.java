@@ -39,6 +39,7 @@ public enum YourToursErrorCode implements IErrorCode {
     BOOK_HOME_CHECK_IN_IS_IN_VALID(HttpStatus.BAD_REQUEST, "400000030", "Check in phòng đặt phòng không hợp lệ"),
     BOOK_HOME_CHECK_OUT_IS_IN_VALID(HttpStatus.BAD_REQUEST, "400000031", "Check out phòng đặt phòng không hợp lệ"),
     PHONE_NUMBER_IS_UN_FORMAT(HttpStatus.BAD_REQUEST, "400000032", "Số điện thoại không đúng định dạng"),
+    USER_NOT_USE_SERVICE(HttpStatus.BAD_REQUEST, "400000033", "Bạn chưa sử dụng dịch vụ của ngôi nhà"),
 
 
     //403
