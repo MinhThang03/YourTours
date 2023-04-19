@@ -7,6 +7,8 @@ import com.hcmute.yourtours.enums.RoleEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.libs.model.BaseData;
 import com.hcmute.yourtours.libs.util.constant.RegexUtils;
+import com.hcmute.yourtours.models.geo_ip_location.GeoIPLocation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -59,4 +61,8 @@ public class UserInfo extends BaseData<UUID> {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private boolean isOwner;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Schema(allOf = GeoIPLocation.class)
+    private GeoIPLocation deviceLocation;
 }

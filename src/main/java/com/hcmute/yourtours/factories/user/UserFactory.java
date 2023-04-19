@@ -10,6 +10,7 @@ import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.external_modules.email.IEmailFactory;
 import com.hcmute.yourtours.external_modules.keycloak.service.IKeycloakService;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
+import com.hcmute.yourtours.factories.geo_ip_location.IGeoIPLocationFactory;
 import com.hcmute.yourtours.factories.verification_token.IVerificationOtpFactory;
 import com.hcmute.yourtours.libs.configuration.IConfigFactory;
 import com.hcmute.yourtours.libs.exceptions.ErrorCode;
@@ -49,8 +50,8 @@ public class UserFactory
     private final UserRepository userRepository;
     private final IEmailFactory iEmailFactory;
     private final IVerificationOtpFactory iVerificationOtpFactory;
-
     private final IGetUserFromTokenFactory iGetUserFromTokenFactory;
+    private final IGeoIPLocationFactory iGeoIPLocationFactory;
 
     protected UserFactory(
             UserRepository repository,
@@ -58,8 +59,8 @@ public class UserFactory
             IConfigFactory configFactory,
             IEmailFactory iEmailFactory,
             IVerificationOtpFactory iVerificationOtpFactory,
-            IGetUserFromTokenFactory iGetUserFromTokenFactory
-    ) {
+            IGetUserFromTokenFactory iGetUserFromTokenFactory,
+            IGeoIPLocationFactory iGeoIPLocationFactory) {
         super(repository);
         this.iKeycloakService = iKeycloakService;
         this.configFactory = configFactory;
@@ -67,6 +68,7 @@ public class UserFactory
         this.iEmailFactory = iEmailFactory;
         this.iVerificationOtpFactory = iVerificationOtpFactory;
         this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
+        this.iGeoIPLocationFactory = iGeoIPLocationFactory;
     }
 
     @Override
@@ -124,6 +126,7 @@ public class UserFactory
                 .status(entity.getStatus())
                 .role(entity.getRole())
                 .isOwner(isOwner(entity.getId()))
+                .deviceLocation(iGeoIPLocationFactory.getLocationByCurrentIp())
                 .build();
     }
 
@@ -144,6 +147,7 @@ public class UserFactory
                 .status(entity.getStatus())
                 .role(entity.getRole())
                 .isOwner(isOwner(entity.getId()))
+                .deviceLocation(iGeoIPLocationFactory.getLocationByCurrentIp())
                 .build();
     }
 
