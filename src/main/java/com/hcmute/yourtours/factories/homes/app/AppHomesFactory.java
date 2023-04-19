@@ -51,7 +51,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                     IOwnerOfHomeFactory iOwnerOfHomeFactory,
                     IItemFavoritesFactory iItemFavoritesFactory,
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
-                    IUserEvaluateFactory iUserEvaluateFactory,
+                    @Qualifier("userEvaluateFactory") IUserEvaluateFactory iUserEvaluateFactory,
                     @Qualifier("bookHomeFactory") IBookHomeFactory iBookHomeFactory,
                     IUserFactory iUserFactory,
                     IProvinceFactory iProvinceFactory

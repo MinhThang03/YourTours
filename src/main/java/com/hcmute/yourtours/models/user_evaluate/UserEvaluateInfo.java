@@ -33,4 +33,13 @@ public class UserEvaluateInfo extends BaseData<UUID> {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String userFullName;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String userAvatar;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String lastModifiedDate;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private boolean isMain;
 }

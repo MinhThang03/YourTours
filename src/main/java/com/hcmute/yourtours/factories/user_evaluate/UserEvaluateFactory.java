@@ -6,15 +6,12 @@ import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
-import com.hcmute.yourtours.libs.model.filter.BaseFilter;
+import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateDetail;
 import com.hcmute.yourtours.models.user_evaluate.UserEvaluateInfo;
-import com.hcmute.yourtours.models.user_evaluate.filter.EvaluateFilter;
 import com.hcmute.yourtours.repositories.UserEvaluateRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +25,9 @@ public class UserEvaluateFactory
         extends BasePersistDataFactory<UUID, UserEvaluateInfo, UserEvaluateDetail, UUID, UserEvaluate>
         implements IUserEvaluateFactory {
 
-    private final UserEvaluateRepository userEvaluateRepository;
-    private final IUserFactory iUserFactory;
-    private final IBookHomeFactory iBookHomeFactory;
+    protected final UserEvaluateRepository userEvaluateRepository;
+    protected final IUserFactory iUserFactory;
+    protected final IBookHomeFactory iBookHomeFactory;
 
     protected UserEvaluateFactory(
             UserEvaluateRepository repository,
@@ -76,13 +73,16 @@ public class UserEvaluateFactory
             return null;
         }
 
+        UserDetail userDetail = iUserFactory.getDetailModel(entity.getUserId(), null);
+
         return UserEvaluateDetail.builder()
                 .id(entity.getId())
                 .homeId(entity.getHomeId())
                 .userId(entity.getUserId())
                 .point(entity.getPoint())
                 .comment(entity.getComment())
-                .userFullName(iUserFactory.getDetailModel(entity.getUserId(), null).getFullName())
+                .userFullName(userDetail.getFullName())
+                .userAvatar(userDetail.getAvatar())
                 .build();
     }
 
@@ -138,13 +138,5 @@ public class UserEvaluateFactory
 
     }
 
-    @Override
-    protected <F extends BaseFilter> Page<UserEvaluate> pageQuery(F filter, Integer number, Integer size) {
-        EvaluateFilter evaluateFilter = (EvaluateFilter) filter;
-        return userEvaluateRepository.findPageWithEvaluateFilter
-                (
-                        evaluateFilter.getTypeFilter() == null ? null : evaluateFilter.getTypeFilter().name(),
-                        evaluateFilter.getHomeId(),
-                        PageRequest.of(number, size));
-    }
+
 }
