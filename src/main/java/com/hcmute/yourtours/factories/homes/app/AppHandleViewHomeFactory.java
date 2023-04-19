@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.factories.homes.app;
 
 import com.hcmute.yourtours.constant.RoomCategoryIdConstant;
-import com.hcmute.yourtours.enums.EvaluateFilterTypeEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities.IAmenitiesFactory;
 import com.hcmute.yourtours.factories.beds_of_home.IBedsOfHomeFactory;
@@ -16,7 +15,6 @@ import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.factories.surcharges_of_home.ISurchargeOfHomeFactory;
 import com.hcmute.yourtours.factories.user_evaluate.IUserEvaluateFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
-import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.models.discount_of_home.models.DiscountOfHomeViewModel;
 import com.hcmute.yourtours.models.homes.HomeDetail;
@@ -24,8 +22,6 @@ import com.hcmute.yourtours.models.homes.models.UserHomeDetailModel;
 import com.hcmute.yourtours.models.price_of_home.request.GetPriceOfHomeRequest;
 import com.hcmute.yourtours.models.price_of_home.response.PriceOfHomeResponse;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeInfo;
-import com.hcmute.yourtours.models.user_evaluate.UserEvaluateInfo;
-import com.hcmute.yourtours.models.user_evaluate.filter.EvaluateFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +52,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
             @Qualifier("appHomesFactory") IHomesFactory iHomesFactory,
             @Qualifier("bookHomeFactory") IBookHomeFactory iBookHomeFactory,
             IGetUserFromTokenFactory iGetUserFromTokenFactory,
-            IUserEvaluateFactory iUserEvaluateFactory,
+            @Qualifier("userEvaluateFactory") IUserEvaluateFactory iUserEvaluateFactory,
             IItemFavoritesFactory iItemFavoritesFactory,
             IRoomsOfHomeFactory iRoomsOfHomeFactory,
             IOwnerOfHomeFactory iOwnerOfHomeFactory,
@@ -84,14 +80,14 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
 
         try {
             HomeDetail homeDetail = iHomesFactory.getDetailModel(homeId, null);
-            BasePagingResponse<UserEvaluateInfo> evaluates = iUserEvaluateFactory.getInfoPage
-                    (
-                            EvaluateFilter.builder()
-                                    .typeFilter(EvaluateFilterTypeEnum.COMMENT)
-                                    .homeId(homeId)
-                                    .build(),
-                            0,
-                            20);
+//            BasePagingResponse<UserEvaluateInfo> evaluates = iUserEvaluateFactory.getInfoPage
+//                    (
+//                            EvaluateFilter.builder()
+//                                    .typeFilter(EvaluateFilterTypeEnum.COMMENT)
+//                                    .homeId(homeId)
+//                                    .build(),
+//                            0,
+//                            20);
 
             PriceOfHomeResponse price = iPriceOfHomeFactory.getCostBetweenDay(GetPriceOfHomeRequest.builder()
                     .dateTo(LocalDate.now())
@@ -104,7 +100,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
 
             UserHomeDetailModel result = UserHomeDetailModel.builder()
                     .homeDetail(homeDetail)
-                    .evaluates(evaluates)
+//                    .evaluates(evaluates)
                     .dateIsBooked(getDatesIdBooked(homeId))
                     .ownerName(iOwnerOfHomeFactory.getMainOwnerOfHome(homeId))
                     .rooms(iRoomsOfHomeFactory.getRoomHaveConfigBed(homeId))

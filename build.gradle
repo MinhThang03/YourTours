@@ -105,9 +105,14 @@ dependencies {
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.31'
 
     /*
-Envers
- */
+    Envers
+    */
     implementation group: 'org.springframework.data', name: 'spring-data-envers', version: '2.5.4'
+
+    /**
+     * GeoLocation
+     */
+    implementation 'com.maxmind.geoip2:geoip2:4.0.0'
 
 
 }
