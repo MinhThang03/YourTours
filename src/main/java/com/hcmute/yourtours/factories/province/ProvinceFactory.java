@@ -61,6 +61,7 @@ public class ProvinceFactory extends BasePersistDataFactory<Long, ProvinceModel,
                 .divisionType(detail.getDivisionType())
                 .thumbnail(detail.getThumbnail())
                 .name(detail.getName())
+                .enName(detail.getEnName())
                 .build();
     }
 
@@ -83,6 +84,7 @@ public class ProvinceFactory extends BasePersistDataFactory<Long, ProvinceModel,
                 .divisionType(entity.getDivisionType())
                 .thumbnail(entity.getThumbnail())
                 .name(entity.getName())
+                .enName(entity.getEnName())
                 .build();
     }
 

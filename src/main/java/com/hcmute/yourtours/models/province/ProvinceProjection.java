@@ -9,4 +9,6 @@ public interface ProvinceProjection {
     String getThumbnail();
 
     Long getNumberBooking();
+
+    Long getEnName();
 }

@@ -35,6 +35,9 @@ public class Province implements Serializable {
     @Column(name = "thumbnail")
     private String thumbnail;
 
+    @Column(name = "en_name")
+    private String enName;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "province")
     @Fetch(FetchMode.SUBSELECT)
     private List<Homes> homes;

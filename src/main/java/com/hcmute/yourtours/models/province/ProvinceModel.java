@@ -17,4 +17,6 @@ public class ProvinceModel extends BaseData<Long> {
     private String divisionType;
 
     private String thumbnail;
+
+    private String enName;
 }
