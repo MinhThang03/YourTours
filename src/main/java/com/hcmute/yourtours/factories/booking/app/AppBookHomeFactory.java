@@ -22,6 +22,7 @@ import com.hcmute.yourtours.libs.util.TimeUtil;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking_surcharge_detail.BookingSurchargeDetailDetail;
 import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
 import com.hcmute.yourtours.models.price_of_home.request.GetPriceOfHomeRequest;
 import com.hcmute.yourtours.models.price_of_home.response.PriceOfHomeResponse;
@@ -94,8 +95,12 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
             }
         }
 
-        iHomesFactory.checkExistsByHomeId(detail.getHomeId());
+        // Cập nhật số lượng đặt của ngôi nhà
+        HomeDetail homeDetail = iHomesFactory.getDetailModel(detail.getHomeId(), null);
+        homeDetail.setNumberOfBooking(homeDetail.getNumberOfBooking() + 1);
+        iHomesFactory.updateModel(homeDetail.getId(), homeDetail);
 
+        //Kiểm tra thông tin ngày đặt
         if (detail.getDateStart().isBefore(LocalDate.now())) {
             throw new InvalidException(YourToursErrorCode.DATE_START_BOOKING_IN_VALID);
         }

@@ -28,6 +28,9 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                             "  and (a.status = :status or :status is null)  " +
                             "order by case when :sortBy = 'VIEW' then a.view end desc,  " +
                             "         case when :sortBy = 'FAVORITE' then a.favorite end desc,  " +
+                            "         case when :sortBy = 'NEW' then a.created_date end desc,  " +
+                            "         case when :sortBy = 'RATE' then a.average_rate end desc,  " +
+                            "         case when :sortBy = 'TRENDING' then a.number_of_booking end desc,  " +
                             "         a.created_date desc  ",
                     countQuery = "select a.id  " +
                             "from homes a  " +
@@ -37,6 +40,9 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                             "  and (a.status = :status or :status is null)  " +
                             "order by case when :sortBy = 'VIEW' then a.view end desc,  " +
                             "         case when :sortBy = 'FAVORITE' then a.favorite end desc,  " +
+                            "         case when :sortBy = 'NEW' then a.created_date end desc,  " +
+                            "         case when :sortBy = 'RATE' then a.average_rate end desc,  " +
+                            "         case when :sortBy = 'TRENDING' then a.number_of_booking end desc,  " +
                             "         a.created_date desc  "
             )
     Page<Homes> findPageWithFilter(@Param("userId") UUID userId,
@@ -177,6 +183,29 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
     Page<Homes> getPageWithProvinceAndAmenity(@Param("province") String province,
                                               @Param("amenityId") UUID amenityId,
                                               Pageable pageable);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select distinct a.* " +
+                    "from homes a, " +
+                    "     amenities_of_home b, " +
+                    "     province c " +
+                    "where a.id = b.home_id " +
+                    "  and a.province_code = c.code_name " +
+                    "  and (:province is null or upper(c.name) like upper(Concat('%', :province, '%'))) " +
+                    "order by a.number_of_booking desc ",
+            countQuery = "select distinct a.id " +
+                    "from homes a, " +
+                    "     amenities_of_home b, " +
+                    "     province c " +
+                    "where a.id = b.home_id " +
+                    "  and a.province_code = c.code_name " +
+                    "  and (:province is null or upper(c.name) like upper(Concat('%', :province, '%'))) " +
+                    "order by a.number_of_booking desc "
+    )
+    Page<Homes> getPageRecommend(@Param("province") String province,
+                                 Pageable pageable);
 
 
     @Query(

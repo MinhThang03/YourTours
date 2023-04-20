@@ -20,4 +20,6 @@ public interface IAppHomesFactory {
     BasePagingResponse<HomeInfo> getPageWithFullFilter(HomeDetailFilter filter, Integer number, Integer size) throws InvalidException;
 
     BasePagingResponse<HomeInfo> getPageWithProvinceAndAmenity(HomeMobileFilter filter, Integer number, Integer size) throws InvalidException;
+
+    BasePagingResponse<HomeInfo> getPageRecommend(Integer number, Integer size) throws InvalidException;
 }

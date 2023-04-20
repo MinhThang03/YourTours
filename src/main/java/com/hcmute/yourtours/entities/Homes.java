@@ -104,6 +104,9 @@ public class Homes extends NameData {
     @Column(name = "number_of_reviews")
     private Long numberOfReviews;
 
+    @Column(name = "number_of_booking")
+    private Long numberOfBooking;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "home")
     @Fetch(FetchMode.SUBSELECT)
     private List<AmenitiesOfHome> amenities;

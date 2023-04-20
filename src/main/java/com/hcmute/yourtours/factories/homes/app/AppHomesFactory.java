@@ -7,6 +7,7 @@ import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities_of_home.IAmenitiesOfHomeFactory;
 import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
+import com.hcmute.yourtours.factories.geo_ip_location.IGeoIPLocationFactory;
 import com.hcmute.yourtours.factories.homes.HomesFactory;
 import com.hcmute.yourtours.factories.images_home.IImagesHomeFactory;
 import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
@@ -19,6 +20,7 @@ import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.geo_ip_location.GeoIPLocation;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeDetailFilter;
@@ -41,6 +43,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
 
     private final IUserEvaluateFactory iUserEvaluateFactory;
     private final IBookHomeFactory iBookHomeFactory;
+    private final IGeoIPLocationFactory iGeoIPLocationFactory;
 
     protected AppHomesFactory
             (
@@ -54,7 +57,8 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                     @Qualifier("userEvaluateFactory") IUserEvaluateFactory iUserEvaluateFactory,
                     @Qualifier("bookHomeFactory") IBookHomeFactory iBookHomeFactory,
                     IUserFactory iUserFactory,
-                    IProvinceFactory iProvinceFactory
+                    IProvinceFactory iProvinceFactory,
+                    IGeoIPLocationFactory iGeoIPLocationFactory
             ) {
         super(
                 repository,
@@ -67,6 +71,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                 iUserFactory, iProvinceFactory);
         this.iUserEvaluateFactory = iUserEvaluateFactory;
         this.iBookHomeFactory = iBookHomeFactory;
+        this.iGeoIPLocationFactory = iGeoIPLocationFactory;
     }
 
 
@@ -188,6 +193,22 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                         filter.getAmenityId(),
                         PageRequest.of(number, size)
                 );
+
+        return new BasePagingResponse<>(
+                convertList(pageEntity.getContent()),
+                pageEntity.getNumber(),
+                pageEntity.getSize(),
+                pageEntity.getTotalElements()
+        );
+    }
+
+    @Override
+    public BasePagingResponse<HomeInfo> getPageRecommend(Integer number, Integer size) throws InvalidException {
+
+        GeoIPLocation location = iGeoIPLocationFactory.getLocationByCurrentIp();
+
+
+        Page<Homes> pageEntity = homesRepository.getPageRecommend(location == null ? null : location.getCityName(), PageRequest.of(number, size));
 
         return new BasePagingResponse<>(
                 convertList(pageEntity.getContent()),

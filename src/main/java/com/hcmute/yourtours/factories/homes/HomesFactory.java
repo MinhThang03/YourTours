@@ -109,7 +109,8 @@ public class HomesFactory
                 .view(0L)
                 .favorite(0L)
                 .thumbnail(detail.getThumbnail())
-                .averageRate(detail.getAverageRate())
+                .averageRate(0.0)
+                .numberOfBooking(0L)
                 .numberOfReviews(0L)
                 .refundPolicy(RefundPolicyEnum.BEFORE_ONE_DAY)
                 .build();
@@ -137,6 +138,7 @@ public class HomesFactory
         entity.setFavorite(detail.getFavorite());
         entity.setThumbnail(detail.getThumbnail());
         entity.setAverageRate(detail.getAverageRate());
+        entity.setNumberOfBooking(detail.getNumberOfBooking());
         entity.setNumberOfReviews(detail.getNumberOfReviews());
     }
 
@@ -171,6 +173,7 @@ public class HomesFactory
                 .numberOfReviews(entity.getNumberOfReviews())
                 .provinceName(iProvinceFactory.getProvinceByCodeName(entity.getProvinceCode()).getName())
                 .lastModifiedDate(entity.getLastModifiedDate())
+                .numberOfBooking(entity.getNumberOfBooking())
                 .build();
     }
 
@@ -205,6 +208,7 @@ public class HomesFactory
                 .numberOfReviews(entity.getNumberOfReviews())
                 .lastModifiedDate(entity.getLastModifiedDate())
                 .provinceName(iProvinceFactory.getProvinceByCodeName(entity.getProvinceCode()).getName())
+                .numberOfBooking(entity.getNumberOfBooking())
                 .build();
     }
 

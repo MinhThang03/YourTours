@@ -83,4 +83,15 @@ public class AppHomeController
             throw new RestException(e);
         }
     }
+
+    @Override
+    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageRecommend(Integer number, Integer size) {
+        try {
+            BasePagingResponse<HomeInfo> response = iAppHomesFactory.getPageRecommend(number, size);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
+    }
 }

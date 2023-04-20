@@ -60,6 +60,9 @@ public class HomeInfo extends NameDataModel<UUID> {
     private Long view;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long numberOfBooking;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long favorite;
 
     private String thumbnail;
