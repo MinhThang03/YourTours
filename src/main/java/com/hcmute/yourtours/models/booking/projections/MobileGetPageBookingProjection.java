@@ -8,6 +8,10 @@ import java.util.UUID;
 public interface MobileGetPageBookingProjection {
     UUID getId();
 
+    UUID getUserId();
+
+    UUID getHomeId();
+
     Double getTotalCost();
 
     LocalDate getDateStart();

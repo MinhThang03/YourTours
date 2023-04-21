@@ -85,6 +85,8 @@ public class MobileBookHomeFactory extends AppBookHomeFactory implements IMobile
                         .thumbnail(projection.getThumbnail())
                         .homeAddressDetail(projection.getProvinceName())
                         .status(projection.getStatus())
+                        .userId(projection.getUserId())
+                        .homeId(projection.getHomeId())
                         .build());
 
             }

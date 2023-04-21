@@ -200,6 +200,8 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
                     "       b.name as homeName," +
                     "       b.thumbnail as thumbnail," +
                     "       c.name as provinceName, " +
+                    "       a.userId as userId, " +
+                    "       a.homeId as homeId, " +
                     "       a.status as status " +
                     "from BookHomes a inner join Homes b on a.homeId = b.id  " +
                     "inner join Province c on b.provinceCode = c.codeName  " +
