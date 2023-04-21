@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.entities.BookHomes;
+import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.models.booking.projections.InfoUserBookingProjection;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
 import org.springframework.data.domain.Page;
@@ -175,4 +176,17 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
                     "group by a.user_id, b.full_name "
     )
     Page<InfoUserBookingProjection> getPageStatisticInfoUserBooking(Pageable pageable);
+
+
+    @Query(
+            value = "select a from BookHomes a " +
+                    "where a.userId = :userId " +
+                    "and (:status = null or a.status = :status ) order by a.createdDate desc ",
+            countQuery = "select a.id from BookHomes a " +
+                    "where a.userId = :userId " +
+                    "and (:status = null or a.status = :status )"
+    )
+    Page<BookHomes> getAppBookingPage(@Param("status") BookRoomStatusEnum status,
+                                      @Param("userId") UUID userId,
+                                      Pageable pageable);
 }

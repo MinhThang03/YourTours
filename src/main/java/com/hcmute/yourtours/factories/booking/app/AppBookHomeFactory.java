@@ -20,6 +20,7 @@ import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.libs.util.TimeUtil;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
+import com.hcmute.yourtours.models.booking.filter.AppBookingFilter;
 import com.hcmute.yourtours.models.booking_surcharge_detail.BookingSurchargeDetailDetail;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
@@ -157,6 +158,11 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
     @Override
     protected <F extends BaseFilter> Page<BookHomes> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
         UUID customerId = iGetUserFromTokenFactory.checkUnAuthorization();
+
+        if (filter instanceof AppBookingFilter) {
+            AppBookingFilter appBookingFilter = (AppBookingFilter) filter;
+            return bookHomeRepository.getAppBookingPage(appBookingFilter.getStatus(), customerId, PageRequest.of(number, size));
+        }
 
         return bookHomeRepository.findBookingOfUser(customerId, PageRequest.of(number, size));
     }
