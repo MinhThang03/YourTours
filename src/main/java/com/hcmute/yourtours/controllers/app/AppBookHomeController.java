@@ -42,7 +42,7 @@ public class AppBookHomeController
             (
                     @Qualifier("appBookHomeFactory") IBookHomeFactory iDataFactory,
                     IResponseFactory iResponseFactory,
-                    IAppBookHomeFactory iAppBookHomeFactory
+                    @Qualifier("appBookHomeFactory") IAppBookHomeFactory iAppBookHomeFactory
             ) {
         super(iDataFactory, iResponseFactory);
         this.iBookHomeFactory = iDataFactory;

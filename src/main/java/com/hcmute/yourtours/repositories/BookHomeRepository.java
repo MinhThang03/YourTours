@@ -3,6 +3,7 @@ package com.hcmute.yourtours.repositories;
 import com.hcmute.yourtours.entities.BookHomes;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.models.booking.projections.InfoUserBookingProjection;
+import com.hcmute.yourtours.models.booking.projections.MobileGetPageBookingProjection;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +46,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
                     "  and (a.status = :status or :status is null)  " +
                     "  and (DATE(a.date_start) = DATE(:dateStart) or :dateStart is null)  " +
                     "order by a.date_start desc ",
-            countQuery = "select a.*  " +
+            countQuery = "select a.id  " +
                     "from book_home a,  " +
                     "     owner_of_home b  " +
                     "where a.home_id = b.home_id  " +
@@ -181,12 +182,39 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
     @Query(
             value = "select a from BookHomes a " +
                     "where a.userId = :userId " +
-                    "and (:status = null or a.status = :status ) order by a.createdDate desc ",
+                    "and (:status is null or a.status = :status ) order by a.createdDate desc ",
             countQuery = "select a.id from BookHomes a " +
                     "where a.userId = :userId " +
-                    "and (:status = null or a.status = :status )"
+                    "and (:status is null or a.status = :status )"
     )
     Page<BookHomes> getAppBookingPage(@Param("status") BookRoomStatusEnum status,
                                       @Param("userId") UUID userId,
                                       Pageable pageable);
+
+
+    @Query(
+            value = "select a.id as id," +
+                    "       a.totalCost as totalCost, " +
+                    "       a.dateStart as dateStart, " +
+                    "       a.dateEnd as dateEnd, " +
+                    "       b.name as homeName," +
+                    "       b.thumbnail as thumbnail," +
+                    "       c.name as provinceName, " +
+                    "       a.status as status " +
+                    "from BookHomes a inner join Homes b on a.homeId = b.id  " +
+                    "inner join Province c on b.provinceCode = c.codeName  " +
+                    "where a.userId = :userId " +
+                    "and  a.status in :status " +
+                    "order by a.createdDate desc ",
+            countQuery = "select a.id " +
+                    "from BookHomes a inner join Homes b on a.homeId = b.id  " +
+                    "inner join Province c on b.provinceCode = c.codeName  " +
+                    "where a.userId = :userId " +
+                    "and a.status in :status  " +
+                    "order by a.createdDate desc "
+
+    )
+    Page<MobileGetPageBookingProjection> getMobileBookingPage(@Param("status") List<BookRoomStatusEnum> status,
+                                                              @Param("userId") UUID userId,
+                                                              Pageable pageable);
 }
