@@ -33,6 +33,7 @@ public interface IAppHomeController extends
 
     @GetMapping("page/recommend")
     ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageRecommend(
+            @RequestParam(required = false) String city,
             @RequestParam(defaultValue = "0") Integer number,
             @RequestParam(defaultValue = "20") Integer size
     );

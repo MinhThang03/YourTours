@@ -85,9 +85,10 @@ public class AppHomeController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageRecommend(Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageRecommend(String city, Integer number, Integer size) {
         try {
-            BasePagingResponse<HomeInfo> response = iAppHomesFactory.getPageRecommend(number, size);
+            LogContext.push(LogType.REQUEST, city);
+            BasePagingResponse<HomeInfo> response = iAppHomesFactory.getPageRecommend(city, number, size);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {

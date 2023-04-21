@@ -21,5 +21,5 @@ public interface IAppHomesFactory {
 
     BasePagingResponse<HomeInfo> getPageWithProvinceAndAmenity(HomeMobileFilter filter, Integer number, Integer size) throws InvalidException;
 
-    BasePagingResponse<HomeInfo> getPageRecommend(Integer number, Integer size) throws InvalidException;
+    BasePagingResponse<HomeInfo> getPageRecommend(String city, Integer number, Integer size) throws InvalidException;
 }

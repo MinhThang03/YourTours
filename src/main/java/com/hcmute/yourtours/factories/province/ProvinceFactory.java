@@ -90,6 +90,6 @@ public class ProvinceFactory extends BasePersistDataFactory<Long, ProvinceModel,
 
     @Override
     protected <F extends BaseFilter> Iterable<Province> listQuery() {
-        return repository.findAll(Sort.by("name"));
+        return repository.findAll(Sort.by("enName"));
     }
 }

@@ -203,12 +203,16 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
     }
 
     @Override
-    public BasePagingResponse<HomeInfo> getPageRecommend(Integer number, Integer size) throws InvalidException {
+    public BasePagingResponse<HomeInfo> getPageRecommend(String city, Integer number, Integer size) throws InvalidException {
 
-        GeoIPLocation location = iGeoIPLocationFactory.getLocationByCurrentIp();
+        if (city == null || city.isBlank()) {
+            GeoIPLocation location = iGeoIPLocationFactory.getLocationByCurrentIp();
+            if (location != null) {
+                city = location.getCityName();
+            }
+        }
 
-
-        Page<Homes> pageEntity = homesRepository.getPageRecommend(location == null ? null : location.getCityName(), PageRequest.of(number, size));
+        Page<Homes> pageEntity = homesRepository.getPageRecommend(city, PageRequest.of(number, size));
 
         return new BasePagingResponse<>(
                 convertList(pageEntity.getContent()),
