@@ -8,6 +8,7 @@ import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.external_modules.email.IEmailFactory;
 import com.hcmute.yourtours.external_modules.keycloak.service.IKeycloakService;
+import com.hcmute.yourtours.factories.geo_ip_location.IGeoIPLocationFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.factories.verification_token.IVerificationOtpFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
@@ -35,15 +36,21 @@ public class AuthFactory implements IAuthFactory {
     private final IUserFactory iUserFactory;
     private final IEmailFactory iEmailFactory;
     private final IVerificationOtpFactory iVerificationOtpFactory;
+    private final IGeoIPLocationFactory iGeoIPLocationFactory;
 
-    public AuthFactory(IKeycloakService iKeycloakService,
-                       IUserFactory iUserFactory,
-                       IEmailFactory iEmailFactory,
-                       IVerificationOtpFactory iVerificationOtpFactory) {
+    public AuthFactory
+            (
+                    IKeycloakService iKeycloakService,
+                    IUserFactory iUserFactory,
+                    IEmailFactory iEmailFactory,
+                    IVerificationOtpFactory iVerificationOtpFactory,
+                    IGeoIPLocationFactory iGeoIPLocationFactory
+            ) {
         this.iKeycloakService = iKeycloakService;
         this.iUserFactory = iUserFactory;
         this.iEmailFactory = iEmailFactory;
         this.iVerificationOtpFactory = iVerificationOtpFactory;
+        this.iGeoIPLocationFactory = iGeoIPLocationFactory;
     }
 
     @Override
@@ -56,10 +63,17 @@ public class AuthFactory implements IAuthFactory {
             } else {
                 accessTokenResponse = iKeycloakService.getJwt(request.getEmail(), request.getPassword());
             }
-            return LoginResponse.builder()
+
+            LoginResponse response = LoginResponse.builder()
                     .token(accessTokenResponse)
                     .userInfo(accessTokenResponse == null ? null : userInfo)
                     .build();
+
+            if (request.isGetLocation()) {
+                response.setDeviceLocation(iGeoIPLocationFactory.getLocationByCurrentIp());
+            }
+            return response;
+
         } catch (InvalidException e) {
             throw e;
         } catch (Exception e) {

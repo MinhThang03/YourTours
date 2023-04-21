@@ -15,4 +15,6 @@ public class LoginRequest {
     @NotNull
     @NotBlank
     private String password;
+
+    private boolean getLocation;
 }

@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.models.authentication.response;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.hcmute.yourtours.models.geo_ip_location.GeoIPLocation;
 import com.hcmute.yourtours.models.user.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,4 +15,6 @@ public class LoginResponse {
     @JsonUnwrapped
     private AccessTokenResponse token;
     private UserInfo userInfo;
+
+    private GeoIPLocation deviceLocation;
 }
