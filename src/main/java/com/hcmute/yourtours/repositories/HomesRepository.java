@@ -340,7 +340,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "       a.numberOfBooking     as numberOfBooking,    " +
                     "       a.favorite            as favorite,    " +
                     "       a.createdDate         as createdDate,    " +
-                    "       a.name                as province,    " +
+                    "       a.provinceName        as province,    " +
                     "       a.numberOfReview      as numberOfReview,    " +
                     "       a.rates               as rates,    " +
                     "       a.averageRate         as averageRate,    " +
