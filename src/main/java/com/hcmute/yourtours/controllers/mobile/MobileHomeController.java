@@ -2,8 +2,13 @@ package com.hcmute.yourtours.controllers.mobile;
 
 import com.hcmute.yourtours.controllers.mobile.interfaces.IMobileHomeController;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
+import com.hcmute.yourtours.factories.homes.mobile.IMobileHomeFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
+import com.hcmute.yourtours.libs.exceptions.InvalidException;
+import com.hcmute.yourtours.libs.exceptions.RestException;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
+import com.hcmute.yourtours.libs.logging.LogContext;
+import com.hcmute.yourtours.libs.logging.LogType;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
@@ -25,12 +30,31 @@ import java.util.UUID;
 public class MobileHomeController extends BaseController<UUID, HomeInfo, HomeDetail>
         implements IMobileHomeController {
 
-    protected MobileHomeController(@Qualifier("mobileHomeFactory") IHomesFactory iDataFactory, IResponseFactory iResponseFactory) {
+    private final IMobileHomeFactory iMobileHomeFactory;
+
+    protected MobileHomeController
+            (
+                    @Qualifier("mobileHomeFactory") IHomesFactory iDataFactory,
+                    IResponseFactory iResponseFactory,
+                    IMobileHomeFactory iMobileHomeFactory
+            ) {
         super(iDataFactory, iResponseFactory);
+        this.iMobileHomeFactory = iMobileHomeFactory;
     }
 
     @Override
     public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFilter(HomeFilter filter, Integer number, Integer size) {
         return factoryGetInfoPageWithFilter(filter, number, size);
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getFavoritePage(Integer number, Integer size) {
+        try {
+            BasePagingResponse<HomeInfo> response = iMobileHomeFactory.getFavoritePage(number, size);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
     }
 }

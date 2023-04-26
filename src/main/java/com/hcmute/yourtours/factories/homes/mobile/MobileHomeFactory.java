@@ -80,19 +80,7 @@ public class MobileHomeFactory extends AppHomesFactory implements IMobileHomeFac
 
         List<HomeInfo> homeInfo = new ArrayList<>();
 
-        projections.getContent().forEach(item -> homeInfo.add(HomeInfo.builder()
-                .id(item.getId())
-                .costPerNightDefault(item.getCostPerNightDefault())
-                .name(item.getName())
-                .view(item.getView())
-                .numberOfBooking(item.getNumberOfBooking())
-                .favorite(item.getFavorite())
-                .numberOfReviews(item.getNumberOfReview())
-                .averageRate(item.getAverageRate())
-                .provinceName(item.getProvince())
-                .isFavorite(item.getIsFavorite())
-                .thumbnail(item.getThumbnail())
-                .build()));
+        projections.getContent().forEach(item -> homeInfo.add(homeProjectionToInfo(item)));
 
         return new BasePagingResponse<>(
                 homeInfo,
@@ -103,4 +91,42 @@ public class MobileHomeFactory extends AppHomesFactory implements IMobileHomeFac
     }
 
 
+    @Override
+    public BasePagingResponse<HomeInfo> getFavoritePage(Integer number, Integer size) throws InvalidException {
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
+
+        Page<MobileHomeProjection> projections = homesRepository.getPageFavoriteMobile
+                (
+                        CommonStatusEnum.ACTIVE.name(),
+                        userId,
+                        PageRequest.of(number, size)
+                );
+
+        List<HomeInfo> homeInfo = new ArrayList<>();
+
+        projections.getContent().forEach(item -> homeInfo.add(homeProjectionToInfo(item)));
+
+        return new BasePagingResponse<>(
+                homeInfo,
+                projections.getNumber(),
+                projections.getSize(),
+                projections.getTotalElements()
+        );
+    }
+
+    private HomeInfo homeProjectionToInfo(MobileHomeProjection projection) {
+        return HomeInfo.builder()
+                .id(projection.getId())
+                .costPerNightDefault(projection.getCostPerNightDefault())
+                .name(projection.getName())
+                .view(projection.getView())
+                .numberOfBooking(projection.getNumberOfBooking())
+                .favorite(projection.getFavorite())
+                .numberOfReviews(projection.getNumberOfReview())
+                .averageRate(projection.getAverageRate())
+                .provinceName(projection.getProvince())
+                .isFavorite(projection.getIsFavorite())
+                .thumbnail(projection.getThumbnail())
+                .build();
+    }
 }
