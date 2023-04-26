@@ -109,9 +109,7 @@ public class HomesFactory
                 .view(0L)
                 .favorite(0L)
                 .thumbnail(detail.getThumbnail())
-                .averageRate(0.0)
                 .numberOfBooking(0L)
-                .numberOfReviews(0L)
                 .refundPolicy(RefundPolicyEnum.BEFORE_ONE_DAY)
                 .build();
     }
@@ -137,9 +135,7 @@ public class HomesFactory
         entity.setView(detail.getView());
         entity.setFavorite(detail.getFavorite());
         entity.setThumbnail(detail.getThumbnail());
-        entity.setAverageRate(detail.getAverageRate());
         entity.setNumberOfBooking(detail.getNumberOfBooking());
-        entity.setNumberOfReviews(detail.getNumberOfReviews());
     }
 
     @Override
@@ -169,8 +165,6 @@ public class HomesFactory
                 .view(entity.getView())
                 .favorite(entity.getFavorite())
                 .thumbnail(entity.getThumbnail())
-                .averageRate(entity.getAverageRate())
-                .numberOfReviews(entity.getNumberOfReviews())
                 .provinceName(iProvinceFactory.getProvinceByCodeName(entity.getProvinceCode()).getName())
                 .lastModifiedDate(entity.getLastModifiedDate())
                 .numberOfBooking(entity.getNumberOfBooking())
@@ -203,9 +197,7 @@ public class HomesFactory
                 .view(entity.getView())
                 .imagesOfHome(iImagesHomeFactory.getFullListByHomeId(entity.getId(), entity.getThumbnail()))
                 .favorite(entity.getFavorite())
-                .averageRate(entity.getAverageRate())
                 .thumbnail(entity.getThumbnail())
-                .numberOfReviews(entity.getNumberOfReviews())
                 .lastModifiedDate(entity.getLastModifiedDate())
                 .provinceName(iProvinceFactory.getProvinceByCodeName(entity.getProvinceCode()).getName())
                 .numberOfBooking(entity.getNumberOfBooking())

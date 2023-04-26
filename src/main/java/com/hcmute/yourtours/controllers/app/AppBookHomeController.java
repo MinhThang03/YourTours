@@ -15,6 +15,7 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.filter.AppBookingFilter;
+import com.hcmute.yourtours.models.booking.request.CreateCommentRequest;
 import com.hcmute.yourtours.models.booking.request.UpdateStatusBookingRequest;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -72,6 +73,18 @@ public class AppBookHomeController
         LogContext.push(LogType.REQUEST, request);
         try {
             SuccessResponse response = iAppBookHomeFactory.checkBooking(request);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<BookHomeDetail>> createComment(CreateCommentRequest request) {
+        LogContext.push(LogType.REQUEST, request);
+        try {
+            BookHomeDetail response = iAppBookHomeFactory.createComment(request);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {

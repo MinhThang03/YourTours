@@ -6,6 +6,7 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.filter.AppBookingFilter;
+import com.hcmute.yourtours.models.booking.request.CreateCommentRequest;
 import com.hcmute.yourtours.models.booking.request.UpdateStatusBookingRequest;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import org.springframework.http.ResponseEntity;
@@ -25,4 +26,7 @@ public interface IAppBookHomeController extends
 
     @PostMapping("/check")
     ResponseEntity<BaseResponse<SuccessResponse>> checkBooking(@RequestBody @Valid BookHomeDetail request);
+
+    @PostMapping("/comment")
+    ResponseEntity<BaseResponse<BookHomeDetail>> createComment(@RequestBody @Valid CreateCommentRequest request);
 }

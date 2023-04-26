@@ -108,6 +108,8 @@ public class BookHomeFactory
                 .moneyPayed(detail.getMoneyPayed())
                 .costOfHost(detail.getCostOfHost())
                 .costOfAdmin(detail.getCostOfAdmin())
+                .comment(detail.getComment())
+                .rates(detail.getRates())
                 .build();
 
     }
@@ -127,6 +129,8 @@ public class BookHomeFactory
         entity.setTotalCost(detail.getTotalCost());
         entity.setPercent(detail.getPercent());
         entity.setMoneyPayed(detail.getMoneyPayed());
+        entity.setComment(detail.getComment());
+        entity.setRates(detail.getRates());
     }
 
     @Override
@@ -162,6 +166,8 @@ public class BookHomeFactory
                 .costOfAdmin(entity.getCostOfAdmin())
                 .moneyPayed(entity.getMoneyPayed())
                 .refundPolicy(homeDetail.getRefundPolicy())
+                .comment(entity.getComment())
+                .rates(entity.getRates())
                 .build();
 
     }

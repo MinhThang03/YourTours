@@ -98,12 +98,6 @@ public class Homes extends NameData {
     @Enumerated(EnumType.STRING)
     private RefundPolicyEnum refundPolicy;
 
-    @Column(name = "average_rate")
-    private Double averageRate;
-
-    @Column(name = "number_of_reviews")
-    private Long numberOfReviews;
-
     @Column(name = "number_of_booking")
     private Long numberOfBooking;
 

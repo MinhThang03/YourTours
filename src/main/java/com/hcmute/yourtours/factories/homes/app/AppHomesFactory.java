@@ -223,7 +223,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
     }
 
 
-    private boolean checkIsFavorite(UUID homeId) {
+    protected boolean checkIsFavorite(UUID homeId) {
         Optional<String> userId = iGetUserFromTokenFactory.getCurrentUser();
         if (userId.isEmpty()) {
             return false;

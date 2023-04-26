@@ -92,4 +92,10 @@ public class BookHomes extends Persistence {
     private Double costOfAdmin;
     @Column(name = "money_payed")
     private Double moneyPayed;
+    @Column(name = "rates")
+    private Double rates;
+
+    @Lob
+    @Column(name = "comment")
+    private String comment;
 }

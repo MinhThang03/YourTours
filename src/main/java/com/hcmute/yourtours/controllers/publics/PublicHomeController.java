@@ -43,7 +43,7 @@ public class PublicHomeController
             (
                     @Qualifier("appHomesFactory") IHomesFactory iDataFactory,
                     IResponseFactory iResponseFactory,
-                    IAppHomesFactory iAppHomesFactory,
+                    @Qualifier("appHomesFactory") IAppHomesFactory iAppHomesFactory,
                     IAppHandleViewHomeFactory iAppHandleViewHomeFactory
             ) {
         super(iDataFactory, iResponseFactory);

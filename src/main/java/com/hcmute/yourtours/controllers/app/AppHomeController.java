@@ -42,7 +42,7 @@ public class AppHomeController
             (
                     @Qualifier("appHomesFactory") IHomesFactory iDataFactory,
                     IResponseFactory iResponseFactory,
-                    IAppHomesFactory iAppHomesFactory
+                    @Qualifier("appHomesFactory") IAppHomesFactory iAppHomesFactory
             ) {
         super(iDataFactory, iResponseFactory);
         this.iAppHomesFactory = iAppHomesFactory;

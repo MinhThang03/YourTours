@@ -21,6 +21,7 @@ import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.libs.util.TimeUtil;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.filter.AppBookingFilter;
+import com.hcmute.yourtours.models.booking.request.CreateCommentRequest;
 import com.hcmute.yourtours.models.booking_surcharge_detail.BookingSurchargeDetailDetail;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
@@ -213,4 +214,16 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
                 .success(true)
                 .build();
     }
+
+    @Override
+    public BookHomeDetail createComment(CreateCommentRequest request) throws InvalidException {
+
+        BookHomeDetail detail = getDetailModel(request.getBookId(), null);
+
+        detail.setComment(request.getComment());
+        detail.setRates(request.getRates());
+
+        return updateModel(detail.getId(), detail);
+    }
+
 }

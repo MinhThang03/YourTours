@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.controllers.mobile;
 
+import com.hcmute.yourtours.controllers.mobile.interfaces.IMobileBookingController;
 import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;

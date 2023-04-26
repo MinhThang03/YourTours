@@ -1,4 +1,4 @@
-package com.hcmute.yourtours.controllers.mobile;
+package com.hcmute.yourtours.controllers.mobile.interfaces;
 
 import com.hcmute.yourtours.libs.controller.IGetInfoPageController;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
