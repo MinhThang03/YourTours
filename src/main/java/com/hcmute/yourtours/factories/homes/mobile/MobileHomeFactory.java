@@ -18,6 +18,7 @@ import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
+import com.hcmute.yourtours.models.homes.filter.HomeMobileFilter;
 import com.hcmute.yourtours.models.homes.projections.MobileHomeProjection;
 import com.hcmute.yourtours.repositories.HomesRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -111,6 +112,32 @@ public class MobileHomeFactory extends AppHomesFactory implements IMobileHomeFac
                 projections.getNumber(),
                 projections.getSize(),
                 projections.getTotalElements()
+        );
+    }
+
+    @Override
+    public BasePagingResponse<HomeInfo> getPageWithProvinceAndAmenity(HomeMobileFilter filter, Integer number, Integer size) throws InvalidException {
+
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
+
+        Page<MobileHomeProjection> pageEntity = homesRepository.getMobilePageWithProvinceAndAmenity
+                (
+                        CommonStatusEnum.ACTIVE.name(),
+                        filter.getProvince(),
+                        filter.getAmenityId(),
+                        userId,
+                        PageRequest.of(number, size)
+                );
+
+        List<HomeInfo> homeInfo = new ArrayList<>();
+
+        pageEntity.getContent().forEach(item -> homeInfo.add(homeProjectionToInfo(item)));
+
+        return new BasePagingResponse<>(
+                homeInfo,
+                pageEntity.getNumber(),
+                pageEntity.getSize(),
+                pageEntity.getTotalElements()
         );
     }
 
