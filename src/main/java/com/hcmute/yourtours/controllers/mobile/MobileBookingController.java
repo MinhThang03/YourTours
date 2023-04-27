@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.controllers.mobile;
 
+import com.hcmute.yourtours.controllers.mobile.interfaces.IMobileBookingController;
 import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/mobile/booking")
-@Tag(name = "APP MOBILE: BOOKING", description = "API mobile quản lý booking")
+@Tag(name = "MOBILE API: BOOKING", description = "API mobile quản lý booking")
 @Transactional
 public class MobileBookingController
         extends BaseController<UUID, BookHomeInfo, BookHomeDetail>
@@ -35,4 +36,5 @@ public class MobileBookingController
     public ResponseEntity<BaseResponse<BasePagingResponse<BookHomeInfo>>> getInfoPageWithFilter(MobileBookingFilter filter, Integer number, Integer size) {
         return factoryGetInfoPageWithFilter(filter, number, size);
     }
+
 }

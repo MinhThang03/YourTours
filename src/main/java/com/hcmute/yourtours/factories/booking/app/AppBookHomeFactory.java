@@ -17,10 +17,15 @@ import com.hcmute.yourtours.factories.price_of_home.IPriceOfHomeFactory;
 import com.hcmute.yourtours.factories.surcharges_of_home.ISurchargeOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
+import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.libs.util.TimeUtil;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.filter.AppBookingFilter;
+import com.hcmute.yourtours.models.booking.filter.BookingEvaluateFilter;
+import com.hcmute.yourtours.models.booking.projections.GetPageEvaluateProjection;
+import com.hcmute.yourtours.models.booking.request.CreateCommentRequest;
+import com.hcmute.yourtours.models.booking.response.GetPageEvaluateResponse;
 import com.hcmute.yourtours.models.booking_surcharge_detail.BookingSurchargeDetailDetail;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
@@ -213,4 +218,43 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
                 .success(true)
                 .build();
     }
+
+    @Override
+    public BookHomeDetail createComment(CreateCommentRequest request) throws InvalidException {
+
+        BookHomeDetail detail = getDetailModel(request.getBookId(), null);
+
+        detail.setComment(request.getComment());
+        detail.setRates(request.getRates());
+
+        return updateModel(detail.getId(), detail);
+    }
+
+    @Override
+    public BasePagingResponse<GetPageEvaluateResponse> getPageEvaluates(BookingEvaluateFilter filter, Integer number, Integer size) {
+
+
+        Page<GetPageEvaluateProjection> projections = bookHomeRepository.getPageEvaluate(filter.getHomeId(), PageRequest.of(number, size));
+
+        List<GetPageEvaluateResponse> responseList = new ArrayList<>();
+
+        projections.getContent().forEach(item -> responseList.add(GetPageEvaluateResponse.builder()
+                .bookingId(item.getBookingId())
+                .userId(item.getUserId())
+                .homeId(item.getHomeId())
+                .avatar(item.getAvatar())
+                .fullName(item.getFullName())
+                .rates(item.getRates())
+                .comment(item.getComment())
+                .build()));
+
+        return new BasePagingResponse<>(
+                responseList,
+                projections.getNumber(),
+                projections.getSize(),
+                projections.getTotalElements()
+        );
+
+    }
+
 }

@@ -39,7 +39,7 @@ public class AppItemFavoriteController
             (
                     @Qualifier("appHomesFactory") IHomesFactory iDataFactory,
                     IResponseFactory iResponseFactory,
-                    IAppHomesFactory iHomesFactory
+                    @Qualifier("appHomesFactory") IAppHomesFactory iHomesFactory
             ) {
         super(iDataFactory, iResponseFactory);
         this.iHomesFactory = iHomesFactory;

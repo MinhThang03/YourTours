@@ -1,8 +1,9 @@
-package com.hcmute.yourtours.controllers.app;
+package com.hcmute.yourtours.controllers.mobile;
 
-import com.hcmute.yourtours.controllers.app.interfaces.IAppHomeController;
+import com.hcmute.yourtours.controllers.mobile.interfaces.IMobileHomeController;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.homes.app.IAppHomesFactory;
+import com.hcmute.yourtours.factories.homes.mobile.IMobileHomeFactory;
 import com.hcmute.yourtours.libs.controller.BaseController;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.exceptions.RestException;
@@ -15,8 +16,6 @@ import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
 import com.hcmute.yourtours.models.homes.filter.HomeMobileFilter;
-import com.hcmute.yourtours.models.user_evaluate.UserEvaluateDetail;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -27,44 +26,35 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/app/homes")
-@Tag(name = "APP API: HOMES", description = "API lấy danh sách nhà")
+@RequestMapping("/api/v1/mobile/homes")
+@Tag(name = "MOBILE API: HOMES", description = "API lấy danh sách nhà")
 @Transactional
-public class AppHomeController
-        extends BaseController<UUID, HomeInfo, HomeDetail>
-        implements IAppHomeController {
+public class MobileHomeController extends BaseController<UUID, HomeInfo, HomeDetail>
+        implements IMobileHomeController {
 
-
+    private final IMobileHomeFactory iMobileHomeFactory;
     private final IAppHomesFactory iAppHomesFactory;
 
-
-    protected AppHomeController
+    protected MobileHomeController
             (
-                    @Qualifier("appHomesFactory") IHomesFactory iDataFactory,
+                    @Qualifier("mobileHomeFactory") IHomesFactory iDataFactory,
                     IResponseFactory iResponseFactory,
-                    @Qualifier("appHomesFactory") IAppHomesFactory iAppHomesFactory
-            ) {
+                    IMobileHomeFactory iMobileHomeFactory,
+                    @Qualifier("mobileHomeFactory") IAppHomesFactory iAppHomesFactory) {
         super(iDataFactory, iResponseFactory);
+        this.iMobileHomeFactory = iMobileHomeFactory;
         this.iAppHomesFactory = iAppHomesFactory;
     }
 
-
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFilter
-            (
-                    HomeFilter filter,
-                    Integer number,
-                    Integer size
-            ) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFilter(HomeFilter filter, Integer number, Integer size) {
         return factoryGetInfoPageWithFilter(filter, number, size);
     }
 
     @Override
-    @Operation(summary = "Tạo đánh giá nhà cho user")
-    public ResponseEntity<BaseResponse<HomeDetail>> createEvaluate(UserEvaluateDetail detail) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getFavoritePage(Integer number, Integer size) {
         try {
-            LogContext.push(LogType.REQUEST, detail);
-            HomeDetail response = iAppHomesFactory.createUserEvaluate(detail);
+            BasePagingResponse<HomeInfo> response = iMobileHomeFactory.getFavoritePage(number, size);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {
@@ -77,18 +67,6 @@ public class AppHomeController
         try {
             LogContext.push(LogType.REQUEST, filter);
             BasePagingResponse<HomeInfo> response = iAppHomesFactory.getPageWithProvinceAndAmenity(filter, number, size);
-            LogContext.push(LogType.RESPONSE, response);
-            return iResponseFactory.success(response);
-        } catch (InvalidException e) {
-            throw new RestException(e);
-        }
-    }
-
-    @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageRecommend(String city, Integer number, Integer size) {
-        try {
-            LogContext.push(LogType.REQUEST, city);
-            BasePagingResponse<HomeInfo> response = iAppHomesFactory.getPageRecommend(city, number, size);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {
