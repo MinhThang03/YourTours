@@ -346,6 +346,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "       a.rates               as rates,    " +
                     "       a.averageRate         as averageRate,    " +
                     "       a.provinceName        as provinceName,    " +
+                    "       a.thumbnail           as thumbnail,     " +
                     "       a.isFavorite          as isFavorite    " +
                     "from (select a.id                                                   as id,    " +
                     "             a.cost_per_night_default                               as costPerNightDefault,    " +
@@ -354,6 +355,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "             a.number_of_booking                                    as numberOfBooking,    " +
                     "             a.favorite                                             as favorite,    " +
                     "             a.created_date                                         as createdDate,    " +
+                    "             a.thumbnail                                            as thumbnail,     " +
                     "             c.name                                                 as provinceName,    " +
                     "             COALESCE(b.numberOfReview, 0)                          as numberOfReview,    " +
                     "             COALESCE(b.rates, 0)                                   as rates,    " +
@@ -402,6 +404,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "       a.rates               as rates,    " +
                     "       a.averageRate         as averageRate,    " +
                     "       a.provinceName        as province,    " +
+                    "       a.thumbnail           as thumbnail,     " +
                     "       a.isFavorite          as isFavorite    " +
                     "from (select a.id                                                   as id,    " +
                     "             a.cost_per_night_default                               as costPerNightDefault,    " +
@@ -410,6 +413,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "             a.number_of_booking                                    as numberOfBooking,    " +
                     "             a.favorite                                             as favorite,    " +
                     "             a.created_date                                         as createdDate,    " +
+                    "             a.thumbnail                                            as thumbnail,     " +
                     "             c.name                                                 as provinceName,    " +
                     "             COALESCE(b.numberOfReview, 0)                          as numberOfReview,    " +
                     "             COALESCE(b.rates, 0)                                   as rates,    " +
@@ -419,6 +423,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "            from homes a,    " +
                     "                 amenities_of_home b    " +
                     "            where a.deleted is false    " +
+                    "               and (a.id = b.home_id)    " +
                     "              and (:status is null or a.status = :status)    " +
                     "              and (:amenityId is null or b.amenity_id = :amenityId)) a    " +
                     "               left join    " +
@@ -439,6 +444,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "      from homes a,    " +
                     "           amenities_of_home b    " +
                     "      where a.deleted is false    " +
+                    "        and (a.id = b.home_id)    " +
                     "        and (:status is null or a.status = :status)    " +
                     "        and (:amenityId is null or b.amenity_id = :amenityId)) a    " +
                     "         inner join province c on a.province_code = c.code_name and    " +
