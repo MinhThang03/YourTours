@@ -2,6 +2,7 @@ package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.entities.BookHomes;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
+import com.hcmute.yourtours.models.booking.projections.GetPageEvaluateProjection;
 import com.hcmute.yourtours.models.booking.projections.InfoUserBookingProjection;
 import com.hcmute.yourtours.models.booking.projections.MobileGetPageBookingProjection;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
@@ -219,4 +220,23 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
     Page<MobileGetPageBookingProjection> getMobileBookingPage(@Param("status") List<BookRoomStatusEnum> status,
                                                               @Param("userId") UUID userId,
                                                               Pageable pageable);
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.id        as bookingId,    " +
+                    "       a.user_id   as userId,    " +
+                    "       a.home_id   as homeId,    " +
+                    "       a.rates     as rates,    " +
+                    "       a.comment   as comment,    " +
+                    "       b.avatar    as avatar,    " +
+                    "       b.full_name as fullName    " +
+                    "from book_home a    " +
+                    "         inner join user b on a.user_id = b.id and a.comment is not null and a.home_id = :homeId    " +
+                    "order by a.last_modified_date ",
+            countQuery = "select a.id    " +
+                    "from book_home a    " +
+                    "         inner join user b on a.user_id = b.id and a.comment is not null and a.home_id = :homeId    "
+    )
+    Page<GetPageEvaluateProjection> getPageEvaluate(@Param("homeId") UUID homeId,
+                                                    Pageable pageable);
 }

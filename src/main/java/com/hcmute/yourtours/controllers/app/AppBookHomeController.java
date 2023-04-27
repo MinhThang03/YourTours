@@ -15,8 +15,10 @@ import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.filter.AppBookingFilter;
+import com.hcmute.yourtours.models.booking.filter.BookingEvaluateFilter;
 import com.hcmute.yourtours.models.booking.request.CreateCommentRequest;
 import com.hcmute.yourtours.models.booking.request.UpdateStatusBookingRequest;
+import com.hcmute.yourtours.models.booking.response.GetPageEvaluateResponse;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -90,6 +92,14 @@ public class AppBookHomeController
         } catch (InvalidException e) {
             throw new RestException(e);
         }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<BasePagingResponse<GetPageEvaluateResponse>>> getEvaluatePage(BookingEvaluateFilter filter, Integer number, Integer size) {
+        LogContext.push(LogType.REQUEST, filter);
+        BasePagingResponse<GetPageEvaluateResponse> response = iAppBookHomeFactory.getPageEvaluates(filter, number, size);
+        LogContext.push(LogType.RESPONSE, response);
+        return iResponseFactory.success(response);
     }
 
     @Override
