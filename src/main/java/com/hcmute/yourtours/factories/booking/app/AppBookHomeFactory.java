@@ -20,9 +20,11 @@ import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.libs.util.TimeUtil;
+import com.hcmute.yourtours.libs.util.constant.TimePattern;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.filter.AppBookingFilter;
 import com.hcmute.yourtours.models.booking.filter.BookingEvaluateFilter;
+import com.hcmute.yourtours.models.booking.projections.GetDetailBookingProjection;
 import com.hcmute.yourtours.models.booking.projections.GetPageEvaluateProjection;
 import com.hcmute.yourtours.models.booking.request.CreateCommentRequest;
 import com.hcmute.yourtours.models.booking.response.GetPageEvaluateResponse;
@@ -94,7 +96,7 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
             detail.setEmail(userDetail.getEmail());
             detail.setUserId(userId);
             detail.setPhoneNumber(userDetail.getPhoneNumber());
-            detail.setUserName(userDetail.getFullName());
+            detail.setCustomerName(userDetail.getFullName());
 
             if (userDetail.getStatus() == null || !userDetail.getStatus().equals(UserStatusEnum.ACTIVE)) {
                 throw new InvalidException(YourToursErrorCode.ACCOUNT_NOT_ACTIVE);
@@ -154,7 +156,7 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
         GetOwnerNameAndHomeNameProjection projection = iHomesFactory.getOwnerNameAndHomeNameProjection(entity.getHomeId());
         detail.setId(entity.getId());
         detail.setHomeName(projection.getHomeName());
-        detail.setOwnerName(projection.getOwnerName());
+        detail.setOwner(projection.getOwnerName());
         detail.setBaseCost(projection.getBaseCost());
         detail.setCreatedDate(TimeUtil.toStringDate(entity.getCreatedDate()));
         applicationEventPublisher.publishEvent(detail);
@@ -254,6 +256,36 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
                 projections.getSize(),
                 projections.getTotalElements()
         );
+
+    }
+
+    @Override
+    public BookHomeDetail customGetDetail(UUID homeId) throws InvalidException {
+        GetDetailBookingProjection projection = bookHomeRepository.getDetailBooking(homeId);
+
+        if (projection == null) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_BOOKING);
+        }
+
+        return BookHomeDetail.builder()
+                .homeName(projection.getHomeName())
+                .baseCost(projection.getCostPerNight())
+                .homeProvinceName(projection.getProvince())
+                .totalCost(projection.getTotalCost())
+                .moneyPayed(projection.getMoneyPayed())
+                .dateStart(projection.getDateStart())
+                .dateEnd(projection.getDateEnd())
+                .createdDate(TimeUtil.toStringDate(projection.getCreatedDate(), TimePattern.dd_MM_yyyy_HH_mm_ss))
+                .comment(projection.getComment())
+                .rates(projection.getRates())
+                .status(projection.getStatus())
+                .userId(projection.getUserId())
+                .homeId(projection.getHomeId())
+                .customerName(projection.getUserName())
+                .id(projection.getBookingId())
+                .refundPolicy(projection.getRefundPolicy())
+                .owner(projection.getOwnerName())
+                .build();
 
     }
 

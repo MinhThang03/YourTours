@@ -276,7 +276,7 @@ public class BookHomeFactory
         detail = updateModel(detail.getId(), detail);
 
         GetOwnerNameAndHomeNameProjection projection = iHomesFactory.getOwnerNameAndHomeNameProjection(detail.getHomeId());
-        detail.setOwnerName(projection.getOwnerName());
+        detail.setOwner(projection.getOwnerName());
         detail.setBaseCost(projection.getBaseCost());
         detail.setHomeName(projection.getHomeName());
         detail.setLastModifiedDate(TimeUtil.toStringDate(LocalDateTime.now()));

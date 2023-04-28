@@ -2,6 +2,7 @@ package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.entities.BookHomes;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
+import com.hcmute.yourtours.models.booking.projections.GetDetailBookingProjection;
 import com.hcmute.yourtours.models.booking.projections.GetPageEvaluateProjection;
 import com.hcmute.yourtours.models.booking.projections.InfoUserBookingProjection;
 import com.hcmute.yourtours.models.booking.projections.MobileGetPageBookingProjection;
@@ -239,4 +240,34 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
     )
     Page<GetPageEvaluateProjection> getPageEvaluate(@Param("homeId") UUID homeId,
                                                     Pageable pageable);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select b.name                   as homeName,   " +
+                    "       b.cost_per_night_default as costPerNight,   " +
+                    "       a.id                     as bookingId,   " +
+                    "       d.name                   as province,   " +
+                    "       a.total_cost             as totalCost,   " +
+                    "       a.money_payed            as moneyPayed,   " +
+                    "       a.date_start             as dateStart,   " +
+                    "       a.date_end               as dateEnd,   " +
+                    "       a.created_date           as createdDate,   " +
+                    "       a.comment                as comment,   " +
+                    "       a.rates                  as rates,   " +
+                    "       a.status                 as status,   " +
+                    "       a.user_id                as userId,   " +
+                    "       a.home_id                as homeId,   " +
+                    "       b.refund_policy          as refundPolicy,   " +
+                    "       c.full_name              as userName,   " +
+                    "       f.full_name              as ownerName   " +
+                    "from (select a.* from book_home a where a.id = :id) a   " +
+                    "         inner join homes b on a.home_id = b.id   " +
+                    "         inner join user c on a.user_id = c.id   " +
+                    "         inner join province d on b.province_code = d.code_name   " +
+                    "         inner join owner_of_home e on b.id = e.home_id and e.is_main_owner is true   " +
+                    "         inner join user f on f.id = e.user_id "
+    )
+    GetDetailBookingProjection getDetailBooking(@Param("id") UUID id);
+
 }

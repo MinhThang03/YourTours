@@ -12,6 +12,7 @@ import com.hcmute.yourtours.libs.logging.LogType;
 import com.hcmute.yourtours.libs.model.factory.request.FactoryCreateRequest;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
+import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.filter.AppBookingFilter;
@@ -105,5 +106,17 @@ public class AppBookHomeController
     @Override
     public ResponseEntity<BaseResponse<BookHomeDetail>> createModel(FactoryCreateRequest<UUID, BookHomeDetail> request) {
         return factoryCreateModel(request);
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<FactoryGetResponse<UUID, BookHomeDetail>>> getDetailById(UUID id) {
+        FactoryGetResponse<UUID, BookHomeDetail> response = new FactoryGetResponse<>();
+        try {
+            response.setData(iAppBookHomeFactory.customGetDetail(id));
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
     }
 }

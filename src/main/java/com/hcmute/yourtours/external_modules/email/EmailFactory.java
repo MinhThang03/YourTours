@@ -74,7 +74,7 @@ public class EmailFactory implements IEmailFactory {
             StringWriter stringWriter = new StringWriter();
             Map<String, Object> model = new HashMap<>();
             model.put("homeName", detail.getHomeName());
-            model.put("ownerName", detail.getOwnerName());
+            model.put("ownerName", detail.getOwner());
             model.put("dateStart", detail.getDateStart().toString());
             model.put("dateEnd", detail.getDateEnd().toString());
             model.put("baseCost", String.valueOf(detail.getBaseCost().longValue()));
@@ -84,7 +84,7 @@ public class EmailFactory implements IEmailFactory {
             model.put("moneyPay", String.valueOf(detail.getMoneyPayed().longValue()));
             model.put("billId", detail.getId().toString());
             model.put("createdDate", detail.getCreatedDate());
-            model.put("userName", detail.getUserName());
+            model.put("userName", detail.getCustomerName());
             freeMarkerConfiguration.getTemplate("Email_Booking_Success.ftl").process(model, stringWriter);
             return stringWriter.getBuffer().toString();
         } catch (Exception ignore) {
@@ -100,7 +100,7 @@ public class EmailFactory implements IEmailFactory {
             StringWriter stringWriter = new StringWriter();
             Map<String, Object> model = new HashMap<>();
             model.put("homeName", detail.getHomeName());
-            model.put("ownerName", detail.getOwnerName());
+            model.put("ownerName", detail.getOwner());
             model.put("dateStart", detail.getDateStart().toString());
             model.put("dateEnd", detail.getDateEnd().toString());
             model.put("baseCost", String.valueOf(detail.getBaseCost().longValue()));
@@ -109,7 +109,7 @@ public class EmailFactory implements IEmailFactory {
             model.put("status", detail.getStatus().getDescription());
             model.put("billId", detail.getId().toString());
             model.put("cancelDate", detail.getLastModifiedDate());
-            model.put("userName", detail.getUserName());
+            model.put("userName", detail.getCustomerName());
             freeMarkerConfiguration.getTemplate("Email_Booking_Cancel.ftl").process(model, stringWriter);
             return stringWriter.getBuffer().toString();
         } catch (Exception ignore) {

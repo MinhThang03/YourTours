@@ -14,12 +14,6 @@ import lombok.experimental.SuperBuilder;
 public class BookHomeDetail extends BookHomeInfo {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String homeName;
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String ownerName;
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Double baseCost;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -31,7 +25,5 @@ public class BookHomeDetail extends BookHomeInfo {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Double surchargeCost;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String userName;
 
 }
