@@ -3,6 +3,7 @@ package com.hcmute.yourtours.repositories;
 import com.hcmute.yourtours.entities.BookingGuestDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +21,9 @@ public interface BookingGuestDetailRepository extends JpaRepository<BookingGuest
                     "where a.booking = :bookingId "
     )
     Integer sumNumberGuestsOfBooking(UUID bookingId);
+
+    @Query(
+            value = "select a from BookingGuestDetail a where a.booking = :bookingId order by a.guestCategory "
+    )
+    List<BookingGuestDetail> findAllByBookingAndSort(@Param("bookingId") UUID bookingId);
 }

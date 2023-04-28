@@ -18,5 +18,5 @@ public interface IAppBookHomeFactory {
 
     BasePagingResponse<GetPageEvaluateResponse> getPageEvaluates(BookingEvaluateFilter filter, Integer number, Integer size);
 
-    BookHomeDetail customGetDetail(UUID homeId) throws InvalidException;
+    BookHomeDetail customGetDetail(UUID bookingId) throws InvalidException;
 }

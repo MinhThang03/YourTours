@@ -260,8 +260,8 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
     }
 
     @Override
-    public BookHomeDetail customGetDetail(UUID homeId) throws InvalidException {
-        GetDetailBookingProjection projection = bookHomeRepository.getDetailBooking(homeId);
+    public BookHomeDetail customGetDetail(UUID bookingId) throws InvalidException {
+        GetDetailBookingProjection projection = bookHomeRepository.getDetailBooking(bookingId);
 
         if (projection == null) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_BOOKING);
@@ -285,6 +285,7 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
                 .id(projection.getBookingId())
                 .refundPolicy(projection.getRefundPolicy())
                 .owner(projection.getOwnerName())
+                .guests(iBookingGuestDetailFactory.getListByBookingId(projection.getBookingId()))
                 .build();
 
     }

@@ -13,4 +13,6 @@ public interface IBookingGuestDetailFactory extends IDataFactory<UUID, BookingGu
     void createListModel(UUID bookingId, List<BookingGuestDetailDetail> listDetail) throws InvalidException;
 
     Integer getNumberGuestsOfBooking(UUID booking);
+
+    List<BookingGuestDetailDetail> getListByBookingId(UUID bookingId) throws InvalidException;
 }

@@ -9,6 +9,7 @@ import com.hcmute.yourtours.repositories.BookingGuestDetailRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -101,5 +102,19 @@ public class BookingGuestDetailFactory
     @Override
     public Integer getNumberGuestsOfBooking(UUID booking) {
         return bookingGuestDetailRepository.sumNumberGuestsOfBooking(booking);
+    }
+
+    @Override
+    public List<BookingGuestDetailDetail> getListByBookingId(UUID bookingId) throws InvalidException {
+        List<BookingGuestDetail> listGuests = bookingGuestDetailRepository.findAllByBookingAndSort(bookingId);
+
+        List<BookingGuestDetailDetail> responseList = new ArrayList<>();
+
+
+        for (BookingGuestDetail item : listGuests) {
+            responseList.add(convertToDetail(item));
+        }
+
+        return responseList;
     }
 }
