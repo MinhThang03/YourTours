@@ -3,6 +3,8 @@ package com.hcmute.yourtours.controllers.publics.interfaces;
 import com.hcmute.yourtours.libs.controller.IGetInfoPageController;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
+import com.hcmute.yourtours.models.booking.filter.BookingEvaluateFilter;
+import com.hcmute.yourtours.models.booking.response.GetPageEvaluateResponse;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeDetailFilter;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
@@ -33,6 +35,13 @@ public interface IPublicHomeController extends IGetInfoPageController<UUID, Home
     @GetMapping("page/search")
     ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithProvince(
             @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") Integer number,
+            @RequestParam(defaultValue = "20") Integer size
+    );
+
+    @GetMapping("page/evaluates")
+    ResponseEntity<BaseResponse<BasePagingResponse<GetPageEvaluateResponse>>> getEvaluatePage(
+            @ParameterObject @Valid BookingEvaluateFilter filter,
             @RequestParam(defaultValue = "0") Integer number,
             @RequestParam(defaultValue = "20") Integer size
     );

@@ -10,7 +10,7 @@ import java.util.UUID;
 public class GetPageEvaluateResponse {
     private String avatar;
     private String fullName;
-    private double rates;
+    private Double rates;
     private String comment;
     private UUID userId;
     private UUID homeId;

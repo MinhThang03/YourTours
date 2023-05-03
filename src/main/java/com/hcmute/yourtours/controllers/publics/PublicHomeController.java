@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.controllers.publics;
 
 import com.hcmute.yourtours.controllers.publics.interfaces.IPublicHomeController;
+import com.hcmute.yourtours.factories.booking.app.IAppBookHomeFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.homes.app.IAppHandleViewHomeFactory;
 import com.hcmute.yourtours.factories.homes.app.IAppHomesFactory;
@@ -12,6 +13,8 @@ import com.hcmute.yourtours.libs.logging.LogContext;
 import com.hcmute.yourtours.libs.logging.LogType;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
+import com.hcmute.yourtours.models.booking.filter.BookingEvaluateFilter;
+import com.hcmute.yourtours.models.booking.response.GetPageEvaluateResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeDetailFilter;
@@ -38,18 +41,21 @@ public class PublicHomeController
     private final IAppHomesFactory iAppHomesFactory;
     private final IAppHandleViewHomeFactory iAppHandleViewHomeFactory;
     private final IHomesFactory iHomesFactory;
+    private final IAppBookHomeFactory iAppBookHomeFactory;
 
     protected PublicHomeController
             (
                     @Qualifier("appHomesFactory") IHomesFactory iDataFactory,
                     IResponseFactory iResponseFactory,
                     @Qualifier("appHomesFactory") IAppHomesFactory iAppHomesFactory,
-                    IAppHandleViewHomeFactory iAppHandleViewHomeFactory
+                    IAppHandleViewHomeFactory iAppHandleViewHomeFactory,
+                    @Qualifier("appBookHomeFactory") IAppBookHomeFactory iAppBookHomeFactory
             ) {
         super(iDataFactory, iResponseFactory);
         this.iAppHomesFactory = iAppHomesFactory;
         this.iAppHandleViewHomeFactory = iAppHandleViewHomeFactory;
         this.iHomesFactory = iDataFactory;
+        this.iAppBookHomeFactory = iAppBookHomeFactory;
     }
 
     @Override
@@ -96,5 +102,13 @@ public class PublicHomeController
         } catch (InvalidException e) {
             throw new RestException(e);
         }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<BasePagingResponse<GetPageEvaluateResponse>>> getEvaluatePage(BookingEvaluateFilter filter, Integer number, Integer size) {
+        LogContext.push(LogType.REQUEST, filter);
+        BasePagingResponse<GetPageEvaluateResponse> response = iAppBookHomeFactory.getPageEvaluates(filter, number, size);
+        LogContext.push(LogType.RESPONSE, response);
+        return iResponseFactory.success(response);
     }
 }

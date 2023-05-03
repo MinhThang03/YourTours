@@ -232,7 +232,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
                     "       b.avatar    as avatar,    " +
                     "       b.full_name as fullName    " +
                     "from book_home a    " +
-                    "         inner join user b on a.user_id = b.id and a.comment is not null and a.home_id = :homeId    " +
+                    "         inner join user b on a.user_id = b.id and a.comment is not null and a.rates is not null and a.home_id = :homeId    " +
                     "order by a.last_modified_date ",
             countQuery = "select a.id    " +
                     "from book_home a    " +
