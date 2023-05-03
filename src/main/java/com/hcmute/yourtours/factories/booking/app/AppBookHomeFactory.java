@@ -248,6 +248,7 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
                 .fullName(item.getFullName())
                 .rates(item.getRates())
                 .comment(item.getComment())
+                .lateModifiedDate(TimeUtil.toStringDate(item.getLastModifiedDate(), TimePattern.dd_MM_yyyy_HH_mm_ss))
                 .build()));
 
         return new BasePagingResponse<>(

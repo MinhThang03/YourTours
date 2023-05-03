@@ -230,6 +230,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
                     "       a.rates     as rates,    " +
                     "       a.comment   as comment,    " +
                     "       b.avatar    as avatar,    " +
+                    "       a.last_modified_date    as lastModifiedDate,    " +
                     "       b.full_name as fullName    " +
                     "from book_home a    " +
                     "         inner join user b on a.user_id = b.id and a.comment is not null and a.rates is not null and a.home_id = :homeId    " +

@@ -15,4 +15,5 @@ public class GetPageEvaluateResponse {
     private UUID userId;
     private UUID homeId;
     private UUID bookingId;
+    private String lateModifiedDate;
 }

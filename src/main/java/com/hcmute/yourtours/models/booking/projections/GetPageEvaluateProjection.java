@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.models.booking.projections;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface GetPageEvaluateProjection {
@@ -16,4 +17,6 @@ public interface GetPageEvaluateProjection {
     UUID getHomeId();
 
     UUID getBookingId();
+
+    LocalDateTime getLastModifiedDate();
 }
