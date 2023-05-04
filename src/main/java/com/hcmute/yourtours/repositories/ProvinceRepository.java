@@ -27,6 +27,7 @@ public interface ProvinceRepository extends JpaRepository<Province, Long> {
                     value = "select a.code_name as codeName , " +
                             "       a.name      as name, " +
                             "       a.thumbnail as thumbnail, " +
+                            "       a.enName as enName, " +
                             "   coalesce(b.numberBooking, 0) as numberBooking " +
                             "from province a left join  " +
                             "     (select count(a.id) as numberBooking, a.province_code as provinceCode  " +
