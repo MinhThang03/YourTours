@@ -10,5 +10,5 @@ public interface ProvinceProjection {
 
     Long getNumberBooking();
 
-    Long getEnName();
+    String getEnName();
 }
