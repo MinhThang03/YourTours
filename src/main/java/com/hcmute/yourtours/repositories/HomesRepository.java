@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.entities.Homes;
+import com.hcmute.yourtours.models.homes.projections.CalculateAverageRateProjection;
 import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
 import com.hcmute.yourtours.models.homes.projections.MobileHomeProjection;
 import io.lettuce.core.dynamic.annotation.Param;
@@ -459,4 +460,19 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                                                                    Pageable pageable);
 
 
+    @Query(
+            nativeQuery = true,
+            value = "   " +
+                    "select a.homeId                                               as id,   " +
+                    "       COALESCE(a.numberOfReview, 0)                          as numberOfReview,   " +
+                    "       COALESCE(a.rates, 0)                                   as rates,   " +
+                    "       (COALESCE(a.rates, 0) / COALESCE(a.numberOfReview, 1)) as averageRate   " +
+                    "from (select a.home_id    as homeId,   " +
+                    "             count(a.id)  as numberOfReview,   " +
+                    "             sum(a.rates) as rates   " +
+                    "      from book_home a   " +
+                    "      where a.rates is not null   " +
+                    "        and a.home_id = :homeId) a "
+    )
+    CalculateAverageRateProjection calculateAverageRate(@Param("homeId") UUID homeId);
 }

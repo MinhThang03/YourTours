@@ -23,7 +23,6 @@ public class UserHomeDetailModel implements Serializable {
     private List<RoomOfHomeDetailWithBedModel> rooms;
     private Double userRate;
     private boolean isBooked;
-    private boolean isFavorite;
     private List<String> dateIsBooked;
     private String ownerName;
     private List<AmenityInfo> amenitiesView;

@@ -8,7 +8,6 @@ import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.discount_of_home.IDiscountOfHomeFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
-import com.hcmute.yourtours.factories.item_favorites.IItemFavoritesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.price_of_home.IPriceOfHomeFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
@@ -19,9 +18,11 @@ import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.models.discount_of_home.models.DiscountOfHomeViewModel;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.models.UserHomeDetailModel;
+import com.hcmute.yourtours.models.homes.projections.CalculateAverageRateProjection;
 import com.hcmute.yourtours.models.price_of_home.request.GetPriceOfHomeRequest;
 import com.hcmute.yourtours.models.price_of_home.response.PriceOfHomeResponse;
 import com.hcmute.yourtours.models.rooms_of_home.RoomOfHomeInfo;
+import com.hcmute.yourtours.repositories.HomesRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,6 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
     private final IBookHomeFactory iBookHomeFactory;
     private final IGetUserFromTokenFactory iGetUserFromTokenFactory;
     private final IUserEvaluateFactory iUserEvaluateFactory;
-    private final IItemFavoritesFactory iItemFavoritesFactory;
     private final IRoomsOfHomeFactory iRoomsOfHomeFactory;
     private final IOwnerOfHomeFactory iOwnerOfHomeFactory;
     private final IAmenitiesFactory iAmenitiesFactory;
@@ -47,25 +47,26 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
     private final ISurchargeOfHomeFactory iSurchargeOfHomeFactory;
     private final IPriceOfHomeFactory iPriceOfHomeFactory;
     private final IDiscountOfHomeFactory iDiscountOfHomeFactory;
+    private final HomesRepository homesRepository;
 
     public AppHandleViewHomeFactory(
             @Qualifier("appHomesFactory") IHomesFactory iHomesFactory,
             @Qualifier("bookHomeFactory") IBookHomeFactory iBookHomeFactory,
             IGetUserFromTokenFactory iGetUserFromTokenFactory,
             @Qualifier("userEvaluateFactory") IUserEvaluateFactory iUserEvaluateFactory,
-            IItemFavoritesFactory iItemFavoritesFactory,
             IRoomsOfHomeFactory iRoomsOfHomeFactory,
             IOwnerOfHomeFactory iOwnerOfHomeFactory,
             @Qualifier("appAmenitiesFactory") IAmenitiesFactory iAmenitiesFactory,
             IBedsOfHomeFactory iBedsOfHomeFactory,
             ISurchargeOfHomeFactory iSurchargeOfHomeFactory,
             IPriceOfHomeFactory iPriceOfHomeFactory,
-            IDiscountOfHomeFactory iDiscountOfHomeFactory) {
+            IDiscountOfHomeFactory iDiscountOfHomeFactory,
+            HomesRepository homesRepository
+    ) {
         this.iHomesFactory = iHomesFactory;
         this.iBookHomeFactory = iBookHomeFactory;
         this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
         this.iUserEvaluateFactory = iUserEvaluateFactory;
-        this.iItemFavoritesFactory = iItemFavoritesFactory;
         this.iRoomsOfHomeFactory = iRoomsOfHomeFactory;
         this.iOwnerOfHomeFactory = iOwnerOfHomeFactory;
         this.iAmenitiesFactory = iAmenitiesFactory;
@@ -73,6 +74,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
         this.iSurchargeOfHomeFactory = iSurchargeOfHomeFactory;
         this.iPriceOfHomeFactory = iPriceOfHomeFactory;
         this.iDiscountOfHomeFactory = iDiscountOfHomeFactory;
+        this.homesRepository = homesRepository;
     }
 
     @Override
@@ -116,16 +118,27 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                 return result;
             }
 
-            return result.toBuilder()
-                    .isBooked(iBookHomeFactory.existByUserIdAndHomeId(UUID.fromString(userId.get()), homeId))
-                    .isFavorite(iItemFavoritesFactory.existByUserIdAndHomeId(UUID.fromString(userId.get()), homeId))
-                    .build();
+//            return result.toBuilder()
+//                    .isBooked(iBookHomeFactory.existByUserIdAndHomeId(UUID.fromString(userId.get()), homeId))
+//                    .build();
+
+            return calculateAverageRate(result);
+
         } catch (InvalidException e) {
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
             throw new InvalidException(YourToursErrorCode.CONVERT_TO_UUID_IS_ERROR);
         }
+
+    }
+
+    private UserHomeDetailModel calculateAverageRate(UserHomeDetailModel result) {
+        CalculateAverageRateProjection projection = homesRepository.calculateAverageRate(result.getHomeDetail().getId());
+
+        result.getHomeDetail().setAverageRate(projection.getAverageRate());
+        result.getHomeDetail().setNumberOfReviews(projection.getNumberOfReview());
+        return result;
 
     }
 
