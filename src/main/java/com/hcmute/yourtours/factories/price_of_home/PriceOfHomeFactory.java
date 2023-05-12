@@ -222,7 +222,7 @@ public class PriceOfHomeFactory
         double totalCost;
 
         if (percent != null) {
-            totalCost = Math.round((total + surchargeFee) * (100 -percent / 100));
+            totalCost = Math.round((total + surchargeFee) * ((100 - percent) / 100));
         } else {
             totalCost = total + surchargeFee;
         }
