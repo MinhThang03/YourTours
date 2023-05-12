@@ -21,7 +21,6 @@ public class UserHomeDetailModel implements Serializable {
     private HomeDetail homeDetail;
     private BasePagingResponse<UserEvaluateInfo> evaluates;
     private List<RoomOfHomeDetailWithBedModel> rooms;
-    private Double userRate;
     private boolean isBooked;
     private List<String> dateIsBooked;
     private String ownerName;

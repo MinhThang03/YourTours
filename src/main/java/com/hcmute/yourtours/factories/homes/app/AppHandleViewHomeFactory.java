@@ -30,7 +30,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -113,10 +112,11 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                     .discounts(discounts)
                     .build();
 
-            Optional<String> userId = iGetUserFromTokenFactory.getCurrentUser();
-            if (userId.isEmpty()) {
-                return result;
-            }
+//            Optional<String> userId = iGetUserFromTokenFactory.getCurrentUser();
+
+//            if (userId.isEmpty()) {
+//                return result;
+//            }
 
 //            return result.toBuilder()
 //                    .isBooked(iBookHomeFactory.existByUserIdAndHomeId(UUID.fromString(userId.get()), homeId))
@@ -134,6 +134,7 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
     }
 
     private UserHomeDetailModel calculateAverageRate(UserHomeDetailModel result) {
+
         CalculateAverageRateProjection projection = homesRepository.calculateAverageRate(result.getHomeDetail().getId());
 
         result.getHomeDetail().setAverageRate(projection.getAverageRate());
