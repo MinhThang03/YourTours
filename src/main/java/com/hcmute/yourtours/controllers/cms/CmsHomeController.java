@@ -15,7 +15,7 @@ import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
-import com.hcmute.yourtours.models.homes.filter.HomeFilter;
+import com.hcmute.yourtours.models.homes.filter.CmsHomeFilter;
 import com.hcmute.yourtours.models.homes.models.HostHomeDetailModel;
 import com.hcmute.yourtours.models.homes.models.UpdateAddressHomeModel;
 import com.hcmute.yourtours.models.homes.models.UpdateBasePriceHomeModel;
@@ -61,7 +61,7 @@ public class CmsHomeController
 
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFilter(HomeFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFilter(CmsHomeFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 

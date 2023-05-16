@@ -7,7 +7,7 @@ import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
-import com.hcmute.yourtours.models.homes.filter.HomeFilter;
+import com.hcmute.yourtours.models.homes.filter.CmsHomeFilter;
 import com.hcmute.yourtours.models.homes.models.HostHomeDetailModel;
 import com.hcmute.yourtours.models.homes.models.UpdateAddressHomeModel;
 import com.hcmute.yourtours.models.homes.models.UpdateBasePriceHomeModel;
@@ -23,7 +23,7 @@ import java.util.UUID;
 
 public interface ICmsHomeController extends
         ICreateModelController<UUID, HomeDetail>,
-        IGetInfoPageController<UUID, HomeInfo, HomeFilter> {
+        IGetInfoPageController<UUID, HomeInfo, CmsHomeFilter> {
 
     @GetMapping("{id}/detail")
     ResponseEntity<BaseResponse<HostHomeDetailModel>> getDetailById(@PathVariable UUID id);

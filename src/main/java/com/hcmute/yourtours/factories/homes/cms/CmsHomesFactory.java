@@ -15,9 +15,10 @@ import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
-import com.hcmute.yourtours.models.homes.filter.HomeFilter;
+import com.hcmute.yourtours.models.homes.filter.CmsHomeFilter;
 import com.hcmute.yourtours.repositories.HomesRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -53,9 +54,18 @@ public class CmsHomesFactory extends HomesFactory {
 
     @Override
     protected <F extends BaseFilter> Page<Homes> pageQuery(F filter, Integer number, Integer size) {
-        HomeFilter homeFilter = (HomeFilter) filter;
+        CmsHomeFilter homeFilter = (CmsHomeFilter) filter;
         iGetUserFromTokenFactory.getCurrentUser().ifPresent(userId -> homeFilter.setUserId(UUID.fromString(userId)));
-        return super.pageQuery(homeFilter, number, size);
+        if (homeFilter.getStatusList().isEmpty()) {
+            homeFilter.setStatusList(null);
+        }
+        return homesRepository.getCmsPageHome
+                (
+                        homeFilter.getUserId(),
+                        homeFilter.getStatusList(),
+                        homeFilter.getKeyword(),
+                        PageRequest.of(number, size)
+                );
     }
 
     @Override

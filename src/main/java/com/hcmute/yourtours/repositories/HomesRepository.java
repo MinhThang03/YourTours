@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.entities.Homes;
+import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.models.homes.projections.CalculateAverageRateProjection;
 import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
 import com.hcmute.yourtours.models.homes.projections.MobileHomeProjection;
@@ -475,4 +476,27 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "        and a.home_id = :homeId) a "
     )
     CalculateAverageRateProjection calculateAverageRate(@Param("homeId") UUID homeId);
+
+
+    @Query
+            (
+                    value =
+                            "select a from Homes a inner join OwnerOfHome b on a.id = b.homeId " +
+                                    "where a.deleted is false " +
+                                    "and (:keyword is null or upper(a.name) like Concat('%', upper(:keyword) , '%') ) " +
+                                    "and (coalesce(:statusList, null ) is null or a.status in :statusList)" +
+                                    "and (:userId is null or b.userId = :userId) " +
+                                    "order by a.createdDate desc ",
+                    countQuery = "select a.id from Homes a inner join OwnerOfHome b on a.id = b.homeId " +
+                            "where a.deleted is false " +
+                            "and (:keyword is null or upper(a.name) like Concat('%', upper(:keyword) , '%') ) " +
+                            "and (coalesce(:statusList, null ) is null or a.status in :statusList)" +
+                            "and (:userId is null or b.userId = :userId) " +
+                            "order by a.createdDate desc "
+            )
+    Page<Homes> getCmsPageHome(
+            @Param("userId") UUID userId,
+            @Param("statusList") List<CommonStatusEnum> statusList,
+            @Param("keyword") String keyword,
+            Pageable pageable);
 }
