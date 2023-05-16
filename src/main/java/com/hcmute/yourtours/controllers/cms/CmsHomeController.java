@@ -20,6 +20,8 @@ import com.hcmute.yourtours.models.homes.models.HostHomeDetailModel;
 import com.hcmute.yourtours.models.homes.models.UpdateAddressHomeModel;
 import com.hcmute.yourtours.models.homes.models.UpdateBasePriceHomeModel;
 import com.hcmute.yourtours.models.homes.models.UpdateBaseProfileHomeModel;
+import com.hcmute.yourtours.models.homes.requests.UpdateHomeStatusRequest;
+import com.hcmute.yourtours.models.homes.responses.UpdateHomeStatusResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -93,6 +95,18 @@ public class CmsHomeController
     public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getPageWithRoleAdmin(Integer number, Integer size) {
         try {
             BasePagingResponse<HomeInfo> response = iHomesFactory.getPageWithRoleAdmin(number, size);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<UpdateHomeStatusResponse>> updateStatus(UpdateHomeStatusRequest request) {
+        try {
+            LogContext.push(LogType.REQUEST, request);
+            UpdateHomeStatusResponse response = iHomesFactory.updateHomeStatus(request);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {

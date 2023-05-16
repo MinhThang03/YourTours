@@ -5,9 +5,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.UUID;
+
 public class GetInfoToken {
 
-    private GetInfoToken(){}
+    private GetInfoToken() {
+    }
 
     public static String getCurrentSessionId() {
         DefaultUserDetail user = getInfoUser();
@@ -15,6 +18,19 @@ public class GetInfoToken {
             return null;
         }
         return user.getSessionState();
+    }
+
+
+    public static UUID getUserId() {
+        DefaultUserDetail user = getInfoUser();
+        if (user == null) {
+            return null;
+        }
+        try {
+            return UUID.fromString(user.getSubject());
+        } catch (IllegalAccessError e) {
+            return null;
+        }
     }
 
 

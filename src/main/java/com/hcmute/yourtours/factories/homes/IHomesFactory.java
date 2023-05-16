@@ -8,6 +8,8 @@ import com.hcmute.yourtours.models.booking_guest_detail.BookingGuestDetailDetail
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
+import com.hcmute.yourtours.models.homes.requests.UpdateHomeStatusRequest;
+import com.hcmute.yourtours.models.homes.responses.UpdateHomeStatusResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,4 +26,6 @@ public interface IHomesFactory extends IDataFactory<UUID, HomeInfo, HomeDetail> 
     BasePagingResponse<HomeInfo> getPageWithRoleAdmin(Integer number, Integer size) throws InvalidException;
 
     GetOwnerNameAndHomeNameProjection getOwnerNameAndHomeNameProjection(UUID homeId);
+
+    UpdateHomeStatusResponse updateHomeStatus(UpdateHomeStatusRequest request) throws InvalidException;
 }

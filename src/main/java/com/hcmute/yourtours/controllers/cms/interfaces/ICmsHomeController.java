@@ -12,6 +12,9 @@ import com.hcmute.yourtours.models.homes.models.HostHomeDetailModel;
 import com.hcmute.yourtours.models.homes.models.UpdateAddressHomeModel;
 import com.hcmute.yourtours.models.homes.models.UpdateBasePriceHomeModel;
 import com.hcmute.yourtours.models.homes.models.UpdateBaseProfileHomeModel;
+import com.hcmute.yourtours.models.homes.requests.UpdateHomeStatusRequest;
+import com.hcmute.yourtours.models.homes.responses.UpdateHomeStatusResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,4 +40,8 @@ public interface ICmsHomeController extends
     @GetMapping("admin/pages")
     ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getPageWithRoleAdmin(@RequestParam(defaultValue = "0") Integer number,
                                                                                     @RequestParam(defaultValue = "20") Integer size);
+
+    @PutMapping("update/status")
+    @Operation(summary = "Đổi trạng thái của nhà")
+    ResponseEntity<BaseResponse<UpdateHomeStatusResponse>> updateStatus(@RequestBody @Valid UpdateHomeStatusRequest request);
 }

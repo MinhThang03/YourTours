@@ -13,6 +13,7 @@ import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.province.IProvinceFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
+import com.hcmute.yourtours.libs.exceptions.ErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
@@ -23,10 +24,13 @@ import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
 import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
+import com.hcmute.yourtours.models.homes.requests.UpdateHomeStatusRequest;
+import com.hcmute.yourtours.models.homes.responses.UpdateHomeStatusResponse;
 import com.hcmute.yourtours.models.images_home.ImageHomeDetail;
 import com.hcmute.yourtours.models.owner_of_home.OwnerOfHomeDetail;
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.repositories.HomesRepository;
+import com.hcmute.yourtours.utils.GetInfoToken;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -318,5 +322,27 @@ public class HomesFactory
     @Override
     public GetOwnerNameAndHomeNameProjection getOwnerNameAndHomeNameProjection(UUID homeId) {
         return homesRepository.getOwnerNameAndHomeName(homeId);
+    }
+
+    @Override
+    public UpdateHomeStatusResponse updateHomeStatus(UpdateHomeStatusRequest request) throws InvalidException {
+
+        UUID userId = GetInfoToken.getUserId();
+        if (!iOwnerOfHomeFactory.existByOwnerIdAndHomeId(userId, request.getHomeId())) {
+            throw new InvalidException(YourToursErrorCode.NOT_OWNER_OF_HOME);
+        }
+
+        Homes homes = homesRepository.findById(request.getHomeId()).orElse(null);
+        if (homes == null) {
+            throw new InvalidException(ErrorCode.NOT_FOUND);
+        }
+
+        homes.setStatus(request.getStatus());
+        homesRepository.save(homes);
+
+        return UpdateHomeStatusResponse.builder()
+                .homeId(homes.getId())
+                .status(request.getStatus())
+                .build();
     }
 }
