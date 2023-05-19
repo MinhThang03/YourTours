@@ -22,7 +22,7 @@ public interface AmenitiesOfHomeRepository extends JpaRepository<AmenitiesOfHome
                     "       b.status      as status, " +
                     "       c.is_have     as isHave " +
                     "from amenity_categories a " +
-                    "         inner join amenities b on a.id = b.category_id " +
+                    "         inner join amenities b on a.id = b.category_id and b.deleted is false " +
                     "         left join (select a.* " +
                     "                    from amenities_of_home a " +
                     "                    where a.home_id = :homeId) c on b.id = c.amenity_id " +
