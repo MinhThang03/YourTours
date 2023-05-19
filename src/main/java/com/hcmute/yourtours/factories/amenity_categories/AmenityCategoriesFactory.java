@@ -2,6 +2,7 @@ package com.hcmute.yourtours.factories.amenity_categories;
 
 
 import com.hcmute.yourtours.entities.AmenityCategories;
+import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
@@ -98,6 +99,16 @@ public class AmenityCategoriesFactory
                 amenityCategoryFilter.getIsDefault(),
                 PageRequest.of(number, size)
         );
+    }
+
+    @Override
+    protected <F extends BaseFilter> void preDelete(UUID id, F filter) throws InvalidException {
+
+        if (id != null && !amenityCategoriesRepository.checkCanDelete(id)) {
+            throw new InvalidException(YourToursErrorCode.CAN_NOT_DELETE_AMENITY_CATEGORY);
+        }
+
+        super.preDelete(id, filter);
     }
 }
 
