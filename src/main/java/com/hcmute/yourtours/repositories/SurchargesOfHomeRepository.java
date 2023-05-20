@@ -26,7 +26,7 @@ public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHo
                     "from surcharge_home_categories a  " +
                     "         left join (select a.* from surcharges_of_home a where a.home_id = :homeId) b  " +
                     "                   on a.id = b.surcharge_category_id  " +
-                    "where a.status = 'ACTIVE' "
+                    "where a.status = 'ACTIVE' and a.deleted is false "
     )
     List<SurchargeHomeViewProjection> getListCategoryWithHomeId(UUID homeId);
 
@@ -42,7 +42,8 @@ public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHo
                     "       a.cost                  as cost   " +
                     "from surcharges_of_home a,   " +
                     "     surcharge_home_categories b   " +
-                    "where b.status = 'ACTIVE'   " +
+                    "where b.status = 'ACTIVE'  " +
+                    "  and b.deleted is false  " +
                     "  and a.surcharge_category_id = b.id   " +
                     "  and a.cost is not null  " +
                     "  and a.home_id = :homeId ",
@@ -50,6 +51,7 @@ public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHo
                     "from surcharges_of_home a,    " +
                     "     surcharge_home_categories b    " +
                     "where b.status = 'ACTIVE'    " +
+                    "  and b.deleted is false  " +
                     "  and a.surcharge_category_id = b.id    " +
                     "  and a.cost is not null  " +
                     "  and a.home_id = :homeId "
@@ -67,6 +69,7 @@ public interface SurchargesOfHomeRepository extends JpaRepository<SurchargesOfHo
                     "from surcharges_of_home a,   " +
                     "     surcharge_home_categories b   " +
                     "where b.status = 'ACTIVE'   " +
+                    "  and b.deleted is false  " +
                     "  and a.surcharge_category_id = b.id   " +
                     "  and a.cost is not null  " +
                     "  and a.home_id = :homeId "

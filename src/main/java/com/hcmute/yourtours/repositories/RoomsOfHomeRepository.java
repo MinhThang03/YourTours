@@ -25,7 +25,8 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHome, UUID> 
                     "from rooms_of_home a,   " +
                     "     room_categories b   " +
                     "where a.home_id = :homeId   " +
-                    "  and a.room_category_id = b.id   " +
+                    "  and a.room_category_id = b.id  " +
+                    "  and b.deleted is false " +
                     "  and (b.important = :important or :important is null)   " +
                     "group by a.room_category_id "
     )
@@ -84,7 +85,8 @@ public interface RoomsOfHomeRepository extends JpaRepository<RoomsOfHome, UUID> 
                     "     beds_of_home b,   " +
                     "     bed_categories c   " +
                     "where a.id = b.room_of_home_id   " +
-                    "  and b.bed_category_id = c.id   " +
+                    "  and b.bed_category_id = c.id  " +
+                    "  and c.deleted is false " +
                     "  and a.home_id = :homeId   " +
                     "  and b.amount is not null"
     )

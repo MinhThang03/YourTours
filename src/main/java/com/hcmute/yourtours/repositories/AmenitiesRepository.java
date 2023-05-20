@@ -91,7 +91,7 @@ public interface AmenitiesRepository extends JpaRepository<Amenities, UUID> {
                     "where a.deleted is false   " +
                     "  and a.amenity_id = :amenityId "
     )
-    boolean existsForeignKey(UUID amenityId);
+    boolean existsForeignKey(@Param("amenityId") UUID amenityId);
 
 
     @Modifying
@@ -101,5 +101,5 @@ public interface AmenitiesRepository extends JpaRepository<Amenities, UUID> {
                     "set a.deleted = true    " +
                     "where a.id = :amenityId  "
     )
-    Amenities softDelete(UUID amenityId);
+    Amenities softDelete(@Param("amenityId") UUID amenityId);
 }

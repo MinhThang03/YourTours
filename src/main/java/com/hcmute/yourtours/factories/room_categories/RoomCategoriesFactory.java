@@ -106,4 +106,12 @@ public class RoomCategoriesFactory
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_ROOM_CATEGORIES);
         }
     }
+
+    @Override
+    protected <F extends BaseFilter> void aroundDelete(UUID id, F filter) throws InvalidException {
+        if (id != null && roomCategoriesRepository.existForeignKey(id)) {
+            roomCategoriesRepository.softDelete(id);
+        }
+        super.aroundDelete(id, filter);
+    }
 }

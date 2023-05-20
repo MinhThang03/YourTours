@@ -4,6 +4,7 @@ import com.hcmute.yourtours.entities.BedCategories;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.bed_categories.BedCategoryDetail;
 import com.hcmute.yourtours.models.bed_categories.BedCategoryInfo;
 import com.hcmute.yourtours.repositories.BedCategoriesRepository;
@@ -84,5 +85,13 @@ public class BedCategoriesFactory
         if (optional.isEmpty()) {
             throw new InvalidException(YourToursErrorCode.NOT_FOUND_BED_CATEGORIES);
         }
+    }
+
+    @Override
+    protected <F extends BaseFilter> void aroundDelete(UUID id, F filter) throws InvalidException {
+        if (id != null && bedCategoriesRepository.existForeignKey(id)) {
+            bedCategoriesRepository.softDelete(id);
+        }
+        super.aroundDelete(id, filter);
     }
 }

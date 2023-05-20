@@ -3,6 +3,7 @@ package com.hcmute.yourtours.factories.surcharge_home_categories;
 import com.hcmute.yourtours.entities.SurchargeHomeCategories;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoryDetail;
 import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoryInfo;
 import com.hcmute.yourtours.repositories.SurchargeHomeCategoriesRepository;
@@ -19,8 +20,12 @@ public class SurchargeHomeCategoriesFactory
         implements ISurchargeHomeCategoriesFactory {
 
 
-    protected SurchargeHomeCategoriesFactory(SurchargeHomeCategoriesRepository repository) {
+    private final SurchargeHomeCategoriesRepository surchargeHomeRepository;
+
+    protected SurchargeHomeCategoriesFactory(SurchargeHomeCategoriesRepository repository,
+                                             SurchargeHomeCategoriesRepository surchargeHomeRepository) {
         super(repository);
+        this.surchargeHomeRepository = surchargeHomeRepository;
     }
 
     @Override
@@ -74,4 +79,11 @@ public class SurchargeHomeCategoriesFactory
                 .build();
     }
 
+    @Override
+    protected <F extends BaseFilter> void aroundDelete(UUID id, F filter) throws InvalidException {
+        if (id != null && surchargeHomeRepository.existForeignKey(id)) {
+            surchargeHomeRepository.softDelete(id);
+        }
+        super.aroundDelete(id, filter);
+    }
 }

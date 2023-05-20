@@ -5,6 +5,7 @@ import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoryDetail;
 import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoryInfo;
 import com.hcmute.yourtours.repositories.DiscountHomeCategoriesRepository;
@@ -106,5 +107,14 @@ public class DiscountHomeCategoriesFactory
             result.add(convertToDetail(command));
         }
         return result;
+    }
+
+    @Override
+    protected <F extends BaseFilter> void aroundDelete(UUID id, F filter) throws InvalidException {
+        if (id != null && discountHomeCategoriesRepository.existForeignKey(id)) {
+            discountHomeCategoriesRepository.softDelete(id);
+        }
+
+        super.aroundDelete(id, filter);
     }
 }
