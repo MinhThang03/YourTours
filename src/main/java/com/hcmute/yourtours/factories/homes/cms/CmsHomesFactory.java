@@ -56,7 +56,7 @@ public class CmsHomesFactory extends HomesFactory {
     protected <F extends BaseFilter> Page<Homes> pageQuery(F filter, Integer number, Integer size) {
         CmsHomeFilter homeFilter = (CmsHomeFilter) filter;
         iGetUserFromTokenFactory.getCurrentUser().ifPresent(userId -> homeFilter.setUserId(UUID.fromString(userId)));
-        if (homeFilter.getStatusList().isEmpty()) {
+        if (homeFilter.getStatusList() != null && homeFilter.getStatusList().isEmpty()) {
             homeFilter.setStatusList(null);
         }
         return homesRepository.getCmsPageHome
