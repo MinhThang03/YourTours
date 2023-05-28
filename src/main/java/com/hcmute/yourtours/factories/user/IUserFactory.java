@@ -9,6 +9,8 @@ import com.hcmute.yourtours.models.statistic.admin.projections.StatisticCountPro
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.models.user.UserInfo;
 import com.hcmute.yourtours.models.user.request.ForgotPasswordRequest;
+import com.hcmute.yourtours.models.user.request.SettingLanguageRequest;
+import com.hcmute.yourtours.models.user.response.SettingLanguageResponse;
 
 import java.util.UUID;
 
@@ -32,5 +34,8 @@ public interface IUserFactory extends IDataFactory<UUID, UserInfo, UserDetail> {
     SuccessResponse requestActiveAccount() throws InvalidException;
 
     StatisticCountProjections getStatisticCountOfAdmin();
+
+    SettingLanguageResponse settingLanguage(SettingLanguageRequest request) throws InvalidException;
+
 
 }

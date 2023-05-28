@@ -3,6 +3,7 @@ package com.hcmute.yourtours.models.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.yourtours.enums.GenderEnum;
+import com.hcmute.yourtours.enums.LanguageEnum;
 import com.hcmute.yourtours.enums.RoleEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.libs.model.BaseData;
@@ -59,4 +60,6 @@ public class UserInfo extends BaseData<UUID> {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private boolean isOwner;
+
+    private LanguageEnum language;
 }

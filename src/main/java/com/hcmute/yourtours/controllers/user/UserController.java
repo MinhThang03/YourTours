@@ -12,6 +12,8 @@ import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.models.user.UserInfo;
+import com.hcmute.yourtours.models.user.request.SettingLanguageRequest;
+import com.hcmute.yourtours.models.user.response.SettingLanguageResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +59,18 @@ public class UserController
         try {
             LogContext.push(LogType.REQUEST, request);
             UserDetail response = iUserFactory.updateCurrentUser(request);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e.getErrorCode());
+        }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<SettingLanguageResponse>> settingLanguage(SettingLanguageRequest request) {
+        try {
+            LogContext.push(LogType.REQUEST, request);
+            SettingLanguageResponse response = iUserFactory.settingLanguage(request);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {

@@ -5,6 +5,7 @@ import com.hcmute.yourtours.constant.RoleConstant;
 import com.hcmute.yourtours.constant.SubjectEmailConstant;
 import com.hcmute.yourtours.constant.TokenExpirationConstant;
 import com.hcmute.yourtours.entities.User;
+import com.hcmute.yourtours.enums.LanguageEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.external_modules.email.IEmailFactory;
@@ -24,6 +25,8 @@ import com.hcmute.yourtours.models.statistic.admin.projections.StatisticCountPro
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.models.user.UserInfo;
 import com.hcmute.yourtours.models.user.request.ForgotPasswordRequest;
+import com.hcmute.yourtours.models.user.request.SettingLanguageRequest;
+import com.hcmute.yourtours.models.user.response.SettingLanguageResponse;
 import com.hcmute.yourtours.models.verification_token.VerificationOtpDetail;
 import com.hcmute.yourtours.repositories.UserRepository;
 import lombok.NonNull;
@@ -91,6 +94,7 @@ public class UserFactory
                 .status(detail.getStatus())
                 .role(detail.getRole())
                 .createdBy(detail.getCreatedBy())
+                .language(LanguageEnum.VI)
                 .build();
     }
 
@@ -104,6 +108,7 @@ public class UserFactory
         entity.setAvatar(detail.getAvatar());
         entity.setStatus(detail.getStatus());
         entity.setRole(detail.getRole());
+        entity.setLanguage(detail.getLanguage());
     }
 
     @Override
@@ -123,6 +128,7 @@ public class UserFactory
                 .status(entity.getStatus())
                 .role(entity.getRole())
                 .isOwner(isOwner(entity.getId()))
+                .language(entity.getLanguage())
                 .build();
     }
 
@@ -142,6 +148,7 @@ public class UserFactory
                 .avatar(entity.getAvatar())
                 .status(entity.getStatus())
                 .role(entity.getRole())
+                .language(entity.getLanguage())
                 .isOwner(isOwner(entity.getId()))
                 .build();
     }
@@ -321,6 +328,22 @@ public class UserFactory
     @Override
     public StatisticCountProjections getStatisticCountOfAdmin() {
         return userRepository.getAdminStatisticCount();
+    }
+
+    @Override
+    public SettingLanguageResponse settingLanguage(SettingLanguageRequest request) throws InvalidException {
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
+        User entity = userRepository.findById(userId).orElseThrow(
+                () -> new InvalidException(YourToursErrorCode.NOT_FOUND_USER)
+        );
+
+        if (!entity.getLanguage().equals(request.getLanguage())) {
+            entity.setLanguage(request.getLanguage());
+            repository.save(entity);
+        }
+        return SettingLanguageResponse.builder()
+                .language(request.getLanguage())
+                .build();
     }
 
 

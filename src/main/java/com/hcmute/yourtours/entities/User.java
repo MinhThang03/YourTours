@@ -2,6 +2,7 @@ package com.hcmute.yourtours.entities;
 
 import com.hcmute.yourtours.entities.base.Persistence;
 import com.hcmute.yourtours.enums.GenderEnum;
+import com.hcmute.yourtours.enums.LanguageEnum;
 import com.hcmute.yourtours.enums.RoleEnum;
 import com.hcmute.yourtours.enums.UserStatusEnum;
 import lombok.*;
@@ -64,6 +65,10 @@ public class User extends Persistence {
     @Enumerated(EnumType.STRING)
     private UserStatusEnum status;
 
+    @Column(name = "language")
+    @Enumerated(EnumType.STRING)
+    private LanguageEnum language;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @Fetch(FetchMode.SUBSELECT)
     private List<BookHomes> bookingList;
@@ -83,4 +88,5 @@ public class User extends Persistence {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @Fetch(FetchMode.SUBSELECT)
     private List<VerificationOtp> otpList;
+
 }
