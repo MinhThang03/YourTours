@@ -125,7 +125,9 @@ public abstract class BaseConfigFactory implements IConfigFactory {
         http.authorizeRequests().anyRequest().authenticated().and().exceptionHandling()
                 .authenticationEntryPoint(
                         new DefaultAuthenticationEntryPoint()
-                );
+                )
+                .and().authorizeRequests().antMatchers("/stomp-endpoint").permitAll()
+        ;
     }
 
     protected abstract void configureFilter(HttpSecurity http);
