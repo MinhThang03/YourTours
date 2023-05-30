@@ -72,6 +72,7 @@ common:
           - /api/v1/auth/**
           - /api/v1/public/**
           - /api/v1/media/public/**
+          - /stomp-endpoint/**
         permit-all-map:
           GET:
             - /api/v1/languages-support/**
