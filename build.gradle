@@ -28,6 +28,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework:spring-tx'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: springFramework
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: springFramework
     implementation group: 'org.springframework.security', name: 'spring-security-core', version: springFramework
@@ -113,6 +114,12 @@ dependencies {
      * GeoLocation
      */
     implementation 'com.maxmind.geoip2:geoip2:4.0.0'
+
+    /**
+     * Stomp
+     */
+    implementation 'org.webjars:stomp-websocket:2.3.3'
+    implementation 'org.webjars:sockjs-client:1.0.2'
 
 
 }
