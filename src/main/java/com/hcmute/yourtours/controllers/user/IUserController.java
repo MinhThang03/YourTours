@@ -35,4 +35,8 @@ public interface IUserController extends
     @PostMapping("request/active")
     @Operation(summary = "Yêu cầu gửi otp kích hoạt tài khoản")
     ResponseEntity<BaseResponse<SuccessResponse>> requestActiveAccount();
+
+    @PostMapping("reset/notification")
+    @Operation(summary = "Reset notification")
+    ResponseEntity<BaseResponse<SuccessResponse>> resetNotification();
 }

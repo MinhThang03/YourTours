@@ -88,4 +88,15 @@ public class UserController
             throw new RestException(e.getErrorCode());
         }
     }
+
+    @Override
+    public ResponseEntity<BaseResponse<SuccessResponse>> resetNotification() {
+        try {
+            SuccessResponse response = iUserFactory.resetNumberNotification();
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e.getErrorCode());
+        }
+    }
 }

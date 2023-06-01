@@ -348,6 +348,38 @@ public class UserFactory
                 .build();
     }
 
+    @Override
+    public SuccessResponse resetNumberNotification(UUID userId) throws InvalidException {
+
+        User user = repository.findById(userId).orElseThrow(
+                () -> new InvalidException(YourToursErrorCode.NOT_FOUND_USER)
+        );
+
+        user.setNumberOfNotification(0);
+        repository.save(user);
+
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
+    }
+
+    @Override
+    public SuccessResponse resetNumberNotification() throws InvalidException {
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
+        return resetNumberNotification(userId);
+    }
+
+    @Override
+    public User addNumberNotification(UUID userId) throws InvalidException {
+
+        User user = repository.findById(userId).orElseThrow(
+                () -> new InvalidException(YourToursErrorCode.NOT_FOUND_USER)
+        );
+
+        user.setNumberOfNotification(user.getNumberOfNotification() + 1);
+        return repository.save(user);
+    }
+
 
     @Override
     protected void postCreate(User entity, UserDetail detail) throws InvalidException {
