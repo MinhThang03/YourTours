@@ -69,6 +69,9 @@ public class User extends Persistence {
     @Enumerated(EnumType.STRING)
     private LanguageEnum language;
 
+    @Column(name = "number_of_notification")
+    private int numberOfNotification;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @Fetch(FetchMode.SUBSELECT)
     private List<BookHomes> bookingList;
