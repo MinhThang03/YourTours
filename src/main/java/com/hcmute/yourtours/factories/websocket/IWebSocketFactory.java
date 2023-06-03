@@ -8,7 +8,16 @@ import java.util.UUID;
 
 public interface IWebSocketFactory {
 
-    void sendNotificationMessage(UUID userId);
+    void sendNotificationMessage(UUID userId, String title);
 
     void sendDiscountNotificationMessage(List<NotificationDiscountProjection> projections) throws InvalidException;
+
+    void sendCheckInMessage(UUID userId, UUID homeId) throws InvalidException;
+
+    void sendCheckOutMessage(UUID userId, UUID homeId) throws InvalidException;
+
+    void sendBookingSuccessMessage(UUID userId, UUID homeId) throws InvalidException;
+
+    void sendCancelMessage(UUID userId, UUID homeId) throws InvalidException;
+
 }

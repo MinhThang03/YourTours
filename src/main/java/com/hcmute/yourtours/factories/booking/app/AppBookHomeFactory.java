@@ -16,6 +16,7 @@ import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.price_of_home.IPriceOfHomeFactory;
 import com.hcmute.yourtours.factories.surcharges_of_home.ISurchargeOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
+import com.hcmute.yourtours.factories.websocket.IWebSocketFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
@@ -69,7 +70,8 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
                     IOwnerOfHomeFactory iOwnerOfHomeFactory,
                     IEmailFactory iEmailFactory,
-                    ApplicationEventPublisher applicationEventPublisher
+                    ApplicationEventPublisher applicationEventPublisher,
+                    IWebSocketFactory iWebSocketFactory
             ) {
         super
                 (
@@ -80,8 +82,8 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
                         iOwnerOfHomeFactory,
                         iGetUserFromTokenFactory,
                         iEmailFactory,
-                        applicationEventPublisher
-                );
+                        applicationEventPublisher,
+                        iWebSocketFactory);
         this.iSurchargeOfHomeFactory = iSurchargeOfHomeFactory;
         this.iPriceOfHomeFactory = iPriceOfHomeFactory;
         this.iBookingSurchargeDetailFactory = iBookingSurchargeDetailFactory;

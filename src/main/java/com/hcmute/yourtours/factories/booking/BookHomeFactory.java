@@ -12,6 +12,7 @@ import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
+import com.hcmute.yourtours.factories.websocket.IWebSocketFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.util.TimeUtil;
@@ -58,6 +59,7 @@ public class BookHomeFactory
     protected final IGetUserFromTokenFactory iGetUserFromTokenFactory;
     protected final IEmailFactory iEmailFactory;
     protected final ApplicationEventPublisher applicationEventPublisher;
+    protected final IWebSocketFactory iWebSocketFactory;
 
     protected BookHomeFactory
             (
@@ -68,7 +70,8 @@ public class BookHomeFactory
                     IOwnerOfHomeFactory iOwnerOfHomeFactory,
                     IGetUserFromTokenFactory iGetUserFromTokenFactory,
                     IEmailFactory iEmailFactory,
-                    ApplicationEventPublisher applicationEventPublisher
+                    ApplicationEventPublisher applicationEventPublisher,
+                    IWebSocketFactory iWebSocketFactory
             ) {
         super(repository);
         this.bookHomeRepository = repository;
@@ -79,6 +82,7 @@ public class BookHomeFactory
         this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
         this.iEmailFactory = iEmailFactory;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.iWebSocketFactory = iWebSocketFactory;
     }
 
     @Override
@@ -281,6 +285,8 @@ public class BookHomeFactory
         detail.setHomeName(projection.getHomeName());
         detail.setLastModifiedDate(TimeUtil.toStringDate(LocalDateTime.now()));
 
+        iWebSocketFactory.sendCancelMessage(detail.getUserId(), detail.getHomeId());
+
         applicationEventPublisher.publishEvent(detail);
         return SuccessResponse.builder()
                 .success(true)
@@ -302,6 +308,9 @@ public class BookHomeFactory
         detail.setStatus(BookRoomStatusEnum.CHECK_IN);
         detail.setMoneyPayed(detail.getTotalCost());
         updateModel(detail.getId(), detail);
+
+        iWebSocketFactory.sendCheckInMessage(detail.getUserId(), detail.getHomeId());
+
         return SuccessResponse.builder()
                 .success(true)
                 .build();
@@ -317,6 +326,9 @@ public class BookHomeFactory
 
         detail.setStatus(BookRoomStatusEnum.CHECK_OUT);
         updateModel(detail.getId(), detail);
+
+        iWebSocketFactory.sendCheckOutMessage(detail.getUserId(), detail.getHomeId());
+
         return SuccessResponse.builder()
                 .success(true)
                 .build();
@@ -420,5 +432,11 @@ public class BookHomeFactory
             bookHome.setStatus(BookRoomStatusEnum.CHECK_OUT);
             repository.save(bookHome);
         }
+    }
+
+    @Override
+    protected void postCreate(BookHomes entity, BookHomeDetail detail) throws InvalidException {
+        super.postCreate(entity, detail);
+        iWebSocketFactory.sendBookingSuccessMessage(detail.getUserId(), detail.getHomeId());
     }
 }

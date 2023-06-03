@@ -24,6 +24,8 @@ public class NotificationInfo extends BaseData<UUID> {
 
     private String description;
 
+    private String createDate;
+
     private boolean view;
 
     private UUID userId;

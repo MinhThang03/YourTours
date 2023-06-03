@@ -5,6 +5,7 @@ import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.util.TimeUtil;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.notification.NotificationInfo;
 import com.hcmute.yourtours.repositories.NotificationRepository;
@@ -74,6 +75,7 @@ public class NotificationFactory
                 .view(entity.isView())
                 .type(entity.getType())
                 .userId(entity.getUserId())
+                .createDate(TimeUtil.toStringDate(entity.getCreatedDate()))
                 .build();
     }
 
