@@ -65,9 +65,8 @@ public class WebSocketFactory implements IWebSocketFactory {
         if (optional.isPresent()) {
             NotificationDiscountProjection projection = optional.get();
             String message = projection.getHomeName()
-                    .concat("vừa tạo chương trình khuyến mãi ")
+                    .concat(" vừa tạo chương trình khuyến mãi ")
                     .concat(projection.getDiscountName().toUpperCase());
-
 
             for (NotificationDiscountProjection item : projections) {
                 NotificationInfo model = NotificationInfo.builder()
