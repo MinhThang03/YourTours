@@ -62,4 +62,6 @@ public class UserInfo extends BaseData<UUID> {
     private boolean isOwner;
 
     private LanguageEnum language;
+
+    private int numberOfNotification;
 }

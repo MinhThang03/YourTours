@@ -1,5 +1,6 @@
 package com.hcmute.yourtours.factories.user;
 
+import com.hcmute.yourtours.entities.User;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.IDataFactory;
 import com.hcmute.yourtours.models.authentication.requests.UserChangePasswordRequest;
@@ -37,5 +38,9 @@ public interface IUserFactory extends IDataFactory<UUID, UserInfo, UserDetail> {
 
     SettingLanguageResponse settingLanguage(SettingLanguageRequest request) throws InvalidException;
 
+    SuccessResponse resetNumberNotification(UUID userId) throws InvalidException;
 
+    SuccessResponse resetNumberNotification() throws InvalidException;
+
+    User addNumberNotification(UUID userId) throws InvalidException;
 }

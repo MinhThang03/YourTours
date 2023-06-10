@@ -8,6 +8,7 @@ import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.user.IUserFactory;
+import com.hcmute.yourtours.factories.websocket.IWebSocketFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
@@ -39,7 +40,8 @@ public class CmsBookHomeFactory extends BookHomeFactory implements ICmsBookHomeF
                     IBookingGuestDetailFactory iBookingGuestDetailFactory,
                     IOwnerOfHomeFactory iOwnerOfHomeFactory,
                     IEmailFactory iEmailFactory,
-                    ApplicationEventPublisher applicationEventPublisher
+                    ApplicationEventPublisher applicationEventPublisher,
+                    IWebSocketFactory iWebSocketFactory
             ) {
         super(
                 repository,
@@ -49,8 +51,8 @@ public class CmsBookHomeFactory extends BookHomeFactory implements ICmsBookHomeF
                 iOwnerOfHomeFactory,
                 iGetUserFromTokenFactory,
                 iEmailFactory,
-                applicationEventPublisher
-        );
+                applicationEventPublisher,
+                iWebSocketFactory);
     }
 
     @Override

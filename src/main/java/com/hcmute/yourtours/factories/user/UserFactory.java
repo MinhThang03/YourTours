@@ -95,6 +95,7 @@ public class UserFactory
                 .role(detail.getRole())
                 .createdBy(detail.getCreatedBy())
                 .language(LanguageEnum.VI)
+                .numberOfNotification(0)
                 .build();
     }
 
@@ -108,7 +109,6 @@ public class UserFactory
         entity.setAvatar(detail.getAvatar());
         entity.setStatus(detail.getStatus());
         entity.setRole(detail.getRole());
-        entity.setLanguage(detail.getLanguage());
     }
 
     @Override
@@ -129,6 +129,7 @@ public class UserFactory
                 .role(entity.getRole())
                 .isOwner(isOwner(entity.getId()))
                 .language(entity.getLanguage())
+                .numberOfNotification(entity.getNumberOfNotification())
                 .build();
     }
 
@@ -150,6 +151,7 @@ public class UserFactory
                 .role(entity.getRole())
                 .language(entity.getLanguage())
                 .isOwner(isOwner(entity.getId()))
+                .numberOfNotification(entity.getNumberOfNotification())
                 .build();
     }
 
@@ -344,6 +346,38 @@ public class UserFactory
         return SettingLanguageResponse.builder()
                 .language(request.getLanguage())
                 .build();
+    }
+
+    @Override
+    public SuccessResponse resetNumberNotification(UUID userId) throws InvalidException {
+
+        User user = repository.findById(userId).orElseThrow(
+                () -> new InvalidException(YourToursErrorCode.NOT_FOUND_USER)
+        );
+
+        user.setNumberOfNotification(0);
+        repository.save(user);
+
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
+    }
+
+    @Override
+    public SuccessResponse resetNumberNotification() throws InvalidException {
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
+        return resetNumberNotification(userId);
+    }
+
+    @Override
+    public User addNumberNotification(UUID userId) throws InvalidException {
+
+        User user = repository.findById(userId).orElseThrow(
+                () -> new InvalidException(YourToursErrorCode.NOT_FOUND_USER)
+        );
+
+        user.setNumberOfNotification(user.getNumberOfNotification() + 1);
+        return repository.save(user);
     }
 
 

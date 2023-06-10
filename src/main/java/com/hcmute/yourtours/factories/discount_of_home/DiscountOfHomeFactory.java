@@ -2,6 +2,7 @@ package com.hcmute.yourtours.factories.discount_of_home;
 
 import com.hcmute.yourtours.entities.DiscountOfHome;
 import com.hcmute.yourtours.factories.discount_home_categories.IDiscountHomeCategoriesFactory;
+import com.hcmute.yourtours.factories.websocket.IWebSocketFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.models.common.SuccessResponse;
@@ -10,6 +11,7 @@ import com.hcmute.yourtours.models.discount_of_home.DiscountOfHomeDetail;
 import com.hcmute.yourtours.models.discount_of_home.DiscountOfHomeInfo;
 import com.hcmute.yourtours.models.discount_of_home.models.CreateListDiscountOfHomeModel;
 import com.hcmute.yourtours.models.discount_of_home.models.DiscountOfHomeViewModel;
+import com.hcmute.yourtours.models.discount_of_home.projections.NotificationDiscountProjection;
 import com.hcmute.yourtours.repositories.DiscountOfHomeRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
@@ -28,12 +30,18 @@ public class DiscountOfHomeFactory
 
     protected final DiscountOfHomeRepository discountOfHomeRepository;
     private final IDiscountHomeCategoriesFactory iDiscountHomeCategoriesFactory;
+    private final IWebSocketFactory iWebSocketFactory;
 
-    protected DiscountOfHomeFactory(DiscountOfHomeRepository repository,
-                                    IDiscountHomeCategoriesFactory iDiscountHomeCategoriesFactory) {
+    protected DiscountOfHomeFactory
+            (
+                    DiscountOfHomeRepository repository,
+                    IDiscountHomeCategoriesFactory iDiscountHomeCategoriesFactory,
+                    IWebSocketFactory iWebSocketFactory
+            ) {
         super(repository);
         this.discountOfHomeRepository = repository;
         this.iDiscountHomeCategoriesFactory = iDiscountHomeCategoriesFactory;
+        this.iWebSocketFactory = iWebSocketFactory;
     }
 
     @Override
@@ -126,7 +134,10 @@ public class DiscountOfHomeFactory
     public SuccessResponse createListDiscountOfHome(CreateListDiscountOfHomeModel request) throws InvalidException {
         if (request != null && request.getListDiscountOfHomeDetail() != null) {
             for (DiscountOfHomeDetail item : request.getListDiscountOfHomeDetail()) {
-                createModel(item);
+                DiscountOfHomeDetail detail = createModel(item);
+                List<NotificationDiscountProjection> projections = discountOfHomeRepository
+                        .getListNotificationDiscount(detail.getId());
+                iWebSocketFactory.sendDiscountNotificationMessage(projections);
             }
         }
         return SuccessResponse.builder()
