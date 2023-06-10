@@ -5,11 +5,14 @@ import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.libs.util.TimeUtil;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.notification.NotificationInfo;
 import com.hcmute.yourtours.repositories.NotificationRepository;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -64,6 +67,7 @@ public class NotificationFactory
         return convertToInfo(entity);
     }
 
+
     @Override
     public NotificationInfo convertToInfo(Notification entity) throws InvalidException {
         return NotificationInfo.builder()
@@ -111,5 +115,12 @@ public class NotificationFactory
         return SuccessResponse.builder()
                 .success(true)
                 .build();
+    }
+
+    @Override
+    protected <F extends BaseFilter> Page<Notification> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
+
+        UUID userId = iGetUserFromTokenFactory.checkUnAuthorization();
+        return notificationRepository.getPageByUserId(userId, PageRequest.of(number, size));
     }
 }

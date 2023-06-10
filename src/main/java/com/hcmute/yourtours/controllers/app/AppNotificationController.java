@@ -8,7 +8,9 @@ import com.hcmute.yourtours.libs.exceptions.RestException;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
 import com.hcmute.yourtours.libs.logging.LogContext;
 import com.hcmute.yourtours.libs.logging.LogType;
+import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
+import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.notification.NotificationInfo;
 import com.hcmute.yourtours.models.notification.request.TickViewRequest;
@@ -58,5 +60,10 @@ public class AppNotificationController
         } catch (InvalidException e) {
             throw new RestException(e);
         }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<BasePagingResponse<NotificationInfo>>> getInfoPageWithFilter(BaseFilter filter, Integer number, Integer size) {
+        return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 }
