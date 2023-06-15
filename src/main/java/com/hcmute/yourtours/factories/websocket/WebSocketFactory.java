@@ -137,8 +137,8 @@ public class WebSocketFactory implements IWebSocketFactory {
                 .homeId(home.getId())
                 .userId(userId)
                 .title("ĐẶT PHÒNG")
-                .type(NotificationType.BOOKING_NOTIFICATION)
-                .description("Bạn vừa đặt phòng ".concat(home.getName()).concat(" thành công!"))
+                .type(NotificationType.OWNER_HOME_NOTIFICATION)
+                .description("Bạn có thông báo đặt nhà ".concat(home.getName()))
                 .thumbnail(home.getThumbnail())
                 .view(false)
                 .build();
@@ -157,8 +157,8 @@ public class WebSocketFactory implements IWebSocketFactory {
                 .homeId(home.getId())
                 .userId(userId)
                 .title("HỦY ĐẶT PHÒNG")
-                .type(NotificationType.BOOKING_NOTIFICATION)
-                .description("Bạn vừa hủy đặt phòng ".concat(home.getName()).concat(" thành công!"))
+                .type(NotificationType.OWNER_HOME_NOTIFICATION)
+                .description("Bạn có thông báo đặt nhà ".concat(home.getName()))
                 .thumbnail(home.getThumbnail())
                 .view(false)
                 .build();

@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.owner_of_home;
 
 import com.hcmute.yourtours.entities.OwnerOfHome;
+import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
@@ -114,6 +115,13 @@ public class OwnerOfHomeFactory
                 number,
                 size,
                 projections.getTotalElements()
+        );
+    }
+
+    @Override
+    public OwnerOfHome getMainOwnerByHomeId(UUID homeId) throws InvalidException {
+        return ownerOfHomesRepository.findByHomeIdAndIsMainOwner(homeId, true).orElseThrow(
+                () -> new InvalidException(YourToursErrorCode.NOT_FOUND_OWNER_OF_HOME)
         );
     }
 }

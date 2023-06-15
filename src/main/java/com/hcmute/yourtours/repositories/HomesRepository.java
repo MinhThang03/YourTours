@@ -232,6 +232,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
             nativeQuery = true,
             value = "select a.name      as homeName, " +
                     "       a.cost_per_night_default as baseCost, " +
+                    "       b.user_id as ownerId, " +
                     "       c.full_name as ownerName " +
                     "from homes a, " +
                     "     owner_of_home b, " +

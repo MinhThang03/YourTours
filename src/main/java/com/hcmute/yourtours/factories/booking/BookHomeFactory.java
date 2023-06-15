@@ -2,6 +2,7 @@ package com.hcmute.yourtours.factories.booking;
 
 import com.hcmute.yourtours.constant.CornConstant;
 import com.hcmute.yourtours.entities.BookHomes;
+import com.hcmute.yourtours.entities.OwnerOfHome;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.MonthEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
@@ -285,7 +286,7 @@ public class BookHomeFactory
         detail.setHomeName(projection.getHomeName());
         detail.setLastModifiedDate(TimeUtil.toStringDate(LocalDateTime.now()));
 
-        iWebSocketFactory.sendCancelMessage(detail.getUserId(), detail.getHomeId());
+        iWebSocketFactory.sendCancelMessage(projection.getOwnerId(), detail.getHomeId());
 
         applicationEventPublisher.publishEvent(detail);
         return SuccessResponse.builder()
@@ -437,6 +438,9 @@ public class BookHomeFactory
     @Override
     protected void postCreate(BookHomes entity, BookHomeDetail detail) throws InvalidException {
         super.postCreate(entity, detail);
-        iWebSocketFactory.sendBookingSuccessMessage(detail.getUserId(), detail.getHomeId());
+
+        OwnerOfHome owner = iOwnerOfHomeFactory.getMainOwnerByHomeId(detail.getHomeId());
+
+        iWebSocketFactory.sendBookingSuccessMessage(owner.getUserId(), detail.getHomeId());
     }
 }
