@@ -24,6 +24,7 @@ import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.statistic.admin.projections.StatisticCountProjections;
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.models.user.UserInfo;
+import com.hcmute.yourtours.models.user.filter.CmsUserFilter;
 import com.hcmute.yourtours.models.user.request.ForgotPasswordRequest;
 import com.hcmute.yourtours.models.user.request.SettingLanguageRequest;
 import com.hcmute.yourtours.models.user.response.SettingLanguageResponse;
@@ -414,7 +415,12 @@ public class UserFactory
 
     @Override
     protected <F extends BaseFilter> Page<User> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
-        return userRepository.getAll(PageRequest.of(number, size));
+
+        if (filter instanceof CmsUserFilter) {
+            CmsUserFilter cmsUserFilter = (CmsUserFilter) filter;
+            return userRepository.getAll(cmsUserFilter.getKeyword(), PageRequest.of(number, size));
+        }
+        return userRepository.getAll(null, PageRequest.of(number, size));
     }
 
     public void requestActiveAccount(UUID userId, String fullName, String email) throws InvalidException {

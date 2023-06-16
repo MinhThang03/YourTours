@@ -3,11 +3,11 @@ package com.hcmute.yourtours.repositories;
 import com.hcmute.yourtours.entities.Homes;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.models.homes.projections.CalculateAverageRateProjection;
+import com.hcmute.yourtours.models.homes.projections.CmsHomeInfoProjection;
 import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
 import com.hcmute.yourtours.models.homes.projections.MobileHomeProjection;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -50,7 +50,46 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
     Page<Homes> findPageWithFilter(@Param("userId") UUID userId,
                                    @Param("sortBy") String sortBy,
                                    @Param("status") String status,
-                                   PageRequest pageRequest);
+                                   Pageable pageable);
+
+
+    @Query
+            (
+                    nativeQuery = true,
+                    value = "select a.id                     as id,   " +
+                            "       a.name                   as name,   " +
+                            "       a.description            as description,   " +
+                            "       a.address_detail         as addressDetail,   " +
+                            "       a.province_code          as provinceCode,   " +
+                            "       a.cost_per_night_default as costPerNightDefault,   " +
+                            "       a.refund_policy          as refundPolicy,   " +
+                            "       a.status                 as status,   " +
+                            "       a.last_modified_date     as lastModifiedDate,   " +
+                            "       d.name                   as provinceName,   " +
+                            "       c.full_name              as ownerName,   " +
+                            "       a.deleted                as deleted,   " +
+                            "       c.id                     as ownerId   " +
+                            "from homes a,   " +
+                            "     owner_of_home b,   " +
+                            "     user c,   " +
+                            "     province d   " +
+                            "where a.id = b.home_id   " +
+                            "  and b.user_id = c.id   " +
+                            "  and a.province_code = d.code_name   " +
+                            "  and (:keyword is null or upper(a.name) like upper(Concat('%', :keyword, '%')))   " +
+                            "order by a.created_date desc ",
+                    countQuery = "select a.id              " +
+                            "from homes a,   " +
+                            "     owner_of_home b,   " +
+                            "     user c,   " +
+                            "     province d   " +
+                            "where a.id = b.home_id   " +
+                            "  and b.user_id = c.id   " +
+                            "  and a.province_code = d.code_name   " +
+                            "  and (:keyword is null or upper(a.name) like upper(Concat('%', :keyword, '%')))   " +
+                            "order by a.created_date desc "
+            )
+    Page<CmsHomeInfoProjection> findPageWithFilterWithAdmin(String keyword, Pageable pageable);
 
 
     @Query(

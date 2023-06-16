@@ -5,6 +5,7 @@ import com.hcmute.yourtours.libs.controller.IGetInfoPageController;
 import com.hcmute.yourtours.libs.model.factory.request.FactoryUpdateRequest;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
+import com.hcmute.yourtours.models.homes.CmsHomeInfo;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.CmsHomeFilter;
@@ -38,8 +39,10 @@ public interface ICmsHomeController extends
     ResponseEntity<BaseResponse<HostHomeDetailModel>> updateAddress(@RequestBody @Valid FactoryUpdateRequest<UUID, UpdateAddressHomeModel> request);
 
     @GetMapping("admin/pages")
-    ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getPageWithRoleAdmin(@RequestParam(defaultValue = "0") Integer number,
-                                                                                    @RequestParam(defaultValue = "20") Integer size);
+    ResponseEntity<BaseResponse<BasePagingResponse<CmsHomeInfo>>> getPageWithRoleAdmin(
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(defaultValue = "0") Integer number,
+            @RequestParam(defaultValue = "20") Integer size);
 
     @PutMapping("update/status")
     @Operation(summary = "Đổi trạng thái của nhà")

@@ -6,9 +6,9 @@ import com.hcmute.yourtours.libs.factory.IDataFactory;
 import com.hcmute.yourtours.libs.factory.IResponseFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
-import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.user.UserDetail;
 import com.hcmute.yourtours.models.user.UserInfo;
+import com.hcmute.yourtours.models.user.filter.CmsUserFilter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class CmsUserController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<UserInfo>>> getInfoPageWithFilter(BaseFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<UserInfo>>> getInfoPageWithFilter(CmsUserFilter filter, Integer number, Integer size) {
         return factoryGetInfoPageWithFilter(filter, number, size);
     }
 }

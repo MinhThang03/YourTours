@@ -13,6 +13,7 @@ import com.hcmute.yourtours.libs.model.factory.request.FactoryCreateRequest;
 import com.hcmute.yourtours.libs.model.factory.request.FactoryUpdateRequest;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
+import com.hcmute.yourtours.models.homes.CmsHomeInfo;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.CmsHomeFilter;
@@ -92,9 +93,9 @@ public class CmsHomeController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getPageWithRoleAdmin(Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<CmsHomeInfo>>> getPageWithRoleAdmin(String keyword, Integer number, Integer size) {
         try {
-            BasePagingResponse<HomeInfo> response = iHomesFactory.getPageWithRoleAdmin(number, size);
+            BasePagingResponse<CmsHomeInfo> response = iHomesFactory.getPageWithRoleAdmin(keyword, number, size);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {

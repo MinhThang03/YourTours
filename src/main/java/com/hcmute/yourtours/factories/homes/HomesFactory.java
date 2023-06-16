@@ -18,11 +18,14 @@ import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
+import com.hcmute.yourtours.libs.util.TimeUtil;
 import com.hcmute.yourtours.models.booking_guest_detail.BookingGuestDetailDetail;
 import com.hcmute.yourtours.models.booking_guest_detail.BookingGuestDetailInfo;
+import com.hcmute.yourtours.models.homes.CmsHomeInfo;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
+import com.hcmute.yourtours.models.homes.projections.CmsHomeInfoProjection;
 import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
 import com.hcmute.yourtours.models.homes.requests.UpdateHomeStatusRequest;
 import com.hcmute.yourtours.models.homes.responses.UpdateHomeStatusResponse;
@@ -41,6 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -275,16 +279,28 @@ public class HomesFactory
     }
 
     @Override
-    public BasePagingResponse<HomeInfo> getPageWithRoleAdmin(Integer number, Integer size) throws InvalidException {
-        Page<Homes> page = homesRepository.findPageWithFilter
-                (
-                        null,
-                        null,
-                        null,
-                        PageRequest.of(number, size)
-                );
+    public BasePagingResponse<CmsHomeInfo> getPageWithRoleAdmin(String search, Integer number, Integer size) throws InvalidException {
+        Page<CmsHomeInfoProjection> page = homesRepository.findPageWithFilterWithAdmin(search, PageRequest.of(number, size));
+
+        List<CmsHomeInfo> result = page.getContent().parallelStream().map(
+                item -> CmsHomeInfo.builder()
+                        .id(item.getId())
+                        .name(item.getName())
+                        .description(item.getDescription())
+                        .addressDetail(item.getAddressDetail())
+                        .provinceCode(item.getProvinceCode())
+                        .costPerNightDefault(item.getCostPerNightDefault())
+                        .refundPolicy(item.getRefundPolicy().getDescription())
+                        .status(item.getDeleted() ? "DELETED" : item.getStatus().name())
+                        .provinceName(item.getProvinceName())
+                        .lastModifiedDate(TimeUtil.toStringDate(item.getLastModifiedDate()))
+                        .ownerId(item.getOwnerId())
+                        .ownerName(item.getOwnerName())
+                        .build()
+        ).collect(Collectors.toList());
+
         return new BasePagingResponse<>(
-                convertList(page.getContent()),
+                result,
                 number,
                 size,
                 page.getTotalElements()

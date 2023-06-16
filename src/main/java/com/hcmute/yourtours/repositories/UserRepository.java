@@ -31,10 +31,22 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByUserIdAndOwner(UUID userId);
 
     @Query(
-            value = "select a from User  a order by a.createdDate desc ",
-            countQuery = "select count(a.id) from User  a order by a.createdDate desc "
+            nativeQuery = true,
+            value = "select a.*   " +
+                    "from User a   " +
+                    "where (:keyword is null   " +
+                    "    or upper(a.full_name) like upper(Concat('%', :keyword, '%'))   " +
+                    "    or a.email = :keyword)   " +
+                    "order by a.created_date desc     ",
+            countQuery = "select count(a.id)    " +
+                    "from User a   " +
+                    "where (:keyword is null   " +
+                    "    or upper(a.full_name) like upper(Concat('%', :keyword, '%'))   " +
+                    "    or a.email = :keyword)   " +
+                    "order by a.created_date desc    "
     )
-    Page<User> getAll(Pageable pageable);
+    Page<User> getAll(String keyword, Pageable pageable);
+
 
     @Query(
             nativeQuery = true,
