@@ -16,10 +16,10 @@ import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
-import com.hcmute.yourtours.libs.model.filter.SimpleFilter;
 import com.hcmute.yourtours.models.bed_categories.BedCategoryDetail;
 import com.hcmute.yourtours.models.bed_categories.BedCategoryInfo;
 import com.hcmute.yourtours.models.bed_categories.filter.BedCategoryFilter;
+import com.hcmute.yourtours.models.bed_categories.filter.CmsBedCategoryFilter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +68,7 @@ public class CmsBedCategoriesController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<BedCategoryInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<BedCategoryInfo>>> getInfoPageWithFilter(CmsBedCategoryFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 

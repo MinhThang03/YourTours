@@ -95,7 +95,12 @@ public class RoomCategoriesFactory
     @Override
     protected <F extends BaseFilter> Page<RoomCategories> pageQuery(F filter, Integer number, Integer size) {
         RoomCategoryFilter roomCategoryFilter = (RoomCategoryFilter) filter;
-        return roomCategoriesRepository.findPageWithFilter(roomCategoryFilter.getImportant(), PageRequest.of(number, size));
+        return roomCategoriesRepository.findPageWithFilter
+                (
+                        roomCategoryFilter.getImportant(),
+                        roomCategoryFilter.getKeyword(),
+                        PageRequest.of(number, size)
+                );
 
     }
 

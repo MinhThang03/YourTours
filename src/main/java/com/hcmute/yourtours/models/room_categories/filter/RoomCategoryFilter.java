@@ -9,4 +9,5 @@ import java.util.UUID;
 public class RoomCategoryFilter implements BaseFilter {
     private Boolean important;
     private UUID homeId;
+    private String keyword;
 }

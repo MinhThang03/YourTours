@@ -41,4 +41,15 @@ public interface BedCategoriesRepository extends JpaRepository<BedCategories, UU
                     "WHERE a.deleted is false "
     )
     Page<BedCategories> findAll(Pageable pageable);
+
+
+    @Query(
+            value = "SELECT a FROM BedCategories a " +
+                    "WHERE a.deleted is false " +
+                    "AND (:keyword is null or UPPER(a.name) like UPPER(CONCAT('%', :keyword, '%'))) ",
+            countQuery = "SELECT a.id FROM BedCategories a " +
+                    "WHERE a.deleted is false " +
+                    "AND (:keyword is null or UPPER(a.name) like UPPER(CONCAT('%', :keyword, '%'))) "
+    )
+    Page<BedCategories> findAllWithFilter(String keyword, Pageable pageable);
 }

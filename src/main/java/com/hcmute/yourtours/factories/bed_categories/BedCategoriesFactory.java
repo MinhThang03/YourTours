@@ -7,7 +7,10 @@ import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.bed_categories.BedCategoryDetail;
 import com.hcmute.yourtours.models.bed_categories.BedCategoryInfo;
+import com.hcmute.yourtours.models.bed_categories.filter.CmsBedCategoryFilter;
 import com.hcmute.yourtours.repositories.BedCategoriesRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,5 +96,16 @@ public class BedCategoriesFactory
             bedCategoriesRepository.softDelete(id);
         }
         super.aroundDelete(id, filter);
+    }
+
+    @Override
+    protected <F extends BaseFilter> Page<BedCategories> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
+
+        if (filter instanceof CmsBedCategoryFilter) {
+            CmsBedCategoryFilter bedFilter = (CmsBedCategoryFilter) filter;
+            return bedCategoriesRepository.findAllWithFilter(bedFilter.getKeyword(), PageRequest.of(number, size));
+        }
+
+        return super.pageQuery(filter, number, size);
     }
 }

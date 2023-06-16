@@ -16,17 +16,21 @@ public interface RoomCategoriesRepository extends JpaRepository<RoomCategories, 
 
 
     @Query(nativeQuery = true,
-            value = "select a.*  " +
-                    "from room_categories a  " +
-                    "where (a.important = :important  " +
-                    "   or :important is null) " +
-                    "and a.deleted is false ",
-            countQuery = "select a.id  " +
-                    "from room_categories a  " +
-                    "where (a.important = :important  " +
-                    "   or :important is null) " +
-                    "and a.deleted is false ")
-    Page<RoomCategories> findPageWithFilter(@Param(":important") Boolean important, Pageable pageable);
+            value = "select a.*    " +
+                    "from room_categories a    " +
+                    "where (a.important = :important    " +
+                    "    or :important is null)    " +
+                    "  and a.deleted is false    " +
+                    "  and (:keyword is null or upper(a.name) like upper(Concat('%', :keyword, '%'))) ",
+            countQuery = "select a.id    " +
+                    "from room_categories a    " +
+                    "where (a.important = :important    " +
+                    "    or :important is null)    " +
+                    "  and a.deleted is false    " +
+                    "  and (:keyword is null or upper(a.name) like upper(Concat('%', :keyword, '%'))) ")
+    Page<RoomCategories> findPageWithFilter(@Param("important") Boolean important,
+                                            @Param("keyword") String keyword,
+                                            Pageable pageable);
 
 
     @Query(
