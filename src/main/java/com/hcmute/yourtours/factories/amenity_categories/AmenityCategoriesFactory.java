@@ -96,6 +96,7 @@ public class AmenityCategoriesFactory
         AmenityCategoryFilter amenityCategoryFilter = (AmenityCategoryFilter) filter;
 
         return amenityCategoriesRepository.findPageWithFilter(
+                amenityCategoryFilter.getKeyword(),
                 amenityCategoryFilter.getIsDefault(),
                 PageRequest.of(number, size)
         );

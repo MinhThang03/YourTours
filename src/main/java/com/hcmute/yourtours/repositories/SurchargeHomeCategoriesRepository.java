@@ -41,4 +41,15 @@ public interface SurchargeHomeCategoriesRepository extends JpaRepository<Surchar
                     "WHERE a.deleted is false "
     )
     Page<SurchargeHomeCategories> findAll(Pageable pageable);
+
+
+    @Query(
+            value = "SELECT a FROM SurchargeHomeCategories a " +
+                    "WHERE a.deleted is false   " +
+                    "AND (:keyword is null or upper(a.name) like upper(Concat('%', :keyword, '%')))",
+            countQuery = "SELECT a.id FROM SurchargeHomeCategories a " +
+                    "WHERE a.deleted is false " +
+                    " AND (:keyword is null or upper(a.name) like upper(Concat('%', :keyword, '%'))) "
+    )
+    Page<SurchargeHomeCategories> findAllWithFilter(String keyword, Pageable pageable);
 }

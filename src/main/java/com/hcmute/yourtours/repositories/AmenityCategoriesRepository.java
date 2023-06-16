@@ -14,16 +14,20 @@ import java.util.UUID;
 public interface AmenityCategoriesRepository extends JpaRepository<AmenityCategories, UUID> {
 
 
-    @Query(nativeQuery = true,
+    @Query(
+            nativeQuery = true,
             value = "select a.* " +
                     "from amenity_categories a " +
-                    "where a.is_default = :isDefault " +
-                    "   or :isDefault is null",
+                    "where (a.is_default = :isDefault " +
+                    "   or :isDefault is null)  " +
+                    "  and (:keyword is null or upper(a.name) like upper(Concat('%', :keyword, '%'))) ",
             countQuery = "select a.id " +
                     "from amenity_categories a " +
                     "where a.is_default = :isDefault " +
-                    "   or :isDefault is null ")
-    Page<AmenityCategories> findPageWithFilter(Boolean isDefault, Pageable pageable);
+                    "   or :isDefault is null " +
+                    "  and (:keyword is null or upper(a.name) like upper(Concat('%', :keyword, '%'))) "
+    )
+    Page<AmenityCategories> findPageWithFilter(String keyword, Boolean isDefault, Pageable pageable);
 
 
     @Query(

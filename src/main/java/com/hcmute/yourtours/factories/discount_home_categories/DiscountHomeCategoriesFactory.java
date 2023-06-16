@@ -8,7 +8,10 @@ import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoryDetail;
 import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoryInfo;
+import com.hcmute.yourtours.models.discount_home_categories.filter.DiscountHomeCategoryFilter;
 import com.hcmute.yourtours.repositories.DiscountHomeCategoriesRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -116,5 +119,16 @@ public class DiscountHomeCategoriesFactory
         }
 
         super.aroundDelete(id, filter);
+    }
+
+    @Override
+    protected <F extends BaseFilter> Page<DiscountHomeCategories> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
+        if (filter instanceof DiscountHomeCategoryFilter) {
+            DiscountHomeCategoryFilter discountFilter = (DiscountHomeCategoryFilter) filter;
+            return discountHomeCategoriesRepository.getPageWithFilter(discountFilter.getKeyword(),
+                    PageRequest.of(number, size));
+        }
+
+        return super.pageQuery(filter, number, size);
     }
 }

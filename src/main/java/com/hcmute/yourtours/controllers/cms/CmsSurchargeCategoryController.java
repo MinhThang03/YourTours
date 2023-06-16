@@ -10,9 +10,9 @@ import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
-import com.hcmute.yourtours.libs.model.filter.SimpleFilter;
 import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoryDetail;
 import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoryInfo;
+import com.hcmute.yourtours.models.surcharge_home_categories.filter.SurchargeCategoryFilter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,7 +52,7 @@ public class CmsSurchargeCategoryController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<SurchargeHomeCategoryInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<SurchargeHomeCategoryInfo>>> getInfoPageWithFilter(SurchargeCategoryFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 

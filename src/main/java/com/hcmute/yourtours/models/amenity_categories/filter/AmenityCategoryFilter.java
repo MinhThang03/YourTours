@@ -9,4 +9,5 @@ import java.util.UUID;
 public class AmenityCategoryFilter implements BaseFilter {
     Boolean isDefault;
     UUID homeId;
+    String keyword;
 }

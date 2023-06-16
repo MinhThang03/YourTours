@@ -8,4 +8,5 @@ import java.util.UUID;
 @Data
 public class AmenityFilter implements BaseFilter {
     private UUID categoryId;
+    private String keyword;
 }

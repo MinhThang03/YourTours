@@ -4,6 +4,8 @@ import com.hcmute.yourtours.entities.DiscountHomeCategories;
 import com.hcmute.yourtours.entities.SurchargeHomeCategories;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import io.lettuce.core.dynamic.annotation.Param;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -42,5 +44,12 @@ public interface DiscountHomeCategoriesRepository extends JpaRepository<Discount
     )
     SurchargeHomeCategories softDelete(@Param("categoryId") UUID categoryId);
 
+
+    @Query(
+            value = "SELECT a FROM DiscountHomeCategories a " +
+                    "WHERE a.deleted is false " +
+                    "AND (:keyword is null or upper(a.name) like upper(Concat('%', :keyword, '%'))) "
+    )
+    Page<DiscountHomeCategories> getPageWithFilter(String keyword, Pageable pageable);
 
 }

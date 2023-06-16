@@ -6,7 +6,10 @@ import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoryDetail;
 import com.hcmute.yourtours.models.surcharge_home_categories.SurchargeHomeCategoryInfo;
+import com.hcmute.yourtours.models.surcharge_home_categories.filter.SurchargeCategoryFilter;
 import com.hcmute.yourtours.repositories.SurchargeHomeCategoriesRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,5 +88,17 @@ public class SurchargeHomeCategoriesFactory
             surchargeHomeRepository.softDelete(id);
         }
         super.aroundDelete(id, filter);
+    }
+
+    @Override
+    protected <F extends BaseFilter> Page<SurchargeHomeCategories> pageQuery(F filter, Integer number, Integer size) throws InvalidException {
+
+        if (filter instanceof SurchargeCategoryFilter) {
+            SurchargeCategoryFilter surchargeFilter = (SurchargeCategoryFilter) filter;
+            return surchargeHomeRepository.findAllWithFilter(surchargeFilter.getKeyword(),
+                    PageRequest.of(number, size));
+        }
+
+        return super.pageQuery(filter, number, size);
     }
 }

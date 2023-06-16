@@ -10,9 +10,9 @@ import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryDeleteResponse;
 import com.hcmute.yourtours.libs.model.factory.response.FactoryGetResponse;
-import com.hcmute.yourtours.libs.model.filter.SimpleFilter;
 import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoryDetail;
 import com.hcmute.yourtours.models.discount_home_categories.DiscountHomeCategoryInfo;
+import com.hcmute.yourtours.models.discount_home_categories.filter.DiscountHomeCategoryFilter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,7 +52,7 @@ public class CmsDiscountHomeCategoryController
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<DiscountHomeCategoryInfo>>> getInfoPageWithFilter(SimpleFilter filter, Integer number, Integer size) {
+    public ResponseEntity<BaseResponse<BasePagingResponse<DiscountHomeCategoryInfo>>> getInfoPageWithFilter(DiscountHomeCategoryFilter filter, Integer number, Integer size) {
         return super.factoryGetInfoPageWithFilter(filter, number, size);
     }
 

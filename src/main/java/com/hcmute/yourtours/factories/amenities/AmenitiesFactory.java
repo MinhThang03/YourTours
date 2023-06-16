@@ -119,7 +119,11 @@ public class AmenitiesFactory
     @Override
     protected <F extends BaseFilter> Page<Amenities> pageQuery(F filter, Integer number, Integer size) {
         AmenityFilter amenityFilter = (AmenityFilter) filter;
-        return amenitiesRepository.getPageWithAmenityFilter(amenityFilter.getCategoryId(), PageRequest.of(number, size));
+        return amenitiesRepository.getPageWithAmenityFilter(
+                amenityFilter.getKeyword(),
+                amenityFilter.getCategoryId(),
+                PageRequest.of(number, size)
+        );
     }
 
     @Override

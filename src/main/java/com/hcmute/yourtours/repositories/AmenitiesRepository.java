@@ -15,19 +15,26 @@ import java.util.UUID;
 @Repository
 public interface AmenitiesRepository extends JpaRepository<Amenities, UUID> {
 
-    @Query(nativeQuery = true,
+    @Query(
+            nativeQuery = true,
             value = "select a.*  " +
                     "from amenities a  " +
                     "         inner join amenity_categories b on a.category_id = b.id  " +
                     "where (b.id = :categoryId  " +
-                    "   or :categoryId is null) and a.deleted is false ",
+                    "   or :categoryId is null) and a.deleted is false " +
+                    "  and (:keyword is null or upper(a.name) like upper(Concat('%', :keyword, '%'))) ",
             countQuery = "select a.id  " +
                     "from amenities a  " +
                     "         inner join amenity_categories b on a.category_id = b.id  " +
                     "where (b.id = :categoryId  " +
-                    "   or :categoryId is null) and a.deleted is false ")
-    Page<Amenities> getPageWithAmenityFilter(@Param("categoryId") UUID categoryId,
-                                             Pageable pageable);
+                    "   or :categoryId is null) and a.deleted is false " +
+                    "  and (:keyword is null or upper(a.name) like upper(Concat('%', :keyword, '%'))) "
+    )
+    Page<Amenities> getPageWithAmenityFilter(
+            @Param("keyword") String keyword,
+            @Param("categoryId") UUID categoryId,
+            Pageable pageable
+    );
 
 
     @Query(
