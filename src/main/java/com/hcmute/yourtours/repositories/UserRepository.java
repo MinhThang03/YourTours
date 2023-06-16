@@ -3,7 +3,7 @@ package com.hcmute.yourtours.repositories;
 import com.hcmute.yourtours.entities.User;
 import com.hcmute.yourtours.models.statistic.admin.projections.StatisticCountProjections;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -32,9 +32,9 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query(
             value = "select a from User  a order by a.createdDate desc ",
-            countQuery = "select a.id from User  a order by a.createdDate desc "
+            countQuery = "select count(a.id) from User  a order by a.createdDate desc "
     )
-    Page<User> getAll(PageRequest pageRequest);
+    Page<User> getAll(Pageable pageable);
 
     @Query(
             nativeQuery = true,

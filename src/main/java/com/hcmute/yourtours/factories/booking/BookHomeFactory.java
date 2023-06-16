@@ -206,6 +206,7 @@ public class BookHomeFactory
                 .homeAddressDetail(homeDetail.getAddressDetail())
                 .homeProvinceCode(homeDetail.getProvinceCode())
                 .percent(entity.getPercent())
+                .homeProvinceName(homeDetail.getProvinceName())
                 .costOfHost(entity.getCostOfHost())
                 .costOfAdmin(entity.getCostOfAdmin())
                 .moneyPayed(entity.getMoneyPayed())
