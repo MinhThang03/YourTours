@@ -7,12 +7,26 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface DiscountOfHomeRepository extends JpaRepository<DiscountOfHome, UUID> {
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.* " +
+                    "from discount_of_home a " +
+                    "where a.home_id = :homeId " +
+                    "  and a.discount_category_id = :categoryId " +
+                    "  and :date between a.date_start and a.date_end "
+    )
+    Optional<DiscountOfHome> findByHomeIdAndCategoryIdAndDate(@Param("homeId") UUID homeId,
+                                                              @Param("categoryId") UUID categoryId,
+                                                              @Param("date") LocalDate date);
+
 
     Optional<DiscountOfHome> findByHomeIdAndCategoryId(UUID homeId, UUID categoryId);
 

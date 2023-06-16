@@ -6,6 +6,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @SuperBuilder
@@ -65,5 +66,11 @@ public class DiscountOfHome extends Persistence {
 
     @Column(name = "discount_category_id", columnDefinition = "BINARY(16)")
     private UUID categoryId;
+
+    @Column(name = "date_start")
+    private LocalDate dateStart;
+
+    @Column(name = "date_end")
+    private LocalDate dateEnd;
 
 }

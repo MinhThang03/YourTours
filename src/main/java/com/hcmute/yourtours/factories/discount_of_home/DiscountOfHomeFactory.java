@@ -17,6 +17,7 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,6 +62,8 @@ public class DiscountOfHomeFactory
                 .numberMonthAdvance(detail.getNumberMonthAdvance())
                 .categoryId(detail.getCategoryId())
                 .homeId(detail.getHomeId())
+                .dateStart(detail.getDateStart())
+                .dateEnd(detail.getDateEnd())
                 .build();
     }
 
@@ -71,6 +74,8 @@ public class DiscountOfHomeFactory
         entity.setNumberMonthAdvance(detail.getNumberMonthAdvance());
         entity.setCategoryId(detail.getCategoryId());
         entity.setHomeId(detail.getHomeId());
+        entity.setDateStart(detail.getDateStart());
+        entity.setDateEnd(detail.getDateEnd());
     }
 
     @Override
@@ -85,6 +90,8 @@ public class DiscountOfHomeFactory
                 .numberMonthAdvance(entity.getNumberMonthAdvance())
                 .categoryId(entity.getCategoryId())
                 .homeId(entity.getHomeId())
+                .dateStart(entity.getDateStart())
+                .dateEnd(entity.getDateEnd())
                 .build();
     }
 
@@ -100,6 +107,8 @@ public class DiscountOfHomeFactory
                 .numberMonthAdvance(entity.getNumberMonthAdvance())
                 .categoryId(entity.getCategoryId())
                 .homeId(entity.getHomeId())
+                .dateStart(entity.getDateStart())
+                .dateEnd(entity.getDateEnd())
                 .build();
     }
 
@@ -110,6 +119,25 @@ public class DiscountOfHomeFactory
 
         List<DiscountOfHome> listDelete = discountOfHomeRepository.findAllByHomeIdAndCategoryId(detail.getHomeId(), detail.getCategoryId());
         repository.deleteAll(listDelete);
+    }
+
+    @Override
+    public List<DiscountOfHomeViewModel> getDiscountsOfHomeView(UUID homeId, LocalDate dateBooking) throws InvalidException {
+        List<DiscountHomeCategoryDetail> categories = iDiscountHomeCategoriesFactory.getDiscountCategoriesActive();
+        List<DiscountOfHomeViewModel> result = new ArrayList<>();
+        for (DiscountHomeCategoryDetail category : categories) {
+            Optional<DiscountOfHome> optional = discountOfHomeRepository
+                    .findByHomeIdAndCategoryIdAndDate(homeId, category.getId(), dateBooking);
+            result.add
+                    (
+                            DiscountOfHomeViewModel
+                                    .builder()
+                                    .category(category)
+                                    .config(optional.isEmpty() ? null : convertToDetail(optional.get()))
+                                    .build()
+                    );
+        }
+        return result;
     }
 
     @Override

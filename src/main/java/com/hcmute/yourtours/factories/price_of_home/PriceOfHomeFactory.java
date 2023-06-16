@@ -200,7 +200,7 @@ public class PriceOfHomeFactory
         }
 
         Long numberOfDay = Duration.between(LocalDateTime.of(request.getDateFrom(), LocalTime.MIDNIGHT), LocalDateTime.of(request.getDateTo(), LocalTime.MIDNIGHT)).toDays() + 1;
-        List<DiscountOfHomeViewModel> discounts = iDiscountOfHomeFactory.getDiscountsOfHomeView(request.getHomeId());
+        List<DiscountOfHomeViewModel> discounts = iDiscountOfHomeFactory.getDiscountsOfHomeView(request.getHomeId(), request.getDateFrom());
         Double percent = null;
         String discountOfName = null;
         for (DiscountOfHomeViewModel discount : discounts) {

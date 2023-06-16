@@ -5,14 +5,12 @@ import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.factories.amenities.IAmenitiesFactory;
 import com.hcmute.yourtours.factories.beds_of_home.IBedsOfHomeFactory;
 import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
-import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.factories.discount_of_home.IDiscountOfHomeFactory;
 import com.hcmute.yourtours.factories.homes.IHomesFactory;
 import com.hcmute.yourtours.factories.owner_of_home.IOwnerOfHomeFactory;
 import com.hcmute.yourtours.factories.price_of_home.IPriceOfHomeFactory;
 import com.hcmute.yourtours.factories.rooms_of_home.IRoomsOfHomeFactory;
 import com.hcmute.yourtours.factories.surcharges_of_home.ISurchargeOfHomeFactory;
-import com.hcmute.yourtours.factories.user_evaluate.IUserEvaluateFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.models.discount_of_home.models.DiscountOfHomeViewModel;
@@ -37,8 +35,6 @@ import java.util.stream.Collectors;
 public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
     private final IHomesFactory iHomesFactory;
     private final IBookHomeFactory iBookHomeFactory;
-    private final IGetUserFromTokenFactory iGetUserFromTokenFactory;
-    private final IUserEvaluateFactory iUserEvaluateFactory;
     private final IRoomsOfHomeFactory iRoomsOfHomeFactory;
     private final IOwnerOfHomeFactory iOwnerOfHomeFactory;
     private final IAmenitiesFactory iAmenitiesFactory;
@@ -51,8 +47,6 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
     public AppHandleViewHomeFactory(
             @Qualifier("appHomesFactory") IHomesFactory iHomesFactory,
             @Qualifier("bookHomeFactory") IBookHomeFactory iBookHomeFactory,
-            IGetUserFromTokenFactory iGetUserFromTokenFactory,
-            @Qualifier("userEvaluateFactory") IUserEvaluateFactory iUserEvaluateFactory,
             IRoomsOfHomeFactory iRoomsOfHomeFactory,
             IOwnerOfHomeFactory iOwnerOfHomeFactory,
             @Qualifier("appAmenitiesFactory") IAmenitiesFactory iAmenitiesFactory,
@@ -64,8 +58,6 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
     ) {
         this.iHomesFactory = iHomesFactory;
         this.iBookHomeFactory = iBookHomeFactory;
-        this.iGetUserFromTokenFactory = iGetUserFromTokenFactory;
-        this.iUserEvaluateFactory = iUserEvaluateFactory;
         this.iRoomsOfHomeFactory = iRoomsOfHomeFactory;
         this.iOwnerOfHomeFactory = iOwnerOfHomeFactory;
         this.iAmenitiesFactory = iAmenitiesFactory;
@@ -81,14 +73,6 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
 
         try {
             HomeDetail homeDetail = iHomesFactory.getDetailModel(homeId, null);
-//            BasePagingResponse<UserEvaluateInfo> evaluates = iUserEvaluateFactory.getInfoPage
-//                    (
-//                            EvaluateFilter.builder()
-//                                    .typeFilter(EvaluateFilterTypeEnum.COMMENT)
-//                                    .homeId(homeId)
-//                                    .build(),
-//                            0,
-//                            20);
 
             PriceOfHomeResponse price = iPriceOfHomeFactory.getCostBetweenDay(GetPriceOfHomeRequest.builder()
                     .dateTo(LocalDate.now())
@@ -101,7 +85,6 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
 
             UserHomeDetailModel result = UserHomeDetailModel.builder()
                     .homeDetail(homeDetail)
-//                    .evaluates(evaluates)
                     .dateIsBooked(getDatesIdBooked(homeId))
                     .ownerName(iOwnerOfHomeFactory.getMainOwnerOfHome(homeId))
                     .rooms(iRoomsOfHomeFactory.getRoomHaveConfigBed(homeId))
@@ -112,15 +95,6 @@ public class AppHandleViewHomeFactory implements IAppHandleViewHomeFactory {
                     .discounts(discounts)
                     .build();
 
-//            Optional<String> userId = iGetUserFromTokenFactory.getCurrentUser();
-
-//            if (userId.isEmpty()) {
-//                return result;
-//            }
-
-//            return result.toBuilder()
-//                    .isBooked(iBookHomeFactory.existByUserIdAndHomeId(UUID.fromString(userId.get()), homeId))
-//                    .build();
 
             return calculateAverageRate(result);
 
