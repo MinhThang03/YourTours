@@ -65,7 +65,6 @@ public class CmsHandleViewHomeFactory implements ICmsHandleViewHomeFactory {
         origin = origin.toBuilder()
                 .name(detail.getName())
                 .description(detail.getDescription())
-                .guide(detail.getGuide())
                 .refundPolicy(detail.getRefundPolicy())
                 .build();
         iHomesFactory.updateModel(homeId, origin);

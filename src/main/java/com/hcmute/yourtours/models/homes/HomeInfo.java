@@ -15,7 +15,6 @@ import lombok.experimental.SuperBuilder;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,20 +23,6 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
 public class HomeInfo extends NameDataModel<UUID> {
-
-    private String wifi;
-
-    private String passWifi;
-
-    private String ruleOthers;
-
-    private LocalTime timeCheckInStart;
-
-    private LocalTime timeCheckInEnd;
-
-    private LocalTime timeCheckOut;
-
-    private String guide;
 
     private String addressDetail;
 

@@ -96,13 +96,6 @@ public class HomesFactory
         return Homes.builder()
                 .name(detail.getName())
                 .description(detail.getDescription())
-                .wifi(detail.getWifi())
-                .passWifi(detail.getPassWifi())
-                .ruleOthers(detail.getRuleOthers())
-                .timeCheckInStart(detail.getTimeCheckInStart())
-                .timeCheckInEnd(detail.getTimeCheckInEnd())
-                .timeCheckOut(detail.getTimeCheckOut())
-                .guide(detail.getGuide())
                 .costPerNightDefault(detail.getCostPerNightDefault())
                 .refundPolicy(detail.getRefundPolicy())
                 .status(CommonStatusEnum.ACTIVE)
@@ -122,13 +115,6 @@ public class HomesFactory
     public void updateConvertToEntity(Homes entity, HomeDetail detail) throws InvalidException {
         entity.setName(detail.getName());
         entity.setDescription(detail.getDescription());
-        entity.setWifi(detail.getWifi());
-        entity.setPassWifi(detail.getPassWifi());
-        entity.setRuleOthers(detail.getRuleOthers());
-        entity.setTimeCheckInStart(detail.getTimeCheckInStart());
-        entity.setTimeCheckInEnd(detail.getTimeCheckInEnd());
-        entity.setTimeCheckOut(detail.getTimeCheckOut());
-        entity.setGuide(detail.getGuide());
         entity.setCostPerNightDefault(detail.getCostPerNightDefault());
         entity.setRefundPolicy(detail.getRefundPolicy());
         entity.setStatus(detail.getStatus());
@@ -151,13 +137,6 @@ public class HomesFactory
                 .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
-                .wifi(entity.getWifi())
-                .passWifi(entity.getPassWifi())
-                .ruleOthers(entity.getRuleOthers())
-                .timeCheckInStart(entity.getTimeCheckInStart())
-                .timeCheckInEnd(entity.getTimeCheckInEnd())
-                .timeCheckOut(entity.getTimeCheckOut())
-                .guide(entity.getGuide())
                 .costPerNightDefault(entity.getCostPerNightDefault())
                 .refundPolicy(entity.getRefundPolicy())
                 .status(entity.getStatus())
@@ -184,13 +163,6 @@ public class HomesFactory
                 .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
-                .wifi(entity.getWifi())
-                .passWifi(entity.getPassWifi())
-                .ruleOthers(entity.getRuleOthers())
-                .timeCheckInStart(entity.getTimeCheckInStart())
-                .timeCheckInEnd(entity.getTimeCheckInEnd())
-                .timeCheckOut(entity.getTimeCheckOut())
-                .guide(entity.getGuide())
                 .costPerNightDefault(entity.getCostPerNightDefault())
                 .refundPolicy(entity.getRefundPolicy())
                 .status(entity.getStatus())
