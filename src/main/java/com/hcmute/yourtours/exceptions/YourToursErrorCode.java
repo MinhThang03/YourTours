@@ -43,6 +43,7 @@ public enum YourToursErrorCode implements IErrorCode {
     NOT_OWNER_OF_HOME(HttpStatus.BAD_REQUEST, "400000034", "Bạn không phải là chủ ngôi nhà"),
 
     CAN_NOT_DELETE_AMENITY_CATEGORY(HttpStatus.BAD_REQUEST, "400000035", "Vui lòng xóa các tiện nghi thuộc mục này trước khi xóa mục"),
+    USER_NOT_ACTIVE(HttpStatus.BAD_REQUEST, "400000036", "Tài khoản chưa được kích hoạt"),
 
 
     //403

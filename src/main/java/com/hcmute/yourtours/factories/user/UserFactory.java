@@ -381,6 +381,24 @@ public class UserFactory
         return repository.save(user);
     }
 
+    @Override
+    public SuccessResponse updateStatus(UUID userId, UserStatusEnum status) throws InvalidException {
+
+        User user = repository.findById(userId).orElseThrow(
+                () -> new InvalidException(YourToursErrorCode.NOT_FOUND_USER)
+        );
+
+        if (user.getStatus() == null) {
+            throw new InvalidException(YourToursErrorCode.USER_NOT_ACTIVE);
+        }
+
+        user.setStatus(status);
+
+        return SuccessResponse.builder()
+                .success(true)
+                .build();
+    }
+
 
     @Override
     protected void postCreate(User entity, UserDetail detail) throws InvalidException {
