@@ -15,8 +15,6 @@ import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.HomeInfo;
 import com.hcmute.yourtours.models.homes.filter.HomeFilter;
 import com.hcmute.yourtours.models.homes.filter.HomeMobileFilter;
-import com.hcmute.yourtours.models.user_evaluate.UserEvaluateDetail;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -59,18 +57,6 @@ public class AppHomeController
         return factoryGetInfoPageWithFilter(filter, number, size);
     }
 
-    @Override
-    @Operation(summary = "Tạo đánh giá nhà cho user")
-    public ResponseEntity<BaseResponse<HomeDetail>> createEvaluate(UserEvaluateDetail detail) {
-        try {
-            LogContext.push(LogType.REQUEST, detail);
-            HomeDetail response = iAppHomesFactory.createUserEvaluate(detail);
-            LogContext.push(LogType.RESPONSE, response);
-            return iResponseFactory.success(response);
-        } catch (InvalidException e) {
-            throw new RestException(e);
-        }
-    }
 
     @Override
     public ResponseEntity<BaseResponse<BasePagingResponse<HomeInfo>>> getInfoPageWithFullFilter(HomeMobileFilter filter, Integer number, Integer size) {

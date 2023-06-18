@@ -15,8 +15,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "user_evaluate")
-public class UserEvaluate extends Persistence {
+@Table(name = "home_view")
+public class HomeView extends Persistence {
 
 
     @Id
@@ -43,25 +43,13 @@ public class UserEvaluate extends Persistence {
     @Column(name = "home_id", columnDefinition = "BINARY(16)")
     private UUID homeId;
 
+    @Column(name = "view")
+    private Long view;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "user_id",
-            referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_association_evaluate_user"),
-            nullable = false,
-            insertable = false,
-            updatable = false,
-            columnDefinition = "BINARY(16)"
-    )
-    private User user;
-    @Column(name = "user_id", columnDefinition = "BINARY(16)")
-    private UUID userId;
+    @Column(name = "month")
+    private Integer month;
 
-    @Column(name = "point")
-    private Double point;
-
-    @Column(name = "comment")
-    private String comment;
+    @Column(name = "year")
+    private Integer year;
 
 }

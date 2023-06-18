@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.models.amenities.AmenityInfo;
 import com.hcmute.yourtours.models.discount_of_home.models.DiscountOfHomeViewModel;
+import com.hcmute.yourtours.models.home_view.HomeViewInfo;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.rooms_of_home.models.RoomOfHomeDetailWithBedModel;
 import com.hcmute.yourtours.models.surcharges_of_home.models.SurchargeHomeViewModel;
-import com.hcmute.yourtours.models.user_evaluate.UserEvaluateInfo;
 import lombok.Builder;
 import lombok.Data;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class UserHomeDetailModel implements Serializable {
     @JsonUnwrapped
     private HomeDetail homeDetail;
-    private BasePagingResponse<UserEvaluateInfo> evaluates;
+    private BasePagingResponse<HomeViewInfo> evaluates;
     private List<RoomOfHomeDetailWithBedModel> rooms;
     private boolean isBooked;
     private List<String> dateIsBooked;

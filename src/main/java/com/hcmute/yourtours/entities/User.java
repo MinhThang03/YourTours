@@ -86,10 +86,6 @@ public class User extends Persistence {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @Fetch(FetchMode.SUBSELECT)
-    private List<UserEvaluate> evaluateList;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    @Fetch(FetchMode.SUBSELECT)
     private List<VerificationOtp> otpList;
 
 }

@@ -118,6 +118,6 @@ public class Homes extends NameData {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "home")
     @Fetch(FetchMode.SUBSELECT)
-    private List<UserEvaluate> evaluateList;
+    private List<HomeView> homeViewList;
 
 }
