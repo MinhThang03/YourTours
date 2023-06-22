@@ -8,6 +8,8 @@ import com.hcmute.yourtours.models.owner_of_home.models.StatisticInfoOwnerModel;
 import com.hcmute.yourtours.models.statistic.admin.filter.AdminHomeStatisticFilter;
 import com.hcmute.yourtours.models.statistic.admin.models.AdminStatistic;
 import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticFilter;
+import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticMonthFilter;
+import com.hcmute.yourtours.models.statistic.host.models.OwnerHomeStatisticMonth;
 import com.hcmute.yourtours.models.statistic.host.models.OwnerStatistic;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,14 @@ public interface ICmsStatisticController {
 
     @GetMapping("owner")
     ResponseEntity<BaseResponse<OwnerStatistic>> getOwnerStatistic(@ParameterObject @Valid OwnerHomeStatisticFilter filter);
+
+    @GetMapping("owner/month")
+    ResponseEntity<BaseResponse<BasePagingResponse<OwnerHomeStatisticMonth>>> getOwnerMonthStatistic
+            (
+                    @ParameterObject @Valid OwnerHomeStatisticMonthFilter filter,
+                    @RequestParam(defaultValue = "0") Integer number,
+                    @RequestParam(defaultValue = "20") Integer size
+            );
 
     @GetMapping("admin")
     ResponseEntity<BaseResponse<AdminStatistic>> getAdminStatistic(@ParameterObject @Valid AdminHomeStatisticFilter filter);

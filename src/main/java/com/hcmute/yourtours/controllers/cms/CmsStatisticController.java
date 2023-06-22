@@ -18,6 +18,8 @@ import com.hcmute.yourtours.models.owner_of_home.models.StatisticInfoOwnerModel;
 import com.hcmute.yourtours.models.statistic.admin.filter.AdminHomeStatisticFilter;
 import com.hcmute.yourtours.models.statistic.admin.models.AdminStatistic;
 import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticFilter;
+import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticMonthFilter;
+import com.hcmute.yourtours.models.statistic.host.models.OwnerHomeStatisticMonth;
 import com.hcmute.yourtours.models.statistic.host.models.OwnerStatistic;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +61,18 @@ public class CmsStatisticController implements ICmsStatisticController {
         try {
             LogContext.push(LogType.REQUEST, filter);
             OwnerStatistic response = iOwnerStatisticFactory.statistic(filter);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<BasePagingResponse<OwnerHomeStatisticMonth>>> getOwnerMonthStatistic(OwnerHomeStatisticMonthFilter filter, Integer number, Integer size) {
+        try {
+            LogContext.push(LogType.REQUEST, filter);
+            BasePagingResponse<OwnerHomeStatisticMonth> response = iOwnerStatisticFactory.ownerHomeStatistic(filter, number, size);
             LogContext.push(LogType.RESPONSE, response);
             return iResponseFactory.success(response);
         } catch (InvalidException e) {

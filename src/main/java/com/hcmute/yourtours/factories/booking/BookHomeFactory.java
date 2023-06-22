@@ -26,11 +26,14 @@ import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProj
 import com.hcmute.yourtours.models.statistic.common.RevenueStatistic;
 import com.hcmute.yourtours.models.statistic.host.models.HomeBookingStatistic;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
+import com.hcmute.yourtours.models.statistic.host.projections.OwnerHomeStatisticProjection;
 import com.hcmute.yourtours.repositories.BookHomeRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -444,4 +447,10 @@ public class BookHomeFactory
 
         iWebSocketFactory.sendBookingSuccessMessage(owner.getUserId(), detail.getHomeId());
     }
+
+    @Override
+    public Page<OwnerHomeStatisticProjection> getStatisticMonthForOwner(UUID userId, Integer month, Integer year, Pageable pageable) {
+        return bookHomeRepository.ownerHomestatistic(userId, month, year, pageable);
+    }
+
 }
