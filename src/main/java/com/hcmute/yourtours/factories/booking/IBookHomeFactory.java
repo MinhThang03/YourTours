@@ -39,8 +39,6 @@ public interface IBookHomeFactory extends IDataFactory<UUID, BookHomeInfo, BookH
 
     List<RevenueStatistic> getRevenueStatisticWithOwnerAndYear(UUID ownerId, Integer year);
 
-    List<RevenueStatistic> getRevenueStatisticWithAdminAndYear(Integer year);
-
     Page<OwnerHomeStatisticProjection> getStatisticMonthForOwner(UUID userId, Integer month, Integer year, Pageable pageable);
 
     AdminChartStatistic getAdminChart(AdminHomeChartFilter filter);
