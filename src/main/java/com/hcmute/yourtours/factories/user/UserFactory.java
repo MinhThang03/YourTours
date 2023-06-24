@@ -329,8 +329,8 @@ public class UserFactory
     }
 
     @Override
-    public StatisticCountProjections getStatisticCountOfAdmin() {
-        return userRepository.getAdminStatisticCount();
+    public StatisticCountProjections getStatisticCountOfAdmin(Integer year) {
+        return userRepository.getAdminStatisticCount(year);
     }
 
     @Override

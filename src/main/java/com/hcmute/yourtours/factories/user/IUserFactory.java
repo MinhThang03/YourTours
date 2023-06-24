@@ -35,7 +35,7 @@ public interface IUserFactory extends IDataFactory<UUID, UserInfo, UserDetail> {
 
     SuccessResponse requestActiveAccount() throws InvalidException;
 
-    StatisticCountProjections getStatisticCountOfAdmin();
+    StatisticCountProjections getStatisticCountOfAdmin(Integer year);
 
     SettingLanguageResponse settingLanguage(SettingLanguageRequest request) throws InvalidException;
 

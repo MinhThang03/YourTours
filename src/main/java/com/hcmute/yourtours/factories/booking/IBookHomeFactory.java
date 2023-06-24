@@ -6,6 +6,8 @@ import com.hcmute.yourtours.models.booking.BookHomeDetail;
 import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.models.common.SuccessResponse;
+import com.hcmute.yourtours.models.statistic.admin.filter.AdminHomeChartFilter;
+import com.hcmute.yourtours.models.statistic.admin.models.AdminChartStatistic;
 import com.hcmute.yourtours.models.statistic.common.RevenueStatistic;
 import com.hcmute.yourtours.models.statistic.host.models.HomeBookingStatistic;
 
@@ -34,5 +36,5 @@ public interface IBookHomeFactory extends IDataFactory<UUID, BookHomeInfo, BookH
 
     List<RevenueStatistic> getRevenueStatisticWithOwnerAndYear(UUID ownerId, Integer year);
 
-    List<RevenueStatistic> getRevenueStatisticWithAdminAndYear(Integer year);
+    AdminChartStatistic getAdminChart(AdminHomeChartFilter filter);
 }

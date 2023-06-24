@@ -3,6 +3,7 @@ package com.hcmute.yourtours.factories.booking;
 import com.hcmute.yourtours.constant.CornConstant;
 import com.hcmute.yourtours.entities.BookHomes;
 import com.hcmute.yourtours.entities.OwnerOfHome;
+import com.hcmute.yourtours.enums.AdminChartTypeEnum;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.MonthEnum;
 import com.hcmute.yourtours.enums.RefundPolicyEnum;
@@ -23,6 +24,9 @@ import com.hcmute.yourtours.models.booking.models.MonthAndYearModel;
 import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
+import com.hcmute.yourtours.models.statistic.admin.filter.AdminHomeChartFilter;
+import com.hcmute.yourtours.models.statistic.admin.models.AdminChartStatistic;
+import com.hcmute.yourtours.models.statistic.admin.projections.AdminChartProjection;
 import com.hcmute.yourtours.models.statistic.common.RevenueStatistic;
 import com.hcmute.yourtours.models.statistic.host.models.HomeBookingStatistic;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
@@ -346,6 +350,7 @@ public class BookHomeFactory
         return bookHomeRepository.countTotalBookingOfOwnerFinish(ownerId, BookRoomStatusEnum.CHECK_OUT.name(), year);
     }
 
+
     @Override
     public List<HomeBookingStatistic> getHomeBookingStatisticWithOwner(UUID ownerId, Integer year) {
         List<HomeBookingStatisticProjection> projections = bookHomeRepository.getHomeBookingStatisticWithOwner(ownerId, year);
@@ -372,18 +377,49 @@ public class BookHomeFactory
         return result;
     }
 
+
     @Override
-    public List<RevenueStatistic> getRevenueStatisticWithAdminAndYear(Integer year) {
+    public AdminChartStatistic getAdminChart(AdminHomeChartFilter filter) {
+        if (filter.getType().equals(AdminChartTypeEnum.BOOKING)) {
+            return AdminChartStatistic.builder()
+                    .revenueStatistics(getRevenueBookingStatisticWithAdminAndYear(filter.getYear()))
+                    .build();
+        }
+
+        return AdminChartStatistic.builder()
+                .revenueStatistics(getRevenueStatisticWithAdminAndYear(filter.getYear()))
+                .build();
+    }
+
+
+    private List<RevenueStatistic> getRevenueStatisticWithAdminAndYear(Integer year) {
         if (year == null) {
             year = LocalDate.now().getYear();
         }
 
         List<RevenueStatistic> result = new ArrayList<>();
+        List<AdminChartProjection> revenue = bookHomeRepository.getRevenueRevenueWithAdminIdAndYear(BookRoomStatusEnum.CHECK_OUT.name(), year);
 
         for (MonthEnum item : MonthEnum.values()) {
-            Double revenue = bookHomeRepository.getRevenueWithAdminIdAndYear(BookRoomStatusEnum.CHECK_OUT.name(), item.getMonthValue(), year);
             result.add(RevenueStatistic.builder()
-                    .amount(revenue)
+                    .amount(revenue.get(item.getMonthValue() - 1).getValue())
+                    .month(item.getMonthName())
+                    .build());
+        }
+        return result;
+    }
+
+    private List<RevenueStatistic> getRevenueBookingStatisticWithAdminAndYear(Integer year) {
+        if (year == null) {
+            year = LocalDate.now().getYear();
+        }
+
+        List<RevenueStatistic> result = new ArrayList<>();
+        List<AdminChartProjection> revenue = bookHomeRepository.getRevenueBookingWithAdminIdAndYear(year);
+
+        for (MonthEnum item : MonthEnum.values()) {
+            result.add(RevenueStatistic.builder()
+                    .amount(revenue.get(item.getMonthValue() - 1).getValue())
                     .month(item.getMonthName())
                     .build());
         }

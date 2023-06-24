@@ -50,19 +50,25 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query(
             nativeQuery = true,
-            value = "select a.numberOfGuests  as numberOfGuests, " +
-                    "       b.numberOfOwner   as numberOfOwner, " +
-                    "       c.numberOfBooking as numberOfBooking, " +
-                    "       d.totalCost       as totalCost " +
-                    "from (select count(a.userId) as numberOfGuests " +
-                    "      from (select distinct a.user_id as userId " +
-                    "            from book_home a) a) a, " +
-                    "     (select count(a.userId) as numberOfOwner " +
-                    "      from (select distinct a.user_id as userId from owner_of_home a) a) b, " +
-                    "     (select count(a.id) as numberOfBooking from book_home a) c, " +
-                    "     (select coalesce(sum(coalesce(a.cost_of_admin, 0)), 0) as totalCost " +
-                    "      from book_home a " +
-                    "      where a.status = 'CHECK_OUT') d "
+            value = "select a.numberOfGuests  as numberOfGuests,    " +
+                    "       b.numberOfOwner   as numberOfOwner,    " +
+                    "       c.numberOfBooking as numberOfBooking,    " +
+                    "       d.totalCost       as totalCost    " +
+                    "from (select count(a.userId) as numberOfGuests    " +
+                    "      from (select distinct a.user_id as userId    " +
+                    "            from book_home a    " +
+                    "            where YEAR(a.created_date) = :year) a) a,    " +
+                    "     (select count(a.userId) as numberOfOwner    " +
+                    "      from (select distinct a.user_id as userId    " +
+                    "            from owner_of_home a    " +
+                    "                     inner join homes b on a.home_id = b.id    " +
+                    "            where a.is_main_owner is true    " +
+                    "              and YEAR(a.created_date) = :year) a) b,    " +
+                    "     (select count(a.id) as numberOfBooking from book_home a where YEAR(a.created_date) = :year) c,    " +
+                    "     (select coalesce(sum(coalesce(a.cost_of_admin, 0)), 0) as totalCost    " +
+                    "      from book_home a    " +
+                    "      where a.status = 'CHECK_OUT'    " +
+                    "        and YEAR(a.created_date) = :year) d "
     )
-    StatisticCountProjections getAdminStatisticCount();
+    StatisticCountProjections getAdminStatisticCount(Integer year);
 }

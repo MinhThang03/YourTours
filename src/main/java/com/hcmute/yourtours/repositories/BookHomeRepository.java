@@ -6,6 +6,7 @@ import com.hcmute.yourtours.models.booking.projections.GetDetailBookingProjectio
 import com.hcmute.yourtours.models.booking.projections.GetPageEvaluateProjection;
 import com.hcmute.yourtours.models.booking.projections.InfoUserBookingProjection;
 import com.hcmute.yourtours.models.booking.projections.MobileGetPageBookingProjection;
+import com.hcmute.yourtours.models.statistic.admin.projections.AdminChartProjection;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -148,15 +149,168 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
 
     @Query(
             nativeQuery = true,
-            value = "select coalesce(sum(a.cost_of_admin), 0)   " +
-                    "from book_home a,   " +
-                    "     owner_of_home b   " +
-                    "where a.home_id = b.home_id   " +
-                    "  and a.status = :status   " +
-                    "  and MONTH(a.date_start) = :month   " +
-                    "  and YEAR(a.date_start) = :year "
+            value = "(select coalesce(sum(a.cost_of_admin), 0) as value,     " +
+                    "        1 as month     " +
+                    " from book_home a     " +
+                    " where a.status = :status     " +
+                    "   and MONTH(a.created_date) = 1     " +
+                    "   and YEAR(a.created_date) = :year)     " +
+                    "union     " +
+                    "(select coalesce(sum(a.cost_of_admin), 0) as value,     " +
+                    "        2 as month     " +
+                    " from book_home a     " +
+                    " where a.status = :status     " +
+                    "   and MONTH(a.created_date) = 2     " +
+                    "   and YEAR(a.created_date) = :year)     " +
+                    "union     " +
+                    "(select coalesce(sum(a.cost_of_admin), 0) as value,     " +
+                    "        3 as month     " +
+                    " from book_home a     " +
+                    " where a.status = :status     " +
+                    "   and MONTH(a.created_date) = 3     " +
+                    "   and YEAR(a.created_date) = :year)     " +
+                    "union     " +
+                    "(select coalesce(sum(a.cost_of_admin), 0) as value,     " +
+                    "        4 as month     " +
+                    " from book_home a     " +
+                    " where a.status = :status     " +
+                    "   and MONTH(a.created_date) = 4     " +
+                    "   and YEAR(a.created_date) = :year)     " +
+                    "union     " +
+                    "(select coalesce(sum(a.cost_of_admin), 0) as value,     " +
+                    "        5 as month     " +
+                    " from book_home a     " +
+                    " where a.status = :status     " +
+                    "   and MONTH(a.created_date) = 5     " +
+                    "   and YEAR(a.created_date) = :year)     " +
+                    "union     " +
+                    "(select coalesce(sum(a.cost_of_admin), 0) as value,     " +
+                    "        6 as month     " +
+                    " from book_home a     " +
+                    " where a.status = :status     " +
+                    "   and MONTH(a.created_date) = 6     " +
+                    "   and YEAR(a.created_date) = :year)     " +
+                    "union     " +
+                    "(select coalesce(sum(a.cost_of_admin), 0) as value,     " +
+                    "        7 as month     " +
+                    " from book_home a     " +
+                    " where a.status = :status     " +
+                    "   and MONTH(a.created_date) = 7     " +
+                    "   and YEAR(a.created_date) = :year)     " +
+                    "union     " +
+                    "(select coalesce(sum(a.cost_of_admin), 0) as value,     " +
+                    "        8 as month     " +
+                    " from book_home a     " +
+                    " where a.status = :status     " +
+                    "   and MONTH(a.created_date) = 8     " +
+                    "   and YEAR(a.created_date) = :year)     " +
+                    "union     " +
+                    "(select coalesce(sum(a.cost_of_admin), 0) as value,     " +
+                    "        9 as month     " +
+                    " from book_home a     " +
+                    " where a.status = :status     " +
+                    "   and MONTH(a.created_date) = 9     " +
+                    "   and YEAR(a.created_date) = :year)     " +
+                    "union     " +
+                    "(select coalesce(sum(a.cost_of_admin), 0) as value,     " +
+                    "        10 as month     " +
+                    " from book_home a     " +
+                    " where a.status = :status     " +
+                    "   and MONTH(a.created_date) = 10     " +
+                    "   and YEAR(a.created_date) = :year)     " +
+                    "union     " +
+                    "(select coalesce(sum(a.cost_of_admin), 0) as value,     " +
+                    "        11 as month     " +
+                    " from book_home a     " +
+                    " where a.status = :status     " +
+                    "   and MONTH(a.created_date) = 11     " +
+                    "   and YEAR(a.created_date) = :year)     " +
+                    "union     " +
+                    "(select coalesce(sum(a.cost_of_admin), 0) as value,     " +
+                    "        12 as month     " +
+                    " from book_home a     " +
+                    " where a.status = :status     " +
+                    "   and MONTH(a.created_date) = 12     " +
+                    "   and YEAR(a.created_date) = :year)      "
     )
-    Double getRevenueWithAdminIdAndYear(String status, Integer month, Integer year);
+    List<AdminChartProjection> getRevenueRevenueWithAdminIdAndYear(String status, Integer year);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "(select count(a.id) * 1.0 as value,  " +
+                    "        1           as month  " +
+                    " from book_home a  " +
+                    " where MONTH(a.date_start) = 1  " +
+                    "   and YEAR(a.date_start) = :year)  " +
+                    "union  " +
+                    "(select count(a.id) * 1.0 as value,  " +
+                    "        2           as month  " +
+                    " from book_home a  " +
+                    " where MONTH(a.date_start) = 2  " +
+                    "   and YEAR(a.date_start) = :year)  " +
+                    "union  " +
+                    "(select count(a.id) * 1.0 as value,  " +
+                    "        3           as month  " +
+                    " from book_home a  " +
+                    " where MONTH(a.date_start) = 3  " +
+                    "   and YEAR(a.date_start) = :year)  " +
+                    "union  " +
+                    "(select count(a.id) * 1.0 as value,  " +
+                    "        4           as month  " +
+                    " from book_home a  " +
+                    " where MONTH(a.date_start) = 4  " +
+                    "   and YEAR(a.date_start) = :year)  " +
+                    "union  " +
+                    "(select count(a.id) * 1.0 as value,  " +
+                    "        5           as month  " +
+                    " from book_home a  " +
+                    " where MONTH(a.date_start) = 5  " +
+                    "   and YEAR(a.date_start) = :year)  " +
+                    "union  " +
+                    "(select count(a.id) * 1.0 as value,  " +
+                    "        6           as month  " +
+                    " from book_home a  " +
+                    " where MONTH(a.date_start) = 6  " +
+                    "   and YEAR(a.date_start) = :year)  " +
+                    "union  " +
+                    "(select count(a.id) * 1.0 as value,  " +
+                    "        7           as month  " +
+                    " from book_home a  " +
+                    " where MONTH(a.date_start) = 7  " +
+                    "   and YEAR(a.date_start) = :year)  " +
+                    "union  " +
+                    "(select count(a.id) * 1.0 as value,  " +
+                    "        8           as month  " +
+                    " from book_home a  " +
+                    " where MONTH(a.date_start) = 8  " +
+                    "   and YEAR(a.date_start) = :year)  " +
+                    "union  " +
+                    "(select count(a.id) * 1.0 as value,  " +
+                    "        9           as month  " +
+                    " from book_home a  " +
+                    " where MONTH(a.date_start) = 9  " +
+                    "   and YEAR(a.date_start) = :year)  " +
+                    "union  " +
+                    "(select count(a.id) * 1.0 as value,  " +
+                    "        10           as month  " +
+                    " from book_home a  " +
+                    " where MONTH(a.date_start) = 10  " +
+                    "   and YEAR(a.date_start) = :year)  " +
+                    "union  " +
+                    "(select count(a.id) * 1.0 as value,  " +
+                    "        11           as month  " +
+                    " from book_home a  " +
+                    " where MONTH(a.date_start) = 11  " +
+                    "   and YEAR(a.date_start) = :year)  " +
+                    "union  " +
+                    "(select count(a.id) * 1.0 as value,  " +
+                    "        12           as month  " +
+                    " from book_home a  " +
+                    " where MONTH(a.date_start) = 12  " +
+                    "   and YEAR(a.date_start) = :year); "
+    )
+    List<AdminChartProjection> getRevenueBookingWithAdminIdAndYear(Integer year);
 
 
     @Query(
