@@ -10,6 +10,9 @@ import com.hcmute.yourtours.models.statistic.admin.filter.AdminHomeChartFilter;
 import com.hcmute.yourtours.models.statistic.admin.models.AdminChartStatistic;
 import com.hcmute.yourtours.models.statistic.common.RevenueStatistic;
 import com.hcmute.yourtours.models.statistic.host.models.HomeBookingStatistic;
+import com.hcmute.yourtours.models.statistic.host.projections.OwnerHomeStatisticProjection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,5 +39,10 @@ public interface IBookHomeFactory extends IDataFactory<UUID, BookHomeInfo, BookH
 
     List<RevenueStatistic> getRevenueStatisticWithOwnerAndYear(UUID ownerId, Integer year);
 
+    List<RevenueStatistic> getRevenueStatisticWithAdminAndYear(Integer year);
+
+    Page<OwnerHomeStatisticProjection> getStatisticMonthForOwner(UUID userId, Integer month, Integer year, Pageable pageable);
+
     AdminChartStatistic getAdminChart(AdminHomeChartFilter filter);
+
 }

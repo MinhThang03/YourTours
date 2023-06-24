@@ -8,6 +8,7 @@ import com.hcmute.yourtours.models.booking.projections.InfoUserBookingProjection
 import com.hcmute.yourtours.models.booking.projections.MobileGetPageBookingProjection;
 import com.hcmute.yourtours.models.statistic.admin.projections.AdminChartProjection;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
+import com.hcmute.yourtours.models.statistic.host.projections.OwnerHomeStatisticProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -424,5 +425,89 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
                     "         inner join user f on f.id = e.user_id "
     )
     GetDetailBookingProjection getDetailBooking(@Param("id") UUID id);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "select a.homeId                        as homeId,  " +
+                    "       a.name                          as homeName,  " +
+                    "       coalesce(b.numberOfView, 0)     as numberOfView,  " +
+                    "       coalesce(c.numberOfBooking, 0)  as numberOfBooking,  " +
+                    "       coalesce(d.numberOfEvaluate, 0) as numberOfEvaluate,  " +
+                    "       coalesce(d.point, 0)            as point,  " +
+                    "       coalesce(e.revenue, 0)          as revenue  " +
+                    "from (select a.id   as homeId,  " +
+                    "             a.name as name  " +
+                    "      from homes a,  " +
+                    "           owner_of_home b  " +
+                    "      where a.id = b.home_id  " +
+                    "        and b.is_main_owner is true  " +
+                    "        and b.user_id = :userId) a  " +
+                    "         left join  " +
+                    "  " +
+                    "     (select a.home_id as homeId,  " +
+                    "             a.view    as numberOfView  " +
+                    "      from home_view a  " +
+                    "      where a.month = :month  " +
+                    "        and a.year = :year) b on a.homeId = b.homeId  " +
+                    "         left join (select a.home_id        as homeId,  " +
+                    "                           count(a.home_id) as numberOfBooking  " +
+                    "                    from book_home a  " +
+                    "                    where MONTH(a.created_date) = :month  " +
+                    "                      and YEAR(a.created_date) = :year  " +
+                    "                    group by a.home_id) c on a.homeId = c.homeId  " +
+                    "         left join (select a.home_id        as homeId,  " +
+                    "                           count(a.home_id) as numberOfEvaluate,  " +
+                    "                           sum(a.rates)     as point  " +
+                    "                    from book_home a  " +
+                    "                    where MONTH(a.created_date) = :month  " +
+                    "                      and YEAR(a.created_date) = :year  " +
+                    "                      and a.rates is not NULL  " +
+                    "                    group by a.home_id) d on a.homeId = d.homeId  " +
+                    "         left join (select a.home_id           as homeId,  " +
+                    "                           sum(a.cost_of_host) as revenue  " +
+                    "                    from book_home a  " +
+                    "                    where MONTH(a.last_modified_date) = :month  " +
+                    "                      and YEAR(a.last_modified_date) = :year  " +
+                    "                      and a.status = 'CHECK_OUT'  " +
+                    "                    group by a.home_id) e on a.homeId = e.homeId ",
+            countQuery = "select a.homeId                        as homeId  " +
+                    "from (select a.id   as homeId,   " +
+                    "             a.name as name   " +
+                    "      from homes a,   " +
+                    "           owner_of_home b   " +
+                    "      where a.id = b.home_id   " +
+                    "        and b.is_main_owner is true   " +
+                    "        and b.user_id = :userId) a   " +
+                    "         left join   " +
+                    "   " +
+                    "     (select a.home_id as homeId,   " +
+                    "             a.view    as numberOfView   " +
+                    "      from home_view a   " +
+                    "      where a.month = :month   " +
+                    "        and a.year = :year) b on a.homeId = b.homeId   " +
+                    "         left join (select a.home_id        as homeId,   " +
+                    "                           count(a.home_id) as numberOfBooking   " +
+                    "                    from book_home a   " +
+                    "                    where MONTH(a.created_date) = :month   " +
+                    "                      and YEAR(a.created_date) = :year   " +
+                    "                    group by a.home_id) c on a.homeId = c.homeId   " +
+                    "         left join (select a.home_id        as homeId,   " +
+                    "                           count(a.home_id) as numberOfEvaluate,   " +
+                    "                           sum(a.rates)     as point   " +
+                    "                    from book_home a   " +
+                    "                    where MONTH(a.created_date) = :month   " +
+                    "                      and YEAR(a.created_date) = :year   " +
+                    "                      and a.rates is not NULL   " +
+                    "                    group by a.home_id) d on a.homeId = d.homeId   " +
+                    "         left join (select a.home_id           as homeId,   " +
+                    "                           sum(a.cost_of_host) as revenue   " +
+                    "                    from book_home a   " +
+                    "                    where MONTH(a.last_modified_date) = :month   " +
+                    "                      and YEAR(a.last_modified_date) = :year   " +
+                    "                      and a.status = 'CHECK_OUT'   " +
+                    "                    group by a.home_id) e on a.homeId = e.homeId "
+    )
+    Page<OwnerHomeStatisticProjection> ownerHomestatistic(UUID userId, Integer month, Integer year, Pageable pageable);
 
 }
