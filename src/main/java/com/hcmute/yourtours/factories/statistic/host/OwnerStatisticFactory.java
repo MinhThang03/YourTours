@@ -4,6 +4,9 @@ import com.hcmute.yourtours.factories.booking.IBookHomeFactory;
 import com.hcmute.yourtours.factories.common.IGetUserFromTokenFactory;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
+import com.hcmute.yourtours.models.statistic.admin.filter.AdminStatisticDateFilter;
+import com.hcmute.yourtours.models.statistic.admin.models.AdminStatisticHome;
+import com.hcmute.yourtours.models.statistic.admin.projections.AdminStatisticHomeProjection;
 import com.hcmute.yourtours.models.statistic.common.RevenueStatistic;
 import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticFilter;
 import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticMonthFilter;
@@ -80,9 +83,40 @@ public class OwnerStatisticFactory implements IOwnerStatisticFactory {
                                 ? 0
                                 : item.getPoint() / item.getNumberOfEvaluate())
                         .numberOfEvaluate(item.getNumberOfEvaluate())
-                        .reservationRate(item.getNumberOfView() == 0
-                                ? 100
+                        .reservationRate(item.getNumberOfBooking() == 0
+                                ? 0
                                 : item.getNumberOfBooking() * 1.0 / item.getNumberOfView())
+                        .build()
+        ).collect(Collectors.toList());
+
+        return new BasePagingResponse<>(
+                result,
+                number,
+                size,
+                projections.getTotalElements());
+    }
+
+    @Override
+    public BasePagingResponse<AdminStatisticHome> adminStatisticHome(AdminStatisticDateFilter filter, Integer number, Integer size) throws InvalidException {
+
+        Page<AdminStatisticHomeProjection> projections = iBookHomeFactory
+                .getAdminStatisticHome(filter, PageRequest.of(number, size));
+
+        List<AdminStatisticHome> result = projections.getContent().stream().map(
+                item -> AdminStatisticHome.builder()
+                        .homeId(item.getHomeId())
+                        .homeName(item.getHomeName())
+                        .numberOfBooking(item.getNumberOfBooking())
+                        .numberOfView(item.getNumberOfView())
+                        .revenue(item.getRevenue())
+                        .averageRate(item.getNumberOfEvaluate() == 0
+                                ? 0
+                                : item.getPoint() / item.getNumberOfEvaluate())
+                        .numberOfEvaluate(item.getNumberOfEvaluate())
+                        .reservationRate(item.getNumberOfBooking() == 0
+                                ? 0
+                                : item.getNumberOfBooking() * 1.0 / item.getNumberOfView())
+                        .ownerName(item.getOwnerName())
                         .build()
         ).collect(Collectors.toList());
 

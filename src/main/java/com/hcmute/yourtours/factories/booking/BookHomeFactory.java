@@ -25,8 +25,10 @@ import com.hcmute.yourtours.models.common.SuccessResponse;
 import com.hcmute.yourtours.models.homes.HomeDetail;
 import com.hcmute.yourtours.models.homes.projections.GetOwnerNameAndHomeNameProjection;
 import com.hcmute.yourtours.models.statistic.admin.filter.AdminHomeChartFilter;
+import com.hcmute.yourtours.models.statistic.admin.filter.AdminStatisticDateFilter;
 import com.hcmute.yourtours.models.statistic.admin.models.AdminChartStatistic;
 import com.hcmute.yourtours.models.statistic.admin.projections.AdminChartProjection;
+import com.hcmute.yourtours.models.statistic.admin.projections.AdminStatisticHomeProjection;
 import com.hcmute.yourtours.models.statistic.common.RevenueStatistic;
 import com.hcmute.yourtours.models.statistic.host.models.HomeBookingStatistic;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
@@ -486,7 +488,12 @@ public class BookHomeFactory
 
     @Override
     public Page<OwnerHomeStatisticProjection> getStatisticMonthForOwner(UUID userId, Integer month, Integer year, Pageable pageable) {
-        return bookHomeRepository.ownerHomestatistic(userId, month, year, pageable);
+        return bookHomeRepository.ownerHomeStatistic(userId, month, year, pageable);
+    }
+
+    @Override
+    public Page<AdminStatisticHomeProjection> getAdminStatisticHome(AdminStatisticDateFilter filter, Pageable pageable) {
+        return bookHomeRepository.adminStatisticHome(filter.getDateStart(), filter.getDateEnd(), pageable);
     }
 
 }

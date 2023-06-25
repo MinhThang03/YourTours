@@ -39,8 +39,6 @@ public class HomeViewFactory
         return HomeView.builder()
                 .homeId(detail.getHomeId())
                 .view(detail.getView())
-                .month(detail.getMonth())
-                .year(detail.getYear())
                 .build();
     }
 
@@ -48,8 +46,6 @@ public class HomeViewFactory
     public void updateConvertToEntity(HomeView entity, HomeViewInfo detail) throws InvalidException {
         entity.setHomeId(detail.getHomeId());
         entity.setView(detail.getView());
-        entity.setMonth(detail.getMonth());
-        entity.setYear(detail.getYear());
     }
 
     @Override
@@ -63,8 +59,6 @@ public class HomeViewFactory
                 .id(entity.getId())
                 .homeId(entity.getHomeId())
                 .view(entity.getView())
-                .month(entity.getMonth())
-                .year(entity.getYear())
                 .build();
     }
 
@@ -74,14 +68,12 @@ public class HomeViewFactory
         LocalDate date = LocalDate.now();
 
         Optional<HomeView> homeView = homeViewRepository
-                .findByHomeIdAndMonthAndYear(homeId, date.getMonthValue(), date.getYear());
+                .findByDate(homeId, date);
 
         if (homeView.isEmpty()) {
             HomeViewInfo model = HomeViewInfo.builder()
                     .homeId(homeId)
                     .view(1L)
-                    .month(date.getMonthValue())
-                    .year(date.getYear())
                     .build();
 
             return createModel(model);

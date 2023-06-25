@@ -13,13 +13,14 @@ import com.hcmute.yourtours.libs.logging.LogContext;
 import com.hcmute.yourtours.libs.logging.LogType;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
 import com.hcmute.yourtours.libs.model.factory.response.BaseResponse;
-import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.booking.models.InfoUserBookingModel;
 import com.hcmute.yourtours.models.owner_of_home.models.StatisticInfoOwnerModel;
 import com.hcmute.yourtours.models.statistic.admin.filter.AdminHomeChartFilter;
 import com.hcmute.yourtours.models.statistic.admin.filter.AdminHomeStatisticFilter;
+import com.hcmute.yourtours.models.statistic.admin.filter.AdminStatisticDateFilter;
 import com.hcmute.yourtours.models.statistic.admin.models.AdminChartStatistic;
 import com.hcmute.yourtours.models.statistic.admin.models.AdminStatistic;
+import com.hcmute.yourtours.models.statistic.admin.models.AdminStatisticHome;
 import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticFilter;
 import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticMonthFilter;
 import com.hcmute.yourtours.models.statistic.host.models.OwnerHomeStatisticMonth;
@@ -102,7 +103,8 @@ public class CmsStatisticController implements ICmsStatisticController {
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<InfoUserBookingModel>>> getInfoGuestsBooking(BaseFilter filter, Integer number, Integer size) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<BaseResponse<BasePagingResponse<InfoUserBookingModel>>> getInfoGuestsBooking(@Valid AdminStatisticDateFilter filter, Integer number, Integer size) {
         LogContext.push(LogType.REQUEST, filter);
         BasePagingResponse<InfoUserBookingModel> response = iCmsBookHomeFactory.getStatisticInfoUserBooking(filter, number, size);
         LogContext.push(LogType.RESPONSE, response);
@@ -110,7 +112,8 @@ public class CmsStatisticController implements ICmsStatisticController {
     }
 
     @Override
-    public ResponseEntity<BaseResponse<BasePagingResponse<StatisticInfoOwnerModel>>> getInfoOwnerBooking(BaseFilter filter, Integer number, Integer size) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<BaseResponse<BasePagingResponse<StatisticInfoOwnerModel>>> getInfoOwnerBooking(@Valid AdminStatisticDateFilter filter, Integer number, Integer size) {
         LogContext.push(LogType.REQUEST, filter);
         BasePagingResponse<StatisticInfoOwnerModel> response = iOwnerOfHomeFactory.getStatisticInfoOwner(filter, number, size);
         LogContext.push(LogType.RESPONSE, response);
@@ -124,5 +127,18 @@ public class CmsStatisticController implements ICmsStatisticController {
         AdminChartStatistic response = iBookHomeFactory.getAdminChart(filter);
         LogContext.push(LogType.RESPONSE, response);
         return iResponseFactory.success(response);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<BaseResponse<BasePagingResponse<AdminStatisticHome>>> adminStatisticHome(AdminStatisticDateFilter filter, Integer number, Integer size) {
+        try {
+            LogContext.push(LogType.REQUEST, filter);
+            BasePagingResponse<AdminStatisticHome> response = iOwnerStatisticFactory.adminStatisticHome(filter, number, size);
+            LogContext.push(LogType.RESPONSE, response);
+            return iResponseFactory.success(response);
+        } catch (InvalidException e) {
+            throw new RestException(e);
+        }
     }
 }

@@ -16,6 +16,7 @@ import com.hcmute.yourtours.models.booking.BookHomeInfo;
 import com.hcmute.yourtours.models.booking.filter.CmsBookingFilter;
 import com.hcmute.yourtours.models.booking.models.InfoUserBookingModel;
 import com.hcmute.yourtours.models.booking.projections.InfoUserBookingProjection;
+import com.hcmute.yourtours.models.statistic.admin.filter.AdminStatisticDateFilter;
 import com.hcmute.yourtours.repositories.BookHomeRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
@@ -76,8 +77,9 @@ public class CmsBookHomeFactory extends BookHomeFactory implements ICmsBookHomeF
     }
 
     @Override
-    public BasePagingResponse<InfoUserBookingModel> getStatisticInfoUserBooking(BaseFilter filter, Integer number, Integer size) {
-        Page<InfoUserBookingProjection> projections = bookHomeRepository.getPageStatisticInfoUserBooking(PageRequest.of(number, size));
+    public BasePagingResponse<InfoUserBookingModel> getStatisticInfoUserBooking(AdminStatisticDateFilter filter, Integer number, Integer size) {
+        Page<InfoUserBookingProjection> projections = bookHomeRepository
+                .getPageStatisticInfoUserBooking(filter.getDateStart(), filter.getDateEnd(), PageRequest.of(number, size));
 
         List<InfoUserBookingModel> result = projections.getContent().stream().map
                 (
@@ -86,6 +88,8 @@ public class CmsBookHomeFactory extends BookHomeFactory implements ICmsBookHomeF
                                 .userId(item.getUserId())
                                 .fullName(item.getFullName())
                                 .totalCost(item.getTotalCost())
+                                .email(item.getEmail())
+                                .rate(item.getAverageRate())
                                 .build()
                 ).collect(Collectors.toList());
 

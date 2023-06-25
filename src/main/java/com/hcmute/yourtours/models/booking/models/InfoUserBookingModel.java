@@ -10,6 +10,8 @@ import java.util.UUID;
 public class InfoUserBookingModel {
     private UUID userId;
     private String fullName;
+    private String email;
+    private Double rate;
     private Double totalCost;
     private Long numberOfBooking;
 }

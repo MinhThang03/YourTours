@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,50 +31,68 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHome, UUID>
 
     @Query(
             nativeQuery = true,
-            value = "select a.numberOfHomes as numberOfHomes, " +
-                    "       a.userId as userId, " +
-                    "       b.fullName as fullName, " +
-                    "       b.numberOfBooking as numberOfBooking, " +
-                    "       b.totalCost as totalCost " +
-                    "from (select count(a.id) as numberOfHomes, " +
-                    "             a.user_id   as userId " +
-                    "      from owner_of_home a " +
-                    "      group by a.user_id) a, " +
-                    " " +
-                    "     (select c.id                         as userId, " +
-                    "             c.full_name                      as fullName, " +
-                    "             count(a.id)                      as numberOfBooking, " +
-                    "             coalesce(sum(a.cost_of_host), 0) as totalCost " +
-                    "      from book_home a, " +
-                    "           owner_of_home b, " +
-                    "           user c " +
-                    "      where a.home_id = b.home_id " +
-                    "        and c.id = b.user_id " +
-                    "      group by c.id, c.full_name) b " +
-                    "where a.userId = b.userId ",
-            countQuery = "select a.numberOfHomes as numberOfHomes, " +
-                    "       a.userId as userId, " +
-                    "       b.fullName as fullName, " +
-                    "       b.numberOfBooking as numberOfBooking, " +
-                    "       b.totalCost as totalCost " +
-                    "from (select count(a.id) as numberOfHomes, " +
-                    "             a.user_id   as userId " +
-                    "      from owner_of_home a " +
-                    "      group by a.user_id) a, " +
-                    " " +
-                    "     (select c.id                         as userId, " +
-                    "             c.full_name                      as fullName, " +
-                    "             count(a.id)                      as numberOfBooking, " +
-                    "             coalesce(sum(a.cost_of_host), 0) as totalCost " +
-                    "      from book_home a, " +
-                    "           owner_of_home b, " +
-                    "           user c " +
-                    "      where a.home_id = b.home_id " +
-                    "        and c.id = b.user_id " +
-                    "      group by c.id, c.full_name) b " +
-                    "where a.userId = b.userId "
+            value = "select coalesce(a.numberOfHomes, 0)   as numberOfHomes,     " +
+                    "       a.userId                       as userId,     " +
+                    "       a.fullName                     as fullName,     " +
+                    "       a.email                        as email,     " +
+                    "       coalesce(b.numberOfBooking, 0) as numberOfBooking,     " +
+                    "       coalesce(b.totalCost, 0)       as totalCost     " +
+                    "from (select count(a.id) as numberOfHomes,     " +
+                    "             a.user_id   as userId,     " +
+                    "             b.full_name as fullName,     " +
+                    "             b.email     as email     " +
+                    "      from owner_of_home a,     " +
+                    "           user b     " +
+                    "      where a.is_main_owner is true     " +
+                    "        and a.user_id = b.id     " +
+                    "      group by a.user_id) a     " +
+                    "         left join     " +
+                    "     " +
+                    "     (select c.id                             as userId,     " +
+                    "             count(a.id)                      as numberOfBooking,     " +
+                    "             coalesce(sum(a.cost_of_host), 0) as totalCost     " +
+                    "      from book_home a,     " +
+                    "           owner_of_home b,     " +
+                    "           user c     " +
+                    "      where a.home_id = b.home_id     " +
+                    "        and c.id = b.user_id     " +
+                    "        and a.status = 'CHECK_OUT'     " +
+                    "        and DATE(a.created_date) between :dateStart and :dateEnd     " +
+                    "      group by c.id, c.full_name) b     " +
+                    "     on a.userId = b.userId     " +
+                    "order by coalesce(b.totalCost, 0) desc ",
+            countQuery = "select coalesce(a.numberOfHomes, 0)   as numberOfHomes,     " +
+                    "       a.userId                       as userId,     " +
+                    "       a.fullName                     as fullName,     " +
+                    "       a.email                        as email,     " +
+                    "       coalesce(b.numberOfBooking, 0) as numberOfBooking,     " +
+                    "       coalesce(b.totalCost, 0)       as totalCost     " +
+                    "from (select count(a.id) as numberOfHomes,     " +
+                    "             a.user_id   as userId,     " +
+                    "             b.full_name as fullName,     " +
+                    "             b.email     as email     " +
+                    "      from owner_of_home a,     " +
+                    "           user b     " +
+                    "      where a.is_main_owner is true     " +
+                    "        and a.user_id = b.id     " +
+                    "      group by a.user_id) a     " +
+                    "         left join     " +
+                    "     " +
+                    "     (select c.id                             as userId,     " +
+                    "             count(a.id)                      as numberOfBooking,     " +
+                    "             coalesce(sum(a.cost_of_host), 0) as totalCost     " +
+                    "      from book_home a,     " +
+                    "           owner_of_home b,     " +
+                    "           user c     " +
+                    "      where a.home_id = b.home_id     " +
+                    "        and c.id = b.user_id     " +
+                    "        and a.status = 'CHECK_OUT'     " +
+                    "        and DATE(a.created_date) between :dateStart and :dateEnd     " +
+                    "      group by c.id, c.full_name) b     " +
+                    "     on a.userId = b.userId     " +
+                    "order by coalesce(b.totalCost, 0) desc "
     )
-    Page<StatisticInfoOwnerProjection> getStatisticInfoOwner(Pageable pageable);
+    Page<StatisticInfoOwnerProjection> getStatisticInfoOwner(LocalDate dateStart, LocalDate dateEnd, Pageable pageable);
 
     Optional<OwnerOfHome> findByHomeIdAndIsMainOwner(UUID homeId, Boolean isMainOwner);
 }
