@@ -7,6 +7,10 @@ public interface InfoUserBookingProjection {
 
     String getFullName();
 
+    String getEmail();
+
+    Double getAverageRate();
+
     Double getTotalCost();
 
     Long getNumberOfBooking();

@@ -46,10 +46,4 @@ public class HomeView extends Persistence {
     @Column(name = "view")
     private Long view;
 
-    @Column(name = "month")
-    private Integer month;
-
-    @Column(name = "year")
-    private Integer year;
-
 }

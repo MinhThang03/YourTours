@@ -20,11 +20,5 @@ public class HomeViewInfo extends BaseData<UUID> {
     private UUID homeId;
 
     @NotNull
-    private Integer month;
-
-    @NotNull
-    private Integer year;
-
-    @NotNull
     private Long view;
 }

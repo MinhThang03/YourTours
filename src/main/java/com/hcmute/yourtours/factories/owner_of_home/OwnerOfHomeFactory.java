@@ -5,11 +5,11 @@ import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
-import com.hcmute.yourtours.libs.model.filter.BaseFilter;
 import com.hcmute.yourtours.models.owner_of_home.OwnerOfHomeDetail;
 import com.hcmute.yourtours.models.owner_of_home.OwnerOfHomeInfo;
 import com.hcmute.yourtours.models.owner_of_home.models.StatisticInfoOwnerModel;
 import com.hcmute.yourtours.models.owner_of_home.projections.StatisticInfoOwnerProjection;
+import com.hcmute.yourtours.models.statistic.admin.filter.AdminStatisticDateFilter;
 import com.hcmute.yourtours.repositories.OwnerOfHomesRepository;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
@@ -97,8 +97,9 @@ public class OwnerOfHomeFactory
     }
 
     @Override
-    public BasePagingResponse<StatisticInfoOwnerModel> getStatisticInfoOwner(BaseFilter filter, Integer number, Integer size) {
-        Page<StatisticInfoOwnerProjection> projections = ownerOfHomesRepository.getStatisticInfoOwner(PageRequest.of(number, size));
+    public BasePagingResponse<StatisticInfoOwnerModel> getStatisticInfoOwner(AdminStatisticDateFilter filter, Integer number, Integer size) {
+        Page<StatisticInfoOwnerProjection> projections = ownerOfHomesRepository
+                .getStatisticInfoOwner(filter.getDateStart(), filter.getDateEnd(), PageRequest.of(number, size));
         List<StatisticInfoOwnerModel> result = projections.stream().map
                 (
                         item -> StatisticInfoOwnerModel.builder()
@@ -107,6 +108,7 @@ public class OwnerOfHomeFactory
                                 .totalCost(item.getTotalCost())
                                 .fullName(item.getFullName())
                                 .userId(item.getUserId())
+                                .email(item.getEmail())
                                 .build()
                 ).collect(Collectors.toList());
 

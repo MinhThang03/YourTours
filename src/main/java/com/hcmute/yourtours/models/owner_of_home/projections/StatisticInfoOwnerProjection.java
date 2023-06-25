@@ -7,6 +7,8 @@ public interface StatisticInfoOwnerProjection {
 
     UUID getUserId();
 
+    String getEmail();
+
     String getFullName();
 
     Long getNumberOfBooking();
