@@ -86,6 +86,7 @@ common:
           - https://your-tours-client.vercel.app/
           - https://your-tours-client-git-develop-thaihaidev.vercel.app/
           - https://your-tours-client-git-development-thaihaidev.vercel.app/
+          - https://your-tours-client-git-release-final30june-thaihaidev.vercel.app/
         allowed-methods: ${CORS_METHODS:*}
         allowed-headers: ${CORS_HEADERS:*}
 
