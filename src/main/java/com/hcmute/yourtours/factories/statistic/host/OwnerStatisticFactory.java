@@ -83,9 +83,9 @@ public class OwnerStatisticFactory implements IOwnerStatisticFactory {
                                 ? 0
                                 : item.getPoint() / item.getNumberOfEvaluate())
                         .numberOfEvaluate(item.getNumberOfEvaluate())
-                        .reservationRate(item.getNumberOfBooking() == 0
+                        .reservationRate(item.getNumberOfBooking() == 0 || item.getNumberOfView() == 0
                                 ? 0
-                                : item.getNumberOfBooking() * 1.0 / item.getNumberOfView())
+                                :  (item.getNumberOfBooking() * 1.0 / item.getNumberOfView()) * 100)
                         .build()
         ).collect(Collectors.toList());
 
@@ -113,9 +113,9 @@ public class OwnerStatisticFactory implements IOwnerStatisticFactory {
                                 ? 0
                                 : item.getPoint() / item.getNumberOfEvaluate())
                         .numberOfEvaluate(item.getNumberOfEvaluate())
-                        .reservationRate(item.getNumberOfBooking() == 0
+                        .reservationRate(item.getNumberOfBooking() == 0 || item.getNumberOfView() == 0
                                 ? 0
-                                : item.getNumberOfBooking() * 1.0 / item.getNumberOfView())
+                                : (item.getNumberOfBooking() * 1.0 / item.getNumberOfView()) * 100)
                         .ownerName(item.getOwnerName())
                         .build()
         ).collect(Collectors.toList());
