@@ -32,7 +32,6 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                             "order by case when :sortBy = 'VIEW' then a.view end desc,  " +
                             "         case when :sortBy = 'FAVORITE' then a.favorite end desc,  " +
                             "         case when :sortBy = 'NEW' then a.created_date end desc,  " +
-                            "         case when :sortBy = 'RATE' then a.average_rate end desc,  " +
                             "         case when :sortBy = 'TRENDING' then a.number_of_booking end desc,  " +
                             "         a.created_date desc  ",
                     countQuery = "select a.id  " +
