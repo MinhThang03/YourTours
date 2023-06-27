@@ -122,6 +122,12 @@ dependencies {
     implementation 'org.webjars:sockjs-client:1.0.2'
 
 
+    /**
+     * Paypal
+     */
+    implementation 'com.paypal.sdk:rest-api-sdk:1.14.0'
+
+
 }
 
 tasks.named('test') {

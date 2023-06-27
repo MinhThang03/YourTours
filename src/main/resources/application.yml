@@ -87,6 +87,7 @@ common:
           - https://your-tours-client-git-develop-thaihaidev.vercel.app/
           - https://your-tours-client-git-development-thaihaidev.vercel.app/
           - https://your-tours-client-git-release-final30june-thaihaidev.vercel.app/
+          - https://your-tours.loca.lt/
         allowed-methods: ${CORS_METHODS:*}
         allowed-headers: ${CORS_HEADERS:*}
 
@@ -118,3 +119,9 @@ aws-s3:
   bucketName: ${AWS_S3_BUCKET:your-tours}
   region: ${AWS_S3_REGION:ap-northeast-1}
   endpoint-s3: ${AWS-S3-ENDPOINT:https://${AWS_S3_BUCKET:your-tours}.s3.${AWS_S3_REGION:ap-northeast-1}.amazonaws.com}
+
+
+paypal:
+  mode: sandbox
+  client-id: ${PAYPAL_CLIENT_ID:AYDnNH8nOKGKl1pmEXr9HLm2nItZrm49bmT7xY3FjpOBf7tFOBGxhswyGD7ybg6ciI_krLs53oxdJ7H7}
+  client-secret: ${PAYPAL_CLIENT_SECRET:EKlnBJ10XIre2otn5g4XAv8242mDDllcH4Lw0Ld8x9Lit_XfjRIYxS1-1MeUdI7rEY2EhhBOsz2QXnIT}
