@@ -249,10 +249,19 @@ public class HomesFactory
     @Override
     public void checkNumberOfGuestOfHome(UUID homeId, List<BookingGuestDetailDetail> guests) throws InvalidException {
         int numberOfGuest = guests.stream().map(BookingGuestDetailInfo::getNumber).reduce(0, Integer::sum);
-        HomeDetail homeDetail = getDetailModel(homeId, null);
-        if (numberOfGuest > homeDetail.getNumberOfGuests()) {
+        Homes home = homesRepository.findById(homeId).orElse(null);
+        if (home == null) {
+            throw new InvalidException(YourToursErrorCode.NOT_FOUND_HOME);
+        }
+        if (numberOfGuest > home.getNumberOfGuests()) {
             throw new InvalidException(YourToursErrorCode.NUMBER_OF_GUESTS_IS_EXCEED);
         }
+
+        CommonStatusEnum statusOfOwner = iOwnerOfHomeFactory.getStatusOfOwnerHome(homeId);
+        if (statusOfOwner.equals(CommonStatusEnum.LOCK)) {
+            throw new InvalidException(YourToursErrorCode.OWNER_IS_BLOCK);
+        }
+
     }
 
     @Override

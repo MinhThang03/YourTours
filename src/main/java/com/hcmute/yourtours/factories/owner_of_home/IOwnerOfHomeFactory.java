@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.factories.owner_of_home;
 
 import com.hcmute.yourtours.entities.OwnerOfHome;
+import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.IDataFactory;
 import com.hcmute.yourtours.libs.model.factory.response.BasePagingResponse;
@@ -19,4 +20,6 @@ public interface IOwnerOfHomeFactory extends IDataFactory<UUID, OwnerOfHomeInfo,
     BasePagingResponse<StatisticInfoOwnerModel> getStatisticInfoOwner(AdminStatisticDateFilter filter, Integer number, Integer size);
 
     OwnerOfHome getMainOwnerByHomeId(UUID homeId) throws InvalidException;
+
+    CommonStatusEnum getStatusOfOwnerHome(UUID homeId);
 }

@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.entities.OwnerOfHome;
+import com.hcmute.yourtours.enums.CommonStatusEnum;
 import com.hcmute.yourtours.models.owner_of_home.projections.StatisticInfoOwnerProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -95,4 +96,13 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHome, UUID>
     Page<StatisticInfoOwnerProjection> getStatisticInfoOwner(LocalDate dateStart, LocalDate dateEnd, Pageable pageable);
 
     Optional<OwnerOfHome> findByHomeIdAndIsMainOwner(UUID homeId, Boolean isMainOwner);
+
+
+    @Query(
+            value = "select c.status from Homes a, OwnerOfHome b, User c " +
+                    "where a.id = b.homeId " +
+                    "and b.userId = c.id " +
+                    "and b.isMainOwner is true  "
+    )
+    CommonStatusEnum getStatusOfOwner(UUID homeId);
 }

@@ -213,7 +213,6 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
             throw new InvalidException(YourToursErrorCode.DATE_BOOKING_IN_VALID);
         }
 
-        iHomesFactory.checkExistsByHomeId(detail.getHomeId());
         iHomesFactory.checkNumberOfGuestOfHome(detail.getHomeId(), detail.getGuests());
 
         super.checkDateBookingOfHomeValid(detail.getDateStart(), detail.getDateEnd(), detail.getHomeId());
