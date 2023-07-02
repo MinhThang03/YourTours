@@ -1,7 +1,7 @@
 package com.hcmute.yourtours.factories.owner_of_home;
 
 import com.hcmute.yourtours.entities.OwnerOfHome;
-import com.hcmute.yourtours.enums.CommonStatusEnum;
+import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.exceptions.YourToursErrorCode;
 import com.hcmute.yourtours.libs.exceptions.InvalidException;
 import com.hcmute.yourtours.libs.factory.BasePersistDataFactory;
@@ -129,7 +129,7 @@ public class OwnerOfHomeFactory
     }
 
     @Override
-    public CommonStatusEnum getStatusOfOwnerHome(UUID homeId) {
+    public UserStatusEnum getStatusOfOwnerHome(UUID homeId) {
         return ownerOfHomesRepository.getStatusOfOwner(homeId);
     }
 }

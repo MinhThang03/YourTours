@@ -262,8 +262,8 @@ public class HomesFactory
         }
 
 
-        CommonStatusEnum statusOfOwner = iOwnerOfHomeFactory.getStatusOfOwnerHome(homeId);
-        if (statusOfOwner.equals(CommonStatusEnum.LOCK)) {
+        UserStatusEnum statusOfOwner = iOwnerOfHomeFactory.getStatusOfOwnerHome(homeId);
+        if (statusOfOwner.equals(UserStatusEnum.LOCK)) {
             throw new InvalidException(YourToursErrorCode.OWNER_IS_BLOCK);
         }
 

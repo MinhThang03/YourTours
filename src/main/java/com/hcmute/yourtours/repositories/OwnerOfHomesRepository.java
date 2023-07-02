@@ -1,7 +1,7 @@
 package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.entities.OwnerOfHome;
-import com.hcmute.yourtours.enums.CommonStatusEnum;
+import com.hcmute.yourtours.enums.UserStatusEnum;
 import com.hcmute.yourtours.models.owner_of_home.projections.StatisticInfoOwnerProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -105,6 +105,6 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHome, UUID>
                     "and b.isMainOwner is true " +
                     "and a.id = :homeId "
     )
-    CommonStatusEnum getStatusOfOwner(UUID homeId);
+    UserStatusEnum getStatusOfOwner(UUID homeId);
 
 }
