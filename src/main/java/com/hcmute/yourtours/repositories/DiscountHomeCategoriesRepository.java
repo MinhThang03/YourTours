@@ -1,7 +1,6 @@
 package com.hcmute.yourtours.repositories;
 
 import com.hcmute.yourtours.entities.DiscountHomeCategories;
-import com.hcmute.yourtours.entities.SurchargeHomeCategories;
 import com.hcmute.yourtours.enums.CommonStatusEnum;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
@@ -42,7 +41,7 @@ public interface DiscountHomeCategoriesRepository extends JpaRepository<Discount
                     "set a.deleted = true      " +
                     "where a.id = :categoryId "
     )
-    SurchargeHomeCategories softDelete(@Param("categoryId") UUID categoryId);
+    void softDelete(@Param("categoryId") UUID categoryId);
 
 
     @Query(

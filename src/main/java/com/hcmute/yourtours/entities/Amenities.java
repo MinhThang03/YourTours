@@ -59,7 +59,7 @@ public class Amenities extends NameData {
     @Enumerated(EnumType.STRING)
     private CommonStatusEnum status;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "amenity")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "amenity", cascade = CascadeType.REMOVE)
     @Fetch(FetchMode.SUBSELECT)
     private List<AmenitiesOfHome> amenitiesOfHome;
 }

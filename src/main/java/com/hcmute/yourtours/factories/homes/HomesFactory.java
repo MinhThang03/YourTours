@@ -112,6 +112,7 @@ public class HomesFactory
                 .thumbnail(detail.getThumbnail())
                 .numberOfBooking(0L)
                 .refundPolicy(RefundPolicyEnum.BEFORE_ONE_DAY)
+                .guide(detail.getGuide())
                 .build();
     }
 
@@ -130,6 +131,7 @@ public class HomesFactory
         entity.setFavorite(detail.getFavorite());
         entity.setThumbnail(detail.getThumbnail());
         entity.setNumberOfBooking(detail.getNumberOfBooking());
+        entity.setGuide(detail.getGuide());
     }
 
     @Override
@@ -155,6 +157,7 @@ public class HomesFactory
                 .provinceName(iProvinceFactory.getProvinceByCodeName(entity.getProvinceCode()).getName())
                 .lastModifiedDate(entity.getLastModifiedDate())
                 .numberOfBooking(entity.getNumberOfBooking())
+                .guide(entity.getGuide())
                 .build();
     }
 
@@ -181,6 +184,7 @@ public class HomesFactory
                 .lastModifiedDate(entity.getLastModifiedDate())
                 .provinceName(iProvinceFactory.getProvinceByCodeName(entity.getProvinceCode()).getName())
                 .numberOfBooking(entity.getNumberOfBooking())
+                .guide(entity.getGuide())
                 .build();
     }
 

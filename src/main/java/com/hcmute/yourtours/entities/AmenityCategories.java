@@ -37,7 +37,7 @@ public class AmenityCategories extends NameData {
     @Column(name = "is_default")
     private Boolean isDefault;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.REMOVE)
     @Fetch(FetchMode.SUBSELECT)
     private List<Amenities> amenities;
 }

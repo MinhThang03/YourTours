@@ -30,7 +30,7 @@ public interface BedCategoriesRepository extends JpaRepository<BedCategories, UU
                     "set a.deleted = true      " +
                     "where a.id = :categoryId "
     )
-    BedCategories softDelete(@Param("categoryId") UUID categoryId);
+    void softDelete(@Param("categoryId") UUID categoryId);
 
 
     @Override

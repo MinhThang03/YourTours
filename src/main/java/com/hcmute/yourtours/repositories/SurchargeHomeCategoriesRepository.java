@@ -31,7 +31,7 @@ public interface SurchargeHomeCategoriesRepository extends JpaRepository<Surchar
                     "set a.deleted = true        " +
                     "where a.id = :categoryId         "
     )
-    SurchargeHomeCategories softDelete(@Param("categoryId") UUID categoryId);
+    void softDelete(@Param("categoryId") UUID categoryId);
 
     @Override
     @Query(

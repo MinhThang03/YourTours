@@ -146,14 +146,4 @@ public class AmenitiesFactory
         }
         return result;
     }
-
-    @Override
-    protected <F extends BaseFilter> void aroundDelete(UUID id, F filter) throws InvalidException {
-
-        if (id != null && amenitiesRepository.existsForeignKey(id)) {
-            amenitiesRepository.softDelete(id);
-            return;
-        }
-        super.aroundDelete(id, filter);
-    }
 }

@@ -49,5 +49,5 @@ public interface RoomCategoriesRepository extends JpaRepository<RoomCategories, 
                     "set a.deleted = true        " +
                     "where a.id = :categoryId "
     )
-    RoomCategories softDelete(@Param("categoryId") UUID categoryId);
+    void softDelete(@Param("categoryId") UUID categoryId);
 }

@@ -1,9 +1,10 @@
 package com.hcmute.yourtours.entities.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hcmute.yourtours.libs.util.TimeUtil;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -15,9 +16,6 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -52,15 +50,9 @@ public abstract class Audit<U extends Serializable> implements Serializable {
 
 
     public static LocalDateTime getLocalDateTimeGMT7() {
-        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeZone timeZone = DateTimeZone.forID("Asia/Ho_Chi_Minh");
+        DateTime now = DateTime.now(timeZone);
 
-        // Convert it to GMT+7 (Indochina Time)
-        ZoneId gmtPlus7Zone = ZoneId.of("GMT+7");
-        ZonedDateTime gmtPlus7DateTime = localDateTime.atZone(gmtPlus7Zone);
-
-        // Format the date and time
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        String formattedDateTime = gmtPlus7DateTime.format(formatter);
-        return TimeUtil.toLocalDateTime(formattedDateTime);
+        return LocalDateTime.of(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), now.getHourOfDay(), now.getMinuteOfHour(), now.getSecondOfMinute());
     }
 }

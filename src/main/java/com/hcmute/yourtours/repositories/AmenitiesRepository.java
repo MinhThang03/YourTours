@@ -108,5 +108,5 @@ public interface AmenitiesRepository extends JpaRepository<Amenities, UUID> {
                     "set a.deleted = true    " +
                     "where a.id = :amenityId  "
     )
-    Amenities softDelete(@Param("amenityId") UUID amenityId);
+    void softDelete(@Param("amenityId") UUID amenityId);
 }

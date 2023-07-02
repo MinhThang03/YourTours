@@ -73,6 +73,9 @@ public class Homes extends NameData {
     @Column(name = "thumbnail")
     private String thumbnail;
 
+    @Column(name = "guide")
+    private String guide;
+
     @Column(name = "refund_policy")
     @Enumerated(EnumType.STRING)
     private RefundPolicyEnum refundPolicy;
