@@ -67,7 +67,7 @@ public class RoomsOfHome extends NameData {
     @Column(name = "order_flag")
     private Integer orderFlag;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room", cascade = CascadeType.REMOVE)
     @Fetch(FetchMode.SUBSELECT)
     private List<BedsOfHome> beds;
 
