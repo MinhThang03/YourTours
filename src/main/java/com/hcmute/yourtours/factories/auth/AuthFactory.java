@@ -57,7 +57,7 @@ public class AuthFactory implements IAuthFactory {
     public LoginResponse login(LoginRequest request) throws InvalidException {
         try {
             UserInfo userInfo = iUserFactory.getInfoByEmail(request.getEmail());
-            AccessTokenResponse accessTokenResponse = null;
+            AccessTokenResponse accessTokenResponse;
             if (userInfo.getStatus() != null && userInfo.getStatus().equals(UserStatusEnum.LOCK)) {
                 throw new InvalidException(YourToursErrorCode.ACCOUNT_IS_LOCKED);
             } else {
@@ -77,7 +77,8 @@ public class AuthFactory implements IAuthFactory {
         } catch (InvalidException e) {
             throw e;
         } catch (Exception e) {
-            throw new InvalidException(YourToursErrorCode.LOGIN_FAIL);
+            e.printStackTrace();
+            throw new InvalidException(YourToursErrorCode.USER_OR_PASSWORD_NOT_CORRECT);
         }
 
     }

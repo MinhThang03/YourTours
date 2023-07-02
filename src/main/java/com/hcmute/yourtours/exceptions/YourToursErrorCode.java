@@ -46,6 +46,7 @@ public enum YourToursErrorCode implements IErrorCode {
     USER_NOT_ACTIVE(HttpStatus.BAD_REQUEST, "400000036", "Tài khoản chưa được kích hoạt"),
     OWNER_IS_BLOCK(HttpStatus.BAD_REQUEST, "400000037", "Tài khoản chủ nhà không khả dụng"),
     HOME_IS_BLOCK(HttpStatus.BAD_REQUEST, "400000038", "Nhà không khả dụng"),
+    DATE_CHECK_IN_IS_BEFORE(HttpStatus.BAD_REQUEST, "400000039", "Hiện không phải ngày nhận phòng"),
 
 
     //403

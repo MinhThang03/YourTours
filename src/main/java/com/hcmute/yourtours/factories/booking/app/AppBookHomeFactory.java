@@ -162,6 +162,9 @@ public class AppBookHomeFactory extends BookHomeFactory implements IAppBookHomeF
         detail.setBaseCost(projection.getBaseCost());
         detail.setCreatedDate(TimeUtil.toStringDate(entity.getCreatedDate()));
         applicationEventPublisher.publishEvent(detail);
+
+        iWebSocketFactory.sendBookingSuccessMessage(projection.getOwnerId(), detail.getHomeId());
+
     }
 
     @Override

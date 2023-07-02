@@ -2,7 +2,6 @@ package com.hcmute.yourtours.factories.booking;
 
 import com.hcmute.yourtours.constant.CornConstant;
 import com.hcmute.yourtours.entities.BookHomes;
-import com.hcmute.yourtours.entities.OwnerOfHome;
 import com.hcmute.yourtours.enums.AdminChartTypeEnum;
 import com.hcmute.yourtours.enums.BookRoomStatusEnum;
 import com.hcmute.yourtours.enums.MonthEnum;
@@ -312,6 +311,10 @@ public class BookHomeFactory
             throw new InvalidException(YourToursErrorCode.BOOK_HOME_CHECK_IN_IS_IN_VALID);
         }
 
+        if (LocalDate.now().isBefore(detail.getDateStart())) {
+            throw new InvalidException(YourToursErrorCode.DATE_CHECK_IN_IS_BEFORE);
+        }
+
         if (LocalDate.now().isAfter(detail.getDateEnd())) {
             throw new InvalidException(YourToursErrorCode.DATE_CHECK_IN_IS_EXCEED);
         }
@@ -477,14 +480,6 @@ public class BookHomeFactory
         }
     }
 
-    @Override
-    protected void postCreate(BookHomes entity, BookHomeDetail detail) throws InvalidException {
-        super.postCreate(entity, detail);
-
-        OwnerOfHome owner = iOwnerOfHomeFactory.getMainOwnerByHomeId(detail.getHomeId());
-
-        iWebSocketFactory.sendBookingSuccessMessage(owner.getUserId(), detail.getHomeId());
-    }
 
     @Override
     public Page<OwnerHomeStatisticProjection> getStatisticMonthForOwner(UUID userId, Integer month, Integer year, Pageable pageable) {
