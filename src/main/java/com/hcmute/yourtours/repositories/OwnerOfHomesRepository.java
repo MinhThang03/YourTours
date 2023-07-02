@@ -102,7 +102,9 @@ public interface OwnerOfHomesRepository extends JpaRepository<OwnerOfHome, UUID>
             value = "select c.status from Homes a, OwnerOfHome b, User c " +
                     "where a.id = b.homeId " +
                     "and b.userId = c.id " +
-                    "and b.isMainOwner is true  "
+                    "and b.isMainOwner is true " +
+                    "and a.id = :homeId "
     )
     CommonStatusEnum getStatusOfOwner(UUID homeId);
+
 }

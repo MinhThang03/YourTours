@@ -1,6 +1,7 @@
 package com.hcmute.yourtours.entities.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hcmute.yourtours.libs.util.TimeUtil;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
@@ -14,6 +15,9 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -33,7 +37,7 @@ public abstract class Audit<U extends Serializable> implements Serializable {
     @Column(name = "created_date", updatable = false)
     @JsonIgnore
     @Builder.Default
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdDate = getLocalDateTimeGMT7();
 
     @LastModifiedBy
     @Column(name = "last_modified_by", length = 50)
@@ -44,5 +48,19 @@ public abstract class Audit<U extends Serializable> implements Serializable {
     @Column(name = "last_modified_date")
     @JsonIgnore
     @Builder.Default
-    private LocalDateTime lastModifiedDate = LocalDateTime.now();
+    private LocalDateTime lastModifiedDate = getLocalDateTimeGMT7();
+
+
+    public static LocalDateTime getLocalDateTimeGMT7() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        // Convert it to GMT+7 (Indochina Time)
+        ZoneId gmtPlus7Zone = ZoneId.of("GMT+7");
+        ZonedDateTime gmtPlus7DateTime = localDateTime.atZone(gmtPlus7Zone);
+
+        // Format the date and time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String formattedDateTime = gmtPlus7DateTime.format(formatter);
+        return TimeUtil.toLocalDateTime(formattedDateTime);
+    }
 }

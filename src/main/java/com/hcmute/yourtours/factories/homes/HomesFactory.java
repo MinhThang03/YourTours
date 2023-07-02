@@ -257,6 +257,11 @@ public class HomesFactory
             throw new InvalidException(YourToursErrorCode.NUMBER_OF_GUESTS_IS_EXCEED);
         }
 
+        if (home.getStatus().equals(CommonStatusEnum.LOCK)) {
+            throw new InvalidException(YourToursErrorCode.HOME_IS_BLOCK);
+        }
+
+
         CommonStatusEnum statusOfOwner = iOwnerOfHomeFactory.getStatusOfOwnerHome(homeId);
         if (statusOfOwner.equals(CommonStatusEnum.LOCK)) {
             throw new InvalidException(YourToursErrorCode.OWNER_IS_BLOCK);
