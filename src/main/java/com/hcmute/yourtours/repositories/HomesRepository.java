@@ -254,13 +254,15 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "from homes a,   " +
                     "     province b   " +
                     "where a.province_code = b.code_name   " +
-                    "  and upper(b.name) like upper(Concat('%', :keyword, '%'))   " +
+                    "  and (upper(b.name) like upper(Concat('%', :keyword, '%'))   " +
+                    "  or upper(a.name) like upper(Concat('%', :keyword, '%')))   " +
                     "order by a.view desc ",
             countQuery = "select a.id   " +
                     "from homes a,   " +
                     "     province b   " +
                     "where a.province_code = b.code_name   " +
-                    "  and upper(b.name) like upper(Concat('%', :keyword, '%'))   "
+                    "  and (upper(b.name) like upper(Concat('%', :keyword, '%'))   " +
+                    "  or upper(a.name) like upper(Concat('%', :keyword, '%')))   "
     )
     Page<Homes> getPageWithListProvinceCode(@Param("keyword") String keyword,
                                             Pageable pageable);
