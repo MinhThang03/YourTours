@@ -21,6 +21,7 @@ import com.hcmute.yourtours.models.statistic.admin.filter.AdminStatisticDateFilt
 import com.hcmute.yourtours.models.statistic.admin.models.AdminChartStatistic;
 import com.hcmute.yourtours.models.statistic.admin.models.AdminStatistic;
 import com.hcmute.yourtours.models.statistic.admin.models.AdminStatisticHome;
+import com.hcmute.yourtours.models.statistic.admin.models.AdminStatisticRevenue;
 import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticFilter;
 import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticMonthFilter;
 import com.hcmute.yourtours.models.statistic.host.models.OwnerHomeStatisticMonth;
@@ -140,5 +141,14 @@ public class CmsStatisticController implements ICmsStatisticController {
         } catch (InvalidException e) {
             throw new RestException(e);
         }
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<BaseResponse<BasePagingResponse<AdminStatisticRevenue>>> adminStatisticRevenue(AdminStatisticDateFilter filter, Integer number, Integer size) {
+        LogContext.push(LogType.REQUEST, filter);
+        BasePagingResponse<AdminStatisticRevenue> response = iAdminStatisticFactory.adminStatisticRevenue(filter, number, size);
+        LogContext.push(LogType.RESPONSE, response);
+        return iResponseFactory.success(response);
     }
 }

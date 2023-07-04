@@ -7,6 +7,7 @@ import com.hcmute.yourtours.models.booking.projections.GetPageEvaluateProjection
 import com.hcmute.yourtours.models.booking.projections.InfoUserBookingProjection;
 import com.hcmute.yourtours.models.booking.projections.MobileGetPageBookingProjection;
 import com.hcmute.yourtours.models.statistic.admin.projections.AdminChartProjection;
+import com.hcmute.yourtours.models.statistic.admin.projections.AdminRevenueProjection;
 import com.hcmute.yourtours.models.statistic.admin.projections.AdminStatisticHomeProjection;
 import com.hcmute.yourtours.models.statistic.host.projections.HomeBookingStatisticProjection;
 import com.hcmute.yourtours.models.statistic.host.projections.OwnerHomeStatisticProjection;
@@ -632,4 +633,38 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
     )
     Page<AdminStatisticHomeProjection> adminStatisticHome(LocalDate dateStart, LocalDate dateEnd, Pageable pageable);
 
+
+    @Query(
+            nativeQuery = true,
+            value = "select c.full_name     as ownerName, " +
+                    "       d.full_name     as customerName, " +
+                    "       a.created_date  as createdDate, " +
+                    "       a.total_cost    as totalCost, " +
+                    "       a.cost_of_admin as adminCost, " +
+                    "       e.name          as homeName " +
+                    "from book_home a, " +
+                    "     owner_of_home b, " +
+                    "     user c, " +
+                    "     user d, " +
+                    "     homes e " +
+                    "where a.user_id = c.id " +
+                    "  and a.home_id = b.home_id " +
+                    "  and b.is_main_owner " +
+                    "  and b.user_id = d.id " +
+                    "  and a.home_id = e.id " +
+                    "  and DATE(a.created_date) between :dateStart and :dateEnd  ",
+            countQuery = "select a.id " +
+                    "from book_home a, " +
+                    "     owner_of_home b, " +
+                    "     user c, " +
+                    "     user d, " +
+                    "     homes e " +
+                    "where a.user_id = c.id " +
+                    "  and a.home_id = b.home_id " +
+                    "  and b.is_main_owner " +
+                    "  and b.user_id = d.id " +
+                    "  and a.home_id = e.id " +
+                    "  and DATE(a.created_date) between :dateStart and :dateEnd "
+    )
+    Page<AdminRevenueProjection> getAdminStatisticRevenue(LocalDate dateStart, LocalDate dateEnd, Pageable pageable);
 }
