@@ -44,7 +44,7 @@ public class AdminStatisticFactory implements IAdminStatisticFactory {
     }
 
     @Override
-    public BasePagingResponse<AdminStatisticRevenue> adminStatisticRevenue(AdminStatisticDateFilter filter, Integer number, Integer size) throws InvalidException {
+    public BasePagingResponse<AdminStatisticRevenue> adminStatisticRevenue(AdminStatisticDateFilter filter, Integer number, Integer size) {
 
         Page<AdminRevenueProjection> pageResult = iBookHomeFactory.getAdminStatisticRevenue(filter, PageRequest.of(number, size));
 

@@ -10,6 +10,6 @@ import com.hcmute.yourtours.models.statistic.admin.models.AdminStatisticRevenue;
 public interface IAdminStatisticFactory {
     AdminStatistic statistic(AdminHomeStatisticFilter filter) throws InvalidException;
 
-    BasePagingResponse<AdminStatisticRevenue> adminStatisticRevenue(AdminStatisticDateFilter filter, Integer number, Integer size) throws InvalidException;
+    BasePagingResponse<AdminStatisticRevenue> adminStatisticRevenue(AdminStatisticDateFilter filter, Integer number, Integer size);
 
 }

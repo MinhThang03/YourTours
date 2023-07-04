@@ -146,13 +146,9 @@ public class CmsStatisticController implements ICmsStatisticController {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<BasePagingResponse<AdminStatisticRevenue>>> adminStatisticRevenue(AdminStatisticDateFilter filter, Integer number, Integer size) {
-        try {
-            LogContext.push(LogType.REQUEST, filter);
-            BasePagingResponse<AdminStatisticRevenue> response = iAdminStatisticFactory.adminStatisticRevenue(filter, number, size);
-            LogContext.push(LogType.RESPONSE, response);
-            return iResponseFactory.success(response);
-        } catch (InvalidException e) {
-            throw new RestException(e);
-        }
+        LogContext.push(LogType.REQUEST, filter);
+        BasePagingResponse<AdminStatisticRevenue> response = iAdminStatisticFactory.adminStatisticRevenue(filter, number, size);
+        LogContext.push(LogType.RESPONSE, response);
+        return iResponseFactory.success(response);
     }
 }
