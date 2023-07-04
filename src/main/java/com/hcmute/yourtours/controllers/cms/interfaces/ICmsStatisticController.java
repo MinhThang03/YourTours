@@ -10,6 +10,7 @@ import com.hcmute.yourtours.models.statistic.admin.filter.AdminStatisticDateFilt
 import com.hcmute.yourtours.models.statistic.admin.models.AdminChartStatistic;
 import com.hcmute.yourtours.models.statistic.admin.models.AdminStatistic;
 import com.hcmute.yourtours.models.statistic.admin.models.AdminStatisticHome;
+import com.hcmute.yourtours.models.statistic.admin.models.AdminStatisticRevenue;
 import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticFilter;
 import com.hcmute.yourtours.models.statistic.host.filter.OwnerHomeStatisticMonthFilter;
 import com.hcmute.yourtours.models.statistic.host.models.OwnerHomeStatisticMonth;
@@ -59,6 +60,14 @@ public interface ICmsStatisticController {
 
     @GetMapping("admin/home")
     ResponseEntity<BaseResponse<BasePagingResponse<AdminStatisticHome>>> adminStatisticHome
+            (
+                    @ParameterObject @Valid AdminStatisticDateFilter filter,
+                    @RequestParam(defaultValue = "0") Integer number,
+                    @RequestParam(defaultValue = "20") Integer size
+            );
+
+    @GetMapping("admin/revenue")
+    ResponseEntity<BaseResponse<BasePagingResponse<AdminStatisticRevenue>>> adminStatisticRevenue
             (
                     @ParameterObject @Valid AdminStatisticDateFilter filter,
                     @RequestParam(defaultValue = "0") Integer number,

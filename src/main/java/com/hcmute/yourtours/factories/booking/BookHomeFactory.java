@@ -27,6 +27,7 @@ import com.hcmute.yourtours.models.statistic.admin.filter.AdminHomeChartFilter;
 import com.hcmute.yourtours.models.statistic.admin.filter.AdminStatisticDateFilter;
 import com.hcmute.yourtours.models.statistic.admin.models.AdminChartStatistic;
 import com.hcmute.yourtours.models.statistic.admin.projections.AdminChartProjection;
+import com.hcmute.yourtours.models.statistic.admin.projections.AdminRevenueProjection;
 import com.hcmute.yourtours.models.statistic.admin.projections.AdminStatisticHomeProjection;
 import com.hcmute.yourtours.models.statistic.common.RevenueStatistic;
 import com.hcmute.yourtours.models.statistic.host.models.HomeBookingStatistic;
@@ -397,6 +398,11 @@ public class BookHomeFactory
         return AdminChartStatistic.builder()
                 .revenueStatistics(getRevenueStatisticWithAdminAndYear(filter.getYear()))
                 .build();
+    }
+
+    @Override
+    public Page<AdminRevenueProjection> getAdminStatisticRevenue(AdminStatisticDateFilter filter, Pageable pageable) {
+        return bookHomeRepository.getAdminStatisticRevenue(filter.getDateStart(), filter.getDateEnd(), pageable);
     }
 
 
