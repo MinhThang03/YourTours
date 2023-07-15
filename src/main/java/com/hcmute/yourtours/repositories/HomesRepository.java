@@ -258,14 +258,16 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "     province b   " +
                     "where a.province_code = b.code_name   " +
                     "  and (upper(b.name) like upper(Concat('%', :keyword, '%'))   " +
-                    "  or upper(a.name) like upper(Concat('%', :keyword, '%')))   " +
+                    "  or upper(a.name) like upper(Concat('%', :keyword, '%'))   " +
+                    "  or upper(b.en_name) like upper(Concat('%', :keyword, '%')))   " +
                     "order by a.view desc ",
             countQuery = "select a.id   " +
                     "from homes a,   " +
                     "     province b   " +
                     "where a.province_code = b.code_name   " +
                     "  and (upper(b.name) like upper(Concat('%', :keyword, '%'))   " +
-                    "  or upper(a.name) like upper(Concat('%', :keyword, '%')))   "
+                    "  or upper(a.name) like upper(Concat('%', :keyword, '%'))   " +
+                    "  or upper(b.en_name) like upper(Concat('%', :keyword, '%')))   "
     )
     Page<Homes> getPageWithListProvinceCode(@Param("keyword") String keyword,
                                             Pageable pageable);
@@ -481,7 +483,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "            group by a.home_id) b    " +
                     "           on a.id = b.homeId    " +
                     "               inner join province c on a.province_code = c.code_name and    " +
-                    "                                        (:province is null or upper(c.name) like upper(Concat('%', :province, '%')))    " +
+                    "                                        ((:province is null or upper(c.name) like upper(Concat('%', :province, '%'))) or (:province is null or upper(c.en_name) like upper(Concat('%', :province, '%'))))    " +
                     "               left join (select a.* from item_favorites a where a.user_id = :userId order by a.created_date) d    " +
                     "                          on a.id = d.home_id) a    " +
                     "order by a.createdDate desc ",
@@ -494,7 +496,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "        and (:status is null or a.status = :status)    " +
                     "        and (:amenityId is null or b.amenity_id = :amenityId)) a    " +
                     "         inner join province c on a.province_code = c.code_name and    " +
-                    "                                  (:province is null or upper(c.name) like upper(Concat('%', :province, '%')))    " +
+                    "                                  ((:province is null or upper(c.name) like upper(Concat('%', :province, '%')))  or (:province is null or upper(c.en_name) like upper(Concat('%', :province, '%'))))  " +
                     "         left join (select a.* from item_favorites a where a.user_id = :userId order by a.created_date) d    " +
                     "                   on a.id = d.home_id "
     )
