@@ -15,4 +15,5 @@ public class HomeDetailFilter implements BaseFilter {
     private Integer numberOfBedRoom;
     private Integer numberOfBathRoom;
     private List<UUID> amenities;
+    private String provinceCode;
 }

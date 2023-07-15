@@ -147,6 +147,7 @@ public class AppHomesFactory extends HomesFactory implements IAppHomesFactory {
                         lenght,
                         RoomCategoryIdConstant.BED_ROOM_CATEGORY_ID,
                         RoomCategoryIdConstant.BATH_ROOM_CATEGORY_ID,
+                        filter.getProvinceCode(),
                         PageRequest.of(number, size)
                 );
 

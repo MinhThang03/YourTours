@@ -148,6 +148,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "                    where a.room_category_id = :bathRoomId  " +
                     "                    group by a.home_id) e on e.home_id = a.id  " +
                     "where (:amenityId is null or b.amenity_id = :amenityId)  " +
+                    "  and (:provinceCode is null or a.province_code = :provinceCode)  " +
                     "  and (:priceFrom is null or :priceTo is null or  " +
                     "       (a.cost_per_night_default >= :priceFrom and a.cost_per_night_default <= :priceTo))  " +
                     "  and (:numberOfBed is null or c.numberOfBed = :numberOfBed)  " +
@@ -177,6 +178,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                     "                    where a.room_category_id = :bathRoomId  " +
                     "                    group by a.home_id) e on e.home_id = a.id  " +
                     "where (:amenityId is null or b.amenity_id = :amenityId)  " +
+                    "  and (:provinceCode is null or a.province_code = :provinceCode)  " +
                     "  and (:priceFrom is null or :priceTo is null or  " +
                     "       (a.cost_per_night_default >= :priceFrom and a.cost_per_night_default <= :priceTo))  " +
                     "  and (:numberOfBed is null or c.numberOfBed = :numberOfBed)  " +
@@ -196,6 +198,7 @@ public interface HomesRepository extends JpaRepository<Homes, UUID> {
                                       @Param("size") Integer size,
                                       @Param("bedRoomId") UUID bedRoomId,
                                       @Param("bathRoomId") UUID bathRoomId,
+                                      @Param("provinceCode") String provinceCode,
                                       Pageable pageable);
 
 
