@@ -51,7 +51,7 @@ public interface BookHomeRepository extends JpaRepository<BookHomes, UUID> {
                     "  and b.user_id = :userId  " +
                     "  and (a.status = :status or :status is null)  " +
                     "  and (DATE(a.date_start) = DATE(:dateStart) or :dateStart is null)  " +
-                    "order by a.date_start desc ",
+                    "order by a.date_start asc ",
             countQuery = "select a.id  " +
                     "from book_home a,  " +
                     "     owner_of_home b  " +
