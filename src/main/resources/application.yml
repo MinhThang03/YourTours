@@ -102,12 +102,12 @@ your-tour-profile:
         realm-name: ${PROFILE_REALM:your-tour}
         auth-server-url: ${KEYCLOAK_URI:https://keycloak-ute.herokuapp.com}/auth
         client-id: ${PROFILE_CLIENT_ID:your-tour-client}
-        client-secret: ${PROFILE_CLIENT_SECRET:mnct1QhwqPjN7kzPNoiNfyLiN7O9iKlo}
+        client-secret: ${PROFILE_CLIENT_SECRET:khongbiet}
         token-uri: ${KEYCLOAK_URI:https://keycloak-ute.herokuapp.com}/auth/realms/${PROFILE_REALM:your-tour}/protocol/openid-connect/token
         token-invalidate-uri: ${KEYCLOAK_URI:https://keycloak-ute.herokuapp.com}/auth/realms/${PROFILE_REALM:your-tour}/protocol/openid-connect/logout
         user-info-uri: ${KEYCLOAK_URI:https://keycloak-ute.herokuapp.com}/auth/realms/${PROFILE_REALM:your-tour}/protocol/openid-connect/userinfo
         credentials:
-          secret: ${PROFILE_CLIENT_SECRET:mnct1QhwqPjN7kzPNoiNfyLiN7O9iKlo}
+          secret: ${PROFILE_CLIENT_SECRET:khongbiet}
           grant_type: password
 
 
